@@ -1,0 +1,35 @@
+{
+  "name": "pokerjs",
+  "version": "0.1.0-alpha",
+  "description": "A Poker Js Library.",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "jest",
+    "docify": "typedoc --entryPointStrategy expand src --out docs",
+    "start": "node dist/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/astitvsingh/pokerjs.git"
+  },
+  "keywords": [
+    "pokerjs",
+    "poker",
+    "lib"
+  ],
+  "author": "Astitv Singh <https://github.com/astitvsingh>",
+  "license": "SEE LICENSE IN LICENSE",
+  "bugs": {
+    "url": "https://github.com/astitvsingh/pokerjs/issues"
+  },
+  "homepage": "https://github.com/astitvsingh/pokerjs#readme",
+  "devDependencies": {
+    "typedoc": "^0.26.10",
+    "typescript": "^5.6.3"
+  }
+}
