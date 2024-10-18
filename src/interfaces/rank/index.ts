@@ -14,4 +14,4 @@ enum Rank {
   Ace = "A",
 }
 
-export default Rank;
+export { Rank };

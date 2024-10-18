@@ -1,29 +1,57 @@
-import { Rank, Suit } from "../../interfaces";
+import { Rank, Suit, ICard } from "../../interfaces";
 
 /**
- * @class Card
- * Represents a playing card in a poker game, consisting of a rank and a suit.
+ * @class `Card` : Represents a playing card in a poker game, consisting of a rank and a suit.
+ * Implements the `ICard` interface.
+ *
  * @example
  * const card = new Card(Rank.Ace, Suit.Spades);
  * console.log(card.toString()); // "A of Spades"
  */
 class Card {
   /**
-   * Creates an instance of a Card.
-   * @param {Rank} rank - The rank of the card (e.g., Ace, Two, King).
-   * @param {Suit} suit - The suit of the card (e.g., Hearts, Spades).
+   * @property {Rank} rank
+   * @public
+   * Holds the rank of the card (e.g., Ace, Two, King).
    */
-  constructor(public rank: Rank, public suit: Suit) {}
+  public rank: Rank;
 
   /**
-   * Get a string representation of the card.
-   * @returns {string} The card's rank and suit as a formatted string.
-   * @example
-   * card.toString(); // "A of Spades"
+   * @property {Suit} suit
+   * @public
+   * Holds the suit of the card (e.g., Hearts, Spades).
    */
-  toString(): string {
+  public suit: Suit;
+
+  /**
+   * @method constructor
+   * @public
+   * Creates an instance of a `Card` with the given rank and suit.
+   *
+   * @param {Rank} rank - The rank of the card.
+   * @param {Suit} suit - The suit of the card.
+   *
+   * @example
+   * const card = new Card(Rank.Ace, Suit.Spades);
+   */
+  constructor(rank: Rank, suit: Suit) {
+    this.rank = rank;
+    this.suit = suit;
+  }
+
+  /**
+   * @method `toString`
+   * @public
+   * Returns a string representation of the card, displaying its rank and suit.
+   * @returns {string} The card's rank and suit as a formatted string.
+   *
+   * @example
+   * const card = new Card(Rank.Ace, Suit.Spades);
+   * console.log(card.toString()); // "A of Spades"
+   */
+  public toString(): string {
     return `${this.rank} of ${this.suit}`;
   }
 }
 
-export default Card;
+export { Card };
