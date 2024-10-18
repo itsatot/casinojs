@@ -1,7 +1,7 @@
 import Card from "../card";
 import { Suit, Rank } from "../../interfaces";
 
-export class Deck {
+class Deck {
   private cards: Card[] = [];
 
   constructor() {
@@ -27,3 +27,5 @@ export class Deck {
     return this.cards.pop();
   }
 }
+
+export default Deck;

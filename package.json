@@ -10,7 +10,7 @@
   "scripts": {
     "build": "tsc",
     "test": "jest",
-    "docify": "typedoc --entryPointStrategy expand src --out docs",
+    "docify": "typedoc --entryPointStrategy expand src --out docs/site",
     "start": "node dist/index.js"
   },
   "repository": {
