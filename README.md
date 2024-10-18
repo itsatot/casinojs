@@ -4,7 +4,9 @@ nodejs-project-template
 
 ## Table of Contents
 
-1. [Feedback and Suggestions](#feedback-and-suggestions)
+- [nodejs-project-template](#nodejs-project-template)
+  - [Table of Contents](#table-of-contents)
+  - [Feedback and Suggestions](#feedback-and-suggestions)
 
 ## Feedback and Suggestions
 

@@ -5,4 +5,4 @@ enum Suit {
   Spades = "Spades",
 }
 
-export default Suit;
+export { Suit };

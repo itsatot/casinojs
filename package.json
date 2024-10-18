@@ -10,7 +10,7 @@
   "scripts": {
     "build": "tsc",
     "test": "jest",
-    "docify": "typedoc --entryPointStrategy expand src --out docs",
+    "docify": "typedoc --entryPointStrategy expand src --out docs/site",
     "start": "node dist/index.js"
   },
   "repository": {
@@ -29,6 +29,8 @@
   },
   "homepage": "https://github.com/astitvsingh/pokerjs#readme",
   "devDependencies": {
+    "@types/events": "^3.0.3",
+    "@types/node": "^22.7.6",
     "typedoc": "^0.26.10",
     "typescript": "^5.6.3"
   }
