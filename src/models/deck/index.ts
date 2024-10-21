@@ -1,29 +1,31 @@
-// src/models/deck/index.ts
 import { EventEmitter } from "events";
-import { IDeck } from "../../interfaces/deck";
-import { ICard } from "../../interfaces/card";
+import { Suit, Rank } from "../../enums";
+import { CardInterface, DeckInterface } from "../../interfaces";
 import { Card } from "../card";
-import { Suit, Rank } from "../../interfaces";
 
 /**
- * @class `Deck` : Represents a deck of 52 playing cards used in poker games.
- * This class extends `EventEmitter` and implements the `IDeck` interface.
+ * @class `Deck`
+ * Represents a deck of 52 playing cards used in poker games.
+ * This class extends `EventEmitter` and implements the `DeckInterface` interface.
+ *
+ * The `Deck` class provides methods to shuffle the deck, draw cards, and emits
+ * events for important actions like shuffling and drawing cards.
  *
  * @example
  * const deck = new Deck();
  * deck.on('deck:shuffled', () => console.log('Deck has been shuffled.'));
  * deck.shuffle();
  * const card = deck.draw();
- * console.log(card?.toString());
+ * console.log(card?.toString()); // "A of Spades"
  */
-class Deck extends EventEmitter implements IDeck {
+class Deck extends EventEmitter implements DeckInterface {
   /**
-   * @property {ICard[]} cards
+   * @property {CardInterface[]} cards
    * @private
    * Holds the array of 52 playing cards in the deck.
    * @default []
    */
-  private cards: ICard[] = [];
+  private cards: CardInterface[] = [];
 
   /**
    * @method constructor
@@ -40,7 +42,7 @@ class Deck extends EventEmitter implements IDeck {
   }
 
   /**
-   * @method init
+   * @method `init`
    * @private
    * Initializes the deck with 52 unique cards.
    * This method is called automatically inside the constructor during deck creation.
@@ -81,17 +83,31 @@ class Deck extends EventEmitter implements IDeck {
    * Draws a card from the top of the deck.
    * Removes and returns the top card from the deck, or `undefined` if the deck is empty.
    * @emits `deck:drawn` : Emits a `deck:drawn` event when a card is drawn.
-   * @returns {ICard | undefined} Returns the drawn card or `undefined` if no cards remain.
+   * @returns {CardInterface | undefined} Returns the drawn card or `undefined` if no cards remain.
    *
    * @example
    * const deck = new Deck();
    * const drawnCard = deck.draw();
-   * console.log(drawnCard?.toString());
+   * console.log(drawnCard?.toString()); // "A of Spades"
    */
-  public draw(): ICard | undefined {
+  public draw(): CardInterface | undefined {
     const drawnCard = this.cards.pop();
     this.emit("deck:drawn", drawnCard);
     return drawnCard;
+  }
+
+  /**
+   * @method `getCards`
+   * @public
+   * Returns the current state of the deck.
+   * @returns {CardInterface[]} The array of cards in the deck.
+   *
+   * @example
+   * const cards = deck.getCards();
+   * console.log(cards.length); // 52 (before shuffling or drawing)
+   */
+  public getCards(): CardInterface[] {
+    return this.cards;
   }
 }
 
