@@ -32,10 +32,9 @@ interface CasinoInterface extends NodeJS.EventEmitter {
    * const room = casino.createRoom("HighRollers", 6, 10, 20);
    */
   createRoom(
-    roomName: string,
-    tableSize: number,
-    smallBlind: number,
-    bigBlind: number
+    id: string | undefined,
+    name: string,
+    options: object
   ): PokerRoomInterface;
 
   /**
