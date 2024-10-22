@@ -1,5 +1,6 @@
 import { EventEmitter } from "events";
 import {
+  PokerRoomConfig,
   PokerPlayerInterface,
   PokerRoomInterface,
   PokerTableInterface,
@@ -53,12 +54,12 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
    * @example
    * const deck = new Deck();
    */
-  constructor(id: string | undefined, name: string | undefined, options: {}) {
+  constructor(config : PokerRoomConfig) {
     super();
-    this._id = id || ``;
-    this._name = name || ``;
+    this._id = config.id ? config.id : ``;
+    this._name = config.name ? config.name : ``;
     this._queue = [];
-    this._table = new PokerTable({id:"", size:2, seats:undefined});
+    this._table = new PokerTable(config.tableConfig);
   }
 
   /**
@@ -157,7 +158,7 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
    * const rank = card.setName();
    * console.log(rank); // "A"
    */
-  private setQueue(queue: PokerPlayerInterface[]): PokerPlayerInterface[] {
+  public setQueue(queue: PokerPlayerInterface[]): PokerPlayerInterface[] {
     this._queue = queue;
     return this._queue;
   }

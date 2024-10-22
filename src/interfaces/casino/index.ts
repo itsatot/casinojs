@@ -52,20 +52,6 @@ interface CasinoInterface extends NodeJS.EventEmitter {
   findRoom(roomName: string): PokerRoomInterface | undefined;
 
   /**
-   * @method `findRoomByName`
-   * Searches for an existing room by its name.
-   * Emits a `casino:roomSearchedByName` event when the search is performed.
-   *
-   * @param {string} roomName - The name of the PokerRoom to find.
-   * @returns {PokerRoomInterface | undefined} - Returns the PokerRoom if found, otherwise undefined.
-   * @emits `casino:roomSearchedByName`
-   *
-   * @example
-   * const room = casino.findRoomByName("LowStakes");
-   */
-  findRoomByName(roomName: string): PokerRoomInterface | undefined;
-
-  /**
    * @method `listRooms`
    * Lists all active PokerRooms in the Casino.
    * Emits a `casino:roomsListed` event when the list is retrieved.
