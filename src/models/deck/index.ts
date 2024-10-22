@@ -52,7 +52,7 @@ class Deck extends EventEmitter implements DeckInterface {
   private init(): void {
     for (const suit of Object.values(Suit)) {
       for (const rank of Object.values(Rank)) {
-        this.cards.push(new Card(rank, suit));
+        this.cards.push(new Card({ rank: rank, suit: suit }));
       }
     }
     this.emit("deck:initialized", this.cards);

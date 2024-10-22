@@ -1,5 +1,6 @@
 import { EventEmitter } from "events";
 import { CasinoInterface, PokerRoomInterface } from "../../interfaces";
+import { PokerRoom } from "../pokerRoom";
 
 /**
  * @class `Casino`
@@ -65,19 +66,11 @@ class Casino extends EventEmitter implements CasinoInterface {
    * const room = casino.createRoom("HighRollers", 6, 10, 20);
    */
   public createRoom(
+    id: string | undefined,
     name: string,
-    tableSize: number,
-    smallBlind: number,
-    bigBlind: number
+    options: object
   ): PokerRoomInterface {
-    const room: PokerRoomInterface = {
-      name,
-      tableSize,
-      smallBlind,
-      bigBlind,
-      // Initialize other PokerRoom properties
-    };
-
+    const room = new PokerRoom(id, name, options);
     this._rooms.push(room);
     this.emit("casino:roomCreated", room);
     return room;
@@ -96,7 +89,7 @@ class Casino extends EventEmitter implements CasinoInterface {
    * const room = casino.findRoom("HighRollers");
    */
   public findRoom(roomName: string): PokerRoomInterface | undefined {
-    const room = this._rooms.find((room) => room.roomName === roomName);
+    const room = this._rooms.find((room) => room.getName() === roomName);
     this.emit("casino:roomSearched", room);
     return room;
   }
@@ -132,7 +125,7 @@ class Casino extends EventEmitter implements CasinoInterface {
    * console.log(success); // true or false
    */
   public removeRoom(roomName: string): boolean {
-    const index = this._rooms.findIndex((room) => room.roomName === roomName);
+    const index = this._rooms.findIndex((room) => room.getName() === roomName);
     if (index !== -1) {
       const removedRoom = this._rooms.splice(index, 1)[0];
       this.emit("casino:roomRemoved", removedRoom);

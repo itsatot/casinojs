@@ -11,24 +11,6 @@ import { CardInterface } from "../card";
  */
 interface PokerGameInterface extends NodeJS.EventEmitter {
   /**
-   * @property {DeckInterface} deck
-   * The deck of cards used in the current PokerGame.
-   */
-  deck: DeckInterface;
-
-  /**
-   * @property {string} currentPhase
-   * The current phase of the game (e.g., "pre-flop", "flop", "turn", "river").
-   */
-  currentPhase: string;
-
-  /**
-   * @property {CardInterface[]} communityCards
-   * The community cards that are dealt face-up and shared by all players.
-   */
-  communityCards: CardInterface[];
-
-  /**
    * @method `shuffleDeck`
    * Shuffles the deck of cards in preparation for dealing.
    * @returns {void}

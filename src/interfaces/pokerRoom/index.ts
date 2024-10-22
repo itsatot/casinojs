@@ -10,6 +10,18 @@ import { PokerPlayerInterface } from "../pokerPlayer";
  *
  * @extends NodeJS.EventEmitter
  */
-interface PokerRoomInterface extends NodeJS.EventEmitter {}
+interface PokerRoomInterface extends NodeJS.EventEmitter {
+  /**
+   * @method `getName`
+   * @public
+   * Returns the poker room's `name`.
+   * @returns {string} The poker room's `name`.
+   *
+   * @example
+   * const rank = card.getName();
+   * console.log(rank); // "A"
+   */
+  getName(): string;
+}
 
 export { PokerRoomInterface };
