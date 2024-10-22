@@ -242,6 +242,13 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
     this._player = player;
     return this._player;
   }
+
+  public isOccupied(): boolean{
+    if (this.getPlayer() === undefined) {
+      return false;
+    } 
+    return true;}
+ 
 }
 
 export { PokerSeat };

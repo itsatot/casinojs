@@ -39,6 +39,9 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
    * @private
    * The PokerTable that is contained within the PokerRoom.
    */
+
+
+  /** To check whether seats are occupied or not and seats array are being taken from pokertable class */
   private _table: PokerTableInterface;
 
   /**
@@ -55,7 +58,7 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
     this._id = id || ``;
     this._name = name || ``;
     this._queue = [];
-    this._table = new PokerTable();
+    this._table = new PokerTable({id:"", size:2, seats:undefined});
   }
 
   /**

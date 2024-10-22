@@ -1,9 +1,12 @@
 import { EventEmitter } from "events";
 import {
+  PokerPlayerInterface,
+  PokerSeatConfig,
   PokerSeatInterface,
   PokerTableConfig,
   PokerTableInterface,
 } from "../../interfaces";
+import { PokerSeat } from "../pokerSeat";
 
 /**
  * @interface `PokerTable`
@@ -27,10 +30,10 @@ class PokerTable extends EventEmitter implements PokerTableInterface {
   private _size: number;
 
   /**
-   * @property {PokerSeatInterface[] | undefined} _seats
+   * @property {PokerSeatInterface[]} _seats
    * An array of players currently seated at the PokerTable.
    */
-  private _seats: PokerSeatInterface[] | undefined;
+  private _seats: PokerSeatInterface[];
 
   /**
    * @property {boolean} gameInProgress
@@ -53,6 +56,22 @@ class PokerTable extends EventEmitter implements PokerTableInterface {
     this._size = config.size ? config.size : 8;
     this._seats = config.seats ? config.seats : [];
     this._gameInProgress = false;
+    this.init();
+  }
+
+  /**
+   * @method `init`
+   * @private
+   * Initializes the deck with 52 unique cards.
+   * This method is called automatically inside the constructor during deck creation.
+   * @emits `deck:initialized` : Emits a `deck:initialized` event when the deck is created.
+   * @returns {void}
+   */
+  private init(): void {
+    for (let i = 0; i < this._size; i++) {
+      const seat = new PokerSeat({id:``, position:i, isDealer: false, isBigBlind: false, isSmallBlind: false, player:undefined});
+      this._seats?.push(seat);
+    }
   }
 
   /**
@@ -115,8 +134,8 @@ class PokerTable extends EventEmitter implements PokerTableInterface {
    * This method initiates the game flow, including assigning blinds and starting the rounds.
    * @returns {number}
    */
-  public getSeats(): number {
-    return this._size;
+  public getSeats(): PokerSeatInterface[] {
+    return this._seats;
   }
 
   /**
@@ -130,10 +149,25 @@ class PokerTable extends EventEmitter implements PokerTableInterface {
    * console.log(rank); // "A"
    */
   private setSeats(
-    seats: PokerSeatInterface[] | undefined
-  ): PokerSeatInterface[] | undefined {
+    seats: PokerSeatInterface[] 
+  ): PokerSeatInterface[]  {
     this._seats = seats;
     return this._seats;
+  }
+
+  private occupySeat(position:number,player:PokerPlayerInterface): boolean {
+    for (let i = 0; i < this.getSeats().length; i++) {
+      let seat = this.getSeats()[i]; 
+      let seatPosition = seat.getPosition();
+      if (seatPosition === position) {
+        if (!seat.isOccupied()) {
+          seat.setPlayer(player);
+          console.log("Seat has been assigned");
+          return true;
+        }
+      }
+    }
+    return false;
   }
 }
 

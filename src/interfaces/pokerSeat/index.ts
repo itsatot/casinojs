@@ -173,6 +173,9 @@ interface PokerSeatInterface extends NodeJS.EventEmitter {
   setPlayer(
     player: PokerPlayerInterface | undefined
   ): PokerPlayerInterface | undefined;
+
+  
+  isOccupied(): boolean;
 }
 
 export { PokerSeatConfig, PokerSeatInterface };
