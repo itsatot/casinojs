@@ -4,6 +4,7 @@ import {
   PokerPlayerInterface,
   PokerRoomInterface,
   PokerTableInterface,
+  PokerSeatInterface,
 } from "../../interfaces";
 import { PokerTable } from "../pokerTable";
 
@@ -104,6 +105,11 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
     return this._queue;
   }
 
+  public addToQueue(player:PokerPlayerInterface): boolean{
+    this._queue.push(player);
+    return true;
+  }
+
   /**
    * @method `getTable`
    * @public
@@ -176,6 +182,20 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
   private setTable(table: PokerTableInterface): PokerTableInterface {
     this._table = table;
     return this._table;
+  }
+
+  public moveToTable(seatPostion:number):boolean {
+    let roomSeats =  this.getTable().getSeats();
+    for (let index = 0; index < roomSeats.length; index++) {
+      if (roomSeats[index].getPosition() === seatPostion && !roomSeats[index].isOccupied() && this.getQueue().length>=1) {
+        let queue = this.getQueue();
+        let pokerPlayer = queue.splice(0, 1);
+        this.setQueue(queue);
+        roomSeats[index].setPlayer(pokerPlayer[0]);
+        return true;
+      }
+    }
+    return false;
   }
 }
 

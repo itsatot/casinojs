@@ -1,6 +1,26 @@
 import { EventEmitter } from "events";
-import { DeckInterface } from "../deck";
-import { CardInterface } from "../card";
+import { PokerPlayerInterface } from "../pokerPlayer";
+
+
+/**
+ * @interface `PokerGameConfig`
+ * Represents a Poker Game Config.
+ */
+interface PokerGameConfig {
+  /**
+   * @property {string | undefined} id
+   * The maximum number of players that can be seated at the PokerTable[2-14].
+   */
+  id: string | undefined;
+
+  /**
+   * @property {string | undefined} name
+   * The maximum number of players that can be seated at the PokerTable[2-14].
+   */
+  players: PokerPlayerInterface[];
+}
+
+
 
 /**
  * @interface `PokerGameInterface`
@@ -10,12 +30,6 @@ import { CardInterface } from "../card";
  * @extends NodeJS.EventEmitter
  */
 interface PokerGameInterface extends NodeJS.EventEmitter {
-  /**
-   * @method `shuffleDeck`
-   * Shuffles the deck of cards in preparation for dealing.
-   * @returns {void}
-   */
-  shuffleDeck(): void;
 
   /**
    * @method `dealHoleCards`
@@ -45,6 +59,8 @@ interface PokerGameInterface extends NodeJS.EventEmitter {
    * @returns {void}
    */
   resolveBets(): void;
+
+  getPlayers(): PokerPlayerInterface[];
 }
 
-export { PokerGameInterface };
+export { PokerGameInterface, PokerGameConfig };
