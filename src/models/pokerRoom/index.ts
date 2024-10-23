@@ -1,8 +1,10 @@
 import { EventEmitter } from "events";
 import {
+  PokerRoomConfig,
   PokerPlayerInterface,
   PokerRoomInterface,
   PokerTableInterface,
+  PokerSeatInterface,
 } from "../../interfaces";
 import { PokerTable } from "../pokerTable";
 
@@ -53,12 +55,12 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
    * @example
    * const deck = new Deck();
    */
-  constructor(id: string | undefined, name: string | undefined, options: {}) {
+  constructor(config : PokerRoomConfig) {
     super();
-    this._id = id || ``;
-    this._name = name || ``;
+    this._id = config.id ? config.id : ``;
+    this._name = config.name ? config.name : ``;
     this._queue = [];
-    this._table = new PokerTable({id:"", size:2, seats:undefined});
+    this._table = new PokerTable(config.tableConfig);
   }
 
   /**
@@ -101,6 +103,11 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
    */
   public getQueue(): PokerPlayerInterface[] {
     return this._queue;
+  }
+
+  public addToQueue(player:PokerPlayerInterface): boolean{
+    this._queue.push(player);
+    return true;
   }
 
   /**
@@ -157,7 +164,7 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
    * const rank = card.setName();
    * console.log(rank); // "A"
    */
-  private setQueue(queue: PokerPlayerInterface[]): PokerPlayerInterface[] {
+  public setQueue(queue: PokerPlayerInterface[]): PokerPlayerInterface[] {
     this._queue = queue;
     return this._queue;
   }
@@ -175,6 +182,20 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
   private setTable(table: PokerTableInterface): PokerTableInterface {
     this._table = table;
     return this._table;
+  }
+
+  public moveToTable(seatPostion:number):boolean {
+    let roomSeats =  this.getTable().getSeats();
+    for (let index = 0; index < roomSeats.length; index++) {
+      if (roomSeats[index].getPosition() === seatPostion && !roomSeats[index].isOccupied() && this.getQueue().length>=1) {
+        let queue = this.getQueue();
+        let pokerPlayer = queue.splice(0, 1);
+        this.setQueue(queue);
+        roomSeats[index].setPlayer(pokerPlayer[0]);
+        return true;
+      }
+    }
+    return false;
   }
 }
 

@@ -1,3 +1,4 @@
+import { config } from "process";
 import * as CasinoJs from "./index";
 import { Casino } from "./index";
 
@@ -10,3 +11,6 @@ import { Casino } from "./index";
 const casino = new Casino();
 
 console.log(casino);
+
+const config : CasinoJs.PokerRoomConfig = {id:``,name:``,tableConfig:{id:``,size:2,seats:undefined}};
+const room = new CasinoJs.PokerRoom(config);

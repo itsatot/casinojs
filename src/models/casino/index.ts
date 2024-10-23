@@ -1,5 +1,5 @@
 import { EventEmitter } from "events";
-import { CasinoInterface, PokerRoomInterface } from "../../interfaces";
+import { CasinoInterface, PokerRoomConfig, PokerRoomInterface } from "../../interfaces";
 import { PokerRoom } from "../pokerRoom";
 
 /**
@@ -50,6 +50,31 @@ class Casino extends EventEmitter implements CasinoInterface {
     return this._rooms;
   }
 
+  public getRoomAt(index:number):PokerRoomInterface{
+    return this._rooms[index];
+  }
+
+  /**
+ * @method `setId`
+ * @public
+ * Returns the poker table's `id`.
+ * @returns {string} The poker table's `id`.
+ *
+ * @example
+ * const rank = card.getRank();
+ * console.log(rank); // "A"
+ */
+private setRooms(rooms:PokerRoomInterface[]): PokerRoomInterface[] {
+  this._rooms = rooms;
+  return this._rooms;
+}
+
+public addRoom(room: PokerRoomInterface): boolean {
+  this._rooms.push(room);
+  return true;
+}
+
+
   /**
    * @method `createRoom`
    * @public
@@ -70,7 +95,8 @@ class Casino extends EventEmitter implements CasinoInterface {
     name: string,
     options: object
   ): PokerRoomInterface {
-    const room = new PokerRoom(id, name, options);
+    const config : PokerRoomConfig = {id:``,name:``,tableConfig:{id:``,size:2,seats:undefined}};
+    const room = new PokerRoom(config);
     this._rooms.push(room);
     this.emit("casino:roomCreated", room);
     return room;
@@ -94,6 +120,7 @@ class Casino extends EventEmitter implements CasinoInterface {
     return room;
   }
 
+
   /**
    * @method `listRooms`
    * @public
@@ -107,8 +134,8 @@ class Casino extends EventEmitter implements CasinoInterface {
    * console.log(rooms); // [PokerRoom1, PokerRoom2]
    */
   public listRooms(): PokerRoomInterface[] {
-    this.emit("casino:roomsListed", this._rooms);
-    return this._rooms;
+    // this.emit("casino:roomsListed", this._rooms);
+    return this.getRooms();
   }
 
   /**
@@ -133,6 +160,8 @@ class Casino extends EventEmitter implements CasinoInterface {
     }
     return false;
   }
+
+
 }
 
 export { Casino };

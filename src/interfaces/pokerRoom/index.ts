@@ -1,6 +1,30 @@
 import { EventEmitter } from "events";
-import { PokerTableInterface } from "../pokerTable";
+import { PokerTableConfig , PokerTableInterface } from "../pokerTable";
 import { PokerPlayerInterface } from "../pokerPlayer";
+
+/**
+ * @interface `PokerRoomConfig`
+ * Represents a PokerPlayer Config.
+ */
+interface PokerRoomConfig {
+  /**
+   * @property {string | undefined} id
+   * The maximum number of players that can be seated at the PokerTable[2-14].
+   */
+  id: string | undefined;
+
+  /**
+   * @property {string | undefined} name
+   * The maximum number of players that can be seated at the PokerTable[2-14].
+   */
+  name: string | undefined;
+
+  /**
+   * @property {string | undefined} name
+   * The maximum number of players that can be seated at the PokerTable[2-14].
+   */
+  tableConfig: PokerTableConfig;
+}
 
 /**
  * @interface `PokerRoomInterface`
@@ -24,4 +48,4 @@ interface PokerRoomInterface extends NodeJS.EventEmitter {
   getName(): string;
 }
 
-export { PokerRoomInterface };
+export { PokerRoomConfig , PokerRoomInterface };

@@ -45,6 +45,14 @@ interface PokerTableInterface extends NodeJS.EventEmitter {
    * console.log(rank); // "A"
    */
   getId(): string;
+
+    /**
+   * @method `getSeats`
+   * Starts a new PokerGame if there are at least two active players at the PokerTable.
+   * This method initiates the game flow, including assigning blinds and starting the rounds.
+   * @returns {number}
+   */
+  getSeats(): PokerSeatInterface[];
 }
 
 export { PokerTableConfig, PokerTableInterface };
