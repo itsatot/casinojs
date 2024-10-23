@@ -213,11 +213,15 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
    * const rank = card.getRank();
    * console.log(rank); // "A"
    */
-  private setIsFolded(bool: boolean): boolean {
+  public setIsFolded(bool: boolean): boolean {
     this._isFolded = bool;
     return this._isFolded;
   }
 
+  public bet(amount:number):boolean{
+    this._chips = this.getChips() - amount;
+    return true;
+  }
 
   /**
    * @method `setHand`

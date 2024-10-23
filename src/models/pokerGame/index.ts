@@ -40,6 +40,8 @@ class PokerGame extends EventEmitter implements PokerGameInterface {
 
   private _players: PokerPlayerInterface[];
 
+  private _pot:number;
+
   /**
    * @method constructor
    * @public
@@ -55,6 +57,7 @@ class PokerGame extends EventEmitter implements PokerGameInterface {
     this._deck = new Deck();
     this._communityCards = [];
     this._players = config.players ? config.players : [];
+    this._pot = config.pot ? config.pot : 0;
     // new PokerPlayer({id:``,name:``,chips:100,hand:[],isFolded:false});
   }
 
@@ -66,10 +69,17 @@ class PokerGame extends EventEmitter implements PokerGameInterface {
     return this._deck;
   }
 
+  public getPot(): number {
+    return this._pot;
+  }
+
   private setPlayers(players: PokerPlayerInterface[]): PokerPlayerInterface[] {
     return (this._players = players);
   }
 
+  public setPot(pot:number): number {
+    return this._pot = pot;
+  }
 
 
   /**

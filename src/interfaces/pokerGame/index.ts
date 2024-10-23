@@ -17,6 +17,8 @@ interface PokerGameConfig {
    * The maximum number of players that can be seated at the PokerTable[2-14].
    */
   players: PokerPlayerInterface[];
+
+  pot: number;
 }
 
 /**

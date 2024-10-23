@@ -40,6 +40,12 @@ class PokerPhase extends EventEmitter implements PokerPhaseInterface {
 
   private _players: PokerPlayerInterface[];
 
+  private _pot:number;
+
+  private _currentPlayer : PokerPlayerInterface | undefined;
+
+
+
   /**
    * @method constructor
    * @public
@@ -55,6 +61,8 @@ class PokerPhase extends EventEmitter implements PokerPhaseInterface {
     this._deck = new Deck();
     this._communityCards = [];
     this._players = config.players ? config.players : [];
+    this._pot = 0;
+    this._currentPlayer = undefined;
     // new PokerPlayer({id:``,name:``,chips:100,hand:[],isFolded:false});
   }
 
@@ -66,8 +74,17 @@ class PokerPhase extends EventEmitter implements PokerPhaseInterface {
     return this._deck;
   }
 
+  public getPot(): number {
+    return this._pot;
+  }
+  
+
   private setPlayers(players: PokerPlayerInterface[]): PokerPlayerInterface[] {
     return (this._players = players);
+  }
+
+  public setPot(pot:number): number {
+    return this._pot = pot;
   }
 
   /**
@@ -113,6 +130,18 @@ class PokerPhase extends EventEmitter implements PokerPhaseInterface {
    * @returns {void}
    */
   resolveBets(): void {}
+
+  public bet(amount:number):boolean{
+    this._currentPlayer?.bet(amount);
+    this.setPot(this.getPot() + amount);
+    return true;
+  }
+
+  
+  public fold():boolean{
+    this._currentPlayer?.setIsFolded(true);
+    return true;
+  }
 }
 
 export { PokerPhase };

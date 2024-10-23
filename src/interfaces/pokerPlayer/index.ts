@@ -183,8 +183,11 @@ interface PokerPlayerInterface extends NodeJS.EventEmitter {
    * const rank = card.getRank();
    * console.log(rank); // "A"
    */
+  bet(amount:number):boolean;
 
   addToHand(hand: CardInterface): boolean;
+
+  setIsFolded(bool: boolean): boolean;
 }
 
 export { PokerPlayerConfig, PokerPlayerInterface };
