@@ -18,6 +18,8 @@ interface PokerPhaseConfig {
    * The maximum number of players that can be seated at the PokerTable[2-14].
    */
   players: PokerPlayerInterface[];
+
+  pot: number;
 }
 
 /**
@@ -58,6 +60,8 @@ interface PokerPhaseInterface extends NodeJS.EventEmitter {
   resolveBets(): void;
 
   getPlayers(): PokerPlayerInterface[];
+
+  // bet(amount:number):boolean;
 }
 
 export { PokerPhaseConfig, PokerPhaseInterface };

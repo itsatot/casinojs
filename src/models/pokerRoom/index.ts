@@ -5,8 +5,10 @@ import {
   PokerRoomInterface,
   PokerTableInterface,
   PokerSeatInterface,
+  PokerPlayerConfig,
 } from "../../interfaces";
 import { PokerTable } from "../pokerTable";
+import { PokerPlayer } from "../pokerPlayer";
 
 /**
  * @class `PokerRoom`
@@ -104,7 +106,8 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
     return this._queue;
   }
 
-  public addToQueue(player: PokerPlayerInterface): boolean {
+  public addToQueue(config: PokerPlayerConfig): boolean {
+    const player = new PokerPlayer(config);
     this._queue.push(player);
     return true;
   }
