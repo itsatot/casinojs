@@ -15,6 +15,8 @@ import { CardConfig, CardInterface } from "../../interfaces";
  * console.log(card.toString()); // "A of Spades"
  */
 class Card implements CardInterface {
+  /******************* PROPERTIES *******************/
+
   /**
    * @property {Rank} _rank
    * @private

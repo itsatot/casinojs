@@ -1,5 +1,9 @@
 import { EventEmitter } from "events";
-import { CasinoInterface, PokerRoomConfig, PokerRoomInterface } from "../../interfaces";
+import {
+  CasinoInterface,
+  PokerRoomConfig,
+  PokerRoomInterface,
+} from "../../interfaces";
 import { PokerRoom } from "../pokerRoom";
 
 /**
@@ -15,6 +19,8 @@ import { PokerRoom } from "../pokerRoom";
  * const room = casino.createRoom("Room1", 6, 10, 20);
  */
 class Casino extends EventEmitter implements CasinoInterface {
+  /******************* PROPERTIES *******************/
+
   /**
    * @property {PokerRoomInterface[]} _rooms
    * @private
@@ -50,30 +56,29 @@ class Casino extends EventEmitter implements CasinoInterface {
     return this._rooms;
   }
 
-  public getRoomAt(index:number):PokerRoomInterface{
+  public getRoomAt(index: number): PokerRoomInterface {
     return this._rooms[index];
   }
 
   /**
- * @method `setId`
- * @public
- * Returns the poker table's `id`.
- * @returns {string} The poker table's `id`.
- *
- * @example
- * const rank = card.getRank();
- * console.log(rank); // "A"
- */
-private setRooms(rooms:PokerRoomInterface[]): PokerRoomInterface[] {
-  this._rooms = rooms;
-  return this._rooms;
-}
+   * @method `setId`
+   * @public
+   * Returns the poker table's `id`.
+   * @returns {string} The poker table's `id`.
+   *
+   * @example
+   * const rank = card.getRank();
+   * console.log(rank); // "A"
+   */
+  private setRooms(rooms: PokerRoomInterface[]): PokerRoomInterface[] {
+    this._rooms = rooms;
+    return this._rooms;
+  }
 
-public addRoom(room: PokerRoomInterface): boolean {
-  this._rooms.push(room);
-  return true;
-}
-
+  public addRoom(room: PokerRoomInterface): boolean {
+    this._rooms.push(room);
+    return true;
+  }
 
   /**
    * @method `createRoom`
@@ -95,7 +100,11 @@ public addRoom(room: PokerRoomInterface): boolean {
     name: string,
     options: object
   ): PokerRoomInterface {
-    const config : PokerRoomConfig = {id:``,name:``,tableConfig:{id:``,size:2,seats:undefined}};
+    const config: PokerRoomConfig = {
+      id: ``,
+      name: ``,
+      tableConfig: { id: ``, size: 6 },
+    };
     const room = new PokerRoom(config);
     this._rooms.push(room);
     this.emit("casino:roomCreated", room);
@@ -119,7 +128,6 @@ public addRoom(room: PokerRoomInterface): boolean {
     this.emit("casino:roomSearched", room);
     return room;
   }
-
 
   /**
    * @method `listRooms`
@@ -160,8 +168,6 @@ public addRoom(room: PokerRoomInterface): boolean {
     }
     return false;
   }
-
-
 }
 
 export { Casino };

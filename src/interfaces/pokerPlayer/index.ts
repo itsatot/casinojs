@@ -48,6 +48,129 @@ interface PokerPlayerConfig {
  * @extends NodeJS.EventEmitter
  */
 interface PokerPlayerInterface extends NodeJS.EventEmitter {
+  /******************* GETTERS *******************/
+
+  /**
+   * @method `getId`
+   * @public
+   * Returns the poker table's `id`.
+   * @returns {string} The poker table's `id`.
+   *
+   * @example
+   * const rank = card.getRank();
+   * console.log(rank); // "A"
+   */
+  getId(): string;
+
+  /**
+   * @method `getName`
+   * @public
+   * Returns the poker table's `id`.
+   * @returns {string} The poker table's `id`.
+   *
+   * @example
+   * const rank = card.getRank();
+   * console.log(rank); // "A"
+   */
+  getName(): string;
+
+  /**
+   * @method `getChips`
+   * @public
+   * Returns the poker table's `id`.
+   * @returns {number} The poker table's `id`.
+   *
+   * @example
+   * const rank = card.getRank();
+   * console.log(rank); // "A"
+   */
+  getChips(): number;
+
+  /**
+   * @method `getHand`
+   * @public
+   * Returns the poker table's `id`.
+   * @returns {CardInterface[]} The poker table's `id`.
+   *
+   * @example
+   * const rank = card.getRank();
+   * console.log(rank); // "A"
+   */
+  getHand(): CardInterface[];
+
+  /**
+   * @method `isFolded`
+   * @public
+   * Returns the poker table's `id`.
+   * @returns {boolean} The poker table's `id`.
+   *
+   * @example
+   * const rank = card.getRank();
+   * console.log(rank); // "A"
+   */
+  isFolded(): boolean;
+
+  // /******************* SETTERS *******************/
+
+  // /**
+  //  * @method `setId`
+  //  * @private
+  //  * Returns the poker table's `id`.
+  //  * @returns {string} The poker table's `id`.
+  //  *
+  //  * @example
+  //  * const rank = card.getRank();
+  //  * console.log(rank); // "A"
+  //  */
+  // setId(id: string): string;
+
+  // /**
+  //  * @method `setName`
+  //  * @public
+  //  * Returns the poker table's `id`.
+  //  * @returns {string} The poker table's `id`.
+  //  *
+  //  * @example
+  //  * const rank = card.getRank();
+  //  * console.log(rank); // "A"
+  //  */
+  // setName(name: string): string;
+
+  // /**
+  //  * @method `setChips`
+  //  * @private
+  //  * Returns the poker table's `id`.
+  //  * @returns {number} The poker table's `id`.
+  //  *
+  //  * @example
+  //  * const rank = card.getRank();
+  //  * console.log(rank); // "A"
+  //  */
+  // setChips(chips: number): number;
+
+  // /**
+  //  * @method `setHand`
+  //  * @private
+  //  * Returns the poker table's `id`.
+  //  * @returns {number} The poker table's `id`.
+  //  *
+  //  * @example
+  //  * const rank = card.getRank();
+  //  * console.log(rank); // "A"
+  //  */
+  // setHand(hand: CardInterface[]): CardInterface[];
+
+  // /**
+  //  * @method `setIsFolded`
+  //  * @private
+  //  * Returns the poker table's `id`.
+  //  * @returns {boolean} The poker table's `id`.
+  //  *
+  //  * @example
+  //  * const rank = card.getRank();
+  //  * console.log(rank); // "A"
+  //  */
+  // setIsFolded(bool: boolean): boolean;
 }
 
 export { PokerPlayerConfig, PokerPlayerInterface };

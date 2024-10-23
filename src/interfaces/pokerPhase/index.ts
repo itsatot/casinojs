@@ -1,11 +1,12 @@
 import { EventEmitter } from "events";
 import { PokerPlayerInterface } from "../pokerPlayer";
+import { PokerPhaseName } from "../../enums";
 
 /**
- * @interface `PokerGameConfig`
- * Represents a Poker Game Config.
+ * @interface `PokerPhaseConfig`
+ * Represents a Poker Phase Config.
  */
-interface PokerGameConfig {
+interface PokerPhaseConfig {
   /**
    * @property {string | undefined} id
    * The maximum number of players that can be seated at the PokerTable[2-14].
@@ -20,27 +21,27 @@ interface PokerGameConfig {
 }
 
 /**
- * @interface `PokerGameInterface`
- * Represents the current PokerGame being played at the PokerTable.
+ * @interface `PokerPhaseInterface`
+ * Represents the current PokerPhase being played at the PokerTable.
  * Manages the deck, community cards, and game phases, such as pre-flop, flop, turn, and river.
  *
  * @extends NodeJS.EventEmitter
  */
-interface PokerGameInterface extends NodeJS.EventEmitter {
+interface PokerPhaseInterface extends NodeJS.EventEmitter {
   /**
    * @method `dealHoleCards`
    * Deals two hole cards to each player.
-   * @returns {void}
+   * @returns {boolean}
    */
-  dealHoleCards(): void;
+  dealHoleCards(): boolean;
 
   /**
    * @method `dealCommunityCards`
    * Deals the community cards to the table during the flop, turn, or river phases.
    * @param {number} count - The number of community cards to deal (3 for the flop, 1 for the turn/river).
-   * @returns {void}
+   * @returns {boolean}
    */
-  dealCommunityCards(count: number): void;
+  dealCommunityCards(count: number): boolean;
 
   /**
    * @method `advancePhase`
@@ -59,4 +60,4 @@ interface PokerGameInterface extends NodeJS.EventEmitter {
   getPlayers(): PokerPlayerInterface[];
 }
 
-export { PokerGameConfig, PokerGameInterface };
+export { PokerPhaseConfig, PokerPhaseInterface };

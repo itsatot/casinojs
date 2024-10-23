@@ -19,6 +19,8 @@ import { Card } from "../card";
  * console.log(card?.toString()); // "A of Spades"
  */
 class Deck extends EventEmitter implements DeckInterface {
+  /******************* PROPERTIES *******************/
+
   /**
    * @property {CardInterface[]} cards
    * @private
