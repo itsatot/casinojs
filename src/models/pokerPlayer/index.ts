@@ -197,11 +197,12 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
    * const rank = card.getRank();
    * console.log(rank); // "A"
    */
-  private setHand(hand: CardInterface[]): CardInterface[] {
+  public setHand(hand: CardInterface[]): CardInterface[] {
     this._hand = hand;
     return this._hand;
   }
 
+  
   /**
    * @method `setIsFolded`
    * @private
@@ -215,6 +216,23 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
   private setIsFolded(bool: boolean): boolean {
     this._isFolded = bool;
     return this._isFolded;
+  }
+
+
+  /**
+   * @method `setHand`
+   * @private
+   * Returns the poker table's `id`.
+   * @returns {number} The poker table's `id`.
+   *
+   * @example
+   * const rank = card.getRank();
+   * console.log(rank); // "A"
+   */
+
+  public addToHand(hand: CardInterface): boolean {
+    this.getHand().push(hand);
+    return true;
   }
 }
 

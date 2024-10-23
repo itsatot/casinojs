@@ -3,26 +3,26 @@ import {
   PokerGameConfig,
   DeckInterface,
   CardInterface,
-  PokerGameInterface,
+  PokerPhaseInterface,
   PokerPlayerInterface,
 } from "../../interfaces";
-import { Card } from "../card";
+
 import { Deck } from "../deck";
-import { PokerPlayer } from "../pokerPlayer";
+
 
 /**
- * @class `PokerGame`
- * Represents the current PokerGame being played at the PokerTable.
+ * @class `PokerPhase`
+ * Represents the current PokerPhase being played at the PokerTable.
  * Manages the deck, community cards, and game phases, such as pre-flop, flop, turn, and river.
  *
  * @extends EventEmitter
  */
-class PokerGame extends EventEmitter implements PokerGameInterface {
+class PokerPhase extends EventEmitter implements PokerPhaseInterface {
   /******************* PROPERTIES *******************/
 
   /**
    * @property {DeckInterface} _deck
-   * The deck of cards used in the current PokerGame.
+   * The deck of cards used in the current PokerPhase.
    */
   private _id: string;
 
@@ -70,7 +70,35 @@ class PokerGame extends EventEmitter implements PokerGameInterface {
     return (this._players = players);
   }
 
+  /**
+   * @method `dealHoleCards`
+   * Deals two hole cards to each player.
+   * @returns {void}
+   */
+  dealHoleCards(): boolean {
+    for (let i = 0; i < 2; i++) {
+      for (let j = 0; j < this.getPlayers.length; j++) {
+        let player = this.getPlayers()[j];
+        let card = this.getDeck().draw();
+        card?player.addToHand(card):{};
+      }
+    }
+    return true;
+  }
 
+  /**
+   * @method `dealCommunityCards`
+   * Deals the community cards to the table during the flop, turn, or river phases.
+   * @param {number} count - The number of community cards to deal (3 for the flop, 1 for the turn/river).
+   * @returns {boolean}
+   */
+  dealCommunityCards(count: number): boolean {
+    for (let index = 0; index < count; index++) {
+      let card = this.getDeck().draw();   
+      card?this._communityCards.push(card):{};
+    }
+    return true
+  }
 
   /**
    * @method `advancePhase`
@@ -87,4 +115,4 @@ class PokerGame extends EventEmitter implements PokerGameInterface {
   resolveBets(): void {}
 }
 
-export { PokerGame };
+export { PokerPhase };

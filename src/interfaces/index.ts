@@ -18,6 +18,8 @@ export * as DeckInterfaces from "./deck";
 export * from "./deck";
 export * as PokerGameInterfaces from "./pokerGame";
 export * from "./pokerGame";
+export * as PokerPhaseInterfaces from "./pokerPhase";
+export * from "./pokerPhase";
 export * as PokerPlayerInterfaces from "./pokerPlayer";
 export * from "./pokerPlayer";
 export * as PokerRoomInterfaces from "./pokerRoom";
