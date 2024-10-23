@@ -11,6 +11,8 @@ import {
  * The player can place bets, fold, and manage their chip stack during the game.
  */
 class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
+  /******************* PROPERTIES *******************/
+
   /**
    * @property {string} _id
    * @private
@@ -46,6 +48,8 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
    */
   private _isFolded: boolean;
 
+  /******************* CONSTRUCTOR *******************/
+
   /**
    * @method constructor
    * @public
@@ -64,6 +68,8 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
     this._isFolded = config.isFolded ? config.isFolded : false;
   }
 
+  /******************* GETTERS *******************/
+
   /**
    * @method `getId`
    * @public
@@ -79,6 +85,64 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
   }
 
   /**
+   * @method `getName`
+   * @public
+   * Returns the poker table's `id`.
+   * @returns {string} The poker table's `id`.
+   *
+   * @example
+   * const rank = card.getRank();
+   * console.log(rank); // "A"
+   */
+  public getName(): string {
+    return this._id;
+  }
+
+  /**
+   * @method `getChips`
+   * @public
+   * Returns the poker table's `id`.
+   * @returns {number} The poker table's `id`.
+   *
+   * @example
+   * const rank = card.getRank();
+   * console.log(rank); // "A"
+   */
+  public getChips(): number {
+    return this._chips;
+  }
+
+  /**
+   * @method `getHand`
+   * @public
+   * Returns the poker table's `id`.
+   * @returns {CardInterface[]} The poker table's `id`.
+   *
+   * @example
+   * const rank = card.getRank();
+   * console.log(rank); // "A"
+   */
+  public getHand(): CardInterface[] {
+    return this._hand;
+  }
+
+  /**
+   * @method `isFolded`
+   * @public
+   * Returns the poker table's `id`.
+   * @returns {boolean} The poker table's `id`.
+   *
+   * @example
+   * const rank = card.getRank();
+   * console.log(rank); // "A"
+   */
+  public isFolded(): boolean {
+    return this._isFolded;
+  }
+
+  /******************* SETTERS *******************/
+
+  /**
    * @method `setId`
    * @private
    * Returns the poker table's `id`.
@@ -90,20 +154,6 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
    */
   private setId(id: string): string {
     this._id = id;
-    return this._id;
-  }
-
-  /**
-   * @method `getName`
-   * @public
-   * Returns the poker table's `id`.
-   * @returns {string} The poker table's `id`.
-   *
-   * @example
-   * const rank = card.getRank();
-   * console.log(rank); // "A"
-   */
-  public getName(): string {
     return this._id;
   }
 
@@ -123,20 +173,6 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
   }
 
   /**
-   * @method `getChips`
-   * @public
-   * Returns the poker table's `id`.
-   * @returns {number} The poker table's `id`.
-   *
-   * @example
-   * const rank = card.getRank();
-   * console.log(rank); // "A"
-   */
-  public getChips(): number {
-    return this._chips;
-  }
-
-  /**
    * @method `setChips`
    * @private
    * Returns the poker table's `id`.
@@ -152,20 +188,6 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
   }
 
   /**
-   * @method `getHand`
-   * @public
-   * Returns the poker table's `id`.
-   * @returns {CardInterface[]} The poker table's `id`.
-   *
-   * @example
-   * const rank = card.getRank();
-   * console.log(rank); // "A"
-   */
-  public getHand(): CardInterface[] {
-    return this._hand;
-  }
-
-  /**
    * @method `setHand`
    * @private
    * Returns the poker table's `id`.
@@ -178,20 +200,6 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
   private setHand(hand: CardInterface[]): CardInterface[] {
     this._hand = hand;
     return this._hand;
-  }
-
-  /**
-   * @method `isFolded`
-   * @public
-   * Returns the poker table's `id`.
-   * @returns {boolean} The poker table's `id`.
-   *
-   * @example
-   * const rank = card.getRank();
-   * console.log(rank); // "A"
-   */
-  public isFolded(): boolean {
-    return this._isFolded;
   }
 
   /**

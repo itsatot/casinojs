@@ -12,6 +12,8 @@
  * import { Rank, Suit } from './enums';
  */
 
+export * as PokerPhaseNameEnums from "./pokerPhaseName";
+export * from "./pokerPhaseName";
 export * as RankEnums from "./rank";
 export * from "./rank";
 export * as SuitEnums from "./suit";

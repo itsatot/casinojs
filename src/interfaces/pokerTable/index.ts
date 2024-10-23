@@ -17,12 +17,6 @@ interface PokerTableConfig {
    * The maximum number of players that can be seated at the PokerTable[2-14].
    */
   size: number;
-
-  /**
-   * @property {PokerSeatInterface[] | undefined} seats
-   * An array of players currently seated at the PokerTable.
-   */
-  seats: PokerSeatInterface[] | undefined;
 }
 
 /**
@@ -46,7 +40,7 @@ interface PokerTableInterface extends NodeJS.EventEmitter {
    */
   getId(): string;
 
-    /**
+  /**
    * @method `getSeats`
    * Starts a new PokerGame if there are at least two active players at the PokerTable.
    * This method initiates the game flow, including assigning blinds and starting the rounds.

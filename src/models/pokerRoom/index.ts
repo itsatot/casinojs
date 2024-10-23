@@ -14,6 +14,8 @@ import { PokerTable } from "../pokerTable";
  * This class extends `EventEmitter` and implements the `PokerRoomInterface` interface.
  */
 class PokerRoom extends EventEmitter implements PokerRoomInterface {
+  /******************* PROPERTIES *******************/
+
   /**
    * @property {string} _id
    * @private
@@ -41,9 +43,6 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
    * @private
    * The PokerTable that is contained within the PokerRoom.
    */
-
-
-  /** To check whether seats are occupied or not and seats array are being taken from pokertable class */
   private _table: PokerTableInterface;
 
   /**
@@ -55,7 +54,7 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
    * @example
    * const deck = new Deck();
    */
-  constructor(config : PokerRoomConfig) {
+  constructor(config: PokerRoomConfig) {
     super();
     this._id = config.id ? config.id : ``;
     this._name = config.name ? config.name : ``;
@@ -105,7 +104,7 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
     return this._queue;
   }
 
-  public addToQueue(player:PokerPlayerInterface): boolean{
+  public addToQueue(player: PokerPlayerInterface): boolean {
     this._queue.push(player);
     return true;
   }
@@ -184,10 +183,14 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
     return this._table;
   }
 
-  public moveToTable(seatPostion:number):boolean {
-    let roomSeats =  this.getTable().getSeats();
+  public moveToTable(seatPostion: number): boolean {
+    let roomSeats = this.getTable().getSeats();
     for (let index = 0; index < roomSeats.length; index++) {
-      if (roomSeats[index].getPosition() === seatPostion && !roomSeats[index].isOccupied() && this.getQueue().length>=1) {
+      if (
+        roomSeats[index].getPosition() === seatPostion &&
+        !roomSeats[index].isOccupied() &&
+        this.getQueue().length >= 1
+      ) {
         let queue = this.getQueue();
         let pokerPlayer = queue.splice(0, 1);
         this.setQueue(queue);

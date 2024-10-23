@@ -14,6 +14,8 @@ import {
  * @extends EventEmitter
  */
 class PokerSeat extends EventEmitter implements PokerSeatInterface {
+  /******************* PROPERTIES *******************/
+
   /**
    * @property {string} _id
    * A unique identifier for the PokerSeat.
@@ -31,18 +33,6 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
    * The maximum number of players that can be seated at the PokerTable[2-14].
    */
   private _isDealer: boolean;
-
-  /**
-   * @property {boolean} isSmallBlind
-   * The maximum number of players that can be seated at the PokerTable[2-14].
-   */
-  private _isSmallBlind: boolean;
-
-  /**
-   * @property {boolean} isBigBlind
-   * The maximum number of players that can be seated at the PokerTable[2-14].
-   */
-  private _isBigBlind: boolean;
 
   /**
    * @property {PokerPlayerInterface | undefined} player
@@ -64,8 +54,6 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
     this._id = config.id ? config.id : ``;
     this._position = config.position;
     this._isDealer = config.isDealer;
-    this._isSmallBlind = config.isSmallBlind;
-    this._isBigBlind = config.isBigBlind;
     this._player = config.player ? config.player : undefined;
   }
 
@@ -157,62 +145,6 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
   }
 
   /**
-   * @method `isSmallBlind`
-   * @public
-   * Returns the poker table's `id`.
-   * @returns {boolean} The poker table's `id`.
-   *
-   * @example
-   * const rank = card.getRank();
-   * console.log(rank); // "A"
-   */
-  public isSmallBlind(): boolean {
-    return this._isSmallBlind;
-  }
-
-  /**
-   * @method `setIsDealer`
-   * @public
-   * Returns the poker table's `id`.
-   * @returns {boolean} The poker table's `id`.
-   *
-   * @example
-   * const rank = card.getRank();
-   * console.log(rank); // "A"
-   */
-  public setIsSmallBlind(bool: boolean): boolean {
-    this._isSmallBlind = bool;
-    return this._isSmallBlind;
-  }
-  /**
-   * @method `isBigBlind`
-   * @public
-   * Returns the poker table's `id`.
-   * @returns {boolean} The poker table's `id`.
-   *
-   * @example
-   * const rank = card.getRank();
-   * console.log(rank); // "A"
-   */
-  public isBigBlind(): boolean {
-    return this._isBigBlind;
-  }
-
-  /**
-   * @method `setIsDealer`
-   * @public
-   * Returns the poker table's `id`.
-   * @returns {boolean} The poker table's `id`.
-   *
-   * @example
-   * const rank = card.getRank();
-   * console.log(rank); // "A"
-   */
-  public setIsBigBlind(bool: boolean): boolean {
-    this._isBigBlind = bool;
-    return this._isBigBlind;
-  }
-  /**
    * @method `getPlayer`
    * @public
    * Returns the poker table's `id`.
@@ -243,12 +175,12 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
     return this._player;
   }
 
-  public isOccupied(): boolean{
+  public isOccupied(): boolean {
     if (this.getPlayer() === undefined) {
       return false;
-    } 
-    return true;}
- 
+    }
+    return true;
+  }
 }
 
 export { PokerSeat };

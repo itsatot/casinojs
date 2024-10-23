@@ -17,17 +17,13 @@ import { PokerSeat } from "../pokerSeat";
  * @extends EventEmitter
  */
 class PokerTable extends EventEmitter implements PokerTableInterface {
+  /******************* PROPERTIES *******************/
+
   /**
    * @property {string} _id
    * A unique identifier for the PokerTable.
    */
   private _id: string;
-
-  /**
-   * @property {number} _size
-   * The maximum number of players that can be seated at the PokerTable.
-   */
-  private _size: number;
 
   /**
    * @property {PokerSeatInterface[]} _seats
@@ -53,10 +49,9 @@ class PokerTable extends EventEmitter implements PokerTableInterface {
   constructor(config: PokerTableConfig) {
     super();
     this._id = config.id ? config.id : ``;
-    this._size = config.size ? config.size : 8;
-    this._seats = config.seats ? config.seats : [];
+    this._seats = [];
     this._gameInProgress = false;
-    this.init();
+    this.init(config.size ? config.size : 8);
   }
 
   /**
@@ -67,9 +62,16 @@ class PokerTable extends EventEmitter implements PokerTableInterface {
    * @emits `deck:initialized` : Emits a `deck:initialized` event when the deck is created.
    * @returns {void}
    */
-  private init(): void {
-    for (let i = 0; i < this._size; i++) {
-      const seat = new PokerSeat({id:``, position:i, isDealer: false, isBigBlind: false, isSmallBlind: false, player:undefined});
+  private init(size: number): void {
+    for (let i = 0; this.getSeats().length !== size; i++) {
+      const seat = new PokerSeat({
+        id: ``,
+        position: i,
+        isDealer: false,
+        isBigBlind: false,
+        isSmallBlind: false,
+        player: undefined,
+      });
       this._seats?.push(seat);
     }
   }
@@ -110,22 +112,7 @@ class PokerTable extends EventEmitter implements PokerTableInterface {
    * @returns {number}
    */
   public getSize(): number {
-    return this._size;
-  }
-
-  /**
-   * @method `setSize`
-   * @public
-   * Returns the poker table's `id`.
-   * @returns {number} The poker table's `id`.
-   *
-   * @example
-   * const rank = card.getRank();
-   * console.log(rank); // "A"
-   */
-  private setSize(size: number): number {
-    this._size = size;
-    return this._size;
+    return this.getSeats().length;
   }
 
   /**
@@ -148,16 +135,14 @@ class PokerTable extends EventEmitter implements PokerTableInterface {
    * const rank = card.getRank();
    * console.log(rank); // "A"
    */
-  private setSeats(
-    seats: PokerSeatInterface[] 
-  ): PokerSeatInterface[]  {
+  private setSeats(seats: PokerSeatInterface[]): boolean {
     this._seats = seats;
-    return this._seats;
+    return true;
   }
 
-  private occupySeat(position:number,player:PokerPlayerInterface): boolean {
+  private occupySeat(position: number, player: PokerPlayerInterface): boolean {
     for (let i = 0; i < this.getSeats().length; i++) {
-      let seat = this.getSeats()[i]; 
+      let seat = this.getSeats()[i];
       let seatPosition = seat.getPosition();
       if (seatPosition === position) {
         if (!seat.isOccupied()) {

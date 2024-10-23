@@ -101,54 +101,6 @@ interface PokerSeatInterface extends NodeJS.EventEmitter {
   setIsDealer(bool: boolean): boolean;
 
   /**
-   * @method `isSmallBlind`
-   * @public
-   * Returns the poker table's `id`.
-   * @returns {boolean} The poker table's `id`.
-   *
-   * @example
-   * const rank = card.getRank();
-   * console.log(rank); // "A"
-   */
-  isSmallBlind(): boolean;
-
-  /**
-   * @method `setIsSmallBlind`
-   * @public
-   * Returns the poker table's `id`.
-   * @returns {boolean} The poker table's `id`.
-   *
-   * @example
-   * const rank = card.getRank();
-   * console.log(rank); // "A"
-   */
-  setIsSmallBlind(bool: boolean): boolean;
-
-  /**
-   * @method `isBigBlind`
-   * @public
-   * Returns the poker table's `id`.
-   * @returns {boolean} The poker table's `id`.
-   *
-   * @example
-   * const rank = card.getRank();
-   * console.log(rank); // "A"
-   */
-  isBigBlind(): boolean;
-
-  /**
-   * @method `setIsBigBlind`
-   * @public
-   * Returns the poker table's `id`.
-   * @returns {boolean} The poker table's `id`.
-   *
-   * @example
-   * const rank = card.getRank();
-   * console.log(rank); // "A"
-   */
-  setIsBigBlind(bool: boolean): boolean;
-
-  /**
    * @method `getPlayer`
    * @public
    * Returns the poker table's `id`.
