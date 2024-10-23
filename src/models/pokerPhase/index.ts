@@ -9,7 +9,6 @@ import {
 
 import { Deck } from "../deck";
 
-
 /**
  * @class `PokerPhase`
  * Represents the current PokerPhase being played at the PokerTable.
@@ -18,7 +17,9 @@ import { Deck } from "../deck";
  * @extends EventEmitter
  */
 class PokerPhase extends EventEmitter implements PokerPhaseInterface {
-  /******************* PROPERTIES *******************/
+  /****************************************************************
+   * PROPERTIES
+   ****************************************************************/
 
   /**
    * @property {DeckInterface} _deck
@@ -40,11 +41,9 @@ class PokerPhase extends EventEmitter implements PokerPhaseInterface {
 
   private _players: PokerPlayerInterface[];
 
-  private _pot:number;
+  private _pot: number;
 
-  private _currentPlayer : PokerPlayerInterface | undefined;
-
-
+  private _currentPlayer: PokerPlayerInterface | undefined;
 
   /**
    * @method constructor
@@ -66,6 +65,10 @@ class PokerPhase extends EventEmitter implements PokerPhaseInterface {
     // new PokerPlayer({id:``,name:``,chips:100,hand:[],isFolded:false});
   }
 
+  /****************************************************************
+   * GET METHODS
+   ****************************************************************/
+
   public getPlayers(): PokerPlayerInterface[] {
     return this._players;
   }
@@ -77,15 +80,22 @@ class PokerPhase extends EventEmitter implements PokerPhaseInterface {
   public getPot(): number {
     return this._pot;
   }
-  
+
+  /****************************************************************
+   * SET METHODS
+   ****************************************************************/
 
   private setPlayers(players: PokerPlayerInterface[]): PokerPlayerInterface[] {
     return (this._players = players);
   }
 
-  public setPot(pot:number): number {
-    return this._pot = pot;
+  public setPot(pot: number): number {
+    return (this._pot = pot);
   }
+
+  /****************************************************************
+   * UPDATE METHODS
+   ****************************************************************/
 
   /**
    * @method `dealHoleCards`
@@ -97,7 +107,7 @@ class PokerPhase extends EventEmitter implements PokerPhaseInterface {
       for (let j = 0; j < this.getPlayers.length; j++) {
         let player = this.getPlayers()[j];
         let card = this.getDeck().draw();
-        card?player.addToHand(card):{};
+        card ? player.addToHand(card) : {};
       }
     }
     return true;
@@ -111,10 +121,10 @@ class PokerPhase extends EventEmitter implements PokerPhaseInterface {
    */
   dealCommunityCards(count: number): boolean {
     for (let index = 0; index < count; index++) {
-      let card = this.getDeck().draw();   
-      card?this._communityCards.push(card):{};
+      let card = this.getDeck().draw();
+      card ? this._communityCards.push(card) : {};
     }
-    return true
+    return true;
   }
 
   /**
@@ -131,17 +141,20 @@ class PokerPhase extends EventEmitter implements PokerPhaseInterface {
    */
   resolveBets(): void {}
 
-  public bet(amount:number):boolean{
+  public bet(amount: number): boolean {
     this._currentPlayer?.bet(amount);
     this.setPot(this.getPot() + amount);
     return true;
   }
 
-  
-  public fold():boolean{
+  public fold(): boolean {
     this._currentPlayer?.setIsFolded(true);
     return true;
   }
+
+  /****************************************************************
+   * DELETE METHODS
+   ****************************************************************/
 }
 
 export { PokerPhase };
