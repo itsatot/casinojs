@@ -1,13 +1,22 @@
 import { PokerPhaseName } from "../../../src/enums/pokerPhaseName";
 
 /**
- * @description Unit tests for the `PokerPhaseName` enum.
+ * @file `pokerPhaseName/index.test.ts`
+ * @description This file contains unit tests for the `PokerPhaseName` enum using Jest. It verifies that the enum values for different poker phases are correctly defined.
+ *
+ * @jest-environment node
  */
+
 describe("PokerPhaseName Enum", () => {
   /**
-   * @test Ensures that the enum values are correctly assigned to each phase.
+   * @test `should define all phases correctly`
+   * @description This test checks whether all expected poker phases exist in the `PokerPhaseName` enum with the correct string values.
+   *
+   * @example
+   * // Verifies that PokerPhaseName enum values are correct
+   * expect(PokerPhaseName.PRE_FLOP).toBe("Pre-Flop");
    */
-  it("should have correct values for each poker phase", () => {
+  it("should define all phases correctly", () => {
     expect(PokerPhaseName.PRE_FLOP).toBe("Pre-Flop");
     expect(PokerPhaseName.FLOP).toBe("Flop");
     expect(PokerPhaseName.TURN).toBe("Turn");
@@ -16,48 +25,53 @@ describe("PokerPhaseName Enum", () => {
   });
 
   /**
-   * @test Verifies that the enum can be used as expected in a function.
+   * @test `should have exact number of phases`
+   * @description This test ensures that the `PokerPhaseName` enum only contains the expected 5 phases.
+   *
+   * @example
+   * // Verifies the number of keys in the PokerPhaseName enum
+   * expect(Object.keys(PokerPhaseName).length).toBe(5);
    */
-  it("should allow enum values to be passed into functions", () => {
-    const getPhaseMessage = (phase: PokerPhaseName): string => {
-      return `The current phase is: ${phase}`;
-    };
-
-    expect(getPhaseMessage(PokerPhaseName.PRE_FLOP)).toBe(
-      "The current phase is: Pre-Flop"
-    );
-    expect(getPhaseMessage(PokerPhaseName.FLOP)).toBe(
-      "The current phase is: Flop"
-    );
-    expect(getPhaseMessage(PokerPhaseName.TURN)).toBe(
-      "The current phase is: Turn"
-    );
-    expect(getPhaseMessage(PokerPhaseName.RIVER)).toBe(
-      "The current phase is: River"
-    );
-    expect(getPhaseMessage(PokerPhaseName.SHOWDOWN)).toBe(
-      "The current phase is: ShowDown"
-    );
+  it("should have exactly 5 phases", () => {
+    // Verify that the enum contains exactly 5 phases
+    const phaseCount = Object.keys(PokerPhaseName).length;
+    expect(phaseCount).toBe(5);
   });
 
   /**
-   * @test Ensures that only valid enum values are used.
+   * @test `should not contain any unexpected phases`
+   * @description This test ensures that the `PokerPhaseName` enum does not include any values outside of the predefined poker phases.
+   *
+   * @example
+   * // Check that PokerPhaseName does not include any invalid phases
+   * expect(PokerPhaseName).not.toContain("InvalidPhase");
    */
-  it("should throw an error for invalid enum values", () => {
-    const getPhaseMessage = (phase: PokerPhaseName): string => {
-      if (!Object.values(PokerPhaseName).includes(phase)) {
-        throw new Error("Invalid poker phase");
-      }
-      return `The current phase is: ${phase}`;
-    };
+  it("should not contain any unexpected phases", () => {
+    // Get the values of the enum and check that no invalid phase is present
+    const validPhases = ["Pre-Flop", "Flop", "Turn", "River", "ShowDown"];
+    expect(Object.values(PokerPhaseName)).toEqual(validPhases);
+  });
 
-    // Valid cases
-    expect(() => getPhaseMessage(PokerPhaseName.PRE_FLOP)).not.toThrow();
-    expect(() => getPhaseMessage(PokerPhaseName.FLOP)).not.toThrow();
+  /**
+   * @test `should allow usage of poker phases in conditional checks`
+   * @description This test demonstrates how the `PokerPhaseName` enum can be used in conditional logic, ensuring that phases can be matched correctly in code logic.
+   *
+   * @example
+   * // Conditional check using PokerPhaseName enum
+   * const currentPhase = PokerPhaseName.FLOP;
+   * if (currentPhase === PokerPhaseName.FLOP) {
+   *   console.log("It's the Flop phase");
+   * }
+   * expect(currentPhase).toBe(PokerPhaseName.FLOP);
+   */
+  it("should allow usage of poker phases in conditional checks", () => {
+    // Example of using the enum in a conditional check
+    const currentPhase = PokerPhaseName.FLOP;
 
-    // Invalid cases
-    expect(() =>
-      getPhaseMessage("InvalidPhase" as PokerPhaseName)
-    ).toThrowError("Invalid poker phase");
+    if (currentPhase === PokerPhaseName.FLOP) {
+      expect(currentPhase).toBe(PokerPhaseName.FLOP);
+    } else {
+      throw new Error("Current phase is incorrect");
+    }
   });
 });

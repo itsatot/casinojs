@@ -1,7 +1,7 @@
 {
-  "name": "pokerjs",
+  "name": "casinojs",
   "version": "0.1.0-alpha",
-  "description": "A Poker Js Library.",
+  "description": "A Casino Js Library.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "type": "module",
