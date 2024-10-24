@@ -23,6 +23,13 @@ interface PokerRoomConfig {
    * @property {string | undefined} name
    * The maximum number of players that can be seated at the PokerTable[2-14].
    */
+  smallBlindAmount: number;
+
+
+  /**
+   * @property {string | undefined} name
+   * The maximum number of players that can be seated at the PokerTable[2-14].
+   */
   tableConfig: PokerTableConfig;
 }
 

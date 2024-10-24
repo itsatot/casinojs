@@ -240,11 +240,14 @@ class PokerPhase extends EventEmitter implements PokerPhaseInterface {
   public bet(amount: number): boolean {
     this.getPlayers()[this.getCurrentPlayerPos()]?.bet(amount);
     this.setPot(this.getPot() + amount);
+    this.nextPlayer();
+    
     return true;
   }
 
   public fold(): boolean {
     this.getPlayers()[this.getCurrentPlayerPos()]?.setIsFolded(true);
+    this.nextPlayer();
     return true;
   }
 
