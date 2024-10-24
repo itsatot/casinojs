@@ -102,18 +102,58 @@ This document provides a comprehensive overview of the directory structure for t
 │   │   ├── /pokerTable                       # Class implementation for poker table behavior (e.g., player seating, blinds)
 │   │   │   └── index.ts                      # Class definition and export for poker table logic
 │   │   └── index.ts                          # Main export for all models in the project
+│
+├── /tests                                    # Unit tests for verifying the logic and functionality of poker models
+│   ├── /enums                                # Unit tests for the Card model, verifying rank and suit behavior
+│   │   ├── /pokerPhaseName                   # Enum representing the names of different poker phases (e.g., pre-flop, flop, turn, river)
+│   │   │   └── pokerphasename.test.ts        # Export for the poker phase name enum
+│   │   ├── /rank                             # Enum representing the ranks of playing cards (e.g., Ace, King, Queen, etc.)
+│   │   │   └── index.ts                      # Export for rank-related types
+│   │   ├── /suit                             # Enum representing the suits of playing cards (e.g., Hearts, Spades)
+│   │   │   └── index.ts                      # Export for suit-related types
+│   │   └── index.ts                          # Main export for all enums in the project
 │   │
-│   ├── /tests                                # Unit tests for verifying the logic and functionality of poker models
-│   │   ├── /card                             # Unit tests for the Card model, verifying rank and suit behavior
-│   │   ├── /casino                           # Unit tests for the Casino model, testing room and table management
-│   │   ├── /deck                             # Unit tests for the Deck model, verifying shuffle and draw functionality
-│   │   ├── /pokerGame                        # Unit tests for the PokerGame model, testing phase transitions and gameplay rules
-│   │   ├── /pokerPhase                       # Unit tests for the PokerPhase model, ensuring correct phase transitions
-│   │   ├── /pokerPlayer                      # Unit tests for the PokerPlayer model, testing player behavior and actions
-│   │   ├── /pokerRoom                        # Unit tests for the PokerRoom model, verifying room and player queue management
-│   │   ├── /pokerSeat                        # Unit tests for the PokerSeat model, testing seating and betting behavior
-│   │   ├── /pokerTable                       # Unit tests for the PokerTable model, ensuring proper table and player management
-│   │   └── index.ts                          # Entry point for running all test-related modules
+│   ├── /interfaces                           # Unit tests for the Card model, verifying rank and suit behavior
+│   │   ├── /card                             # Interface defining the structure of a poker card (e.g., rank, suit)
+│   │   │   └── index.ts                      # Export for card-related interfaces
+│   │   ├── /casino                           # Interface defining the structure of a casino (e.g., rooms, tables)
+│   │   │   └── index.ts                      # Export for casino-related interfaces
+│   │   ├── /deck                             # Interface defining the structure and behavior of a deck of cards
+│   │   │   └── index.ts                      # Export for deck-related interfaces
+│   │   ├── /pokerGame                        # Interface defining the structure of a poker game (e.g., phases, players)
+│   │   │   └── index.ts                      # Export for poker game-related interfaces
+│   │   ├── /pokerPhase                       # Interface defining poker phases and phase transitions during gameplay
+│   │   │   └── index.ts                      # Export for poker phase-related interfaces
+│   │   ├── /pokerPlayer                      # Interface defining the structure and behavior of a poker player
+│   │   │   └── index.ts                      # Export for poker player-related interfaces
+│   │   ├── /pokerRoom                        # Interface defining the structure of a poker room, including table and player management
+│   │   │   └── index.ts                      # Export for poker room-related interfaces
+│   │   ├── /pokerSeat                        # Interface defining a seat at a poker table (e.g., player sitting, bet tracking)
+│   │   │   └── index.ts                      # Export for poker seat-related interfaces
+│   │   ├── /pokerTable                       # Interface defining the structure and behavior of a poker table (e.g., seating, blinds)
+│   │   │   └── index.ts                      # Export for poker table-related interfaces
+│   │   └── index.ts                          # Main export for all interfaces in the project
+│   │
+│   ├── /models                               # Unit tests for the Card model, verifying rank and suit behavior
+│   │   ├── /card                             # Class implementation for a poker card, handling rank and suit logic
+│   │   │   └── index.ts                      # Class definition and export for card logic
+│   │   ├── /casino                           # Class implementation for a casino, handling multiple rooms and tables
+│   │   │   └── index.ts                      # Class definition and export for casino logic
+│   │   ├── /deck                             # Class implementation for a deck of cards, including shuffle and draw logic
+│   │   │   └── index.ts                      # Class definition and export for deck logic
+│   │   ├── /pokerGame                        # Class implementation for managing poker game phases, bets, and progression
+│   │   │   └── index.ts                      # Class definition and export for poker game logic
+│   │   ├── /pokerPhase                       # Class implementation for handling transitions between poker phases
+│   │   │   └── index.ts                      # Class definition and export for poker phase logic
+│   │   ├── /pokerPlayer                      # Class implementation for a poker player, handling actions, chips, and hands
+│   │   │   └── index.ts                      # Class definition and export for poker player logic
+│   │   ├── /pokerRoom                        # Class implementation for managing poker rooms and player seating
+│   │   │   └── index.ts                      # Class definition and export for poker room logic
+│   │   ├── /pokerSeat                        # Class implementation for poker seat behavior (e.g., seating, betting)
+│   │   │   └── index.ts                      # Class definition and export for poker seat logic
+│   │   ├── /pokerTable                       # Class implementation for poker table behavior (e.g., player seating, blinds)
+│   │   │   └── index.ts                      # Class definition and export for poker table logic
+│   │   └── index.ts                          # Main export for all models in the project
 │
 ├── .gitignore                                # Specifies files and directories that should be ignored by Git (e.g., node_modules, dist)
 ├── LICENSE                                   # License file outlining the terms under which the project is distributed
