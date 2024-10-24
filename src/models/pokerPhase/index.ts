@@ -49,7 +49,7 @@ class PokerPhase extends EventEmitter implements PokerPhaseInterface {
 
   private _pot: number;
 
-  private _currentPlayer: PokerPlayerInterface | undefined;
+  private _currentPlayerPos: number;
 
   private _dealerPos: number;
 
@@ -74,7 +74,7 @@ class PokerPhase extends EventEmitter implements PokerPhaseInterface {
     this._communityCards = [];
     this._players = config.players ? config.players : [];
     this._pot = 0;
-    this._currentPlayer = undefined;
+    this._currentPlayerPos = 0;
     this._dealerPos = config.dealerPos ? config.dealerPos : 0;
     this._smallBlindPos = config.smallBlindPos ? config.smallBlindPos : 0;
     this._bigBlindPos = config.bigBlindPos ? config.bigBlindPos : 0;
@@ -92,13 +92,13 @@ class PokerPhase extends EventEmitter implements PokerPhaseInterface {
    private init(): void {
     if (this.getName() === PokerPhaseName.PRE_FLOP) {
         if (this.getPlayers().length === (this.getBigBlindPos()+1)) {
-          this.setCurrentPlayer(this.getPlayers()[0]);
+          this.setCurrentPlayerPos(0);
         }
         else{
-          this.setCurrentPlayer(this.getPlayers()[this.getBigBlindPos()+1]);
+          this.setCurrentPlayerPos(this.getBigBlindPos()+1);
         }    
     } else {
-      this.setCurrentPlayer(this.getPlayers()[this.getSmallBlindPos()]);
+      this.setCurrentPlayerPos(this.getSmallBlindPos());
     }
   }
 
@@ -111,8 +111,8 @@ class PokerPhase extends EventEmitter implements PokerPhaseInterface {
     return this._players;
   }
 
-  public getCurrentPlayer(): PokerPlayerInterface|undefined {
-    return this._currentPlayer;
+  public getCurrentPlayerPos(): number {
+    return this._currentPlayerPos;
   }
 
   public getDeck(): DeckInterface {
@@ -153,8 +153,8 @@ class PokerPhase extends EventEmitter implements PokerPhaseInterface {
     return (this._pot = pot);
   }
 
-  public setCurrentPlayer(player:PokerPlayerInterface): boolean {
-    this._currentPlayer = player;
+  public setCurrentPlayerPos(player:number): boolean {
+    this._currentPlayerPos = player;
     return true;
   }
 
@@ -238,14 +238,26 @@ class PokerPhase extends EventEmitter implements PokerPhaseInterface {
   resolveBets(): void {}
 
   public bet(amount: number): boolean {
-    this.getCurrentPlayer()?.bet(amount);
+    this.getPlayers()[this.getCurrentPlayerPos()]?.bet(amount);
     this.setPot(this.getPot() + amount);
     return true;
   }
 
   public fold(): boolean {
-    this.getCurrentPlayer()?.setIsFolded(true);
+    this.getPlayers()[this.getCurrentPlayerPos()]?.setIsFolded(true);
     return true;
+  }
+
+  /**
+   * name
+   */
+  public nextPlayer():void {
+    if ((this.getPlayers().length -1) === (this.getCurrentPlayerPos())) {
+      this.setCurrentPlayerPos(0);
+    }
+    else{
+      this.setCurrentPlayerPos(this.getCurrentPlayerPos() + 1);
+    }
   }
 
 
