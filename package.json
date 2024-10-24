@@ -32,7 +32,10 @@
   "homepage": "https://github.com/astitvsingh/CasinoJs#readme",
   "devDependencies": {
     "@types/events": "^3.0.3",
+    "@types/jest": "^29.5.14",
     "@types/node": "^22.7.6",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
     "typedoc": "^0.26.10",
     "typescript": "^5.6.3"
