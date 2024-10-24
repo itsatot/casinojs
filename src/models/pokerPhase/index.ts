@@ -1,12 +1,12 @@
 import { EventEmitter } from "events";
 import {
-  PokerGameConfig,
+  PokerPhaseConfig,
   DeckInterface,
   CardInterface,
   PokerPhaseInterface,
   PokerPlayerInterface,
 } from "../../interfaces";
-
+import { PokerPhaseName } from "../../enums";
 import { Deck } from "../deck";
 
 /**
@@ -28,6 +28,12 @@ class PokerPhase extends EventEmitter implements PokerPhaseInterface {
   private _id: string;
 
   /**
+   * @property {DeckInterface} _deck
+   * The deck of cards used in the current PokerPhase.
+   */
+  private _name: PokerPhaseName;
+
+  /**
    * @property {string} _currentPhase
    * The current phase of the game (e.g., "pre-flop", "flop", "turn", "river").
    */
@@ -43,7 +49,13 @@ class PokerPhase extends EventEmitter implements PokerPhaseInterface {
 
   private _pot: number;
 
-  private _currentPlayer: PokerPlayerInterface | undefined;
+  private _currentPlayerPos: number;
+
+  private _dealerPos: number;
+
+  private _smallBlindPos: number;
+
+  private _bigBlindPos: number;
 
   /**
    * @method constructor
@@ -54,16 +66,42 @@ class PokerPhase extends EventEmitter implements PokerPhaseInterface {
    * @example
    * const deck = new Deck();
    */
-  constructor(config: PokerGameConfig) {
+  constructor(config: PokerPhaseConfig) {
     super();
-    this._id = this._id = config.id ? config.id : ``;
+    this._id = config.id ? config.id : ``;
+    this._name = config.name ? config.name : PokerPhaseName.PRE_FLOP;
     this._deck = new Deck();
     this._communityCards = [];
     this._players = config.players ? config.players : [];
     this._pot = 0;
-    this._currentPlayer = undefined;
+    this._currentPlayerPos = 0;
+    this._dealerPos = config.dealerPos ? config.dealerPos : 0;
+    this._smallBlindPos = config.smallBlindPos ? config.smallBlindPos : 0;
+    this._bigBlindPos = config.bigBlindPos ? config.bigBlindPos : 0;
     // new PokerPlayer({id:``,name:``,chips:100,hand:[],isFolded:false});
   }
+
+   /**
+   * @method `init`
+   * @private
+   * Initializes the deck with 52 unique cards.
+   * This method is called automatically inside the constructor during deck creation.
+   * @emits `deck:initialized` : Emits a `deck:initialized` event when the deck is created.
+   * @returns {void}
+   */
+   private init(): void {
+    if (this.getName() === PokerPhaseName.PRE_FLOP) {
+        if (this.getPlayers().length === (this.getBigBlindPos()+1)) {
+          this.setCurrentPlayerPos(0);
+        }
+        else{
+          this.setCurrentPlayerPos(this.getBigBlindPos()+1);
+        }    
+    } else {
+      this.setCurrentPlayerPos(this.getSmallBlindPos());
+    }
+  }
+
 
   /****************************************************************
    * GET METHODS
@@ -73,6 +111,10 @@ class PokerPhase extends EventEmitter implements PokerPhaseInterface {
     return this._players;
   }
 
+  public getCurrentPlayerPos(): number {
+    return this._currentPlayerPos;
+  }
+
   public getDeck(): DeckInterface {
     return this._deck;
   }
@@ -80,6 +122,24 @@ class PokerPhase extends EventEmitter implements PokerPhaseInterface {
   public getPot(): number {
     return this._pot;
   }
+
+  public getName(): PokerPhaseName {
+    return this._name;
+  }
+
+  
+  public getDealerPos(): number {
+    return this._dealerPos;
+  }
+
+  public getSmallBlindPos(): number {
+    return this._smallBlindPos;
+  }
+
+  public getBigBlindPos(): number {
+    return this._bigBlindPos;
+  }
+
 
   /****************************************************************
    * SET METHODS
@@ -92,6 +152,42 @@ class PokerPhase extends EventEmitter implements PokerPhaseInterface {
   public setPot(pot: number): number {
     return (this._pot = pot);
   }
+
+  public setCurrentPlayerPos(player:number): boolean {
+    this._currentPlayerPos = player;
+    return true;
+  }
+
+  private setDealerPos(pos:number): boolean {
+    this._dealerPos = pos;
+    return true;
+  }
+
+  private setSmallBlindPos(pos:number): boolean {
+    this._smallBlindPos = pos;
+    return true;
+  }
+
+  private setBigBlindPos(pos:number): boolean {
+    this._bigBlindPos = pos;
+    return true;
+  }
+
+   /**
+   * @method `setName`
+   * @public
+   * Returns the poker table's `id`.
+   * @returns {string} The poker table's `id`.
+   *
+   * @example
+   * const rank = card.getRank();
+   * console.log(rank); // "A"
+   */
+   public setName(name: PokerPhaseName): PokerPhaseName {
+    this._name = name;
+    return this._name;
+  }
+
 
   /****************************************************************
    * UPDATE METHODS
@@ -142,15 +238,31 @@ class PokerPhase extends EventEmitter implements PokerPhaseInterface {
   resolveBets(): void {}
 
   public bet(amount: number): boolean {
-    this._currentPlayer?.bet(amount);
+    this.getPlayers()[this.getCurrentPlayerPos()]?.bet(amount);
     this.setPot(this.getPot() + amount);
+    this.nextPlayer();
+    
     return true;
   }
 
   public fold(): boolean {
-    this._currentPlayer?.setIsFolded(true);
+    this.getPlayers()[this.getCurrentPlayerPos()]?.setIsFolded(true);
+    this.nextPlayer();
     return true;
   }
+
+  /**
+   * name
+   */
+  public nextPlayer():void {
+    if ((this.getPlayers().length -1) === (this.getCurrentPlayerPos())) {
+      this.setCurrentPlayerPos(0);
+    }
+    else{
+      this.setCurrentPlayerPos(this.getCurrentPlayerPos() + 1);
+    }
+  }
+
 
   /****************************************************************
    * DELETE METHODS

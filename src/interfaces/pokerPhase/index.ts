@@ -13,13 +13,25 @@ interface PokerPhaseConfig {
    */
   id: string | undefined;
 
+   /**
+   * @property {PokerPhaseName} name
+   * The deck of cards used in the current PokerPhase.
+   */
+  name: PokerPhaseName;
+
   /**
-   * @property {string | undefined} name
+   * @property {string | undefined} players
    * The maximum number of players that can be seated at the PokerTable[2-14].
    */
   players: PokerPlayerInterface[];
 
   pot: number;
+
+  dealerPos: number;
+
+  smallBlindPos: number;
+
+  bigBlindPos: number;
 }
 
 /**

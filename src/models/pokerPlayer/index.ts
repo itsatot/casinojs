@@ -48,6 +48,14 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
    */
   private _isFolded: boolean;
 
+
+    /**
+   * @property {boolean} _isFolded
+   * @private
+   * Indicates whether the player is still active in the current round or has folded.
+   */
+    private _isBetMatched: boolean;
+
   /******************* CONSTRUCTOR *******************/
 
   /**
@@ -66,6 +74,7 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
     this._chips = config.chips ? config.chips : 100;
     this._hand = config.hand ? config.hand : [];
     this._isFolded = config.isFolded ? config.isFolded : false;
+    this._isBetMatched = false;
   }
 
   /******************* GETTERS *******************/
@@ -95,7 +104,7 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
    * console.log(rank); // "A"
    */
   public getName(): string {
-    return this._id;
+    return this._name;
   }
 
   /**
@@ -126,6 +135,7 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
     return this._hand;
   }
 
+
   /**
    * @method `isFolded`
    * @public
@@ -138,6 +148,21 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
    */
   public isFolded(): boolean {
     return this._isFolded;
+  }
+
+
+   /**
+   * @method `getHand`
+   * @public
+   * Returns the poker table's `id`.
+   * @returns {CardInterface[]} The poker table's `id`.
+   *
+   * @example
+   * const rank = card.getRank();
+   * console.log(rank); // "A"
+   */
+   public isBetMatched(): boolean {
+    return this._isBetMatched;
   }
 
   /******************* SETTERS *******************/
@@ -202,7 +227,6 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
     return this._hand;
   }
 
-  
   /**
    * @method `setIsFolded`
    * @private
@@ -216,6 +240,22 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
   public setIsFolded(bool: boolean): boolean {
     this._isFolded = bool;
     return this._isFolded;
+  }
+
+
+   /**
+   * @method `getHand`
+   * @public
+   * Returns the poker table's `id`.
+   * @returns {CardInterface[]} The poker table's `id`.
+   *
+   * @example
+   * const rank = card.getRank();
+   * console.log(rank); // "A"
+   */
+   public setisBetMatched(betMatched:boolean): boolean {
+    this._isBetMatched = betMatched;
+    return this._isBetMatched;
   }
 
   public bet(amount:number):boolean{
