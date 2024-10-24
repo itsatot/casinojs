@@ -17,6 +17,7 @@ describe("PokerPhaseName Enum", () => {
    * expect(PokerPhaseName.PRE_FLOP).toBe("Pre-Flop");
    */
   it("should define all phases correctly", () => {
+    // Expected phases in the poker game
     expect(PokerPhaseName.PRE_FLOP).toBe("Pre-Flop");
     expect(PokerPhaseName.FLOP).toBe("Flop");
     expect(PokerPhaseName.TURN).toBe("Turn");
