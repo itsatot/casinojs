@@ -13,11 +13,27 @@ interface PokerGameConfig {
   id: string | undefined;
 
   /**
+   * @property {number} smallBlindAmount
+   * The maximum number of players that can be seated at the PokerTable[2-14].
+   */
+  smallBlindAmount: number;
+
+  /**
+   * @property {number} bigBlindAmount
+   * The maximum number of players that can be seated at the PokerTable[2-14].
+   */
+  bigBlindAmount: number;
+
+  /**
    * @property {string | undefined} name
    * The maximum number of players that can be seated at the PokerTable[2-14].
    */
   players: PokerPlayerInterface[];
 
+  /**
+   * @property {number} pot
+   * The maximum number of players that can be seated at the PokerTable[2-14].
+   */
   pot: number;
 }
 
@@ -29,9 +45,6 @@ interface PokerGameConfig {
  * @extends NodeJS.EventEmitter
  */
 interface PokerGameInterface extends NodeJS.EventEmitter {
-
-  
-
   /**
    * @method `resolveBets`
    * Resolves the current betting round, updating player chip stacks and determining the winner if applicable.

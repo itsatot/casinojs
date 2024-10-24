@@ -34,18 +34,6 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
   private _name: string;
 
   /**
-   * @property {number} _smallBlindAmount
-   * The maximum number of players that can be seated at the PokerTable[2-14].
-   */
-  private _smallBlindAmount: number;
-
-  /**
-   * @property {number} _bigBlindAmount
-   * The maximum number of players that can be seated at the PokerTable[2-14].
-   */
-  private _bigBlindAmount: number;
-
-  /**
    * @property {PokerPlayerInterface[]} _queue
    * @private
    * An array of players who are waiting for a seat at the PokerTable.
@@ -75,10 +63,6 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
     this._name = config.name ? config.name : ``;
     this._queue = [];
     this._table = new PokerTable(config.tableConfig);
-    this._smallBlindAmount = config.smallBlindAmount
-      ? config.smallBlindAmount
-      : 5;
-    this._bigBlindAmount = this._smallBlindAmount * 2;
   }
 
   /****************************************************************
