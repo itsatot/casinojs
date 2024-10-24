@@ -95,7 +95,7 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
    * console.log(rank); // "A"
    */
   public getName(): string {
-    return this._id;
+    return this._name;
   }
 
   /**

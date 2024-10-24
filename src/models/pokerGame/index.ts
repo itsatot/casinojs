@@ -42,6 +42,12 @@ class PokerGame extends EventEmitter implements PokerGameInterface {
 
   private _pot:number;
 
+  private _dealerPos: number;
+
+  private _smallBlindPos: number;
+
+  private _bigBlindPos: number;
+
   /**
    * @method constructor
    * @public
@@ -58,7 +64,22 @@ class PokerGame extends EventEmitter implements PokerGameInterface {
     this._communityCards = [];
     this._players = config.players ? config.players : [];
     this._pot = config.pot ? config.pot : 0;
+    this._dealerPos = 0;
+    this._smallBlindPos = 0;
+    this._bigBlindPos = 0;
     // new PokerPlayer({id:``,name:``,chips:100,hand:[],isFolded:false});
+  }
+
+   /**
+   * @method `init`
+   * @private
+   * Initializes the deck with 52 unique cards.
+   * This method is called automatically inside the constructor during deck creation.
+   * @emits `deck:initialized` : Emits a `deck:initialized` event when the deck is created.
+   * @returns {void}
+   */
+   private init(): void {
+    this.validatePlayerList()
   }
 
   public getPlayers(): PokerPlayerInterface[] {
@@ -80,6 +101,58 @@ class PokerGame extends EventEmitter implements PokerGameInterface {
   public setPot(pot:number): number {
     return this._pot = pot;
   }
+
+    
+  public getDealerPos(): number {
+    return this._dealerPos;
+  }
+
+  private setDealerPos(pos:number): boolean {
+    this._dealerPos = pos;
+    return true;
+  }
+
+  public getSmallBlindPos(): number {
+    return this._smallBlindPos;
+  }
+
+  private setSmallBlindPos(pos:number): boolean {
+    this._smallBlindPos = pos;
+    return true;
+  }
+
+  public getBigBlindPos(): number {
+    return this._bigBlindPos;
+  }
+
+  private setBigBlindPos(pos:number): boolean {
+    this._bigBlindPos = pos;
+    return true;
+  }
+
+  private tagPos():void {
+    if (this.getPlayers().length=2) {
+      this.setDealerPos(0);
+      this.setSmallBlindPos(1);
+      this.setBigBlindPos(0);
+    }
+
+    else if (this.getPlayers().length>=3) {
+      this.setDealerPos(0);
+      this.setSmallBlindPos(1);
+      this.setBigBlindPos(2);
+    }
+  }
+
+  private validatePlayerList():boolean{
+    if (this.getPlayers().length<2) {
+      throw new Error('Players are lesser than two.');
+    }
+    else{
+      return true;
+    }
+  }
+
 
 
   /**
