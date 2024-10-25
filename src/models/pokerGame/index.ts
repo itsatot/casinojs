@@ -5,8 +5,11 @@ import {
   CardInterface,
   PokerGameInterface,
   PokerPlayerInterface,
+  PokerPhaseInterface,
 } from "../../interfaces";
 import { Deck } from "../deck";
+import { PokerPhase } from "../pokerPhase";
+import { PokerPhaseName } from "../../enums";
 
 /**
  * @class `PokerGame`
@@ -16,10 +19,12 @@ import { Deck } from "../deck";
  * @extends EventEmitter
  */
 class PokerGame extends EventEmitter implements PokerGameInterface {
-  /******************* PROPERTIES *******************/
+  /*************************************************************************************
+   * PROPERTIES
+   *************************************************************************************/
 
   /**
-   * @property {DeckInterface} _deck
+   * @property {DeckInterface} _id
    * The deck of cards used in the current PokerGame.
    */
   private _id: string;
@@ -43,6 +48,18 @@ class PokerGame extends EventEmitter implements PokerGameInterface {
   private _bigBlindAmount: number;
 
   /**
+   * @property {number} _bigBlindAmount
+   * The maximum number of players that can be seated at the PokerTable[2-14].
+   */
+  private _phases: PokerPhaseInterface[];
+
+  /**
+   * @property {number} _bigBlindAmount
+   * The maximum number of players that can be seated at the PokerTable[2-14].
+   */
+  private _currentPhase: PokerPhaseInterface;
+
+  /**
    * @property {CardInterface[]} _communityCards
    * The community cards that are dealt face-up and shared by all players.
    */
@@ -57,6 +74,10 @@ class PokerGame extends EventEmitter implements PokerGameInterface {
   private _bigBlindPos: number;
 
   private _pot: number;
+
+  /*************************************************************************************
+   * CONSTRUCTOR & INITIALIZERS
+   *************************************************************************************/
 
   /**
    * @method constructor
@@ -74,14 +95,23 @@ class PokerGame extends EventEmitter implements PokerGameInterface {
     this._smallBlindAmount = config.smallBlindAmount
       ? config.smallBlindAmount
       : 5;
-    this._bigBlindAmount = this._smallBlindAmount * 2;
+    this._bigBlindAmount = config.bigBlindAmount ? config.bigBlindAmount : 10;
     this._communityCards = [];
     this._players = config.players ? config.players : [];
-    this._pot = config.pot ? config.pot : 0;
+    this._pot = 0;
     this._dealerPos = 0;
     this._smallBlindPos = 0;
     this._bigBlindPos = 0;
-    // new PokerPlayer({id:``,name:``,chips:100,hand:[],isFolded:false});
+    this._phases = [];
+    this._currentPhase = new PokerPhase({
+      name: PokerPhaseName.PRE_FLOP,
+      deck: this._deck,
+      players: [],
+      pot: 0,
+      dealerPos: 0,
+      smallBlindPos: 0,
+      bigBlindPos: 0,
+    });
   }
 
   /**
