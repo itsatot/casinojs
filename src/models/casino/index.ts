@@ -166,13 +166,20 @@ class Casino extends EventEmitter implements CasinoInterface {
    **************************************************************************************************************/
 
   /**
-   * `getRooms`
+   * @method `getRooms`
    * @public
-   * Returns the list of rooms managed by the Casino.
+   * Retrieves the full list of rooms currently managed by the Casino.
    *
-   * @returns {PokerRoomInterface[]} - Returns the array of PokerRooms.
+   * #### Purpose
+   * - This method provides external access to view all the poker rooms (`PokerRoomInterface[]`) stored in the casino.
+   *
+   * @returns {PokerRoomInterface[]} - Returns an array of all the `PokerRoom` objects in the casino.
+   *
    * @example
-   * const rooms = casino.getRooms();
+   * ```typescript
+   * const casino = new Casino();
+   * console.log(casino.getRooms()); // Returns an empty array initially
+   * ```
    */
   public getRooms(): PokerRoomInterface[] {
     return this._rooms;
