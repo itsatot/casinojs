@@ -139,16 +139,23 @@ class Casino extends EventEmitter implements CasinoInterface {
   }
 
   /**
-   * `createRoom`
+   * @method `createRoom`
+   * @public
+   * Creates a new PokerRoom in the Casino and adds it to the list of rooms.
    *
-   * Creates a new PokerRoom and adds it to the casino's list of rooms.
-   * Emits a `casino:roomCreated` event when the room is successfully created.
+   * #### Event Emission
+   * - This method emits a custom event `casino:roomCreated` once the room has been successfully added.
+   * - Event listeners can be used to respond to room creation, such as logging or notifying users.
    *
-   * @param {PokerRoomConfig} config - The name of the PokerRoom to create.
-   * @returns {PokerRoomInterface} - Returns the newly created PokerRoom.
+   * @param {PokerRoomConfig} config - A configuration object that contains details like the name, table size, small blind, and big blind for the new room.
+   * @returns {PokerRoomInterface} - Returns the newly created PokerRoom instance.
    *
    * @example
-   * const room = casino.createRoom("HighRollers", 6, 10, 20);
+   * ```typescript
+   * const casino = new Casino();
+   * const room = casino.createRoom({ name: "HighRollers", tableSize: 6, smallBlind: 10, bigBlind: 20 });
+   * console.log(casino.getRooms()); // Logs the new room within the array of rooms
+   * ```
    */
   public createRoom(config: PokerRoomConfig): PokerRoomInterface {
     return this._createRoom(config);
