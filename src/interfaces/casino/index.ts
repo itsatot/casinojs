@@ -1,5 +1,5 @@
 import { EventEmitter } from "events";
-import { PokerRoomInterface } from "../pokerRoom";
+import { PokerRoomConfig, PokerRoomInterface } from "../pokerRoom";
 
 /**
  * @interface `CasinoInterface`
@@ -31,11 +31,7 @@ interface CasinoInterface extends NodeJS.EventEmitter {
    * @example
    * const room = casino.createRoom("HighRollers", 6, 10, 20);
    */
-  createRoom(
-    id: string | undefined,
-    name: string,
-    options: object
-  ): PokerRoomInterface;
+  createRoom(config: PokerRoomConfig): PokerRoomInterface;
 
   /**
    * @method `findRoom`

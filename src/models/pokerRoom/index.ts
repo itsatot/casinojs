@@ -4,7 +4,6 @@ import {
   PokerPlayerInterface,
   PokerRoomInterface,
   PokerTableInterface,
-  PokerSeatInterface,
   PokerPlayerConfig,
 } from "../../interfaces";
 import { PokerTable } from "../pokerTable";
@@ -16,7 +15,9 @@ import { PokerPlayer } from "../pokerPlayer";
  * This class extends `EventEmitter` and implements the `PokerRoomInterface` interface.
  */
 class PokerRoom extends EventEmitter implements PokerRoomInterface {
-  /******************* PROPERTIES *******************/
+  /****************************************************************
+   * PROPERTIES
+   ****************************************************************/
 
   /**
    * @property {string} _id
@@ -31,20 +32,6 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
    * The name of the PokerRoom.
    */
   private _name: string;
-
-   /**
-   * @property {string | undefined} name
-   * The maximum number of players that can be seated at the PokerTable[2-14].
-   */
-   private _smallBlindAmount: number;
-
-   /**
-    * @property {string | undefined} name
-    * The maximum number of players that can be seated at the PokerTable[2-14].
-    */
-  private _bigBlindAmount: number;
-
-
 
   /**
    * @property {PokerPlayerInterface[]} _queue
@@ -76,9 +63,11 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
     this._name = config.name ? config.name : ``;
     this._queue = [];
     this._table = new PokerTable(config.tableConfig);
-    this._smallBlindAmount = config.smallBlindAmount? config.smallBlindAmount:5;
-    this._bigBlindAmount = this._smallBlindAmount*2;
   }
+
+  /****************************************************************
+   * GET METHODS
+   ****************************************************************/
 
   /**
    * @method `getId`
@@ -122,6 +111,16 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
     return this._queue;
   }
 
+  /**
+   * @method `getQueue`
+   * @public
+   * Returns the poker room's `name`.
+   * @returns {PokerPlayerInterface[]} The poker room's `name`.
+   *
+   * @example
+   * const rank = card.getName();
+   * console.log(rank); // "A"
+   */
   public addToQueue(config: PokerPlayerConfig): boolean {
     const player = new PokerPlayer(config);
     this._queue.push(player);
@@ -141,6 +140,10 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
   public getTable(): PokerTableInterface {
     return this._table;
   }
+
+  /****************************************************************
+   * SET METHODS
+   ****************************************************************/
 
   /**
    * @method `setId`
@@ -201,6 +204,14 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
     this._table = table;
     return this._table;
   }
+
+  /****************************************************************
+   * UPDATE METHODS
+   ****************************************************************/
+
+  /****************************************************************
+   * DELETE METHODS
+   ****************************************************************/
 
   public moveToTable(seatPostion: number): boolean {
     let roomSeats = this.getTable().getSeats();

@@ -26,6 +26,18 @@ class PokerTable extends EventEmitter implements PokerTableInterface {
   private _id: string;
 
   /**
+   * @property {number} _smallBlindAmount
+   * The maximum number of players that can be seated at the PokerTable[2-14].
+   */
+  private _smallBlindAmount: number;
+
+  /**
+   * @property {number} _bigBlindAmount
+   * The maximum number of players that can be seated at the PokerTable[2-14].
+   */
+  private _bigBlindAmount: number;
+
+  /**
    * @property {PokerSeatInterface[]} _seats
    * An array of players currently seated at the PokerTable.
    */
@@ -49,6 +61,10 @@ class PokerTable extends EventEmitter implements PokerTableInterface {
   constructor(config: PokerTableConfig) {
     super();
     this._id = config.id ? config.id : ``;
+    this._smallBlindAmount = config.smallBlindAmount
+      ? config.smallBlindAmount
+      : 5;
+    this._bigBlindAmount = this._smallBlindAmount * 2;
     this._seats = [];
     this._gameInProgress = false;
     this.init(config.size ? config.size : 8);
