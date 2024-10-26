@@ -34,35 +34,7 @@ interface CasinoInterface extends NodeJS.EventEmitter {
   createRoom(config: PokerRoomConfig): PokerRoomInterface;
 
   /**
-   * @method `findRoom`
-   * Searches for an existing room by its name.
-   * Emits a `casino:roomSearched` event when the search is performed.
-   *
-   * @param {string} roomName - The name of the PokerRoom to find.
-   * @returns {PokerRoomInterface | undefined} - Returns the PokerRoom if found, otherwise undefined.
-   * @emits `casino:roomSearched`
-   *
-   * @example
-   * const room = casino.findRoom("HighRollers");
-   */
-  findRoom(roomName: string): PokerRoomInterface | undefined;
-
-  /**
-   * @method `listRooms`
-   * Lists all active PokerRooms in the Casino.
-   * Emits a `casino:roomsListed` event when the list is retrieved.
-   *
-   * @returns {PokerRoomInterface[]} - Returns an array of all PokerRooms.
-   * @emits `casino:roomsListed`
-   *
-   * @example
-   * const rooms = casino.listRooms();
-   * console.log(rooms); // [PokerRoom1, PokerRoom2]
-   */
-  listRooms(): PokerRoomInterface[];
-
-  /**
-   * @method `removeRoom`
+   * @method `deleteRoom`
    * Removes a PokerRoom from the Casino.
    * Emits a `casino:roomRemoved` event when the room is successfully removed.
    *
@@ -71,10 +43,10 @@ interface CasinoInterface extends NodeJS.EventEmitter {
    * @emits `casino:roomRemoved`
    *
    * @example
-   * const success = casino.removeRoom("HighRollers");
+   * const success = casino.deleteRoom("HighRollers");
    * console.log(success); // true or false
    */
-  removeRoom(roomName: string): boolean;
+  deleteRoom(roomName: string): boolean;
 }
 
 export { CasinoInterface };
