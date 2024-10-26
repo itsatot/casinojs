@@ -81,54 +81,7 @@ interface CasinoInterface extends NodeJS.EventEmitter {
    * console.log(casino.getRooms()); // Logs an array with the newly set rooms
    * ```
    */
-  setRoom(index: number, room: PokerRoomInterface): boolean;
-
-  /**
-   * #### Description
-   * Sets the list of rooms managed by the Casino. This method is typically used to replace or update
-   * the entire list of poker rooms in the casino.
-   *
-   * #### Implements
-   * Implements the `setRooms` method of `CasinoInterface`.
-   *
-   * #### Overrides
-   * `N/A`
-   *
-   * #### Purpose
-   * Provides a way to update the current list of rooms managed by the Casino, ensuring a consistent and up-to-date
-   * list of poker rooms as defined by the casino’s configuration.
-   *
-   * #### Events
-   * - `N/A`: No `event` is emitted by this method.
-   *
-   * #### Parameters
-   * - `rooms`: An array of `PokerRoomInterface` instances, representing individual poker rooms in the Casino.
-   *
-   * #### Requirements
-   * - The `rooms` array must contain at least one room (i.e., `rooms.length >= 1`).
-   *
-   * #### Returns
-   * - Returns `true` when the rooms have been successfully set.
-   *
-   * #### Usage
-   * This method accepts an array of `PokerRoomInterface` objects, representing poker rooms to manage in the casino.
-   * - Replaces any existing rooms with the new provided list.
-   * - Calls the internal `__setRooms` method to update the private `__rooms` property securely.
-   *
-   * @param {PokerRoomInterface[]} rooms - The new list of poker rooms to be managed by the Casino.
-   * @returns {boolean} - Returns `true` when the rooms have been successfully set.
-   *
-   * @example
-   * ```typescript
-   * const casino = new Casino();
-   * const rooms: PokerRoomInterface[] = [
-   *   new PokerRoom({ name: "Room1", tableSize: 6, smallBlind: 10, bigBlind: 20 })
-   * ];
-   * casino.setRooms(rooms);
-   * console.log(casino.getRooms()); // Logs an array with the newly set rooms
-   * ```
-   */
-  setRooms(rooms: PokerRoomInterface[]): boolean;
+  setRooms(rooms: PokerRoomInterface[]): PokerRoomInterface[];
 
   /**
    * #### Description
@@ -218,7 +171,7 @@ interface CasinoInterface extends NodeJS.EventEmitter {
    * const room = casino.getRoom(0); // Returns the first room or undefined if no rooms exist
    * ```
    */
-  getRoom(index: number): PokerRoomInterface | undefined;
+  getRoom(index: number): PokerRoomInterface;
 
   /**
    * #### Description
@@ -306,7 +259,7 @@ interface CasinoInterface extends NodeJS.EventEmitter {
    * console.log(success); // true
    * ```
    */
-  addRoom(room: PokerRoomInterface): boolean;
+  addRoom(room: PokerRoomInterface): PokerRoomInterface[];
 
   /**
    * #### Description
@@ -349,7 +302,7 @@ interface CasinoInterface extends NodeJS.EventEmitter {
    * console.log(success); // true
    * ```
    */
-  addRooms(rooms: PokerRoomInterface[]): boolean;
+  addRooms(rooms: PokerRoomInterface[]): PokerRoomInterface[];
   /**************************************************************************************************************
    * DELETE METHODS (REMOVING OBJECTS)
    **************************************************************************************************************/
@@ -397,12 +350,18 @@ interface CasinoInterface extends NodeJS.EventEmitter {
    * console.log(success); // true if room was found and removed, false otherwise
    * ```
    */
-  deleteRoom(index: number): boolean;
+  deleteRoom(index: number): PokerRoomInterface[];
+
+  /**************************************************************************************************************
+   * BUSINESS-LOGIC METHODS (LOGIC & CALCULATIONS)
+   **************************************************************************************************************/
+  /**************************************************************************************************************
+   * WRAPPER METHODS (UTILITY & CONVENIENCE)
+   **************************************************************************************************************/
 
   /**
    * #### Description
-   * Removes a `PokerRoom` from the Casino's list of managed rooms based on the room's name, enabling dynamic
-   * contraction of the Casino environment as required.
+   * Retrieves the total number of `PokerRoom` instances currently managed by the Casino.
    *
    * #### Implements
    * `N/A`
@@ -411,46 +370,83 @@ interface CasinoInterface extends NodeJS.EventEmitter {
    * `N/A`
    *
    * #### Purpose
-   * Allows the Casino environment to remain current by dynamically removing rooms that are no longer active
-   * or needed. This supports a clean and manageable set of active rooms within the Casino.
+   * This method provides insight into the number of poker rooms that the Casino manages, supporting
+   * validation for index-bound operations or general information on Casino state.
    *
    * #### Events
-   * - Emits a `casino:roomRemoved` event when a room is successfully removed. This event can be used
-   *   to trigger updates, logging, or notifications.
+   * `N/A`
    *
    * #### Parameters
-   * - `roomName`: A string representing the name of the `PokerRoom` to be removed from the Casino.
+   * `N/A`
    *
    * #### Requirements
-   * - The `roomName` parameter should match the `name` property of an existing room for successful deletion.
+   * `N/A`
    *
    * #### Returns
-   * - Returns `true` if the room was successfully removed, or `false` if no room with the specified name was found.
+   * - Returns the total count of rooms managed by the Casino.
    *
    * #### Usage
-   * Use this method when removing a room that is no longer active or required, ensuring that only
-   * currently used rooms remain managed by the Casino.
+   * Use this method to retrieve the total count of active poker rooms, which is helpful when iterating over
+   * rooms or confirming index-bound conditions.
    *
-   * @param {string} roomName - The name of the `PokerRoom` to be removed.
-   * @returns {boolean} - Returns `true` if the room was removed; `false` if not found.
+   * @returns {number} - The current count of rooms in the Casino.
    *
    * @example
    * ```typescript
    * const casino = new Casino();
-   * casino.createRoom({ name: "HighRollers", tableSize: 6, smallBlind: 10, bigBlind: 20 });
-   * const success = casino.deleteRoom("HighRollers");
-   * console.log(success); // true if room was found and removed, false otherwise
+   * const count = casino.roomCount();
+   * console.log(count); // Logs the total number of managed rooms, e.g., 5
    * ```
    */
-  deleteRooms(): boolean;
+  roomCount(): number;
 
-  /**************************************************************************************************************
-   * BUSINESS-LOGIC METHODS (LOGIC & CALCULATIONS)
-   **************************************************************************************************************/
-
-  /**************************************************************************************************************
-   * WRAPPER METHODS (UTILITY & CONVENIENCE)
-   **************************************************************************************************************/
+  /**
+   * #### Description
+   * Validates if a specified index is within the valid bounds of the Casino’s room list.
+   *
+   * #### Implements
+   * `N/A`
+   *
+   * #### Overrides
+   * `N/A`
+   *
+   * #### Purpose
+   * Prevents out-of-bounds errors by confirming that an index is within the acceptable range for the Casino’s
+   * room list, ensuring that subsequent calls to access rooms by index have a valid target.
+   *
+   * #### Events
+   * `N/A`
+   *
+   * #### Parameters
+   * - `index`: A zero-based integer specifying the position of a room within the Casino's managed room list.
+   *
+   * #### Requirements
+   * - The `index` must be a non-negative integer within the bounds of the `__rooms` array.
+   *
+   * #### Returns
+   * - Returns `true` if the index is within bounds.
+   * - Throws an `Error` if the index is out of bounds.
+   *
+   * #### Usage
+   * Call this method before performing operations involving indexed access to rooms, ensuring the index
+   * falls within valid boundaries.
+   *
+   * @param {number} index - The zero-based index to validate within the room list.
+   * @returns {boolean} - Returns `true` if the index is within bounds.
+   *
+   * @throws {Error} - Throws an error with a descriptive message if the index is out of bounds.
+   *
+   * @example
+   * ```typescript
+   * const casino = new Casino();
+   * try {
+   *   casino.isValidIndex(2); // Returns true if index 2 exists in the list of rooms
+   * } catch (error) {
+   *   console.error(error.message); // Logs error if index 2 is invalid
+   * }
+   * ```
+   */
+  isValidIndex(index: number): boolean;
 }
 
 export { CasinoInterface };
