@@ -200,7 +200,7 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
    * const rank = card.setName();
    * console.log(rank); // "A"
    */
-  private setTable(table: PokerTableInterface): PokerTableInterface {
+  public setTable(table: PokerTableInterface): PokerTableInterface {
     this._table = table;
     return this._table;
   }
