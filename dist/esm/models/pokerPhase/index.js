@@ -1,4 +1,5 @@
 import { EventEmitter } from "events";
+import { PokerPhaseName } from "../../enums";
 import { Deck } from "../deck";
 /**
  * @class `PokerPhase`
@@ -8,6 +9,9 @@ import { Deck } from "../deck";
  * @extends EventEmitter
  */
 class PokerPhase extends EventEmitter {
+    /*************************************************************************************
+     * CONSTRUCTOR & INITIALIZERS
+     *************************************************************************************/
     /**
      * @method constructor
      * @public
@@ -19,25 +23,56 @@ class PokerPhase extends EventEmitter {
      */
     constructor(config) {
         super();
-        this._id = this._id = config.id ? config.id : ``;
-        this._deck = new Deck();
+        this._name = config.name ? config.name : PokerPhaseName.PRE_FLOP;
+        this._deck = config.deck ? config.deck : new Deck();
         this._communityCards = [];
         this._players = config.players ? config.players : [];
-        this._pot = 0;
-        this._currentPlayer = undefined;
+        this._pot = config.pot ? config.pot : 0;
+        this._currentPlayerPos = 1;
+        this._dealerPos = config.dealerPos ? config.dealerPos : 0;
+        this._smallBlindPos = config.smallBlindPos ? config.smallBlindPos : 0;
+        this._bigBlindPos = config.bigBlindPos ? config.bigBlindPos : 0;
         // new PokerPlayer({id:``,name:``,chips:100,hand:[],isFolded:false});
     }
-    /****************************************************************
+    /**
+     * @method `init`
+     * @private
+     * Initializes the deck with 52 unique cards.
+     * This method is called automatically inside the constructor during deck creation.
+     * @emits `deck:initialized` : Emits a `deck:initialized` event when the deck is created.
+     * @returns {void}
+     */
+    init() {
+        if (this.getName() === PokerPhaseName.PRE_FLOP) {
+            this.deal();
+        }
+    }
+    /*************************************************************************************
      * GET METHODS
-     ****************************************************************/
+     *************************************************************************************/
+    getName() {
+        return this._name;
+    }
     getPlayers() {
         return this._players;
+    }
+    getCurrentPlayerPos() {
+        return this._currentPlayerPos;
     }
     getDeck() {
         return this._deck;
     }
     getPot() {
         return this._pot;
+    }
+    getDealerPos() {
+        return this._dealerPos;
+    }
+    getSmallBlindPos() {
+        return this._smallBlindPos;
+    }
+    getBigBlindPos() {
+        return this._bigBlindPos;
     }
     /****************************************************************
      * SET METHODS
@@ -48,6 +83,36 @@ class PokerPhase extends EventEmitter {
     setPot(pot) {
         return (this._pot = pot);
     }
+    setCurrentPlayerPos(player) {
+        this._currentPlayerPos = player;
+        return true;
+    }
+    setDealerPos(pos) {
+        this._dealerPos = pos;
+        return true;
+    }
+    setSmallBlindPos(pos) {
+        this._smallBlindPos = pos;
+        return true;
+    }
+    setBigBlindPos(pos) {
+        this._bigBlindPos = pos;
+        return true;
+    }
+    /**
+     * @method `setName`
+     * @public
+     * Returns the poker table's `id`.
+     * @returns {string} The poker table's `id`.
+     *
+     * @example
+     * const rank = card.getRank();
+     * console.log(rank); // "A"
+     */
+    setName(name) {
+        this._name = name;
+        return this._name;
+    }
     /****************************************************************
      * UPDATE METHODS
      ****************************************************************/
@@ -56,14 +121,8 @@ class PokerPhase extends EventEmitter {
      * Deals two hole cards to each player.
      * @returns {void}
      */
-    dealHoleCards() {
-        for (let i = 0; i < 2; i++) {
-            for (let j = 0; j < this.getPlayers.length; j++) {
-                let player = this.getPlayers()[j];
-                let card = this.getDeck().draw();
-                card ? player.addToHand(card) : {};
-            }
-        }
+    deal() {
+        for (let i = 0; i < 2; i++) { }
         return true;
     }
     /**
@@ -92,13 +151,26 @@ class PokerPhase extends EventEmitter {
      */
     resolveBets() { }
     bet(amount) {
-        this._currentPlayer?.bet(amount);
+        this.getPlayers()[this.getCurrentPlayerPos()]?.bet(amount);
         this.setPot(this.getPot() + amount);
+        this.nextPlayer();
         return true;
     }
     fold() {
-        this._currentPlayer?.setIsFolded(true);
+        this.getPlayers()[this.getCurrentPlayerPos()]?.setIsFolded(true);
+        this.nextPlayer();
         return true;
+    }
+    /**
+     * name
+     */
+    nextPlayer() {
+        if (this.getPlayers().length - 1 === this.getCurrentPlayerPos()) {
+            this.setCurrentPlayerPos(0);
+        }
+        else {
+            this.setCurrentPlayerPos(this.getCurrentPlayerPos() + 1);
+        }
     }
 }
 export { PokerPhase };

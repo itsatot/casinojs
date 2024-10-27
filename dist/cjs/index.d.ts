@@ -1,5 +1,5 @@
 /**
- * @module `pokerjs`
+ * @module `casinojs`
  * Centralized export for the entire `pokerjs` library, providing access to interfaces, models, and types.
  *
  * This module exports all necessary components for working with poker games, including:

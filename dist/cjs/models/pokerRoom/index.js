@@ -26,6 +26,9 @@ class PokerRoom extends events_1.EventEmitter {
         this._queue = [];
         this._table = new pokerTable_1.PokerTable(config.tableConfig);
     }
+    /****************************************************************
+     * GET METHODS
+     ****************************************************************/
     /**
      * @method `getId`
      * @public
@@ -65,6 +68,16 @@ class PokerRoom extends events_1.EventEmitter {
     getQueue() {
         return this._queue;
     }
+    /**
+     * @method `getQueue`
+     * @public
+     * Returns the poker room's `name`.
+     * @returns {PokerPlayerInterface[]} The poker room's `name`.
+     *
+     * @example
+     * const rank = card.getName();
+     * console.log(rank); // "A"
+     */
     addToQueue(config) {
         const player = new pokerPlayer_1.PokerPlayer(config);
         this._queue.push(player);
@@ -83,6 +96,9 @@ class PokerRoom extends events_1.EventEmitter {
     getTable() {
         return this._table;
     }
+    /****************************************************************
+     * SET METHODS
+     ****************************************************************/
     /**
      * @method `setId`
      * @private
@@ -139,6 +155,12 @@ class PokerRoom extends events_1.EventEmitter {
         this._table = table;
         return this._table;
     }
+    /****************************************************************
+     * UPDATE METHODS
+     ****************************************************************/
+    /****************************************************************
+     * DELETE METHODS
+     ****************************************************************/
     moveToTable(seatPostion) {
         let roomSeats = this.getTable().getSeats();
         for (let index = 0; index < roomSeats.length; index++) {

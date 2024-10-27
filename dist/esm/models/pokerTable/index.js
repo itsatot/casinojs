@@ -21,6 +21,10 @@ class PokerTable extends EventEmitter {
     constructor(config) {
         super();
         this._id = config.id ? config.id : ``;
+        this._smallBlindAmount = config.smallBlindAmount
+            ? config.smallBlindAmount
+            : 5;
+        this._bigBlindAmount = this._smallBlindAmount * 2;
         this._seats = [];
         this._gameInProgress = false;
         this.init(config.size ? config.size : 8);

@@ -10,11 +10,20 @@ interface PokerGameConfig {
      */
     id: string | undefined;
     /**
+     * @property {number} smallBlindAmount
+     * The maximum number of players that can be seated at the PokerTable[2-14].
+     */
+    smallBlindAmount: number;
+    /**
+     * @property {number} bigBlindAmount
+     * The maximum number of players that can be seated at the PokerTable[2-14].
+     */
+    bigBlindAmount: number;
+    /**
      * @property {string | undefined} name
      * The maximum number of players that can be seated at the PokerTable[2-14].
      */
     players: PokerPlayerInterface[];
-    pot: number;
 }
 /**
  * @interface `PokerGameInterface`

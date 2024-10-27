@@ -1,20 +1,46 @@
+import { DeckInterface } from "../deck";
 import { PokerPlayerInterface } from "../pokerPlayer";
+import { PokerPhaseName } from "../../enums";
 /**
  * @interface `PokerPhaseConfig`
  * Represents a Poker Phase Config.
  */
 interface PokerPhaseConfig {
     /**
-     * @property {string | undefined} id
-     * The maximum number of players that can be seated at the PokerTable[2-14].
+     * @property {PokerPhaseName} name
+     * The deck of cards used in the current PokerPhase.
      */
-    id: string | undefined;
+    name: PokerPhaseName;
     /**
-     * @property {string | undefined} name
+     * @property {DeckInterface} deck
+     * The deck of cards used in the current PokerPhase.
+     */
+    deck: DeckInterface;
+    /**
+     * @property {string | undefined} players
      * The maximum number of players that can be seated at the PokerTable[2-14].
      */
     players: PokerPlayerInterface[];
+    /**
+     * @property {number} pot
+     * The maximum number of players that can be seated at the PokerTable[2-14].
+     */
     pot: number;
+    /**
+     * @property {number} pot
+     * The maximum number of players that can be seated at the PokerTable[2-14].
+     */
+    dealerPos: number;
+    /**
+     * @property {number} pot
+     * The maximum number of players that can be seated at the PokerTable[2-14].
+     */
+    smallBlindPos: number;
+    /**
+     * @property {number} pot
+     * The maximum number of players that can be seated at the PokerTable[2-14].
+     */
+    bigBlindPos: number;
 }
 /**
  * @interface `PokerPhaseInterface`
@@ -24,31 +50,5 @@ interface PokerPhaseConfig {
  * @extends NodeJS.EventEmitter
  */
 interface PokerPhaseInterface extends NodeJS.EventEmitter {
-    /**
-     * @method `dealHoleCards`
-     * Deals two hole cards to each player.
-     * @returns {boolean}
-     */
-    dealHoleCards(): boolean;
-    /**
-     * @method `dealCommunityCards`
-     * Deals the community cards to the table during the flop, turn, or river phases.
-     * @param {number} count - The number of community cards to deal (3 for the flop, 1 for the turn/river).
-     * @returns {boolean}
-     */
-    dealCommunityCards(count: number): boolean;
-    /**
-     * @method `advancePhase`
-     * Advances the game to the next phase (pre-flop to flop, flop to turn, etc.).
-     * @returns {void}
-     */
-    advancePhase(): void;
-    /**
-     * @method `resolveBets`
-     * Resolves the current betting round, updating player chip stacks and determining the winner if applicable.
-     * @returns {void}
-     */
-    resolveBets(): void;
-    getPlayers(): PokerPlayerInterface[];
 }
 export { PokerPhaseConfig, PokerPhaseInterface };

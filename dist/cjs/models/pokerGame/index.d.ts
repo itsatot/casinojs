@@ -8,9 +8,11 @@ import { PokerGameConfig, DeckInterface, PokerGameInterface, PokerPlayerInterfac
  * @extends EventEmitter
  */
 declare class PokerGame extends EventEmitter implements PokerGameInterface {
-    /******************* PROPERTIES *******************/
+    /*************************************************************************************
+     * PROPERTIES
+     *************************************************************************************/
     /**
-     * @property {DeckInterface} _deck
+     * @property {DeckInterface} _id
      * The deck of cards used in the current PokerGame.
      */
     private _id;
@@ -20,12 +22,38 @@ declare class PokerGame extends EventEmitter implements PokerGameInterface {
      */
     private _deck;
     /**
+     * @property {number} _smallBlindAmount
+     * The maximum number of players that can be seated at the PokerTable[2-14].
+     */
+    private _smallBlindAmount;
+    /**
+     * @property {number} _bigBlindAmount
+     * The maximum number of players that can be seated at the PokerTable[2-14].
+     */
+    private _bigBlindAmount;
+    /**
+     * @property {number} _bigBlindAmount
+     * The maximum number of players that can be seated at the PokerTable[2-14].
+     */
+    private _phases;
+    /**
+     * @property {number} _bigBlindAmount
+     * The maximum number of players that can be seated at the PokerTable[2-14].
+     */
+    private _currentPhase;
+    /**
      * @property {CardInterface[]} _communityCards
      * The community cards that are dealt face-up and shared by all players.
      */
     private _communityCards;
     private _players;
+    private _dealerPos;
+    private _smallBlindPos;
+    private _bigBlindPos;
     private _pot;
+    /*************************************************************************************
+     * CONSTRUCTOR & INITIALIZERS
+     *************************************************************************************/
     /**
      * @method constructor
      * @public
@@ -36,11 +64,28 @@ declare class PokerGame extends EventEmitter implements PokerGameInterface {
      * const deck = new Deck();
      */
     constructor(config: PokerGameConfig);
+    /**
+     * @method `init`
+     * @private
+     * Initializes the deck with 52 unique cards.
+     * This method is called automatically inside the constructor during deck creation.
+     * @emits `deck:initialized` : Emits a `deck:initialized` event when the deck is created.
+     * @returns {void}
+     */
+    private init;
     getPlayers(): PokerPlayerInterface[];
     getDeck(): DeckInterface;
     getPot(): number;
     private setPlayers;
     setPot(pot: number): number;
+    getDealerPos(): number;
+    private setDealerPos;
+    getSmallBlindPos(): number;
+    private setSmallBlindPos;
+    getBigBlindPos(): number;
+    private setBigBlindPos;
+    private tagPos;
+    private validatePlayerList;
     /**
      * @method `advancePhase`
      * Advances the game to the next phase (pre-flop to flop, flop to turn, etc.).

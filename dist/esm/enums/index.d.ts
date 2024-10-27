@@ -11,6 +11,8 @@
  * // Import all enums from the centralized module
  * import { Rank, Suit } from './enums';
  */
+export * as CasinoEventNameEnums from "./casinoEventName";
+export * from "./casinoEventName";
 export * as PokerPhaseNameEnums from "./pokerPhaseName";
 export * from "./pokerPhaseName";
 export * as RankEnums from "./rank";

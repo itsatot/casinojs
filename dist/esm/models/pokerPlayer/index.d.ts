@@ -37,6 +37,12 @@ declare class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
      * Indicates whether the player is still active in the current round or has folded.
      */
     private _isFolded;
+    /**
+   * @property {boolean} _isFolded
+   * @private
+   * Indicates whether the player is still active in the current round or has folded.
+   */
+    private _isBetMatched;
     /******************* CONSTRUCTOR *******************/
     /**
      * @method constructor
@@ -104,6 +110,17 @@ declare class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
      * console.log(rank); // "A"
      */
     isFolded(): boolean;
+    /**
+    * @method `getHand`
+    * @public
+    * Returns the poker table's `id`.
+    * @returns {CardInterface[]} The poker table's `id`.
+    *
+    * @example
+    * const rank = card.getRank();
+    * console.log(rank); // "A"
+    */
+    isBetMatched(): boolean;
     /******************* SETTERS *******************/
     /**
      * @method `setId`
@@ -160,6 +177,17 @@ declare class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
      * console.log(rank); // "A"
      */
     setIsFolded(bool: boolean): boolean;
+    /**
+    * @method `getHand`
+    * @public
+    * Returns the poker table's `id`.
+    * @returns {CardInterface[]} The poker table's `id`.
+    *
+    * @example
+    * const rank = card.getRank();
+    * console.log(rank); // "A"
+    */
+    setisBetMatched(betMatched: boolean): boolean;
     bet(amount: number): boolean;
     /**
      * @method `setHand`

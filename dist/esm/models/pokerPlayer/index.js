@@ -22,6 +22,7 @@ class PokerPlayer extends EventEmitter {
         this._chips = config.chips ? config.chips : 100;
         this._hand = config.hand ? config.hand : [];
         this._isFolded = config.isFolded ? config.isFolded : false;
+        this._isBetMatched = false;
     }
     /******************* GETTERS *******************/
     /**
@@ -48,7 +49,7 @@ class PokerPlayer extends EventEmitter {
      * console.log(rank); // "A"
      */
     getName() {
-        return this._id;
+        return this._name;
     }
     /**
      * @method `getChips`
@@ -88,6 +89,19 @@ class PokerPlayer extends EventEmitter {
      */
     isFolded() {
         return this._isFolded;
+    }
+    /**
+    * @method `getHand`
+    * @public
+    * Returns the poker table's `id`.
+    * @returns {CardInterface[]} The poker table's `id`.
+    *
+    * @example
+    * const rank = card.getRank();
+    * console.log(rank); // "A"
+    */
+    isBetMatched() {
+        return this._isBetMatched;
     }
     /******************* SETTERS *******************/
     /**
@@ -159,6 +173,20 @@ class PokerPlayer extends EventEmitter {
     setIsFolded(bool) {
         this._isFolded = bool;
         return this._isFolded;
+    }
+    /**
+    * @method `getHand`
+    * @public
+    * Returns the poker table's `id`.
+    * @returns {CardInterface[]} The poker table's `id`.
+    *
+    * @example
+    * const rank = card.getRank();
+    * console.log(rank); // "A"
+    */
+    setisBetMatched(betMatched) {
+        this._isBetMatched = betMatched;
+        return this._isBetMatched;
     }
     bet(amount) {
         this._chips = this.getChips() - amount;

@@ -1,5 +1,6 @@
 import { EventEmitter } from "events";
-import { PokerGameConfig, DeckInterface, PokerPhaseInterface, PokerPlayerInterface } from "../../interfaces";
+import { DeckInterface, PokerPhaseConfig, PokerPhaseInterface, PokerPlayerInterface } from "../../interfaces";
+import { PokerPhaseName } from "../../enums";
 /**
  * @class `PokerPhase`
  * Represents the current PokerPhase being played at the PokerTable.
@@ -8,16 +9,16 @@ import { PokerGameConfig, DeckInterface, PokerPhaseInterface, PokerPlayerInterfa
  * @extends EventEmitter
  */
 declare class PokerPhase extends EventEmitter implements PokerPhaseInterface {
-    /****************************************************************
+    /*************************************************************************************
      * PROPERTIES
-     ****************************************************************/
+     *************************************************************************************/
     /**
-     * @property {DeckInterface} _deck
+     * @property {DeckInterface} _name
      * The deck of cards used in the current PokerPhase.
      */
-    private _id;
+    private _name;
     /**
-     * @property {string} _currentPhase
+     * @property {DeckInterface} _deck
      * The current phase of the game (e.g., "pre-flop", "flop", "turn", "river").
      */
     private _deck;
@@ -26,9 +27,39 @@ declare class PokerPhase extends EventEmitter implements PokerPhaseInterface {
      * The community cards that are dealt face-up and shared by all players.
      */
     private _communityCards;
+    /**
+     * @property {CardInterface[]} _communityCards
+     * The community cards that are dealt face-up and shared by all players.
+     */
     private _players;
+    /**
+     * @property {CardInterface[]} _communityCards
+     * The community cards that are dealt face-up and shared by all players.
+     */
     private _pot;
-    private _currentPlayer;
+    /**
+     * @property {CardInterface[]} _communityCards
+     * The community cards that are dealt face-up and shared by all players.
+     */
+    private _currentPlayerPos;
+    /**
+     * @property {CardInterface[]} _communityCards
+     * The community cards that are dealt face-up and shared by all players.
+     */
+    private _dealerPos;
+    /**
+     * @property {CardInterface[]} _communityCards
+     * The community cards that are dealt face-up and shared by all players.
+     */
+    private _smallBlindPos;
+    /**
+     * @property {CardInterface[]} _communityCards
+     * The community cards that are dealt face-up and shared by all players.
+     */
+    private _bigBlindPos;
+    /*************************************************************************************
+     * CONSTRUCTOR & INITIALIZERS
+     *************************************************************************************/
     /**
      * @method constructor
      * @public
@@ -38,18 +69,47 @@ declare class PokerPhase extends EventEmitter implements PokerPhaseInterface {
      * @example
      * const deck = new Deck();
      */
-    constructor(config: PokerGameConfig);
-    /****************************************************************
+    constructor(config: PokerPhaseConfig);
+    /**
+     * @method `init`
+     * @private
+     * Initializes the deck with 52 unique cards.
+     * This method is called automatically inside the constructor during deck creation.
+     * @emits `deck:initialized` : Emits a `deck:initialized` event when the deck is created.
+     * @returns {void}
+     */
+    private init;
+    /*************************************************************************************
      * GET METHODS
-     ****************************************************************/
+     *************************************************************************************/
+    getName(): PokerPhaseName;
     getPlayers(): PokerPlayerInterface[];
+    getCurrentPlayerPos(): number;
     getDeck(): DeckInterface;
     getPot(): number;
+    getDealerPos(): number;
+    getSmallBlindPos(): number;
+    getBigBlindPos(): number;
     /****************************************************************
      * SET METHODS
      ****************************************************************/
     private setPlayers;
     setPot(pot: number): number;
+    setCurrentPlayerPos(player: number): boolean;
+    private setDealerPos;
+    private setSmallBlindPos;
+    private setBigBlindPos;
+    /**
+     * @method `setName`
+     * @public
+     * Returns the poker table's `id`.
+     * @returns {string} The poker table's `id`.
+     *
+     * @example
+     * const rank = card.getRank();
+     * console.log(rank); // "A"
+     */
+    setName(name: PokerPhaseName): PokerPhaseName;
     /****************************************************************
      * UPDATE METHODS
      ****************************************************************/
@@ -58,7 +118,7 @@ declare class PokerPhase extends EventEmitter implements PokerPhaseInterface {
      * Deals two hole cards to each player.
      * @returns {void}
      */
-    dealHoleCards(): boolean;
+    deal(): boolean;
     /**
      * @method `dealCommunityCards`
      * Deals the community cards to the table during the flop, turn, or river phases.
@@ -80,5 +140,9 @@ declare class PokerPhase extends EventEmitter implements PokerPhaseInterface {
     resolveBets(): void;
     bet(amount: number): boolean;
     fold(): boolean;
+    /**
+     * name
+     */
+    nextPlayer(): void;
 }
 export { PokerPhase };
