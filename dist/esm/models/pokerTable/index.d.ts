@@ -16,6 +16,16 @@ declare class PokerTable extends EventEmitter implements PokerTableInterface {
      */
     private _id;
     /**
+     * @property {number} _smallBlindAmount
+     * The maximum number of players that can be seated at the PokerTable[2-14].
+     */
+    private _smallBlindAmount;
+    /**
+     * @property {number} _bigBlindAmount
+     * The maximum number of players that can be seated at the PokerTable[2-14].
+     */
+    private _bigBlindAmount;
+    /**
      * @property {PokerSeatInterface[]} _seats
      * An array of players currently seated at the PokerTable.
      */

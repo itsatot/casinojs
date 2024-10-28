@@ -6,7 +6,9 @@ import { PokerRoomConfig, PokerPlayerInterface, PokerRoomInterface, PokerTableIn
  * This class extends `EventEmitter` and implements the `PokerRoomInterface` interface.
  */
 declare class PokerRoom extends EventEmitter implements PokerRoomInterface {
-    /******************* PROPERTIES *******************/
+    /****************************************************************
+     * PROPERTIES
+     ****************************************************************/
     /**
      * @property {string} _id
      * @private
@@ -42,6 +44,9 @@ declare class PokerRoom extends EventEmitter implements PokerRoomInterface {
      * const deck = new Deck();
      */
     constructor(config: PokerRoomConfig);
+    /****************************************************************
+     * GET METHODS
+     ****************************************************************/
     /**
      * @method `getId`
      * @public
@@ -75,6 +80,16 @@ declare class PokerRoom extends EventEmitter implements PokerRoomInterface {
      * console.log(rank); // "A"
      */
     getQueue(): PokerPlayerInterface[];
+    /**
+     * @method `getQueue`
+     * @public
+     * Returns the poker room's `name`.
+     * @returns {PokerPlayerInterface[]} The poker room's `name`.
+     *
+     * @example
+     * const rank = card.getName();
+     * console.log(rank); // "A"
+     */
     addToQueue(config: PokerPlayerConfig): boolean;
     /**
      * @method `getTable`
@@ -87,6 +102,9 @@ declare class PokerRoom extends EventEmitter implements PokerRoomInterface {
      * console.log(rank); // "A"
      */
     getTable(): PokerTableInterface;
+    /****************************************************************
+     * SET METHODS
+     ****************************************************************/
     /**
      * @method `setId`
      * @private
@@ -131,6 +149,12 @@ declare class PokerRoom extends EventEmitter implements PokerRoomInterface {
      * console.log(rank); // "A"
      */
     private setTable;
+    /****************************************************************
+     * UPDATE METHODS
+     ****************************************************************/
+    /****************************************************************
+     * DELETE METHODS
+     ****************************************************************/
     moveToTable(seatPostion: number): boolean;
 }
 export { PokerRoom };

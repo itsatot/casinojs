@@ -1,4 +1,5 @@
-import { PokerTableConfig } from "../pokerTable";
+import { PokerTableConfig, PokerTableInterface } from "../pokerTable";
+import { PokerPlayerConfig, PokerPlayerInterface } from "../pokerPlayer";
 /**
  * @interface `PokerRoomConfig`
  * Represents a PokerPlayer Config.
@@ -29,6 +30,20 @@ interface PokerRoomConfig {
  * @extends NodeJS.EventEmitter
  */
 interface PokerRoomInterface extends NodeJS.EventEmitter {
+    /****************************************************************
+     * GET METHODS
+     ****************************************************************/
+    /**
+     * @method `getId`
+     * @public
+     * Returns the poker table's `id`.
+     * @returns {string} The poker table's `id`.
+     *
+     * @example
+     * const rank = card.getRank();
+     * console.log(rank); // "A"
+     */
+    getId(): string;
     /**
      * @method `getName`
      * @public
@@ -40,5 +55,38 @@ interface PokerRoomInterface extends NodeJS.EventEmitter {
      * console.log(rank); // "A"
      */
     getName(): string;
+    /**
+     * @method `getQueue`
+     * @public
+     * Returns the poker room's `name`.
+     * @returns {PokerPlayerInterface[]} The poker room's `name`.
+     *
+     * @example
+     * const rank = card.getName();
+     * console.log(rank); // "A"
+     */
+    getQueue(): PokerPlayerInterface[];
+    /**
+     * @method `getQueue`
+     * @public
+     * Returns the poker room's `name`.
+     * @returns {PokerPlayerInterface[]} The poker room's `name`.
+     *
+     * @example
+     * const rank = card.getName();
+     * console.log(rank); // "A"
+     */
+    addToQueue(config: PokerPlayerConfig): boolean;
+    /**
+     * @method `getTable`
+     * @public
+     * Returns the poker room's `name`.
+     * @returns {PokerTableInterface} The poker room's `name`.
+     *
+     * @example
+     * const rank = card.getName();
+     * console.log(rank); // "A"
+     */
+    getTable(): PokerTableInterface;
 }
 export { PokerRoomConfig, PokerRoomInterface };

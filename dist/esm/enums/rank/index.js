@@ -1,12 +1,14 @@
 /**
- * @enum `Rank`
+ * @enum {string} `Rank`
  * Represents the ranks of playing cards used in poker.
  * Each rank corresponds to a specific card value from 2 to Ace.
  *
  * @example
+ * ```typescript
  * const rank = Rank.Ace;
  * console.log(rank);
  * //output: "A"
+ * ```
  */
 var Rank;
 (function (Rank) {

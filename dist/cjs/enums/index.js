@@ -1,17 +1,4 @@
 "use strict";
-/**
- * @module `Enums`
- * Centralized export for all poker-related enums.
- * This module gathers and exports enums for `Rank` and `Suit`,
- * which represent the ranks and suits of playing cards in poker.
- *
- * By centralizing these enums, other modules can import them easily
- * for consistent use across the library.
- *
- * @example
- * // Import all enums from the centralized module
- * import { Rank, Suit } from './enums';
- */
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -39,7 +26,22 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SuitEnums = exports.RankEnums = exports.PokerPhaseNameEnums = void 0;
+exports.SuitEnums = exports.RankEnums = exports.PokerPhaseNameEnums = exports.CasinoEventNameEnums = void 0;
+/**
+ * @module `Enums`
+ * Centralized export for all poker-related enums.
+ * This module gathers and exports enums for `Rank` and `Suit`,
+ * which represent the ranks and suits of playing cards in poker.
+ *
+ * By centralizing these enums, other modules can import them easily
+ * for consistent use across the library.
+ *
+ * @example
+ * // Import all enums from the centralized module
+ * import { Rank, Suit } from './enums';
+ */
+exports.CasinoEventNameEnums = __importStar(require("./casinoEventName"));
+__exportStar(require("./casinoEventName"), exports);
 exports.PokerPhaseNameEnums = __importStar(require("./pokerPhaseName"));
 __exportStar(require("./pokerPhaseName"), exports);
 exports.RankEnums = __importStar(require("./rank"));
