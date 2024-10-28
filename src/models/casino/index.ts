@@ -666,7 +666,7 @@ class Casino extends EventEmitter implements CasinoInterface {
    * console.log(newRoom.getName()); // Outputs: "Champions Lounge"
    * ```
    */
-  protected _createRoom(config: PokerRoomConfig): PokerRoomInterface {
+  protected _createRoom(config: PokerRoomConfig|undefined): PokerRoomInterface {
     const room = new PokerRoom(config);
     this.__rooms.push(room);
     this.emit(CasinoEventName.ROOM_CREATED, room);

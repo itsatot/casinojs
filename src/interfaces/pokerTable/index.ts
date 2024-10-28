@@ -16,13 +16,13 @@ interface PokerTableConfig {
    * @property {number} size
    * The maximum number of players that can be seated at the PokerTable[2-14].
    */
-  size: number;
+  size: number | undefined;
 
   /**
    * @property {number} smallBlindAmount
    * The maximum number of players that can be seated at the PokerTable[2-14].
    */
-  smallBlindAmount: number;
+  smallBlindAmount: number | undefined;
 }
 
 /**

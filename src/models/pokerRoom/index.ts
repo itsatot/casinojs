@@ -5,9 +5,11 @@ import {
   PokerRoomInterface,
   PokerTableInterface,
   PokerPlayerConfig,
+  PokerTableConfig,
 } from "../../interfaces";
 import { PokerTable } from "../pokerTable";
 import { PokerPlayer } from "../pokerPlayer";
+import { getActiveResourcesInfo } from "process";
 
 /**
  * @class `PokerRoom`
@@ -39,7 +41,7 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
    * console.log(casino.getRooms()); // Returns an empty array initially
    * ```
    */
- private __id: string;
+ private __id: string = ``;
 
  /**
    * @property {PokerRoomInterface[]} __rooms
@@ -61,7 +63,7 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
    * console.log(casino.getRooms()); // Returns an empty array initially
    * ```
    */
- private __name: string;
+ private __name: string = ``;
 
  /**
    * @property {PokerRoomInterface[]} __rooms
@@ -83,7 +85,7 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
    * console.log(casino.getRooms()); // Returns an empty array initially
    * ```
    */
- private __queue: PokerPlayerInterface[];
+ private __queue: PokerPlayerInterface[] = [];
 
  /**
    * @property {PokerRoomInterface[]} __rooms
@@ -105,7 +107,7 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
    * console.log(casino.getRooms()); // Returns an empty array initially
    * ```
    */
- private __table: PokerTableInterface;
+ private __table: PokerTableInterface|undefined = undefined;
 
  
   /**************************************************************************************************************
@@ -121,12 +123,9 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
    * console.log(casino.getRooms()); // Output: []
    * ```
    */
- constructor(config: PokerRoomConfig) {
+ constructor(config: PokerRoomConfig | undefined) {
     super();
-    this.__id = config.id ? config.id : ``;
-    this.__name = config.name ? config.name : ``;
-    this.__queue = [];
-    this.__table = new PokerTable(config.tableConfig);
+    this.__init(config);
   }
 
   /**
@@ -149,8 +148,13 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
    * const casino = new Casino();
    * ```
    */
-  private __init(): void {
+  private __init(config: PokerRoomConfig | undefined): void {
     // No current logic, but reserved for future setup or configuration
+    if (config) {
+      this.__id = config.id ? config.id :this.__id;
+      this.__name = config.name ? config.name :this.__name;
+      this.__table = config.tableConfig? new PokerTable(config.tableConfig):this.__table;
+    } 
   }
   
   /**************************************************************************************************************
@@ -199,9 +203,8 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
    * console.log(pokerRoom.getName()); // Logs "HighRollers"
    * ```
    */
-  setName(name: string): string{
-    this.__name = name;
-    return this.__name;
+  public setName(name: string): string{
+    return this._setName(name);
   }
 
   /**
@@ -247,9 +250,8 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
    * console.log(pokerRoom.getQueue()); // Logs the updated player queue
    * ```
    */
-  setQueue(queue: PokerPlayerInterface[]): PokerPlayerInterface[]{
-    this.__queue = queue;
-    return this.__queue
+  public setQueue(queue: PokerPlayerInterface[]): PokerPlayerInterface[]{
+    return this._setQueue(queue);
   }
 
   /**
@@ -294,9 +296,55 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
    * console.log(pokerRoom.getTable()); // Logs the table configuration
    * ```
    */
-  setTable(table: PokerTableInterface): PokerTableInterface{
-    this.__table = table;
-    return this.__table;
+  public setTable(table: PokerTableInterface): PokerTableInterface{
+    return this._setTable(table);
+  }
+
+   /**
+   * #### Description
+   * Creates a new `PokerRoom` instance based on the provided configuration and adds it to the Casino's rooms list.
+   *
+   * #### Implements
+   * `N/A`
+   *
+   * #### Overrides
+   * `N/A`
+   *
+   * #### Purpose
+   * Allows the Casino to dynamically create new rooms as needed by providing specific room configurations.
+   *
+   * #### Events
+   * - Emits a `CasinoEventName.ROOM_CREATED` event, enabling listeners to respond to the creation of a new room.
+   *
+   * #### Parameters
+   * - `config`: A `PokerRoomConfig` object containing details like `name`, `tableSize`, `smallBlind`, and `bigBlind`.
+   *
+   * #### Requirements
+   * `N/A`
+   *
+   * #### Returns
+   * - Returns the newly created `PokerRoomInterface` instance.
+   *
+   * #### Usage
+   * Primarily used within subclasses or protected methods to dynamically create and add rooms to the Casino.
+   *
+   * @param {PokerRoomConfig} config - Configuration settings for creating a new `PokerRoom`.
+   * @returns {PokerRoomInterface} - The newly created room instance.
+   *
+   * @example
+   * ```typescript
+   * class SpecialCasino extends Casino {
+   *   public createSpecialRoom(config: PokerRoomConfig): PokerRoomInterface {
+   *     return this._createRoom(config);
+   *   }
+   * }
+   * const specialCasino = new SpecialCasino();
+   * const newRoom = specialCasino.createSpecialRoom({ name: "Champions Lounge", tableSize: 10, smallBlind: 100, bigBlind: 200 });
+   * console.log(newRoom.getName()); // Outputs: "Champions Lounge"
+   * ```
+   */
+   public createTable(config: PokerTableConfig): PokerTableInterface {
+    return this._createTable(config);
   }
 
   /**************************************************************************************************************
@@ -341,7 +389,7 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
    * console.log(pokerRoom.getId()); // Logs "Room123"
    * ```
    */
-  getId(): string{
+  public getId(): string{
     return this.__id;
   }
 
@@ -383,10 +431,9 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
    * console.log(pokerRoom.getName()); // Logs "VIP Room"
    * ```
    */
-  getName(): string{
+  public getName(): string{
     return this.__name;
   }
-
 
   /**
    * #### Description
@@ -426,7 +473,7 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
    * console.log(pokerRoom.getQueue()); // Logs an array of players awaiting seating
    * ```
    */
-  getQueue(): PokerPlayerInterface[]{
+  public getQueue(): PokerPlayerInterface[]{
     return this.__queue;
   }
 
@@ -469,7 +516,7 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
    * console.log(table); // Logs the PokerTable instance associated with "High Stakes" room
    * ```
    */
-  getTable(): PokerTableInterface{
+  public getTable(): PokerTableInterface|undefined{
     return this.__table;
   }
 
@@ -477,10 +524,48 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
    * UPDATE METHODS (MODIFYING EXISTING OBJECTS)
    **************************************************************************************************************/
 
+  /**
+   * @method `getQueue`
+   * @public
+   * Returns the poker room's `name`.
+   * @returns {PokerPlayerInterface[]} The poker room's `name`.
+   *
+   * @example
+   * const rank = card.getName();
+   * console.log(rank); // "A"
+   */
+  public addToQueue(config: PokerPlayerConfig): boolean {
+    const player = new PokerPlayer(config);
+    this.__queue.push(player);
+    return true;
+  }
+
+  public moveToTable(seatPostion: number): boolean {
+    let roomSeats = this.getTable()?.getSeats();
+    if (roomSeats) {
+      for (let index = 0; index < roomSeats.length; index++) {
+        if (
+          roomSeats[index].getPosition() === seatPostion &&
+          !roomSeats[index].isOccupied() &&
+          this.getQueue().length >= 1
+        ) {
+          let queue = this.getQueue();
+          let pokerPlayer = queue.splice(0, 1);
+          this.setQueue(queue);
+          roomSeats[index].setPlayer(pokerPlayer[0]);
+          return true;
+        }
+      }
+    }
+    
+  return false;
+}
+
   /**************************************************************************************************************
    * DELETE METHODS (REMOVING OBJECTS)
    **************************************************************************************************************/
 
+  
   /**************************************************************************************************************
    * BUSINESS-LOGIC METHODS (LOGIC & CALCULATIONS)
    **************************************************************************************************************/
@@ -493,30 +578,71 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
    * INTERNAL METHODS (PROTECTED)
    **************************************************************************************************************/
 
+  protected _setName(name: string): string{
+    this.__name = name;
+    return this.__name;
+  }
+
+  protected _setQueue(queue: PokerPlayerInterface[]): PokerPlayerInterface[]{
+    this.__queue = queue;
+    return this.__queue
+  }
+
+  protected _setTable(table: PokerTableInterface): PokerTableInterface{
+    this.__table = table;
+    return this.__table;
+  }
+
+   /**
+   * #### Description
+   * Creates a new `PokerRoom` instance based on the provided configuration and adds it to the Casino's rooms list.
+   *
+   * #### Implements
+   * `N/A`
+   *
+   * #### Overrides
+   * `N/A`
+   *
+   * #### Purpose
+   * Allows the Casino to dynamically create new rooms as needed by providing specific room configurations.
+   *
+   * #### Events
+   * - Emits a `CasinoEventName.ROOM_CREATED` event, enabling listeners to respond to the creation of a new room.
+   *
+   * #### Parameters
+   * - `config`: A `PokerRoomConfig` object containing details like `name`, `tableSize`, `smallBlind`, and `bigBlind`.
+   *
+   * #### Requirements
+   * `N/A`
+   *
+   * #### Returns
+   * - Returns the newly created `PokerRoomInterface` instance.
+   *
+   * #### Usage
+   * Primarily used within subclasses or protected methods to dynamically create and add rooms to the Casino.
+   *
+   * @param {PokerRoomConfig} config - Configuration settings for creating a new `PokerRoom`.
+   * @returns {PokerRoomInterface} - The newly created room instance.
+   *
+   * @example
+   * ```typescript
+   * class SpecialCasino extends Casino {
+   *   public createSpecialRoom(config: PokerRoomConfig): PokerRoomInterface {
+   *     return this._createRoom(config);
+   *   }
+   * }
+   * const specialCasino = new SpecialCasino();
+   * const newRoom = specialCasino.createSpecialRoom({ name: "Champions Lounge", tableSize: 10, smallBlind: 100, bigBlind: 200 });
+   * console.log(newRoom.getName()); // Outputs: "Champions Lounge"
+   * ```
+   */
+   protected _createTable(config: PokerTableConfig): PokerTableInterface {
+    this.__table = new PokerTable(config);
+    return this.__table;
+  }
   /**************************************************************************************************************
    * INTERNAL METHODS (PRIVATE)
    **************************************************************************************************************/
-
- 
-
-  /**
-   * @method `getQueue`
-   * @public
-   * Returns the poker room's `name`.
-   * @returns {PokerPlayerInterface[]} The poker room's `name`.
-   *
-   * @example
-   * const rank = card.getName();
-   * console.log(rank); // "A"
-   */
-  // public addToQueue(config: PokerPlayerConfig): boolean {
-  //   const player = new PokerPlayer(config);
-  //   this.__queue.push(player);
-  //   return true;
-  // }
-
- 
-
   /**
    * @method `setId`
    * @private
@@ -527,32 +653,10 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
    * const rank = card.setRank();
    * console.log(rank); // "A"
    */
-  // private setId(id: string): string {
-  //   this.__id = id;
-  //   return this.__id;
-  // }
-
-
-
-
-
-//   public moveToTable(seatPostion: number): boolean {
-//     let roomSeats = this.getTable().getSeats();
-//     for (let index = 0; index < roomSeats.length; index++) {
-//       if (
-//         roomSeats[index].getPosition() === seatPostion &&
-//         !roomSeats[index].isOccupied() &&
-//         this.getQueue().length >= 1
-//       ) {
-//         let queue = this.getQueue();
-//         let pokerPlayer = queue.splice(0, 1);
-//         this.setQueue(queue);
-//         roomSeats[index].setPlayer(pokerPlayer[0]);
-//         return true;
-//       }
-//     }
-//     return false;
-//   }
+  private __setId(id: string): string {
+    this.__id = id;
+    return this.__id;
+  }
 }
 
 export { PokerRoom };

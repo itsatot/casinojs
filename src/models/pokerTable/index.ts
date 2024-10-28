@@ -20,34 +20,34 @@ class PokerTable extends EventEmitter implements PokerTableInterface {
   /******************* PROPERTIES *******************/
 
   /**
-   * @property {string} _id
+   * @property {string} __id
    * A unique identifier for the PokerTable.
    */
-  private _id: string;
+  private __id: string = ``;
 
   /**
-   * @property {number} _smallBlindAmount
+   * @property {number} __smallBlindAmount
    * The maximum number of players that can be seated at the PokerTable[2-14].
    */
-  private _smallBlindAmount: number;
+  private __smallBlindAmount: number = 5;
 
   /**
-   * @property {number} _bigBlindAmount
+   * @property {number} __bigBlindAmount
    * The maximum number of players that can be seated at the PokerTable[2-14].
    */
-  private _bigBlindAmount: number;
+  private __bigBlindAmount: number = this.__smallBlindAmount*2;
 
   /**
-   * @property {PokerSeatInterface[]} _seats
+   * @property {PokerSeatInterface[]} __seats
    * An array of players currently seated at the PokerTable.
    */
-  private _seats: PokerSeatInterface[];
+  private __seats: PokerSeatInterface[] =[];
 
   /**
    * @property {boolean} gameInProgress
    * A boolean indicating whether a PokerGame is currently in progress at the table.
    */
-  private _gameInProgress: boolean;
+  private __gameInProgress: boolean = false;
 
   /**
    * @method constructor
@@ -58,18 +58,10 @@ class PokerTable extends EventEmitter implements PokerTableInterface {
    * @example
    * const deck = new Deck();
    */
-  constructor(config: PokerTableConfig) {
+  constructor(config: PokerTableConfig | undefined) {
     super();
-    this._id = config.id ? config.id : ``;
-    this._smallBlindAmount = config.smallBlindAmount
-      ? config.smallBlindAmount
-      : 5;
-    this._bigBlindAmount = this._smallBlindAmount * 2;
-    this._seats = [];
-    this._gameInProgress = false;
-    this.init(config.size ? config.size : 8);
+    this.__init(config);
   }
-
   /**
    * @method `init`
    * @private
@@ -78,18 +70,30 @@ class PokerTable extends EventEmitter implements PokerTableInterface {
    * @emits `deck:initialized` : Emits a `deck:initialized` event when the deck is created.
    * @returns {void}
    */
-  private init(size: number): void {
-    for (let i = 0; this.getSeats().length !== size; i++) {
-      const seat = new PokerSeat({
-        id: ``,
-        position: i,
-        isDealer: false,
-        isBigBlind: false,
-        isSmallBlind: false,
-        player: undefined,
-      });
-      this._seats?.push(seat);
+  private __init(config: PokerTableConfig | undefined): void {
+    if (config) {
+      this.__id = config.id ? config.id : this.__id;
+      this.__smallBlindAmount = config.smallBlindAmount
+        ? config.smallBlindAmount
+        : 5;
+      this.__bigBlindAmount = this.__smallBlindAmount * 2;
+      this.__seats = [];
+      this.__gameInProgress = false;
+      
+      for (let i = 0; this.getSeats().length !== config.size; i++) {
+        const seat = new PokerSeat({
+          id: ``,
+          position: i,
+          isDealer: false,
+          isBigBlind: false,
+          isSmallBlind: false,
+          player: undefined,
+        });
+        this.__seats?.push(seat);
+      }
     }
+
+    
   }
 
   /**
@@ -103,7 +107,7 @@ class PokerTable extends EventEmitter implements PokerTableInterface {
    * console.log(rank); // "A"
    */
   public getId(): string {
-    return this._id;
+    return this.__id;
   }
 
   /**
@@ -117,8 +121,8 @@ class PokerTable extends EventEmitter implements PokerTableInterface {
    * console.log(rank); // "A"
    */
   private setId(id: string): string {
-    this._id = id;
-    return this._id;
+    this.__id = id;
+    return this.__id;
   }
 
   /**
@@ -138,7 +142,7 @@ class PokerTable extends EventEmitter implements PokerTableInterface {
    * @returns {number}
    */
   public getSeats(): PokerSeatInterface[] {
-    return this._seats;
+    return this.__seats;
   }
 
   /**
@@ -152,7 +156,7 @@ class PokerTable extends EventEmitter implements PokerTableInterface {
    * console.log(rank); // "A"
    */
   private setSeats(seats: PokerSeatInterface[]): boolean {
-    this._seats = seats;
+    this.__seats = seats;
     return true;
   }
 

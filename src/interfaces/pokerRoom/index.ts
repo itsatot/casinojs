@@ -131,7 +131,7 @@ interface PokerRoomConfig {
    * // Output: { tableSize: 4, smallBlind: 5, bigBlind: 10 }
    * ```
    */
-  tableConfig: PokerTableConfig;
+  tableConfig: PokerTableConfig | undefined;
 }
 /**
  * @interface `PokerRoomInterface`
@@ -475,7 +475,7 @@ interface PokerRoomInterface extends NodeJS.EventEmitter {
    * console.log(table); // Logs the PokerTable instance associated with "High Stakes" room
    * ```
    */
-  getTable(): PokerTableInterface;
+  getTable(): PokerTableInterface|undefined;
 
   /**************************************************************************************************************
    * UPDATE METHODS (MODIFYING EXISTING OBJECTS)
