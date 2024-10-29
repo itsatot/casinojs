@@ -107,12 +107,12 @@ class PokerPhase extends EventEmitter implements PokerPhaseInterface {
       this.__communityCards = config.communityCards
         ? config.communityCards
         : [];
-      this._players = config.players ? config.players : [];
-      this._pot = config.pot ? config.pot : 0;
-      this._currentPlayerPos = 1;
-      this._dealerPos = config.dealerPos ? config.dealerPos : 0;
-      this._smallBlindPos = config.smallBlindPos ? config.smallBlindPos : 0;
-      this._bigBlindPos = config.bigBlindPos ? config.bigBlindPos : 0;
+      this.__players = config.players ? config.players : [];
+      this.__pot = config.pot ? config.pot : 0;
+      this.__currentPlayerPos = 1;
+      this.__dealerPos = config.dealerPos ? config.dealerPos : 0;
+      this.__smallBlindPos = config.smallBlindPos ? config.smallBlindPos : 0;
+      this.__bigBlindPos = config.bigBlindPos ? config.bigBlindPos : 0;
       // new PokerPlayer({id:``,name:``,chips:100,hand:[],isFolded:false});
     } else {
     }
@@ -130,11 +130,11 @@ class PokerPhase extends EventEmitter implements PokerPhaseInterface {
   }
 
   public getPlayers(): PokerPlayerInterface[] {
-    return this._players;
+    return this.__players;
   }
 
   public getCurrentPlayerPos(): number {
-    return this._currentPlayerPos;
+    return this.__currentPlayerPos;
   }
 
   public getDeck(): DeckInterface {
@@ -142,19 +142,19 @@ class PokerPhase extends EventEmitter implements PokerPhaseInterface {
   }
 
   public getPot(): number {
-    return this._pot;
+    return this.__pot;
   }
 
   public getDealerPos(): number {
-    return this._dealerPos;
+    return this.__dealerPos;
   }
 
   public getSmallBlindPos(): number {
-    return this._smallBlindPos;
+    return this.__smallBlindPos;
   }
 
   public getBigBlindPos(): number {
-    return this._bigBlindPos;
+    return this.__bigBlindPos;
   }
 
   /****************************************************************
@@ -162,30 +162,30 @@ class PokerPhase extends EventEmitter implements PokerPhaseInterface {
    ****************************************************************/
 
   private setPlayers(players: PokerPlayerInterface[]): PokerPlayerInterface[] {
-    return (this._players = players);
+    return (this.__players = players);
   }
 
   public setPot(pot: number): number {
-    return (this._pot = pot);
+    return (this.__pot = pot);
   }
 
   public setCurrentPlayerPos(player: number): boolean {
-    this._currentPlayerPos = player;
+    this.__currentPlayerPos = player;
     return true;
   }
 
   private setDealerPos(pos: number): boolean {
-    this._dealerPos = pos;
+    this.__dealerPos = pos;
     return true;
   }
 
   private setSmallBlindPos(pos: number): boolean {
-    this._smallBlindPos = pos;
+    this.__smallBlindPos = pos;
     return true;
   }
 
   private setBigBlindPos(pos: number): boolean {
-    this._bigBlindPos = pos;
+    this.__bigBlindPos = pos;
     return true;
   }
 
