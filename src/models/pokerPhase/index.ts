@@ -28,52 +28,52 @@ class PokerPhase extends EventEmitter implements PokerPhaseInterface {
   private __name: PokerPhaseName = PokerPhaseName.PRE_FLOP;
 
   /**
-   * @property {DeckInterface} _deck
+   * @property {DeckInterface} __deck
    * The current phase of the game (e.g., "pre-flop", "flop", "turn", "river").
    */
   private __deck: DeckInterface = new Deck();
 
   /**
-   * @property {CardInterface[]} _communityCards
+   * @property {CardInterface[]} __communityCards
    * The community cards that are dealt face-up and shared by all players.
    */
   private __communityCards: CardInterface[] = [];
 
   /**
-   * @property {CardInterface[]} _communityCards
+   * @property {CardInterface[]} __communityCards
    * The community cards that are dealt face-up and shared by all players.
    */
   private __players: PokerPlayerInterface[] = [];
 
   /**
-   * @property {CardInterface[]} _communityCards
+   * @property {CardInterface[]} __communityCards
    * The community cards that are dealt face-up and shared by all players.
    */
-  private __pot: number=0;
+  private __pot: number = 0;
 
   /**
-   * @property {CardInterface[]} _communityCards
+   * @property {CardInterface[]} __communityCards
    * The community cards that are dealt face-up and shared by all players.
    */
-  private __currentPlayerPos: number=0;
+  private __currentPlayerPos: number = 0;
 
   /**
-   * @property {CardInterface[]} _communityCards
+   * @property {CardInterface[]} __communityCards
    * The community cards that are dealt face-up and shared by all players.
    */
-  private __dealerPos: number=0;
+  private __dealerPos: number = 0;
 
   /**
-   * @property {CardInterface[]} _communityCards
+   * @property {CardInterface[]} __communityCards
    * The community cards that are dealt face-up and shared by all players.
    */
-  private __smallBlindPos: number=1;
+  private __smallBlindPos: number = 1;
 
   /**
-   * @property {CardInterface[]} _communityCards
+   * @property {CardInterface[]} __communityCards
    * The community cards that are dealt face-up and shared by all players.
    */
-  private __bigBlindPos: number=2;
+  private __bigBlindPos: number = 2;
 
   /*************************************************************************************
    * CONSTRUCTOR & INITIALIZERS
@@ -103,8 +103,10 @@ class PokerPhase extends EventEmitter implements PokerPhaseInterface {
   private __init(config?: PokerPhaseConfig): void {
     if (config) {
       this.__name = config.name ? config.name : PokerPhaseName.PRE_FLOP;
-      this._deck = config.deck ? config.deck : new Deck();
-      this._communityCards = [];
+      this.__deck = config.deck ? config.deck : new Deck();
+      this.__communityCards = config.communityCards
+        ? config.communityCards
+        : [];
       this._players = config.players ? config.players : [];
       this._pot = config.pot ? config.pot : 0;
       this._currentPlayerPos = 1;
@@ -136,7 +138,7 @@ class PokerPhase extends EventEmitter implements PokerPhaseInterface {
   }
 
   public getDeck(): DeckInterface {
-    return this._deck;
+    return this.__deck;
   }
 
   public getPot(): number {
@@ -225,7 +227,7 @@ class PokerPhase extends EventEmitter implements PokerPhaseInterface {
   dealCommunityCards(count: number): boolean {
     for (let index = 0; index < count; index++) {
       let card = this.getDeck().draw();
-      card ? this._communityCards.push(card) : {};
+      card ? this.__communityCards.push(card) : {};
     }
     return true;
   }

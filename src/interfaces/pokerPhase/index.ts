@@ -1,6 +1,7 @@
 import { DeckInterface } from "../deck";
 import { PokerPlayerInterface } from "../pokerPlayer";
 import { PokerPhaseName } from "../../enums";
+import { CardInterface } from "../card";
 
 /**
  * @interface `PokerPhaseConfig`
@@ -20,7 +21,7 @@ interface PokerPhaseConfig {
   deck: DeckInterface;
 
   /**
-   * @property {string | undefined} players
+   * @property {PokerPlayerInterface[]} players
    * The maximum number of players that can be seated at the PokerTable[2-14].
    */
   players: PokerPlayerInterface[];
@@ -29,7 +30,7 @@ interface PokerPhaseConfig {
    * @property {number} pot
    * The maximum number of players that can be seated at the PokerTable[2-14].
    */
-  pot: number;
+  pot?: number;
 
   /**
    * @property {number} pot
@@ -48,6 +49,12 @@ interface PokerPhaseConfig {
    * The maximum number of players that can be seated at the PokerTable[2-14].
    */
   bigBlindPos: number;
+
+  /**
+   * @property {number} communityCards
+   * The maximum number of players that can be seated at the PokerTable[2-14].
+   */
+  communityCards?: CardInterface[];
 }
 
 /**
