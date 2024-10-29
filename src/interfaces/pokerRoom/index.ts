@@ -131,7 +131,7 @@ interface PokerRoomConfig {
    * // Output: { tableSize: 4, smallBlind: 5, bigBlind: 10 }
    * ```
    */
-  tableConfig: PokerTableConfig | undefined;
+  tableConfigs: PokerTableConfig[] | undefined;
 }
 /**
  * @interface `PokerRoomInterface`
@@ -225,51 +225,6 @@ interface PokerRoomInterface extends NodeJS.EventEmitter {
 
   /**
    * #### Description
-   * Sets the queue of players waiting to enter the `PokerTable` within the `PokerRoom`. This queue helps
-   * manage player flow and assign seating as tables become available.
-   *
-   * #### Implements
-   * `N/A` - This method is part of the `PokerRoomInterface` and does not implement any external methods.
-   *
-   * #### Overrides
-   * `N/A` - This method does not override any superclass or parent methods.
-   *
-   * #### Purpose
-   * The `setQueue` method provides a structured way to set or update the player queue. This queue is essential
-   * for room management, helping to keep a record of players awaiting entry and manage seating arrangements.
-   *
-   * #### Events
-   * `N/A` - No events are emitted by this method.
-   *
-   * #### Parameters
-   * - `queue`: An array of `PokerPlayerInterface` objects, each representing a player awaiting entry into the room’s `PokerTable`.
-   *
-   * #### Requirements
-   * - `queue` should be an array of valid `PokerPlayerInterface` instances.
-   * - If empty, the queue indicates that no players are currently waiting for entry.
-   *
-   * #### Returns
-   * - Returns the `queue` array after updating it within the room.
-   *
-   * #### Usage
-   * Use this method to set or update the player queue in cases where player flow needs control,
-   * ensuring smooth transitions as players are seated at the table.
-   *
-   * @param {PokerPlayerInterface[]} queue - The new list of players waiting to enter the table.
-   * @returns {PokerPlayerInterface[]} - Returns the updated player queue.
-   *
-   * @example
-   * ```typescript
-   * const pokerRoom = new PokerRoom({ name: "Room2", tableSize: 6 });
-   * const queue = [new PokerPlayer("Alice"), new PokerPlayer("Bob")];
-   * pokerRoom.setQueue(queue); // Sets the player queue
-   * console.log(pokerRoom.getQueue()); // Logs the updated player queue
-   * ```
-   */
-  setQueue(queue: PokerPlayerInterface[]): PokerPlayerInterface[];
-
-  /**
-   * #### Description
    * Sets the table configuration within the `PokerRoom`. The table configuration determines essential
    * settings for the poker table, such as table size, small blind, and big blind values.
    *
@@ -310,7 +265,7 @@ interface PokerRoomInterface extends NodeJS.EventEmitter {
    * console.log(pokerRoom.getTable()); // Logs the table configuration
    * ```
    */
-  setTable(table: PokerTableInterface): PokerTableInterface;
+  setTables(tables: PokerTableInterface[]): PokerTableInterface[];
 
   /**************************************************************************************************************
    * READ METHODS (GETTERS & DATA RETRIEVAL)
@@ -396,45 +351,6 @@ interface PokerRoomInterface extends NodeJS.EventEmitter {
    */
   getName(): string;
 
-  /**
-   * #### Description
-   * Retrieves the current queue of players awaiting seating in the `PokerRoom`.
-   *
-   * #### Implements
-   * `N/A` - This method is part of `PokerRoomInterface` without implementing external methods.
-   *
-   * #### Overrides
-   * `N/A` - This method does not override any superclass or parent methods.
-   *
-   * #### Purpose
-   * The `getQueue` method is essential for accessing the list of players waiting for a seat in the `PokerRoom`.
-   * It provides insight into the queue length and composition, helping manage room capacity and player flow.
-   *
-   * #### Events
-   * `N/A` - This method does not emit any events.
-   *
-   * #### Parameters
-   * `N/A` - No parameters are required for this method.
-   *
-   * #### Requirements
-   * `N/A` - This method simply returns the existing queue without modifying it.
-   *
-   * #### Returns
-   * - Returns an array of `PokerPlayerInterface` instances, representing the players in the waiting queue.
-   *
-   * #### Usage
-   * Call this method to view the list of players awaiting entry to the room. This can be used for monitoring,
-   * player assignment, and room management purposes.
-   *
-   * @returns {PokerPlayerInterface[]} - An array containing the players in the waiting queue.
-   *
-   * @example
-   * ```typescript
-   * const pokerRoom = new PokerRoom({ name: "Lobby", tableSize: 6 });
-   * console.log(pokerRoom.getQueue()); // Logs an array of players awaiting seating
-   * ```
-   */
-  getQueue(): PokerPlayerInterface[];
 
   /**
    * #### Description
@@ -475,7 +391,7 @@ interface PokerRoomInterface extends NodeJS.EventEmitter {
    * console.log(table); // Logs the PokerTable instance associated with "High Stakes" room
    * ```
    */
-  getTable(): PokerTableInterface|undefined;
+  getTables(): PokerTableInterface[];
 
   /**************************************************************************************************************
    * UPDATE METHODS (MODIFYING EXISTING OBJECTS)

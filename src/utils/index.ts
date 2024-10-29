@@ -7,4 +7,4 @@
  * // Import models from the centralized module
  * import { Card, Deck } from './models';
  */
-export * from "./generateUniqueId";
+export {generateUniqueId} from "./generateUniqueId";
