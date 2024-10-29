@@ -1,40 +1,40 @@
-import { EventEmitter } from "events";
 import { PokerTableConfig, PokerTableInterface } from "../pokerTable";
-import { PokerPlayerInterface } from "../pokerPlayer";
 
 /**
  * @interface `PokerRoomConfig`
- * Defines the configuration settings required to instantiate a `PokerRoom` in the Casino system. 
- * This configuration object provides essential information such as the room’s unique identifier, 
- * display name, and table settings. Designed to streamline the setup of poker rooms, this config 
- * helps standardize room creation and ensure consistent properties across different rooms.
+ * Represents the configuration settings necessary to create a `PokerRoom` within the Casino system.
+ * This interface outlines essential properties such as a unique identifier, room name, and a set of table configurations,
+ * ensuring standardized room setup and consistent properties across all instances.
  *
  * #### Purpose
- * The `PokerRoomConfig` serves as the blueprint for configuring `PokerRoom` instances, allowing
- * developers to initialize new rooms with standardized settings. This configuration ensures that 
- * each `PokerRoom` has all necessary properties predefined, making room setup efficient and reliable.
+ * `PokerRoomConfig` is intended to streamline the creation and initialization of `PokerRoom` instances,
+ * providing a pre-defined structure for necessary properties. This configuration standardization simplifies
+ * room management and improves overall code clarity.
  *
  * #### Structure Overview
  * This interface includes:
- * - **Room Identification**: `id` and `name` properties for uniquely identifying and naming the room.
- * - **Table Configuration**: `tableConfig`, which defines core table settings such as size and blind values.
+ * - **Room Identification**: `id` and `name` properties for unique identification and naming of the room.
+ * - **Table Configurations**: `tableConfigs`, an array that specifies one or more configurations for tables within the room.
  *
  * #### Usage Context
- * The `PokerRoomConfig` is typically used as an input object for the `PokerRoom` constructor. By providing 
- * a well-defined structure for room settings, this config object helps prevent errors during room setup 
- * and enforces consistency across room instances.
+ * `PokerRoomConfig` is typically utilized as a parameter for the `PokerRoom` constructor, ensuring that
+ * each room is initialized with consistent, complete settings. By using this config object, developers can avoid
+ * common setup errors and maintain uniformity across different rooms in the Casino system.
  *
  * #### Requirements
- * Each `PokerRoomConfig` must specify:
- * - A valid `tableConfig` object, defining essential game settings.
- * - (Optional) A unique `id` and descriptive `name`, enhancing room identification.
+ * Each `PokerRoomConfig` object must:
+ * - Provide a valid `tableConfigs` array, containing configuration details for each table within the room.
+ * - Optionally specify a unique `id` and `name`, enhancing room distinction and readability.
  *
  * @example
  * ```typescript
  * const roomConfig: PokerRoomConfig = {
  *   id: "room42",
  *   name: "High Stakes",
- *   tableConfig: { tableSize: 6, smallBlind: 50, bigBlind: 100 }
+ *   tableConfigs: [
+ *     { tableSize: 6, smallBlind: 50, bigBlind: 100 },
+ *     { tableSize: 8, smallBlind: 100, bigBlind: 200 }
+ *   ]
  * };
  * const pokerRoom = new PokerRoom(roomConfig); // Initializes a new PokerRoom with the specified configuration
  * ```
@@ -45,94 +45,53 @@ interface PokerRoomConfig {
    **************************************************************************************************************/
 
   /**
-   * @property {string | undefined} id
-   *
-   * A unique identifier for the poker room. This `id` is used to distinguish each `PokerRoom` within
-   * the Casino system, allowing for easy reference and management.
-   *
-   * #### Access Level
-   * This property is intended for internal use within the Casino system, enabling unique identification
-   * of each room instance. It may be accessed when updating or querying specific rooms.
-   *
-   * #### Default Value
-   * The `id` property can be `undefined` if not initially assigned, indicating the room may not have been
-   * uniquely identified upon creation. Once assigned, this value should remain unchanged to ensure room
-   * consistency within the system.
-   *
-   * #### Requirements
-   * - If provided, the `id` should be a non-empty string.
-   * - The `id` must be unique across all rooms in the Casino to avoid conflicts.
-   *
    * @example
    * ```typescript
    * const roomConfig: PokerRoomConfig = {
    *   id: "room1",
    *   name: "High Rollers",
-   *   tableConfig: { tableSize: 6, smallBlind: 10, bigBlind: 20 }
+   *   tableConfigs: [{ tableSize: 6, smallBlind: 10, bigBlind: 20 }]
    * };
-   * console.log(roomConfig.id); // Output: "room1"
+   * console.log(roomConfig.id);
+   * 
+   * // Output: "room1"
    * ```
    */
   id: string | undefined;
 
   /**
-   * @property {string | undefined} name
-   *
-   * The name assigned to the poker room. This is used as an identifier in user interfaces or logs,
-   * making the room more human-readable and manageable within the Casino system.
-   *
-   * #### Access Level
-   * Accessible throughout the system for room referencing, display, and logging. Unlike `id`, `name` does not
-   * have to be unique but should provide clear identification for the room.
-   *
-   * #### Default Value
-   * If `undefined`, the room may be considered unnamed or generic. Assigning a name to the room can enhance
-   * identification and help users or administrators differentiate between rooms in a Casino.
-   *
-   * #### Requirements
-   * - Should be a non-empty string if defined to ensure the room has a readable label.
-   *
    * @example
    * ```typescript
    * const roomConfig: PokerRoomConfig = {
    *   id: "room2",
    *   name: "VIP Suite",
-   *   tableConfig: { tableSize: 8, smallBlind: 50, bigBlind: 100 }
+   *   tableConfigs: [{ tableSize: 8, smallBlind: 50, bigBlind: 100 }]
    * };
-   * console.log(roomConfig.name); // Output: "VIP Suite"
+   * console.log(roomConfig.name);
+   * 
+   * // Output: "VIP Suite"
    * ```
    */
   name: string | undefined;
 
   /**
-   * @property {PokerTableConfig} tableConfig
-   *
-   * Defines the table settings associated with the poker room. This configuration includes
-   * essential settings such as `tableSize`, `smallBlind`, and `bigBlind` values that govern gameplay.
-   *
-   * #### Access Level
-   * Accessible within the room and potentially by the Casino system, this property is essential for defining
-   * the core table structure and game settings within the poker room.
-   *
-   * #### Requirements
-   * The `tableConfig` should be defined when the room is created, as it specifies game rules.
-   *
-   * #### Default Value
-   * `N/A` - Must be defined for every `PokerRoom` to ensure the game setup aligns with room specifications.
-   *
    * @example
    * ```typescript
    * const roomConfig: PokerRoomConfig = {
    *   id: "room3",
    *   name: "Beginner's Lounge",
-   *   tableConfig: { tableSize: 4, smallBlind: 5, bigBlind: 10 }
+   *   tableConfigs: [
+   *     { tableSize: 4, smallBlind: 5, bigBlind: 10 },
+   *     { tableSize: 6, smallBlind: 10, bigBlind: 20 }
+   *   ]
    * };
-   * console.log(roomConfig.tableConfig);
-   * // Output: { tableSize: 4, smallBlind: 5, bigBlind: 10 }
+   * console.log(roomConfig.tableConfigs);
+   * // Output: [{ tableSize: 4, smallBlind: 5, bigBlind: 10 }, { tableSize: 6, smallBlind: 10, bigBlind: 20 }]
    * ```
    */
   tableConfigs: PokerTableConfig[] | undefined;
 }
+
 /**
  * @interface `PokerRoomInterface`
  * Defines the responsibilities and structure for managing a `PokerRoom` within the Casino system. This interface is
@@ -351,7 +310,6 @@ interface PokerRoomInterface extends NodeJS.EventEmitter {
    */
   getName(): string;
 
-
   /**
    * #### Description
    * Retrieves the associated `PokerTable` instance within the `PokerRoom`.
@@ -449,7 +407,6 @@ interface PokerRoomInterface extends NodeJS.EventEmitter {
    * ```
    */
   tableCount(): number;
-
 }
 
 export { PokerRoomConfig, PokerRoomInterface };
