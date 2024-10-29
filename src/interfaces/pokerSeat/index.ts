@@ -39,6 +39,42 @@ interface PokerSeatConfig {
  * @extends NodeJS.EventEmitter
  */
 interface PokerSeatInterface extends NodeJS.EventEmitter {
+
+  /**************************************************************************************************************
+   * CREATE METHODS (SETTERS & OBJECT CREATION)
+   **************************************************************************************************************/
+  
+  /**
+   * @method `setIsDealer`
+   * @public
+   * Returns the poker table's `id`.
+   * @returns {boolean} The poker table's `id`.
+   *
+   * @example
+   * const rank = card.getRank();
+   * console.log(rank); // "A"
+   */
+  setIsDealer(bool: boolean): boolean;
+
+  /**
+ * @method `setPlayer`
+ * @public
+ * Returns the poker table's `id`.
+ * @returns {PokerPlayerInterface | undefined} The poker table's `id`.
+ *
+ * @example
+ * const rank = card.getRank();
+ * console.log(rank); // "A"
+ */
+  setPlayer(
+    player: PokerPlayerInterface | undefined
+  ): PokerPlayerInterface | undefined;
+
+  
+  /**************************************************************************************************************
+   * READ METHODS (GETTERS & DATA RETRIEVAL)
+   **************************************************************************************************************/
+  
   /**
    * @method `getId`
    * @public
@@ -73,19 +109,7 @@ interface PokerSeatInterface extends NodeJS.EventEmitter {
    * const rank = card.getRank();
    * console.log(rank); // "A"
    */
-  isDealer(): boolean;
-
-  /**
-   * @method `setIsDealer`
-   * @public
-   * Returns the poker table's `id`.
-   * @returns {boolean} The poker table's `id`.
-   *
-   * @example
-   * const rank = card.getRank();
-   * console.log(rank); // "A"
-   */
-  setIsDealer(bool: boolean): boolean;
+  getIsDealer(): boolean;
 
   /**
    * @method `getPlayer`
@@ -99,21 +123,24 @@ interface PokerSeatInterface extends NodeJS.EventEmitter {
    */
   getPlayer(): PokerPlayerInterface | undefined;
 
-  /**
-   * @method `setPlayer`
-   * @public
-   * Returns the poker table's `id`.
-   * @returns {PokerPlayerInterface | undefined} The poker table's `id`.
-   *
-   * @example
-   * const rank = card.getRank();
-   * console.log(rank); // "A"
-   */
-  setPlayer(
-    player: PokerPlayerInterface | undefined
-  ): PokerPlayerInterface | undefined;
+ /**************************************************************************************************************
+   * UPDATE METHODS (MODIFYING EXISTING OBJECTS)
+   **************************************************************************************************************/
+  
+ /**************************************************************************************************************
+ * DELETE METHODS (REMOVING OBJECTS)
+ **************************************************************************************************************/
+
+ /**************************************************************************************************************
+ * BUSINESS-LOGIC METHODS (LOGIC & CALCULATIONS)
+ **************************************************************************************************************/
 
   isOccupied(): boolean;
+
+/**************************************************************************************************************
+ * WRAPPER METHODS (UTILITY & CONVENIENCE)
+ **************************************************************************************************************/
+
 }
 
 export { PokerSeatConfig, PokerSeatInterface };

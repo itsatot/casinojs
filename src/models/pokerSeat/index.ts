@@ -15,7 +15,9 @@ import { generateUniqueId } from "../../utils";
  * @extends EventEmitter
  */
 class PokerSeat extends EventEmitter implements PokerSeatInterface {
-  /******************* PROPERTIES *******************/
+  /**************************************************************************************************************
+   * PROPERTIES
+   **************************************************************************************************************/
 
   /**
    * @property {string} __id
@@ -41,6 +43,10 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
    */
   private __player: PokerPlayerInterface | undefined;
 
+  /**************************************************************************************************************
+   * CONSTRUCTOR & INITIALIZERS
+   **************************************************************************************************************/
+
   /**
    * @method constructor
    * @public
@@ -50,14 +56,59 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
    * @example
    * const deck = new Deck();
    */
-  constructor(config: PokerSeatConfig) {
+  constructor(config?: PokerSeatConfig) {
     super();
+    this.__init(config);
+  }
+
+  private __init(config?: PokerSeatConfig) {
+    if (config){
     this.__id = config.id ? config.id : this.__generateId();
     this.__position = config.position;
     this.__isDealer = config.isDealer ? config.isDealer : false;
     this.__player = config.player ? config.player : undefined;
+    }
   }
 
+  /**************************************************************************************************************
+   * CREATE METHODS (SETTERS & OBJECT CREATION)
+   **************************************************************************************************************/
+  
+  /**
+   * @method `setIsDealer`
+   * @public
+   * Returns the poker table's `id`.
+   * @returns {boolean} The poker table's `id`.
+   *
+   * @example
+   * const rank = card.getRank();
+   * console.log(rank); // "A"
+   */
+  public setIsDealer(bool: boolean): boolean {
+    return this._setIsDealer(bool);
+  }
+
+   /**
+   * @method `setPlayer`
+   * @public
+   * Returns the poker table's `id`.
+   * @returns {number} The poker table's `id`.
+   *
+   * @example
+   * const rank = card.getRank();
+   * console.log(rank); // "A"
+   */
+  public setPlayer(
+  player: PokerPlayerInterface | undefined
+  ): PokerPlayerInterface | undefined {
+    return this._setPlayer(player);
+  }
+
+
+  /**************************************************************************************************************
+   * READ METHODS (GETTERS & DATA RETRIEVAL)
+   **************************************************************************************************************/
+  
   /**
    * @method `getId`
    * @public
@@ -69,21 +120,6 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
    * console.log(rank); // "A"
    */
   public getId(): string {
-    return this.__id;
-  }
-
-  /**
-   * @method `setId`
-   * @public
-   * Returns the poker table's `id`.
-   * @returns {string} The poker table's `id`.
-   *
-   * @example
-   * const rank = card.getRank();
-   * console.log(rank); // "A"
-   */
-  private setId(id: string): string {
-    this.__id = id;
     return this.__id;
   }
 
@@ -101,22 +137,7 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
     return this.__position;
   }
 
-  /**
-   * @method `setPosition`
-   * @public
-   * Returns the poker table's `id`.
-   * @returns {number} The poker table's `id`.
-   *
-   * @example
-   * const rank = card.getRank();
-   * console.log(rank); // "A"
-   */
-  private setPosition(position: number): number {
-    this.__position = position;
-    return this.__position;
-  }
-
-  /**
+   /**
    * @method `isDealer`
    * @public
    * Returns the poker table's `id`.
@@ -126,22 +147,7 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
    * const rank = card.getRank();
    * console.log(rank); // "A"
    */
-  public isDealer(): boolean {
-    return this.__isDealer;
-  }
-
-  /**
-   * @method `setIsDealer`
-   * @public
-   * Returns the poker table's `id`.
-   * @returns {boolean} The poker table's `id`.
-   *
-   * @example
-   * const rank = card.getRank();
-   * console.log(rank); // "A"
-   */
-  public setIsDealer(bool: boolean): boolean {
-    this.__isDealer = bool;
+   public getIsDealer(): boolean {
     return this.__isDealer;
   }
 
@@ -158,8 +164,53 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
   public getPlayer(): PokerPlayerInterface | undefined {
     return this.__player;
   }
+  /**************************************************************************************************************
+   * UPDATE METHODS (MODIFYING EXISTING OBJECTS)
+   **************************************************************************************************************/
+  
 
+  /**************************************************************************************************************
+   * DELETE METHODS (REMOVING OBJECTS)
+   **************************************************************************************************************/
+
+  /**************************************************************************************************************
+   * BUSINESS-LOGIC METHODS (LOGIC & CALCULATIONS)
+   **************************************************************************************************************/
+  
+  public isOccupied(): boolean {
+    if (this.getPlayer() === undefined) {
+      return false;
+    }
+    return true;
+  }
+  /**************************************************************************************************************
+   * WRAPPER METHODS (UTILITY & CONVENIENCE)
+   **************************************************************************************************************/
+
+  /**************************************************************************************************************
+   * INTERNAL METHODS (PROTECTED)
+   **************************************************************************************************************/
+
+  /**************************************************************************************************************
+   * INTERNAL METHODS (PROTECTED)
+   **************************************************************************************************************/
+  
   /**
+   * @method `setIsDealer`
+   * @public
+   * Returns the poker table's `id`.
+   * @returns {boolean} The poker table's `id`.
+   *
+   * @example
+   * const rank = card.getRank();
+   * console.log(rank); // "A"
+   */
+  protected _setIsDealer(bool: boolean): boolean {
+    this.__isDealer = bool;
+    return this.__isDealer;
+  }
+
+   /**
    * @method `setPlayer`
    * @public
    * Returns the poker table's `id`.
@@ -169,18 +220,44 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
    * const rank = card.getRank();
    * console.log(rank); // "A"
    */
-  public setPlayer(
+   protected _setPlayer(
     player: PokerPlayerInterface | undefined
   ): PokerPlayerInterface | undefined {
     this.__player = player;
     return this.__player;
   }
 
-  public isOccupied(): boolean {
-    if (this.getPlayer() === undefined) {
-      return false;
-    }
-    return true;
+   /**************************************************************************************************************
+   * INTERNAL METHODS (PRIVATE)
+   **************************************************************************************************************/
+  /**
+   * @method `setId`
+   * @public
+   * Returns the poker table's `id`.
+   * @returns {string} The poker table's `id`.
+   *
+   * @example
+   * const rank = card.getRank();
+   * console.log(rank); // "A"
+   */
+  private __setId(id: string): string {
+    this.__id = id;
+    return this.__id;
+  }
+
+  /**
+   * @method `setPosition`
+   * @public
+   * Returns the poker table's `id`.
+   * @returns {number} The poker table's `id`.
+   *
+   * @example
+   * const rank = card.getRank();
+   * console.log(rank); // "A"
+   */
+  private __setPosition(position: number): number {
+    this.__position = position;
+    return this.__position;
   }
 
   /**
