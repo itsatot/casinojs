@@ -4,7 +4,7 @@ import {
   PokerSeatConfig,
   PokerSeatInterface,
 } from "../../interfaces";
-import {generateUniqueId} from "../../utils";
+import { generateUniqueId } from "../../utils";
 
 /**
  * @interface `PokerSeat`
@@ -18,28 +18,28 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
   /******************* PROPERTIES *******************/
 
   /**
-   * @property {string} _id
+   * @property {string} __id
    * A unique identifier for the PokerSeat.
    */
-  private _id: string;
+  private __id: string = ``;
 
   /**
    * @property {number} position
    * The maximum number of players that can be seated at the PokerTable[2-14].
    */
-  private _position: number;
+  private __position: number = 0;
 
   /**
    * @property {boolean} isDealer
    * The maximum number of players that can be seated at the PokerTable[2-14].
    */
-  private _isDealer: boolean;
+  private __isDealer: boolean = false;
 
   /**
    * @property {PokerPlayerInterface | undefined} player
    * The maximum number of players that can be seated at the PokerTable[2-14].
    */
-  private _player: PokerPlayerInterface | undefined;
+  private __player: PokerPlayerInterface | undefined;
 
   /**
    * @method constructor
@@ -52,10 +52,10 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
    */
   constructor(config: PokerSeatConfig) {
     super();
-    this._id = config.id ? config.id : this.__generateId();
-    this._position = config.position;
-    this._isDealer = config.isDealer;
-    this._player = config.player ? config.player : undefined;
+    this.__id = config.id ? config.id : this.__generateId();
+    this.__position = config.position;
+    this.__isDealer = config.isDealer ? config.isDealer : false;
+    this.__player = config.player ? config.player : undefined;
   }
 
   /**
@@ -69,7 +69,7 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
    * console.log(rank); // "A"
    */
   public getId(): string {
-    return this._id;
+    return this.__id;
   }
 
   /**
@@ -83,8 +83,8 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
    * console.log(rank); // "A"
    */
   private setId(id: string): string {
-    this._id = id;
-    return this._id;
+    this.__id = id;
+    return this.__id;
   }
 
   /**
@@ -98,7 +98,7 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
    * console.log(rank); // "A"
    */
   public getPosition(): number {
-    return this._position;
+    return this.__position;
   }
 
   /**
@@ -112,8 +112,8 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
    * console.log(rank); // "A"
    */
   private setPosition(position: number): number {
-    this._position = position;
-    return this._position;
+    this.__position = position;
+    return this.__position;
   }
 
   /**
@@ -127,7 +127,7 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
    * console.log(rank); // "A"
    */
   public isDealer(): boolean {
-    return this._isDealer;
+    return this.__isDealer;
   }
 
   /**
@@ -141,8 +141,8 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
    * console.log(rank); // "A"
    */
   public setIsDealer(bool: boolean): boolean {
-    this._isDealer = bool;
-    return this._isDealer;
+    this.__isDealer = bool;
+    return this.__isDealer;
   }
 
   /**
@@ -156,7 +156,7 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
    * console.log(rank); // "A"
    */
   public getPlayer(): PokerPlayerInterface | undefined {
-    return this._player;
+    return this.__player;
   }
 
   /**
@@ -172,8 +172,8 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
   public setPlayer(
     player: PokerPlayerInterface | undefined
   ): PokerPlayerInterface | undefined {
-    this._player = player;
-    return this._player;
+    this.__player = player;
+    return this.__player;
   }
 
   public isOccupied(): boolean {
@@ -182,8 +182,8 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
     }
     return true;
   }
-  
-   /**
+
+  /**
    * #### Description
    * The `__generateId` method generates a unique identifier string. This ID is used internally
    * to uniquely identify instances or components within the `PokerRoom` class, helping manage
@@ -226,7 +226,7 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
    * ```typescript
    * class PokerRoom {
    *   private __id: string = this.__generateId();
-   * 
+   *
    *   private __generateId(): string {
    *     return generateUniqueId(); // Creates a new unique ID for this PokerRoom instance
    *   }
@@ -236,10 +236,9 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
    * console.log(room.__id); // Outputs a unique identifier, e.g., "room_12345abc"
    * ```
    */
-   private __generateId(): string {
+  private __generateId(): string {
     return generateUniqueId();
   }
-  
 }
 
 export { PokerSeat };

@@ -468,10 +468,43 @@ class Casino extends EventEmitter implements CasinoInterface {
    **************************************************************************************************************/
 
   /**
-   * @method `size`
-   * Starts a new PokerGame if there are at least two active players at the PokerTable.
-   * This method initiates the game flow, including assigning blinds and starting the rounds.
-   * @returns {number}
+   * #### Description
+   * Retrieves the total count of rooms managed by the Casino, enabling easy access to the room quantity.
+   *
+   * #### Implements
+   * `N/A` - This method is unique to the Casino class and does not implement any other methods.
+   *
+   * #### Overrides
+   * `N/A` - This method does not override any superclass or parent methods.
+   *
+   * #### Purpose
+   * The `size` method provides a shortcut to access the number of poker rooms currently managed by the Casino.
+   * This method is useful for quickly obtaining the count of active rooms, which can help in managing or displaying
+   * the Casino's state.
+   *
+   * #### Events
+   * `N/A`
+   *
+   * #### Parameters
+   * `N/A` - This method does not require any input parameters.
+   *
+   * #### Requirements
+   * `N/A`
+   *
+   * #### Returns
+   * - Returns a number representing the current count of poker rooms managed by the Casino.
+   *
+   * #### Usage
+   * Call this method when a quick count of managed rooms is needed, especially for UI updates or managing limits.
+   *
+   * @returns {number} - Returns the current count of poker rooms.
+   *
+   * @example
+   * ```typescript
+   * const casino = new Casino();
+   * const count = casino.size();
+   * console.log(count); // Console Output: 0 if no rooms have been added
+   * ```
    */
   public size(): number {
     return this.roomCount();
@@ -482,38 +515,38 @@ class Casino extends EventEmitter implements CasinoInterface {
    * Returns the total number of `PokerRoom` instances currently managed by the Casino.
    *
    * #### Implements
-   * Implements the `roomCount` method of `CasinoInterface`.
+   * Part of `CasinoInterface`, ensuring standardization across implementations of the Casino class.
    *
    * #### Overrides
    * `N/A`
    *
    * #### Purpose
-   * Provides a simple way to check how many poker rooms the Casino is currently managing. Useful for general
-   * information about the Casino's state and for validating indices or conditions that depend on room count.
+   * Provides a reliable way to retrieve the number of active poker rooms managed by the Casino. Useful for
+   * general management, reporting, and in situations where the Casino’s room capacity or state must be assessed.
    *
    * #### Events
    * `N/A`
    *
    * #### Parameters
-   * `N/A`
+   * `N/A` - This method does not accept any parameters.
    *
    * #### Requirements
    * `N/A`
    *
    * #### Returns
-   * - Returns the number of rooms currently managed by the Casino.
+   * - Returns the current count of managed rooms.
    *
    * #### Usage
-   * This method is useful for any scenario where the total number of active rooms is needed, such as iterating
-   * over all rooms or validating index-based operations.
+   * Use this method whenever a precise count of rooms is required, such as when iterating through rooms
+   * or validating bounds.
    *
-   * @returns {number} - The current count of rooms in the Casino.
+   * @returns {number} - Returns the count of rooms in the Casino.
    *
    * @example
    * ```typescript
    * const casino = new Casino();
    * const count = casino.roomCount();
-   * console.log(count); // Logs the total number of managed rooms, e.g., 5
+   * console.log(count); // Console Output: 0 if no rooms exist, or the total count of rooms otherwise
    * ```
    */
   public roomCount(): number {
@@ -522,39 +555,39 @@ class Casino extends EventEmitter implements CasinoInterface {
 
   /**
    * #### Description
-   * Checks if a provided index is within the valid range of the Casino’s room list.
+   * Checks if a provided index is within the valid range of the Casino’s room list, helping avoid out-of-bounds errors.
    *
    * #### Implements
-   * Implements the `isValidIndex` method of `CasinoInterface`.
+   * `isValidIndex` method from `CasinoInterface`.
    *
    * #### Overrides
    * `N/A`
    *
    * #### Purpose
-   * This method helps validate that an index is within the valid bounds of the Casino’s room list. It prevents
-   * out-of-bound errors and ensures that methods calling on rooms by index are provided with a valid reference.
+   * This method validates an index before it's used to access or modify a room in the Casino’s list, protecting
+   * against out-of-bound errors. It is useful in any operations that involve room access by index.
    *
    * #### Events
    * `N/A`
    *
    * #### Parameters
-   * - `index`: A zero-based integer representing the position of a room in the Casino's managed list of rooms.
+   * - `index`: A zero-based integer representing the position of a room in the Casino's managed list.
    *
    * #### Requirements
-   * - The `index` should be a non-negative integer and within the bounds of the `__rooms` array.
+   * - The `index` should be a non-negative integer within the range `[0, roomCount - 1]`.
    *
    * #### Returns
-   * - Returns `true` if the index is within bounds.
-   * - Throws an `Error` if the index is out of range.
+   * - Returns `true` if the index is valid.
+   * - Throws an `Error` if the index is out of range, providing a descriptive message.
    *
    * #### Usage
-   * Call this method before performing operations that require a valid room index to prevent out-of-bounds errors.
-   * Can be used in any index-based access patterns for room retrieval or modification.
+   * Use this method before performing operations that involve accessing a room by index. This helps prevent
+   * out-of-bound errors in index-based room access.
    *
    * @param {number} index - The zero-based index to validate.
    * @returns {boolean} - Returns `true` if the index is within bounds.
    *
-   * @throws {Error} - Throws an error with a message indicating the invalid index.
+   * @throws {Error} - Throws an error with a descriptive message if the index is out of bounds.
    *
    * @example
    * ```typescript
@@ -567,15 +600,14 @@ class Casino extends EventEmitter implements CasinoInterface {
    * ```
    */
   public isValidIndex(index: number): boolean {
-    if (index >= 0 && index < this.roomCount()) {
+    if (index < 0 || index >= this.roomCount()) {
       throw new Error(
         `Invalid index: ${index}. It must be between 0 and ${
           this.roomCount() - 1
         }.`
       );
-    } else {
-      return true;
     }
+    return true;
   }
 
   /**************************************************************************************************************
