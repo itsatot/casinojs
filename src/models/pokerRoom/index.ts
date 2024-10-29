@@ -6,7 +6,7 @@ import {
   PokerTableConfig,
 } from "../../interfaces";
 import { PokerTable } from "../pokerTable";
-import {generateUniqueId} from "../../utils";
+import { generateUniqueId } from "../../utils";
 
 /**
  * @class `PokerRoom`
@@ -97,7 +97,7 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
    * console.log(casino.getRooms()); // Output: []
    * ```
    */
-  constructor(config: PokerRoomConfig | undefined) {
+  constructor(config?: PokerRoomConfig) {
     super();
     this.__init(config);
   }
@@ -122,12 +122,12 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
    * const casino = new Casino();
    * ```
    */
-  private __init(config: PokerRoomConfig | undefined): void {
+  private __init(config?: PokerRoomConfig): void {
     // No current logic, but reserved for future setup or configuration
     if (config) {
       this.__id = config.id ? config.id : this.__generateId();
       this.__name = config.name ? config.name : this.__name;
-      config.tableConfigs?.forEach(tconfig => {
+      config.tableConfigs?.forEach((tconfig) => {
         this._createTable(tconfig);
       });
     }
@@ -182,7 +182,6 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
   public setName(name: string): string {
     return this._setName(name);
   }
-
 
   /**
    * #### Description
@@ -323,7 +322,7 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
    * const newRoom = specialCasino.createSpecialRoom({ name: "Champions Lounge", tableSize: 10, smallBlind: 100, bigBlind: 200 });
    * console.log(newRoom.getName()); // Outputs: "Champions Lounge"
    * ```
-   */ 
+   */
   public getId(): string {
     return this.__id;
   }
@@ -409,7 +408,7 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
    * console.log(table); // Logs the PokerTable instance associated with "High Stakes" room
    * ```
    */
-  public getTables(): PokerTableInterface[]  {
+  public getTables(): PokerTableInterface[] {
     return this.__tables;
   }
 
@@ -428,7 +427,7 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
   /**************************************************************************************************************
    * WRAPPER METHODS (UTILITY & CONVENIENCE)
    **************************************************************************************************************/
-  
+
   /**
    * #### Description
    * Returns the total number of `PokerRoom` instances currently managed by the Casino.
@@ -481,7 +480,6 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
     return this.__name;
   }
 
-
   protected _setTables(table: PokerTableInterface[]): PokerTableInterface[] {
     this.__tables = table;
     return this.__tables;
@@ -530,7 +528,7 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
    * console.log(newRoom.getName()); // Outputs: "Champions Lounge"
    * ```
    */
-  protected _createTable(config: PokerTableConfig): PokerTableInterface {
+  protected _createTable(config?: PokerTableConfig): PokerTableInterface {
     const table = new PokerTable(config);
     this.__tables.push(table);
     return table;
@@ -538,6 +536,7 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
   /**************************************************************************************************************
    * INTERNAL METHODS (PRIVATE)
    **************************************************************************************************************/
+
   /**
    * @method `setId`
    * @private
@@ -553,7 +552,7 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
     return this.__id;
   }
 
-    /**
+  /**
    * #### Description
    * The `__generateId` method generates a unique identifier string. This ID is used internally
    * to uniquely identify instances or components within the `PokerRoom` class, helping manage
@@ -596,7 +595,7 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
    * ```typescript
    * class PokerRoom {
    *   private __id: string = this.__generateId();
-   * 
+   *
    *   private __generateId(): string {
    *     return generateUniqueId(); // Creates a new unique ID for this PokerRoom instance
    *   }
@@ -609,8 +608,6 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
   private __generateId(): string {
     return generateUniqueId();
   }
-
-  
 }
 
 export { PokerRoom };

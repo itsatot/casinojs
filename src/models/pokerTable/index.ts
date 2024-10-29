@@ -68,7 +68,7 @@ class PokerTable extends EventEmitter implements PokerTableInterface {
    * console.log(casino.getRooms()); // Returns an empty array initially
    * ```
    */
-  private __smallBlindAmount: number = 5;
+  private __smallBlind: number = 5;
 
   
    /**
@@ -91,7 +91,7 @@ class PokerTable extends EventEmitter implements PokerTableInterface {
    * console.log(casino.getRooms()); // Returns an empty array initially
    * ```
    */
-  private __bigBlindAmount: number = this.__smallBlindAmount*2;
+  private __bigBlindAmount: number = this.__smallBlind*2;
 
   /**
    * @property {PokerSeatInterface[]} __seats
@@ -156,10 +156,10 @@ class PokerTable extends EventEmitter implements PokerTableInterface {
   private __init(config: PokerTableConfig | undefined): void {
     if (config) {
       this.__id = config.id ? config.id : this.__generateId();
-      this.__smallBlindAmount = config.smallBlindAmount
-        ? config.smallBlindAmount
+      this.__smallBlind = config.smallBlind
+        ? config.smallBlind
         : 5;
-      this.__bigBlindAmount = this.__smallBlindAmount * 2;
+      this.__bigBlindAmount = this.__smallBlind * 2;
       this.__seats = [];
       this.__gameInProgress = false;
       
@@ -304,7 +304,7 @@ class PokerTable extends EventEmitter implements PokerTableInterface {
    * console.log(rank); // "A"
    */
   public getSmallBlind(): number {
-    return this.__smallBlindAmount;
+    return this.__smallBlind;
   }
 
   /**
@@ -496,7 +496,7 @@ class PokerTable extends EventEmitter implements PokerTableInterface {
     if (smallBlind<=0) {
       throw new Error(`Small Blind should always be greator than 0.`)
     } else{
-      return this.__smallBlindAmount = smallBlind;
+      return this.__smallBlind = smallBlind;
     }
   }
 

@@ -1,31 +1,161 @@
-import { EventEmitter } from "events";
 import { PokerSeatInterface } from "../pokerSeat";
 import { PokerPlayerInterface } from "../pokerPlayer";
 
 /**
  * @interface `PokerTableConfig`
- * Represents a PokerTable Config.
+ *
+ * Represents the configuration settings necessary to define a poker table within a `PokerRoom`. This interface
+ * standardizes essential properties such as unique identifiers, table size, and betting values, ensuring each
+ * table is set up with consistent and clear parameters.
+ *
+ * #### Purpose
+ * The `PokerTableConfig` interface provides a structured configuration for each table within a poker room. By defining
+ * specific parameters for table size, small blind, and big blind amounts, this interface supports accurate table setup
+ * and improves the consistency of poker gameplay within the Casino system.
+ *
+ * #### Structure Overview
+ * - **Identification**: The `id` and `name` properties enable unique identification and labeling of tables.
+ * - **Betting Structure**: `smallBlind` specify the betting increments for the table.
+ * - **Seating Capacity**: `size` defines the maximum number of players per table.
+ *
+ * #### Usage Context
+ * `PokerTableConfig` objects are typically used during table creation or setup, offering a clear and consistent way
+ * to configure and manage individual poker tables within a room.
+ *
+ * #### Requirements
+ * - **Optional**: `id`,`name`, `size` and `smallBlind` are not strictly required.
+ * - **Mandatory**:  No Mandatory.
+ *
+ * @example
+ * ```typescript
+ * const tableConfig: PokerTableConfig = {
+ *   id: "table1",
+ *   name: "VIP Table",
+ *   size: 8,
+ *   smallBlind: 50
+ * };
+ * ```
  */
 interface PokerTableConfig {
-  /**
-   * @property {number} id
-   * The maximum number of players that can be seated at the PokerTable[2-14].
-   */
-  id: string | undefined;
+  /**************************************************************************************************************
+   * PROPERTIES
+   **************************************************************************************************************/
 
   /**
-   * @property {number} size
-   * The maximum number of players that can be seated at the PokerTable[2-14].
+   * @property {string | undefined} id
+   *
+   * A unique identifier for the poker table, enabling precise reference and management within the Casino system.
+   *
+   * #### Purpose
+   * Used to uniquely identify each `PokerTable` within the Casino, providing a direct reference for table-specific operations.
+   *
+   * #### Requirements
+   * - **Optional**: If provided, `id` must be a unique, non-empty string to avoid conflicts.
+   *
+   * @example
+   * **Example 1**:
+   * ```typescript
+   * const tableConfig: PokerTableConfig = {
+   *   id: "table42",
+   *   name: "High Stakes Table",
+   *   size: 6,
+   *   smallBlind: 100
+   * };
+   * console.log(tableConfig.id);
+   * // Console Output: "table42"
+   * ```
+   * **Example 2**:
+   * ```typescript
+   * const tableConfig: PokerTableConfig = {
+   *   id: undefined,
+   *   name: "Standard Table",
+   *   size: 4,
+   *   smallBlind: 10
+   * };
+   * console.log(tableConfig.id);
+   * // Console Output: undefined
+   * ```
    */
-  size: number | undefined;
+  id?: string;
 
   /**
-   * @property {number} smallBlindAmount
-   * The maximum number of players that can be seated at the PokerTable[2-14].
+   * @property {string | undefined} name
+   *
+   * A descriptive name for the poker table, often displayed in user interfaces or logs to enhance human readability.
+   *
+   * #### Purpose
+   * Serves as a user-friendly label for the poker table, assisting administrators and players in identifying the table easily.
+   *
+   * #### Requirements
+   * - **Optional**: `name` should be a non-empty string if defined, providing a clear label for the table.
+   *
+   * @example
+   * ```typescript
+   * const tableConfig: PokerTableConfig = {
+   *   id: "table2",
+   *   name: "VIP Suite",
+   *   size: 8,
+   *   smallBlind: 50
+   * };
+   * console.log(tableConfig.name);
+   * // Console Output: "VIP Suite"
+   * ```
    */
-  smallBlindAmount: number | undefined;
+  name?: string;
 
-  
+  /**
+   * @property {number | undefined} size
+   *
+   * Specifies the maximum number of players that can be seated at the poker table, supporting values within
+   * a typical range of 2 to 14 players.
+   *
+   * #### Purpose
+   * Defines the seating capacity of the poker table, ensuring that no more than the specified number of players
+   * can join the game at a given time.
+   *
+   * #### Requirements
+   * - Must be a number between 2 and 14 to adhere to typical poker table constraints.
+   * - **Note**: If the `size` value is set outside the range of 2 to 14, an error or validation warning may be triggered
+   *   during table initialization, as these values fall outside standard poker table configurations.
+   *
+   * @example
+   * ```typescript
+   * const tableConfig: PokerTableConfig = {
+   *   id: "table3",
+   *   name: "Standard Table",
+   *   size: 6,
+   *   smallBlind: 10
+   * };
+   * console.log(tableConfig.size);
+   * // Console Output: 6
+   * ```
+   */
+  size?: number;
+
+  /**
+   * @property {number | undefined} smallBlind
+   *
+   * The value of the small blind for betting at the table, setting the minimum bet increment.
+   *
+   * #### Purpose
+   * Defines the small blind amount, establishing a base for the betting structure in poker games at this table.
+   *
+   * #### Requirements
+   * - Must be a positive number; negative values or zero could result in validation errors.
+   *
+   * @example
+   * ```typescript
+   * const tableConfig: PokerTableConfig = {
+   *   id: "table4",
+   *   name: "Training Table",
+   *   size: 4,
+   *   smallBlind: 5
+   * };
+   * console.log(tableConfig.smallBlind);
+   * // Console Output: 5
+   * ```
+   */
+  smallBlind?: number;
 }
 
 /**
@@ -37,6 +167,103 @@ interface PokerTableConfig {
  * @extends NodeJS.EventEmitter
  */
 interface PokerTableInterface extends NodeJS.EventEmitter {
+  /**************************************************************************************************************
+   * CREATE METHODS (SETTERS & OBJECT CREATION)
+   **************************************************************************************************************/
+
+  /**
+   * #### Description
+   * Sets the name of the `PokerRoom`, allowing the name to be updated or customized.
+   *
+   * #### Implements
+   * `N/A` - This method is part of the `PokerRoomInterface` and does not implement any external methods.
+   *
+   * #### Overrides
+   * `N/A` - This method does not override any superclass or parent methods.
+   *
+   * #### Purpose
+   * The `setName` method is used to assign a specific name to a `PokerRoom`, which helps distinguish it within the system.
+   * This is essential for systems where rooms need to be identifiable and manageable through a unique name.
+   *
+   * #### Events
+   * `N/A` - No events are emitted by this method.
+   *
+   * #### Parameters
+   * - `name`: A string representing the new name for the room. It must be a valid, non-empty string to ensure
+   *   the room has a clear, identifiable label.
+   *
+   * #### Requirements
+   * - The `name` parameter should be a non-empty string to provide meaningful identification.
+   * - Passing an empty or invalid value could result in future misidentification of rooms if validation is implemented.
+   *
+   * #### Returns
+   * - Returns the `name` that was set for the `PokerRoom`.
+   *
+   * #### Usage
+   * Use this method to set or update the name of a room in a system where unique or identifiable room names
+   * are necessary for reference.
+   *
+   * @param {string} name - The new name for the `PokerRoom`.
+   * @returns {string} - Returns the name of the room that was set.
+   *
+   * @example
+   * ```typescript
+   * const pokerRoom = new PokerRoom({ name: "Room1", tableSize: 6 });
+   * pokerRoom.setName("HighRollers"); // Sets the name of the room to "HighRollers"
+   * console.log(pokerRoom.getName()); // Logs "HighRollers"
+   * ```
+   */
+  setName(name: string): string;
+
+  /**
+   * #### Description
+   * Sets the queue of players waiting to enter the `PokerTable` within the `PokerRoom`. This queue helps
+   * manage player flow and assign seating as tables become available.
+   *
+   * #### Implements
+   * `N/A` - This method is part of the `PokerRoomInterface` and does not implement any external methods.
+   *
+   * #### Overrides
+   * `N/A` - This method does not override any superclass or parent methods.
+   *
+   * #### Purpose
+   * The `setQueue` method provides a structured way to set or update the player queue. This queue is essential
+   * for room management, helping to keep a record of players awaiting entry and manage seating arrangements.
+   *
+   * #### Events
+   * `N/A` - No events are emitted by this method.
+   *
+   * #### Parameters
+   * - `queue`: An array of `PokerPlayerInterface` objects, each representing a player awaiting entry into the room’s `PokerTable`.
+   *
+   * #### Requirements
+   * - `queue` should be an array of valid `PokerPlayerInterface` instances.
+   * - If empty, the queue indicates that no players are currently waiting for entry.
+   *
+   * #### Returns
+   * - Returns the `queue` array after updating it within the room.
+   *
+   * #### Usage
+   * Use this method to set or update the player queue in cases where player flow needs control,
+   * ensuring smooth transitions as players are seated at the table.
+   *
+   * @param {PokerPlayerInterface[]} queue - The new list of players waiting to enter the table.
+   * @returns {PokerPlayerInterface[]} - Returns the updated player queue.
+   *
+   * @example
+   * ```typescript
+   * const pokerRoom = new PokerRoom({ name: "Room2", tableSize: 6 });
+   * const queue = [new PokerPlayer("Alice"), new PokerPlayer("Bob")];
+   * pokerRoom.setQueue(queue); // Sets the player queue
+   * console.log(pokerRoom.getQueue()); // Logs the updated player queue
+   * ```
+   */
+  setQueue(queue: PokerPlayerInterface[]): PokerPlayerInterface[];
+
+  /**************************************************************************************************************
+   * READ METHODS (GETTERS & DATA RETRIEVAL)
+   **************************************************************************************************************/
+
   /**
    * @method `getId`
    * @public
@@ -97,52 +324,62 @@ interface PokerTableInterface extends NodeJS.EventEmitter {
    */
   getQueue(): PokerPlayerInterface[];
 
-  
+  /**************************************************************************************************************
+   * UPDATE METHODS (MODIFYING EXISTING OBJECTS)
+   **************************************************************************************************************/
+
+  /**************************************************************************************************************
+   * DELETE METHODS (REMOVING OBJECTS)
+   **************************************************************************************************************/
+
+  /**************************************************************************************************************
+   * BUSINESS-LOGIC METHODS (LOGIC & CALCULATIONS)
+   **************************************************************************************************************/
+
+  /**************************************************************************************************************
+   * WRAPPER METHODS (UTILITY & CONVENIENCE)
+   **************************************************************************************************************/
+
   /**
    * #### Description
-   * Sets the queue of players waiting to enter the `PokerTable` within the `PokerRoom`. This queue helps
-   * manage player flow and assign seating as tables become available.
+   * Retrieves the total number of `PokerRoom` instances currently managed by the Casino.
    *
    * #### Implements
-   * `N/A` - This method is part of the `PokerRoomInterface` and does not implement any external methods.
+   * `N/A`
    *
    * #### Overrides
-   * `N/A` - This method does not override any superclass or parent methods.
+   * `N/A`
    *
    * #### Purpose
-   * The `setQueue` method provides a structured way to set or update the player queue. This queue is essential
-   * for room management, helping to keep a record of players awaiting entry and manage seating arrangements.
+   * This method provides insight into the number of poker rooms that the Casino manages, supporting
+   * validation for index-bound operations or general information on Casino state.
    *
    * #### Events
-   * `N/A` - No events are emitted by this method.
+   * `N/A`
    *
    * #### Parameters
-   * - `queue`: An array of `PokerPlayerInterface` objects, each representing a player awaiting entry into the room’s `PokerTable`.
+   * `N/A`
    *
    * #### Requirements
-   * - `queue` should be an array of valid `PokerPlayerInterface` instances.
-   * - If empty, the queue indicates that no players are currently waiting for entry.
+   * `N/A`
    *
    * #### Returns
-   * - Returns the `queue` array after updating it within the room.
+   * - Returns the total count of rooms managed by the Casino.
    *
    * #### Usage
-   * Use this method to set or update the player queue in cases where player flow needs control,
-   * ensuring smooth transitions as players are seated at the table.
+   * Use this method to retrieve the total count of active poker rooms, which is helpful when iterating over
+   * rooms or confirming index-bound conditions.
    *
-   * @param {PokerPlayerInterface[]} queue - The new list of players waiting to enter the table.
-   * @returns {PokerPlayerInterface[]} - Returns the updated player queue.
+   * @returns {number} - The current count of rooms in the Casino.
    *
    * @example
    * ```typescript
-   * const pokerRoom = new PokerRoom({ name: "Room2", tableSize: 6 });
-   * const queue = [new PokerPlayer("Alice"), new PokerPlayer("Bob")];
-   * pokerRoom.setQueue(queue); // Sets the player queue
-   * console.log(pokerRoom.getQueue()); // Logs the updated player queue
+   * const casino = new Casino();
+   * const count = casino.roomCount();
+   * console.log(count); // Logs the total number of managed rooms, e.g., 5
    * ```
    */
-  setQueue(queue: PokerPlayerInterface[]): PokerPlayerInterface[];
-
+  seatCount(): number;
 }
 
 export { PokerTableConfig, PokerTableInterface };
