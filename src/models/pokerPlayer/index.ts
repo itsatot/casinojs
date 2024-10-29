@@ -12,52 +12,56 @@ import {generateUniqueId} from "../../utils";
  * The player can place bets, fold, and manage their chip stack during the game.
  */
 class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
-  /******************* PROPERTIES *******************/
+  /**************************************************************************************************************
+   * PROPERTIES
+   **************************************************************************************************************/
 
   /**
    * @property {string} _id
    * @private
    * A unique identifier for the PokerPlayer.
    */
-  private _id: string;
+  private __id: string = ``;
 
   /**
    * @property {string} _name
    * @private
    * The player's name or alias.
    */
-  private _name: string;
+  private __name: string = ``;
 
   /**
    * @property {number} _chips
    * @private
    * The number of chips the player currently has.
    */
-  private _chips: number;
+  private __chips: number = 100;
 
   /**
    * @property {CardInterface[]} _hand
    * @private
    * The player's hole cards (the two cards dealt to the player at the start of the game).
    */
-  private _hand: CardInterface[];
+  private __hand: CardInterface[] = [];
 
   /**
    * @property {boolean} _isFolded
    * @private
    * Indicates whether the player is still active in the current round or has folded.
    */
-  private _isFolded: boolean;
+  private __isFolded: boolean = false;
 
 
-    /**
-   * @property {boolean} _isFolded
-   * @private
-   * Indicates whether the player is still active in the current round or has folded.
-   */
-    private _isBetMatched: boolean;
+  /**
+ * @property {boolean} _isFolded
+ * @private
+ * Indicates whether the player is still active in the current round or has folded.
+ */
+  private __isBetMatched: boolean = false;
 
-  /******************* CONSTRUCTOR *******************/
+ /**************************************************************************************************************
+   * CONSTRUCTOR & INITIALIZERS
+   **************************************************************************************************************/
 
   /**
    * @method constructor
@@ -68,17 +72,88 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
    * @example
    * const deck = new Deck();
    */
-  constructor(config: PokerPlayerConfig) {
+  constructor(config?: PokerPlayerConfig) {
     super();
-    this._id = config.id ? config.id : this.__generateId();
-    this._name = config.name ? config.name : ``;
-    this._chips = config.chips ? config.chips : 100;
-    this._hand = config.hand ? config.hand : [];
-    this._isFolded = config.isFolded ? config.isFolded : false;
-    this._isBetMatched = false;
+    this.__init(config);
   }
 
-  /******************* GETTERS *******************/
+  private __init(config?: PokerPlayerConfig) {
+    if (config){
+    this.__id = config.id ? config.id : this.__generateId();
+    this.__name = config.name ? config.name : this.__name;
+    this.__chips = config.chips ? config.chips : this.__chips;
+    this.__hand = config.hand ? config.hand : this.__hand;
+    this.__isFolded = config.isFolded ? config.isFolded : this.__isFolded;
+    this.__isBetMatched = this.__isBetMatched;
+    }
+  }
+  /**************************************************************************************************************
+   * CREATE METHODS (SETTERS & OBJECT CREATION)
+   **************************************************************************************************************/
+
+  /**
+   * #### Description
+   * Sets the name of the `PokerRoom`, allowing the name to be updated or customized.
+   *
+   * #### Implements
+   * `N/A` - This method is part of the `PokerRoomInterface` and does not implement any external methods.
+   *
+   * #### Overrides
+   * `N/A` - This method does not override any superclass or parent methods.
+   *
+   * #### Purpose
+   * The `setName` method is used to assign a specific name to a `PokerRoom`, which helps distinguish it within the system.
+   * This is essential for systems where rooms need to be identifiable and manageable through a unique name.
+   *
+   * #### Events
+   * `N/A` - No events are emitted by this method.
+   *
+   * #### Parameters
+   * - `name`: A string representing the new name for the room. It must be a valid, non-empty string to ensure
+   *   the room has a clear, identifiable label.
+   *
+   * #### Requirements
+   * - The `name` parameter should be a non-empty string to provide meaningful identification.
+   * - Passing an empty or invalid value could result in future misidentification of rooms if validation is implemented.
+   *
+   * #### Returns
+   * - Returns the `name` that was set for the `PokerRoom`.
+   *
+   * #### Usage
+   * Use this method to set or update the name of a room in a system where unique or identifiable room names
+   * are necessary for reference.
+   *
+   * @param {string} name - The new name for the `PokerRoom`.
+   * @returns {string} - Returns the name of the room that was set.
+   *
+   * @example
+   * ```typescript
+   * const pokerRoom = new PokerRoom({ name: "Room1", tableSize: 6 });
+   * pokerRoom.setName("HighRollers"); // Sets the name of the room to "HighRollers"
+   * console.log(pokerRoom.getName()); // Logs "HighRollers"
+   * ```
+   */
+  public setName(name: string): string {
+    return this._setName(name);
+  }
+
+  /**
+   * @method `setChips`
+   * @private
+   * Returns the poker table's `id`.
+   * @returns {number} The poker table's `id`.
+   *
+   * @example
+   * const rank = card.getRank();
+   * console.log(rank); // "A"
+   */
+  public setChips(chips: number): number {
+    return this._setChips(chips);
+  }
+  
+  /**************************************************************************************************************
+   * READ METHODS (GETTERS & DATA RETRIEVAL)
+   **************************************************************************************************************/
 
   /**
    * @method `getId`
@@ -91,7 +166,7 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
    * console.log(rank); // "A"
    */
   public getId(): string {
-    return this._id;
+    return this.__id;
   }
 
   /**
@@ -105,7 +180,7 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
    * console.log(rank); // "A"
    */
   public getName(): string {
-    return this._name;
+    return this.__name;
   }
 
   /**
@@ -119,7 +194,7 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
    * console.log(rank); // "A"
    */
   public getChips(): number {
-    return this._chips;
+    return this.__chips;
   }
 
   /**
@@ -133,9 +208,8 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
    * console.log(rank); // "A"
    */
   public getHand(): CardInterface[] {
-    return this._hand;
+    return this.__hand;
   }
-
 
   /**
    * @method `isFolded`
@@ -147,10 +221,9 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
    * const rank = card.getRank();
    * console.log(rank); // "A"
    */
-  public isFolded(): boolean {
-    return this._isFolded;
+  public getIsFolded(): boolean {
+    return this.__isFolded;
   }
-
 
    /**
    * @method `getHand`
@@ -162,11 +235,53 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
    * const rank = card.getRank();
    * console.log(rank); // "A"
    */
-   public isBetMatched(): boolean {
-    return this._isBetMatched;
+   public getIsBetMatched(): boolean {
+    return this.__isBetMatched;
+  }
+  /**************************************************************************************************************
+   * UPDATE METHODS (MODIFYING EXISTING OBJECTS)
+   **************************************************************************************************************/
+
+  /**************************************************************************************************************
+   * DELETE METHODS (REMOVING OBJECTS)
+   **************************************************************************************************************/
+
+  /**************************************************************************************************************
+   * BUSINESS-LOGIC METHODS (LOGIC & CALCULATIONS)
+   **************************************************************************************************************/
+
+  /**************************************************************************************************************
+   * WRAPPER METHODS (UTILITY & CONVENIENCE)
+   **************************************************************************************************************/
+
+  
+  /**************************************************************************************************************
+   * INTERNAL METHODS (PROTECTED)
+   **************************************************************************************************************/
+  
+  protected _setName(name: string): string {
+    this.__name = name;
+    return this.__name;
   }
 
-  /******************* SETTERS *******************/
+    /**
+   * @method `setChips`
+   * @private
+   * Returns the poker table's `id`.
+   * @returns {number} The poker table's `id`.
+   *
+   * @example
+   * const rank = card.getRank();
+   * console.log(rank); // "A"
+   */
+  protected _setChips(chips: number): number {
+      this.__chips = chips;
+      return this.__chips;
+  }
+  
+  /**************************************************************************************************************
+   * INTERNAL METHODS (PRIVATE)
+   **************************************************************************************************************/
 
   /**
    * @method `setId`
@@ -178,40 +293,12 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
    * const rank = card.getRank();
    * console.log(rank); // "A"
    */
-  private setId(id: string): string {
-    this._id = id;
-    return this._id;
+  private __setId(id: string): string {
+    this.__id = id;
+    return this.__id;
   }
 
-  /**
-   * @method `setName`
-   * @public
-   * Returns the poker table's `id`.
-   * @returns {string} The poker table's `id`.
-   *
-   * @example
-   * const rank = card.getRank();
-   * console.log(rank); // "A"
-   */
-  public setName(name: string): string {
-    this._name = name;
-    return this._name;
-  }
-
-  /**
-   * @method `setChips`
-   * @private
-   * Returns the poker table's `id`.
-   * @returns {number} The poker table's `id`.
-   *
-   * @example
-   * const rank = card.getRank();
-   * console.log(rank); // "A"
-   */
-  private setChips(chips: number): number {
-    this._chips = chips;
-    return this._chips;
-  }
+ 
 
   /**
    * @method `setHand`
