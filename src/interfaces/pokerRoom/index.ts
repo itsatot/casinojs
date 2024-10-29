@@ -263,6 +263,50 @@ interface PokerRoomInterface extends NodeJS.EventEmitter {
    */
   setTables(tables: PokerTableInterface[]): PokerTableInterface[];
 
+  /**
+   * #### Description
+   * Creates a new `PokerRoom` instance based on the provided configuration and adds it to the Casino's rooms list.
+   *
+   * #### Implements
+   * `N/A`
+   *
+   * #### Overrides
+   * `N/A`
+   *
+   * #### Purpose
+   * Allows the Casino to dynamically create new rooms as needed by providing specific room configurations.
+   *
+   * #### Events
+   * - Emits a `CasinoEventName.ROOM_CREATED` event, enabling listeners to respond to the creation of a new room.
+   *
+   * #### Parameters
+   * - `config`: A `PokerRoomConfig` object containing details like `name`, `tableSize`, `smallBlind`, and `bigBlind`.
+   *
+   * #### Requirements
+   * `N/A`
+   *
+   * #### Returns
+   * - Returns the newly created `PokerRoomInterface` instance.
+   *
+   * #### Usage
+   * Primarily used within subclasses or protected methods to dynamically create and add rooms to the Casino.
+   *
+   * @param {PokerRoomConfig} config - Configuration settings for creating a new `PokerRoom`.
+   * @returns {PokerRoomInterface} - The newly created room instance.
+   *
+   * @example
+   * ```typescript
+   * class SpecialCasino extends Casino {
+   *   public createSpecialRoom(config: PokerRoomConfig): PokerRoomInterface {
+   *     return this._createRoom(config);
+   *   }
+   * }
+   * const specialCasino = new SpecialCasino();
+   * const newRoom = specialCasino.createSpecialRoom({ name: "Champions Lounge", tableSize: 10, smallBlind: 100, bigBlind: 200 });
+   * console.log(newRoom.getName()); // Outputs: "Champions Lounge"
+   * ```
+   */
+  createTable(config: PokerTableConfig): PokerTableInterface;
   /**************************************************************************************************************
    * READ METHODS (GETTERS & DATA RETRIEVAL)
    **************************************************************************************************************/
@@ -403,7 +447,15 @@ interface PokerRoomInterface extends NodeJS.EventEmitter {
   /**************************************************************************************************************
    * WRAPPER METHODS (UTILITY & CONVENIENCE)
    **************************************************************************************************************/
-
+ 
+  /**
+   * @method `size`
+   * Starts a new PokerGame if there are at least two active players at the PokerTable.
+   * This method initiates the game flow, including assigning blinds and starting the rounds.
+   * @returns {number}
+   */
+  size(): number
+  
   /**
    * #### Description
    * Retrieves the total number of `PokerRoom` instances currently managed by the Casino.

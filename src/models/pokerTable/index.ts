@@ -477,7 +477,7 @@ class PokerTable extends EventEmitter implements PokerTableInterface {
   /**
    * update
    */
-  public updateBlinds(smallBlind: number) {
+  public updateBlinds(smallBlind: number) : boolean {
     this._setSmallBlind(smallBlind);
     this._setBigBlind(this.getSmallBlind() * 2);
     return true;

@@ -1,5 +1,5 @@
 import { PokerSeatInterface } from "../pokerSeat";
-import { PokerPlayerInterface } from "../pokerPlayer";
+import { PokerPlayerInterface , PokerPlayerConfig} from "../pokerPlayer";
 
 /**
  * @interface `PokerTableConfig`
@@ -260,6 +260,51 @@ interface PokerTableInterface extends NodeJS.EventEmitter {
    */
   setQueue(queue: PokerPlayerInterface[]): PokerPlayerInterface[];
 
+   /**
+   * #### Description
+   * Sets the queue of players waiting to enter the `PokerTable` within the `PokerRoom`. This queue helps
+   * manage player flow and assign seating as tables become available.
+   *
+   * #### Implements
+   * `N/A` - This method is part of the `PokerRoomInterface` and does not implement any external methods.
+   *
+   * #### Overrides
+   * `N/A` - This method does not override any superclass or parent methods.
+   *
+   * #### Purpose
+   * The `setQueue` method provides a structured way to set or update the player queue. This queue is essential
+   * for room management, helping to keep a record of players awaiting entry and manage seating arrangements.
+   *
+   * #### Events
+   * `N/A` - No events are emitted by this method.
+   *
+   * #### Parameters
+   * - `queue`: An array of `PokerPlayerInterface` objects, each representing a player awaiting entry into the room’s `PokerTable`.
+   *
+   * #### Requirements
+   * - `queue` should be an array of valid `PokerPlayerInterface` instances.
+   * - If empty, the queue indicates that no players are currently waiting for entry.
+   *
+   * #### Returns
+   * - Returns the `queue` array after updating it within the room.
+   *
+   * #### Usage
+   * Use this method to set or update the player queue in cases where player flow needs control,
+   * ensuring smooth transitions as players are seated at the table.
+   *
+   * @param {PokerPlayerInterface[]} queue - The new list of players waiting to enter the table.
+   * @returns {PokerPlayerInterface[]} - Returns the updated player queue.
+   *
+   * @example
+   * ```typescript
+   * const pokerRoom = new PokerRoom({ name: "Room2", tableSize: 6 });
+   * const queue = [new PokerPlayer("Alice"), new PokerPlayer("Bob")];
+   * pokerRoom.setQueue(queue); // Sets the player queue
+   * console.log(pokerRoom.getQueue()); // Logs the updated player queue
+   * ```
+   */
+  setSmallBlind(smallBlind: number): number
+
   /**************************************************************************************************************
    * READ METHODS (GETTERS & DATA RETRIEVAL)
    **************************************************************************************************************/
@@ -275,6 +320,30 @@ interface PokerTableInterface extends NodeJS.EventEmitter {
    * console.log(rank); // "A"
    */
   getId(): string;
+
+  /**
+   * @method `getId`
+   * @public
+   * Returns the poker table's `id`.
+   * @returns {string} The poker table's `id`.
+   *
+   * @example
+   * const rank = card.getRank();
+   * console.log(rank); // "A"
+   */
+  getSmallBlind(): number;
+
+   /**
+   * @method `getId`
+   * @public
+   * Returns the poker table's `id`.
+   * @returns {string} The poker table's `id`.
+   *
+   * @example
+   * const rank = card.getRank();
+   * console.log(rank); // "A"
+   */
+  getBigBlind(): number;
 
   /**
    * @method `getSeats`
@@ -328,6 +397,22 @@ interface PokerTableInterface extends NodeJS.EventEmitter {
    * UPDATE METHODS (MODIFYING EXISTING OBJECTS)
    **************************************************************************************************************/
 
+  /**
+   * @method `getQueue`
+   * @public
+   * Returns the poker room's `name`.
+   * @returns {PokerPlayerInterface[]} The poker room's `name`.
+   *
+   * @example
+   * const rank = card.getName();
+   * console.log(rank); // "A"
+   */
+  addToQueue(config: PokerPlayerConfig): boolean;
+  
+  moveToTable(seatPostion: number): boolean;
+
+  updateBlinds(smallBlind: number) : boolean;
+
   /**************************************************************************************************************
    * DELETE METHODS (REMOVING OBJECTS)
    **************************************************************************************************************/
@@ -339,7 +424,15 @@ interface PokerTableInterface extends NodeJS.EventEmitter {
   /**************************************************************************************************************
    * WRAPPER METHODS (UTILITY & CONVENIENCE)
    **************************************************************************************************************/
-
+  
+  /**
+   * @method `size`
+   * Starts a new PokerGame if there are at least two active players at the PokerTable.
+   * This method initiates the game flow, including assigning blinds and starting the rounds.
+   * @returns {number}
+   */
+  size(): number;
+  
   /**
    * #### Description
    * Retrieves the total number of `PokerRoom` instances currently managed by the Casino.
