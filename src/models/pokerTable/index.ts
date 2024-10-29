@@ -496,7 +496,7 @@ class PokerTable extends EventEmitter implements PokerTableInterface {
    **************************************************************************************************************/
 
   /**
-   * @method `getSize`
+   * @method `size`
    * Starts a new PokerGame if there are at least two active players at the PokerTable.
    * This method initiates the game flow, including assigning blinds and starting the rounds.
    * @returns {number}

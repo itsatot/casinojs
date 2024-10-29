@@ -468,6 +468,16 @@ class Casino extends EventEmitter implements CasinoInterface {
    **************************************************************************************************************/
 
   /**
+   * @method `size`
+   * Starts a new PokerGame if there are at least two active players at the PokerTable.
+   * This method initiates the game flow, including assigning blinds and starting the rounds.
+   * @returns {number}
+   */
+  public size(): number {
+    return this.roomCount();
+  }
+
+  /**
    * #### Description
    * Returns the total number of `PokerRoom` instances currently managed by the Casino.
    *
