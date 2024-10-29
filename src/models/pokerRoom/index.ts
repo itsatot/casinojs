@@ -471,6 +471,64 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
     return this.getTables().length;
   }
 
+  /**
+   * #### Description
+   * Checks if a provided index is within the valid range of the Casino’s room list.
+   *
+   * #### Implements
+   * Implements the `isValidIndex` method of `CasinoInterface`.
+   *
+   * #### Overrides
+   * `N/A`
+   *
+   * #### Purpose
+   * This method helps validate that an index is within the valid bounds of the Casino’s room list. It prevents
+   * out-of-bound errors and ensures that methods calling on rooms by index are provided with a valid reference.
+   *
+   * #### Events
+   * `N/A`
+   *
+   * #### Parameters
+   * - `index`: A zero-based integer representing the position of a room in the Casino's managed list of rooms.
+   *
+   * #### Requirements
+   * - The `index` should be a non-negative integer and within the bounds of the `__rooms` array.
+   *
+   * #### Returns
+   * - Returns `true` if the index is within bounds.
+   * - Throws an `Error` if the index is out of range.
+   *
+   * #### Usage
+   * Call this method before performing operations that require a valid room index to prevent out-of-bounds errors.
+   * Can be used in any index-based access patterns for room retrieval or modification.
+   *
+   * @param {number} index - The zero-based index to validate.
+   * @returns {boolean} - Returns `true` if the index is within bounds.
+   *
+   * @throws {Error} - Throws an error with a message indicating the invalid index.
+   *
+   * @example
+   * ```typescript
+   * const casino = new Casino();
+   * try {
+   *   casino.isValidIndex(2); // Returns true if there are at least 3 rooms
+   * } catch (error) {
+   *   console.error(error.message); // If index 2 is out of bounds, logs error message
+   * }
+   * ```
+   */
+  public isValidIndex(index: number): boolean {
+    if (index >= 0 && index < this.tableCount()) {
+      throw new Error(
+        `Invalid index: ${index}. It must be between 0 and ${
+          this.tableCount() - 1
+        }.`
+      );
+    } else {
+      return true;
+    }
+  }
+
   /**************************************************************************************************************
    * INTERNAL METHODS (PROTECTED)
    **************************************************************************************************************/
