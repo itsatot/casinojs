@@ -31,49 +31,49 @@ class PokerPhase extends EventEmitter implements PokerPhaseInterface {
    * @property {DeckInterface} _deck
    * The current phase of the game (e.g., "pre-flop", "flop", "turn", "river").
    */
-  private _deck: DeckInterface = new Deck();
+  private __deck: DeckInterface = new Deck();
 
   /**
    * @property {CardInterface[]} _communityCards
    * The community cards that are dealt face-up and shared by all players.
    */
-  private _communityCards: CardInterface[] = [];
+  private __communityCards: CardInterface[] = [];
 
   /**
    * @property {CardInterface[]} _communityCards
    * The community cards that are dealt face-up and shared by all players.
    */
-  private _players: PokerPlayerInterface[] = [];
+  private __players: PokerPlayerInterface[] = [];
 
   /**
    * @property {CardInterface[]} _communityCards
    * The community cards that are dealt face-up and shared by all players.
    */
-  private _pot: number=0;
+  private __pot: number=0;
 
   /**
    * @property {CardInterface[]} _communityCards
    * The community cards that are dealt face-up and shared by all players.
    */
-  private _currentPlayerPos: number=0;
+  private __currentPlayerPos: number=0;
 
   /**
    * @property {CardInterface[]} _communityCards
    * The community cards that are dealt face-up and shared by all players.
    */
-  private _dealerPos: number=0;
+  private __dealerPos: number=0;
 
   /**
    * @property {CardInterface[]} _communityCards
    * The community cards that are dealt face-up and shared by all players.
    */
-  private _smallBlindPos: number=1;
+  private __smallBlindPos: number=1;
 
   /**
    * @property {CardInterface[]} _communityCards
    * The community cards that are dealt face-up and shared by all players.
    */
-  private _bigBlindPos: number=2;
+  private __bigBlindPos: number=2;
 
   /*************************************************************************************
    * CONSTRUCTOR & INITIALIZERS
