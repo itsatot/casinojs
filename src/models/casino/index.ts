@@ -507,7 +507,7 @@ class Casino extends EventEmitter implements CasinoInterface {
    * ```
    */
   public roomCount(): number {
-    return this.__rooms.length;
+    return this.getRooms().length;
   }
 
   /**

@@ -174,15 +174,106 @@ class PokerTable extends EventEmitter implements PokerTableInterface {
         });
         this.__seats?.push(seat);
       }
-    }
-
-    
+    }   
   }
 
    /**************************************************************************************************************
    * CREATE METHODS (SETTERS & OBJECT CREATION)
    **************************************************************************************************************/
-
+  
+   /**
+   * #### Description
+   * Sets the queue of players waiting to enter the `PokerTable` within the `PokerRoom`. This queue helps
+   * manage player flow and assign seating as tables become available.
+   *
+   * #### Implements
+   * `N/A` - This method is part of the `PokerRoomInterface` and does not implement any external methods.
+   *
+   * #### Overrides
+   * `N/A` - This method does not override any superclass or parent methods.
+   *
+   * #### Purpose
+   * The `setQueue` method provides a structured way to set or update the player queue. This queue is essential
+   * for room management, helping to keep a record of players awaiting entry and manage seating arrangements.
+   *
+   * #### Events
+   * `N/A` - No events are emitted by this method.
+   *
+   * #### Parameters
+   * - `queue`: An array of `PokerPlayerInterface` objects, each representing a player awaiting entry into the room’s `PokerTable`.
+   *
+   * #### Requirements
+   * - `queue` should be an array of valid `PokerPlayerInterface` instances.
+   * - If empty, the queue indicates that no players are currently waiting for entry.
+   *
+   * #### Returns
+   * - Returns the `queue` array after updating it within the room.
+   *
+   * #### Usage
+   * Use this method to set or update the player queue in cases where player flow needs control,
+   * ensuring smooth transitions as players are seated at the table.
+   *
+   * @param {PokerPlayerInterface[]} queue - The new list of players waiting to enter the table.
+   * @returns {PokerPlayerInterface[]} - Returns the updated player queue.
+   *
+   * @example
+   * ```typescript
+   * const pokerRoom = new PokerRoom({ name: "Room2", tableSize: 6 });
+   * const queue = [new PokerPlayer("Alice"), new PokerPlayer("Bob")];
+   * pokerRoom.setQueue(queue); // Sets the player queue
+   * console.log(pokerRoom.getQueue()); // Logs the updated player queue
+   * ```
+   */
+  public setQueue(queue: PokerPlayerInterface[]): PokerPlayerInterface[] {
+    return this._setQueue(queue);
+  } 
+  
+  /**
+  * #### Description
+  * Sets the queue of players waiting to enter the `PokerTable` within the `PokerRoom`. This queue helps
+  * manage player flow and assign seating as tables become available.
+  *
+  * #### Implements
+  * `N/A` - This method is part of the `PokerRoomInterface` and does not implement any external methods.
+  *
+  * #### Overrides
+  * `N/A` - This method does not override any superclass or parent methods.
+  *
+  * #### Purpose
+  * The `setQueue` method provides a structured way to set or update the player queue. This queue is essential
+  * for room management, helping to keep a record of players awaiting entry and manage seating arrangements.
+  *
+  * #### Events
+  * `N/A` - No events are emitted by this method.
+  *
+  * #### Parameters
+  * - `queue`: An array of `PokerPlayerInterface` objects, each representing a player awaiting entry into the room’s `PokerTable`.
+  *
+  * #### Requirements
+  * - `queue` should be an array of valid `PokerPlayerInterface` instances.
+  * - If empty, the queue indicates that no players are currently waiting for entry.
+  *
+  * #### Returns
+  * - Returns the `queue` array after updating it within the room.
+  *
+  * #### Usage
+  * Use this method to set or update the player queue in cases where player flow needs control,
+  * ensuring smooth transitions as players are seated at the table.
+  *
+  * @param {PokerPlayerInterface[]} queue - The new list of players waiting to enter the table.
+  * @returns {PokerPlayerInterface[]} - Returns the updated player queue.
+  *
+  * @example
+  * ```typescript
+  * const pokerRoom = new PokerRoom({ name: "Room2", tableSize: 6 });
+  * const queue = [new PokerPlayer("Alice"), new PokerPlayer("Bob")];
+  * pokerRoom.setQueue(queue); // Sets the player queue
+  * console.log(pokerRoom.getQueue()); // Logs the updated player queue
+  * ```
+  */
+ public setSmallBlind(smallBlind: number): number {
+   return this._setSmallBlind(smallBlind);
+ }
    
   /**************************************************************************************************************
    * READ METHODS (GETTERS & DATA RETRIEVAL)
@@ -202,15 +293,32 @@ class PokerTable extends EventEmitter implements PokerTableInterface {
     return this.__id;
   }
 
+  /**
+   * @method `getId`
+   * @public
+   * Returns the poker table's `id`.
+   * @returns {string} The poker table's `id`.
+   *
+   * @example
+   * const rank = card.getRank();
+   * console.log(rank); // "A"
+   */
+  public getSmallBlind(): number {
+    return this.__smallBlindAmount;
+  }
 
   /**
-   * @method `getSize`
-   * Starts a new PokerGame if there are at least two active players at the PokerTable.
-   * This method initiates the game flow, including assigning blinds and starting the rounds.
-   * @returns {number}
+   * @method `getId`
+   * @public
+   * Returns the poker table's `id`.
+   * @returns {string} The poker table's `id`.
+   *
+   * @example
+   * const rank = card.getRank();
+   * console.log(rank); // "A"
    */
-  public getSize(): number {
-    return this.getSeats().length;
+  public getBigBlind(): number {
+    return this.__bigBlindAmount;
   }
 
   /**
@@ -221,6 +329,234 @@ class PokerTable extends EventEmitter implements PokerTableInterface {
    */
   public getSeats(): PokerSeatInterface[] {
     return this.__seats;
+  }
+
+  
+  /**
+   * #### Description
+   * Retrieves the current queue of players awaiting seating in the `PokerRoom`.
+   *
+   * #### Implements
+   * `N/A` - This method is part of `PokerRoomInterface` without implementing external methods.
+   *
+   * #### Overrides
+   * `N/A` - This method does not override any superclass or parent methods.
+   *
+   * #### Purpose
+   * The `getQueue` method is essential for accessing the list of players waiting for a seat in the `PokerRoom`.
+   * It provides insight into the queue length and composition, helping manage room capacity and player flow.
+   *
+   * #### Events
+   * `N/A` - This method does not emit any events.
+   *
+   * #### Parameters
+   * `N/A` - No parameters are required for this method.
+   *
+   * #### Requirements
+   * `N/A` - This method simply returns the existing queue without modifying it.
+   *
+   * #### Returns
+   * - Returns an array of `PokerPlayerInterface` instances, representing the players in the waiting queue.
+   *
+   * #### Usage
+   * Call this method to view the list of players awaiting entry to the room. This can be used for monitoring,
+   * player assignment, and room management purposes.
+   *
+   * @returns {PokerPlayerInterface[]} - An array containing the players in the waiting queue.
+   *
+   * @example
+   * ```typescript
+   * const pokerRoom = new PokerRoom({ name: "Lobby", tableSize: 6 });
+   * console.log(pokerRoom.getQueue()); // Logs an array of players awaiting seating
+   * ```
+   */
+  public getQueue(): PokerPlayerInterface[] {
+    return this.__queue;
+  }
+  
+  /**************************************************************************************************************
+   * UPDATE METHODS (MODIFYING EXISTING OBJECTS)
+   **************************************************************************************************************/
+
+  /**
+   * @method `getQueue`
+   * @public
+   * Returns the poker room's `name`.
+   * @returns {PokerPlayerInterface[]} The poker room's `name`.
+   *
+   * @example
+   * const rank = card.getName();
+   * console.log(rank); // "A"
+   */
+  public addToQueue(config: PokerPlayerConfig): boolean {
+    const player = new PokerPlayer(config);
+    this.__queue.push(player);
+    return true;
+  }
+
+  public moveToTable(seatPostion: number): boolean {
+    let roomSeats = this.getSeats();
+    if (roomSeats) {
+      for (let index = 0; index < roomSeats.length; index++) {
+        if (
+          roomSeats[index].getPosition() === seatPostion &&
+          !roomSeats[index].isOccupied() &&
+          this.getQueue().length >= 1
+        ) {
+          let queue = this.getQueue();
+          let pokerPlayer = queue.splice(0, 1);
+          this.setQueue(queue);
+          roomSeats[index].setPlayer(pokerPlayer[0]);
+          return true;
+        }
+      }
+    }
+
+    return false;
+  }
+
+  /**
+   * update
+   */
+  public updateBlinds(smallBlind:number) {
+    this._setSmallBlind(smallBlind);
+    this._setBigBlind(this.getSmallBlind()*2);
+    return true;
+  }
+
+  /**************************************************************************************************************
+   * DELETE METHODS (REMOVING OBJECTS)
+   **************************************************************************************************************/
+
+  /**************************************************************************************************************
+   * BUSINESS-LOGIC METHODS (LOGIC & CALCULATIONS)
+   **************************************************************************************************************/
+
+  /**************************************************************************************************************
+   * WRAPPER METHODS (UTILITY & CONVENIENCE)
+   **************************************************************************************************************/
+   
+  /**
+   * @method `getSize`
+   * Starts a new PokerGame if there are at least two active players at the PokerTable.
+   * This method initiates the game flow, including assigning blinds and starting the rounds.
+   * @returns {number}
+   */
+  public size(): number {
+    return this.seatCount();
+  }
+
+  /**
+   * #### Description
+   * Returns the total number of `PokerRoom` instances currently managed by the Casino.
+   *
+   * #### Implements
+   * Implements the `roomCount` method of `CasinoInterface`.
+   *
+   * #### Overrides
+   * `N/A`
+   *
+   * #### Purpose
+   * Provides a simple way to check how many poker rooms the Casino is currently managing. Useful for general
+   * information about the Casino's state and for validating indices or conditions that depend on room count.
+   *
+   * #### Events
+   * `N/A`
+   *
+   * #### Parameters
+   * `N/A`
+   *
+   * #### Requirements
+   * `N/A`
+   *
+   * #### Returns
+   * - Returns the number of rooms currently managed by the Casino.
+   *
+   * #### Usage
+   * This method is useful for any scenario where the total number of active rooms is needed, such as iterating
+   * over all rooms or validating index-based operations.
+   *
+   * @returns {number} - The current count of rooms in the Casino.
+   *
+   * @example
+   * ```typescript
+   * const casino = new Casino();
+   * const count = casino.roomCount();
+   * console.log(count); // Logs the total number of managed rooms, e.g., 5
+   * ```
+   */
+   public seatCount(): number {
+    return this.getSeats().length;
+  }
+
+  /**************************************************************************************************************
+   * INTERNAL METHODS (PROTECTED)
+   **************************************************************************************************************/
+  protected _setSmallBlind(smallBlind: number): number {
+    if (smallBlind<=0) {
+      throw new Error(`Small Blind should always be greator than 0.`)
+    } else{
+      return this.__smallBlindAmount = smallBlind;
+    }
+  }
+
+  protected _setBigBlind(bigBlind: number): number {
+    return this.__bigBlindAmount = bigBlind;
+  }
+
+  protected _setQueue(queue: PokerPlayerInterface[]): PokerPlayerInterface[] {
+    this.__queue = queue;
+    return this.__queue;
+  }
+  /**************************************************************************************************************
+   * INTERNAL METHODS (PRIVATE)
+   **************************************************************************************************************/
+
+  /**
+   * @method `setId`
+   * @public
+   * Returns the poker table's `id`.
+   * @returns {string} The poker table's `id`.
+   *
+   * @example
+   * const rank = card.getRank();
+   * console.log(rank); // "A"
+   */
+  private __setId(id: string): string {
+    this.__id = id;
+    return this.__id;
+  }
+
+  
+  /**
+   * @method `setSeats`
+   * @public
+   * Returns the poker table's `id`.
+   * @returns {number} The poker table's `id`.
+   *
+   * @example
+   * const rank = card.getRank();
+   * console.log(rank); // "A"
+   */
+  private __setSeats(seats: PokerSeatInterface[]): boolean {
+    this.__seats = seats;
+    return true;
+  }
+
+  
+  private __occupySeat(position: number, player: PokerPlayerInterface): boolean {
+    for (let i = 0; i < this.getSeats().length; i++) {
+      let seat = this.getSeats()[i];
+      let seatPosition = seat.getPosition();
+      if (seatPosition === position) {
+        if (!seat.isOccupied()) {
+          seat.setPlayer(player);
+          console.log("Seat has been assigned");
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
 
@@ -280,215 +616,6 @@ class PokerTable extends EventEmitter implements PokerTableInterface {
    private __generateId(): string {
     return generateUniqueId();
   }
-
-  
-  /**
-   * #### Description
-   * Retrieves the current queue of players awaiting seating in the `PokerRoom`.
-   *
-   * #### Implements
-   * `N/A` - This method is part of `PokerRoomInterface` without implementing external methods.
-   *
-   * #### Overrides
-   * `N/A` - This method does not override any superclass or parent methods.
-   *
-   * #### Purpose
-   * The `getQueue` method is essential for accessing the list of players waiting for a seat in the `PokerRoom`.
-   * It provides insight into the queue length and composition, helping manage room capacity and player flow.
-   *
-   * #### Events
-   * `N/A` - This method does not emit any events.
-   *
-   * #### Parameters
-   * `N/A` - No parameters are required for this method.
-   *
-   * #### Requirements
-   * `N/A` - This method simply returns the existing queue without modifying it.
-   *
-   * #### Returns
-   * - Returns an array of `PokerPlayerInterface` instances, representing the players in the waiting queue.
-   *
-   * #### Usage
-   * Call this method to view the list of players awaiting entry to the room. This can be used for monitoring,
-   * player assignment, and room management purposes.
-   *
-   * @returns {PokerPlayerInterface[]} - An array containing the players in the waiting queue.
-   *
-   * @example
-   * ```typescript
-   * const pokerRoom = new PokerRoom({ name: "Lobby", tableSize: 6 });
-   * console.log(pokerRoom.getQueue()); // Logs an array of players awaiting seating
-   * ```
-   */
-  public getQueue(): PokerPlayerInterface[] {
-    return this.__queue;
-  }
-
-  
-  /**
-   * @method `getQueue`
-   * @public
-   * Returns the poker room's `name`.
-   * @returns {PokerPlayerInterface[]} The poker room's `name`.
-   *
-   * @example
-   * const rank = card.getName();
-   * console.log(rank); // "A"
-   */
-  public addToQueue(config: PokerPlayerConfig): boolean {
-    const player = new PokerPlayer(config);
-    this.__queue.push(player);
-    return true;
-  }
-
-  
-  /**
-   * #### Description
-   * Sets the queue of players waiting to enter the `PokerTable` within the `PokerRoom`. This queue helps
-   * manage player flow and assign seating as tables become available.
-   *
-   * #### Implements
-   * `N/A` - This method is part of the `PokerRoomInterface` and does not implement any external methods.
-   *
-   * #### Overrides
-   * `N/A` - This method does not override any superclass or parent methods.
-   *
-   * #### Purpose
-   * The `setQueue` method provides a structured way to set or update the player queue. This queue is essential
-   * for room management, helping to keep a record of players awaiting entry and manage seating arrangements.
-   *
-   * #### Events
-   * `N/A` - No events are emitted by this method.
-   *
-   * #### Parameters
-   * - `queue`: An array of `PokerPlayerInterface` objects, each representing a player awaiting entry into the room’s `PokerTable`.
-   *
-   * #### Requirements
-   * - `queue` should be an array of valid `PokerPlayerInterface` instances.
-   * - If empty, the queue indicates that no players are currently waiting for entry.
-   *
-   * #### Returns
-   * - Returns the `queue` array after updating it within the room.
-   *
-   * #### Usage
-   * Use this method to set or update the player queue in cases where player flow needs control,
-   * ensuring smooth transitions as players are seated at the table.
-   *
-   * @param {PokerPlayerInterface[]} queue - The new list of players waiting to enter the table.
-   * @returns {PokerPlayerInterface[]} - Returns the updated player queue.
-   *
-   * @example
-   * ```typescript
-   * const pokerRoom = new PokerRoom({ name: "Room2", tableSize: 6 });
-   * const queue = [new PokerPlayer("Alice"), new PokerPlayer("Bob")];
-   * pokerRoom.setQueue(queue); // Sets the player queue
-   * console.log(pokerRoom.getQueue()); // Logs the updated player queue
-   * ```
-   */
-  public setQueue(queue: PokerPlayerInterface[]): PokerPlayerInterface[] {
-    return this._setQueue(queue);
-  }
-
-
-  
-  /**************************************************************************************************************
-   * UPDATE METHODS (MODIFYING EXISTING OBJECTS)
-   **************************************************************************************************************/
-
-
-  public moveToTable(seatPostion: number): boolean {
-    let roomSeats = this.getSeats();
-    if (roomSeats) {
-      for (let index = 0; index < roomSeats.length; index++) {
-        if (
-          roomSeats[index].getPosition() === seatPostion &&
-          !roomSeats[index].isOccupied() &&
-          this.getQueue().length >= 1
-        ) {
-          let queue = this.getQueue();
-          let pokerPlayer = queue.splice(0, 1);
-          this.setQueue(queue);
-          roomSeats[index].setPlayer(pokerPlayer[0]);
-          return true;
-        }
-      }
-    }
-
-    return false;
-  }
-
-  /**************************************************************************************************************
-   * DELETE METHODS (REMOVING OBJECTS)
-   **************************************************************************************************************/
-
-  /**************************************************************************************************************
-   * BUSINESS-LOGIC METHODS (LOGIC & CALCULATIONS)
-   **************************************************************************************************************/
-
-  /**************************************************************************************************************
-   * WRAPPER METHODS (UTILITY & CONVENIENCE)
-   **************************************************************************************************************/
-
-  /**************************************************************************************************************
-   * INTERNAL METHODS (PROTECTED)
-   **************************************************************************************************************/
-  
-  protected _setQueue(queue: PokerPlayerInterface[]): PokerPlayerInterface[] {
-    this.__queue = queue;
-    return this.__queue;
-  }
-  /**************************************************************************************************************
-   * INTERNAL METHODS (PRIVATE)
-   **************************************************************************************************************/
-
-  /**
-   * @method `setId`
-   * @public
-   * Returns the poker table's `id`.
-   * @returns {string} The poker table's `id`.
-   *
-   * @example
-   * const rank = card.getRank();
-   * console.log(rank); // "A"
-   */
-  private __setId(id: string): string {
-    this.__id = id;
-    return this.__id;
-  }
-
-  
-  /**
-   * @method `setSeats`
-   * @public
-   * Returns the poker table's `id`.
-   * @returns {number} The poker table's `id`.
-   *
-   * @example
-   * const rank = card.getRank();
-   * console.log(rank); // "A"
-   */
-  private __setSeats(seats: PokerSeatInterface[]): boolean {
-    this.__seats = seats;
-    return true;
-  }
-
-  
-  private __occupySeat(position: number, player: PokerPlayerInterface): boolean {
-    for (let i = 0; i < this.getSeats().length; i++) {
-      let seat = this.getSeats()[i];
-      let seatPosition = seat.getPosition();
-      if (seatPosition === position) {
-        if (!seat.isOccupied()) {
-          seat.setPlayer(player);
-          console.log("Seat has been assigned");
-          return true;
-        }
-      }
-    }
-    return false;
-  }
-
-
   
  
 }

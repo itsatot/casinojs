@@ -469,7 +469,7 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
    * ```
    */
   public tableCount(): number {
-    return this.__tables.length;
+    return this.getTables().length;
   }
 
   /**************************************************************************************************************
