@@ -1,4 +1,3 @@
-import { EventEmitter } from "events";
 import { PokerPlayerInterface } from "../pokerPlayer";
 
 /**
@@ -10,7 +9,7 @@ interface PokerSeatConfig {
    * @property {string | undefined} id
    * The maximum number of players that can be seated at the PokerTable[2-14].
    */
-  id: string | undefined;
+  id?: string;
 
   /**
    * @property {number} position
@@ -22,25 +21,13 @@ interface PokerSeatConfig {
    * @property {boolean} isDealer
    * The maximum number of players that can be seated at the PokerTable[2-14].
    */
-  isDealer: boolean;
-
-  /**
-   * @property {boolean} isSmallBlind
-   * The maximum number of players that can be seated at the PokerTable[2-14].
-   */
-  isSmallBlind: boolean;
-
-  /**
-   * @property {boolean} isBigBlind
-   * The maximum number of players that can be seated at the PokerTable[2-14].
-   */
-  isBigBlind: boolean;
+  isDealer?: boolean;
 
   /**
    * @property {PokerPlayerInterface | undefined} player
    * The maximum number of players that can be seated at the PokerTable[2-14].
    */
-  player: PokerPlayerInterface | undefined;
+  player?: PokerPlayerInterface;
 }
 
 /**
@@ -126,7 +113,6 @@ interface PokerSeatInterface extends NodeJS.EventEmitter {
     player: PokerPlayerInterface | undefined
   ): PokerPlayerInterface | undefined;
 
-  
   isOccupied(): boolean;
 }
 

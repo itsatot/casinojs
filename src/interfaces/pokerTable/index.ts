@@ -380,6 +380,54 @@ interface PokerTableInterface extends NodeJS.EventEmitter {
    * ```
    */
   seatCount(): number;
+
+  /**
+   * #### Description
+   * Validates if a specified index is within the valid bounds of the Casino’s room list.
+   *
+   * #### Implements
+   * `N/A`
+   *
+   * #### Overrides
+   * `N/A`
+   *
+   * #### Purpose
+   * Prevents out-of-bounds errors by confirming that an index is within the acceptable range for the Casino’s
+   * room list, ensuring that subsequent calls to access rooms by index have a valid target.
+   *
+   * #### Events
+   * `N/A`
+   *
+   * #### Parameters
+   * - `index`: A zero-based integer specifying the position of a room within the Casino's managed room list.
+   *
+   * #### Requirements
+   * - The `index` must be a non-negative integer within the bounds of the `__rooms` array.
+   *
+   * #### Returns
+   * - Returns `true` if the index is within bounds.
+   * - Throws an `Error` if the index is out of bounds.
+   *
+   * #### Usage
+   * Call this method before performing operations involving indexed access to rooms, ensuring the index
+   * falls within valid boundaries.
+   *
+   * @param {number} index - The zero-based index to validate within the room list.
+   * @returns {boolean} - Returns `true` if the index is within bounds.
+   *
+   * @throws {Error} - Throws an error with a descriptive message if the index is out of bounds.
+   *
+   * @example
+   * ```typescript
+   * const casino = new Casino();
+   * try {
+   *   casino.isValidIndex(2); // Returns true if index 2 exists in the list of rooms
+   * } catch (error) {
+   *   console.error(error.message); // Logs error if index 2 is invalid
+   * }
+   * ```
+   */
+  isValidIndex(index: number): boolean;
 }
 
 export { PokerTableConfig, PokerTableInterface };

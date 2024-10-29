@@ -1,4 +1,3 @@
-import { EventEmitter } from "events";
 import { DeckInterface } from "../deck";
 import { PokerPlayerInterface } from "../pokerPlayer";
 import { PokerPhaseName } from "../../enums";
