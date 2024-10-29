@@ -10,7 +10,7 @@ import {
 import { Deck } from "../deck";
 import { PokerPhase } from "../pokerPhase";
 import { PokerPhaseName } from "../../enums";
-import {generateUniqueId} from "../../utils";
+import { generateUniqueId } from "../../utils";
 
 /**
  * @class `PokerGame`
@@ -25,56 +25,56 @@ class PokerGame extends EventEmitter implements PokerGameInterface {
    *************************************************************************************/
 
   /**
-   * @property {DeckInterface} _id
+   * @property {DeckInterface} __id
    * The deck of cards used in the current PokerGame.
    */
-  private _id: string;
+  private __id: string = ``;
 
   /**
    * @property {string} _currentPhase
    * The current phase of the game (e.g., "pre-flop", "flop", "turn", "river").
    */
-  private _deck: DeckInterface;
+  private __deck: DeckInterface = new Deck();
 
   /**
    * @property {number} _smallBlindAmount
    * The maximum number of players that can be seated at the PokerTable[2-14].
    */
-  private _smallBlindAmount: number;
+  private __smallBlindAmount: number = 5;
 
   /**
    * @property {number} _bigBlindAmount
    * The maximum number of players that can be seated at the PokerTable[2-14].
    */
-  private _bigBlindAmount: number;
+  private __bigBlindAmount: number = this.__smallBlindAmount * 2;
 
   /**
    * @property {number} _bigBlindAmount
    * The maximum number of players that can be seated at the PokerTable[2-14].
    */
-  private _phases: PokerPhaseInterface[];
+  private __phases: PokerPhaseInterface[] = [];
 
   /**
    * @property {number} _bigBlindAmount
    * The maximum number of players that can be seated at the PokerTable[2-14].
    */
-  private _currentPhase: PokerPhaseInterface;
+  private __currentPhase: PokerPhaseInterface = new PokerPhase();
 
   /**
    * @property {CardInterface[]} _communityCards
    * The community cards that are dealt face-up and shared by all players.
    */
-  private _communityCards: CardInterface[];
+  private __communityCards: CardInterface[] = [];
 
-  private _players: PokerPlayerInterface[];
+  private __players: PokerPlayerInterface[] = [];
 
-  private _dealerPos: number;
+  private __dealerPos: number = 0;
 
-  private _smallBlindPos: number;
+  private __smallBlindPos: number = 1;
 
-  private _bigBlindPos: number;
+  private __bigBlindPos: number = 2;
 
-  private _pot: number;
+  private __pot: number = 0;
 
   /*************************************************************************************
    * CONSTRUCTOR & INITIALIZERS
@@ -89,30 +89,9 @@ class PokerGame extends EventEmitter implements PokerGameInterface {
    * @example
    * const deck = new Deck();
    */
-  constructor(config: PokerGameConfig) {
+  constructor(config?: PokerGameConfig) {
     super();
-    this._id = this._id = config.id ? config.id : this.__generateId();
-    this._deck = new Deck();
-    this._smallBlindAmount = config.smallBlindAmount
-      ? config.smallBlindAmount
-      : 5;
-    this._bigBlindAmount = config.bigBlindAmount ? config.bigBlindAmount : 10;
-    this._communityCards = [];
-    this._players = config.players ? config.players : [];
-    this._pot = 0;
-    this._dealerPos = 0;
-    this._smallBlindPos = 0;
-    this._bigBlindPos = 0;
-    this._phases = [];
-    this._currentPhase = new PokerPhase({
-      name: PokerPhaseName.PRE_FLOP,
-      deck: this._deck,
-      players: [],
-      pot: 0,
-      dealerPos: 0,
-      smallBlindPos: 0,
-      bigBlindPos: 0,
-    });
+    config ? this.__init(config) : this.__init();
   }
 
   /**
@@ -123,8 +102,33 @@ class PokerGame extends EventEmitter implements PokerGameInterface {
    * @emits `deck:initialized` : Emits a `deck:initialized` event when the deck is created.
    * @returns {void}
    */
-  private init(): void {
-    this.validatePlayerList();
+  private __init(config?: PokerGameConfig): void {
+    if (config) {
+      this.__id = config.id ? config.id : this.__generateId();
+      this.__deck = new Deck();
+      this._smallBlindAmount = config.smallBlindAmount
+        ? config.smallBlindAmount
+        : 5;
+      this._bigBlindAmount = config.bigBlindAmount ? config.bigBlindAmount : 10;
+      this._communityCards = [];
+      this._players = config.players ? config.players : [];
+      this._pot = 0;
+      this._dealerPos = 0;
+      this._smallBlindPos = 0;
+      this.__bigBlindPos = 0;
+      this._phases = [];
+      this._currentPhase = new PokerPhase({
+        name: PokerPhaseName.PRE_FLOP,
+        deck: this.__deck,
+        players: [],
+        pot: 0,
+        dealerPos: 0,
+        smallBlindPos: 0,
+        bigBlindPos: 0,
+      });
+      this.validatePlayerList();
+    } else {
+    }
   }
 
   public getPlayers(): PokerPlayerInterface[] {
@@ -132,7 +136,7 @@ class PokerGame extends EventEmitter implements PokerGameInterface {
   }
 
   public getDeck(): DeckInterface {
-    return this._deck;
+    return this.__deck;
   }
 
   public getPot(): number {
@@ -166,11 +170,11 @@ class PokerGame extends EventEmitter implements PokerGameInterface {
   }
 
   public getBigBlindPos(): number {
-    return this._bigBlindPos;
+    return this.__bigBlindPos;
   }
 
   private setBigBlindPos(pos: number): boolean {
-    this._bigBlindPos = pos;
+    this.__bigBlindPos = pos;
     return true;
   }
 
@@ -208,8 +212,7 @@ class PokerGame extends EventEmitter implements PokerGameInterface {
    */
   resolveBets(): void {}
 
-  
-    /**
+  /**
    * #### Description
    * The `__generateId` method generates a unique identifier string. This ID is used internally
    * to uniquely identify instances or components within the `PokerRoom` class, helping manage
@@ -252,7 +255,7 @@ class PokerGame extends EventEmitter implements PokerGameInterface {
    * ```typescript
    * class PokerRoom {
    *   private __id: string = this.__generateId();
-   * 
+   *
    *   private __generateId(): string {
    *     return generateUniqueId(); // Creates a new unique ID for this PokerRoom instance
    *   }
@@ -262,9 +265,9 @@ class PokerGame extends EventEmitter implements PokerGameInterface {
    * console.log(room.__id); // Outputs a unique identifier, e.g., "room_12345abc"
    * ```
    */
-    private __generateId(): string {
-      return generateUniqueId();
-    }
+  private __generateId(): string {
+    return generateUniqueId();
+  }
 }
 
 export { PokerGame };
