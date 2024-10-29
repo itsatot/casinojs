@@ -20,23 +20,76 @@ import {generateUniqueId} from "../../utils";
  * @extends EventEmitter
  */
 class PokerTable extends EventEmitter implements PokerTableInterface {
-  /******************* PROPERTIES *******************/
+  
+  /**************************************************************************************************************
+   * PROPERTIES
+   **************************************************************************************************************/
+
 
   /**
-   * @property {string} __id
-   * A unique identifier for the PokerTable.
+   * @property {PokerRoomInterface[]} __rooms
+   * A private array that holds all the `PokerRoom` instances managed by the Casino.
+   *
+   * #### Access Level
+   * This property is private, meaning it can only be accessed directly within the
+   * `Casino` class itself. This encapsulation ensures that external modifications
+   * to the list of rooms are controlled through the class’s public methods.
+   *
+   * #### Default Value
+   * The `__rooms` property is initialized as an empty array `[]`, indicating that
+   * the Casino starts with no rooms. Rooms are added to this array using the `createRoom`
+   * or `addRoom` methods.
+   *
+   * @example
+   * ```typescript
+   * const casino = new Casino();
+   * console.log(casino.getRooms()); // Returns an empty array initially
+   * ```
    */
   private __id: string = ``;
 
-  /**
-   * @property {number} __smallBlindAmount
-   * The maximum number of players that can be seated at the PokerTable[2-14].
+   /**
+   * @property {PokerRoomInterface[]} __rooms
+   * A private array that holds all the `PokerRoom` instances managed by the Casino.
+   *
+   * #### Access Level
+   * This property is private, meaning it can only be accessed directly within the
+   * `Casino` class itself. This encapsulation ensures that external modifications
+   * to the list of rooms are controlled through the class’s public methods.
+   *
+   * #### Default Value
+   * The `__rooms` property is initialized as an empty array `[]`, indicating that
+   * the Casino starts with no rooms. Rooms are added to this array using the `createRoom`
+   * or `addRoom` methods.
+   *
+   * @example
+   * ```typescript
+   * const casino = new Casino();
+   * console.log(casino.getRooms()); // Returns an empty array initially
+   * ```
    */
   private __smallBlindAmount: number = 5;
 
-  /**
-   * @property {number} __bigBlindAmount
-   * The maximum number of players that can be seated at the PokerTable[2-14].
+  
+   /**
+   * @property {PokerRoomInterface[]} __rooms
+   * A private array that holds all the `PokerRoom` instances managed by the Casino.
+   *
+   * #### Access Level
+   * This property is private, meaning it can only be accessed directly within the
+   * `Casino` class itself. This encapsulation ensures that external modifications
+   * to the list of rooms are controlled through the class’s public methods.
+   *
+   * #### Default Value
+   * The `__rooms` property is initialized as an empty array `[]`, indicating that
+   * the Casino starts with no rooms. Rooms are added to this array using the `createRoom`
+   * or `addRoom` methods.
+   *
+   * @example
+   * ```typescript
+   * const casino = new Casino();
+   * console.log(casino.getRooms()); // Returns an empty array initially
+   * ```
    */
   private __bigBlindAmount: number = this.__smallBlindAmount*2;
 
@@ -74,6 +127,10 @@ class PokerTable extends EventEmitter implements PokerTableInterface {
    */
   private __gameInProgress: boolean = false;
 
+  /**************************************************************************************************************
+   * CONSTRUCTOR & INITIALIZERS
+   **************************************************************************************************************/
+
   /**
    * @method constructor
    * @public
@@ -87,6 +144,7 @@ class PokerTable extends EventEmitter implements PokerTableInterface {
     super();
     this.__init(config);
   }
+
   /**
    * @method `init`
    * @private
@@ -121,6 +179,15 @@ class PokerTable extends EventEmitter implements PokerTableInterface {
     
   }
 
+   /**************************************************************************************************************
+   * CREATE METHODS (SETTERS & OBJECT CREATION)
+   **************************************************************************************************************/
+
+   
+  /**************************************************************************************************************
+   * READ METHODS (GETTERS & DATA RETRIEVAL)
+   **************************************************************************************************************/
+
   /**
    * @method `getId`
    * @public
@@ -135,20 +202,6 @@ class PokerTable extends EventEmitter implements PokerTableInterface {
     return this.__id;
   }
 
-  /**
-   * @method `setId`
-   * @public
-   * Returns the poker table's `id`.
-   * @returns {string} The poker table's `id`.
-   *
-   * @example
-   * const rank = card.getRank();
-   * console.log(rank); // "A"
-   */
-  private setId(id: string): string {
-    this.__id = id;
-    return this.__id;
-  }
 
   /**
    * @method `getSize`
@@ -170,35 +223,6 @@ class PokerTable extends EventEmitter implements PokerTableInterface {
     return this.__seats;
   }
 
-  /**
-   * @method `setSeats`
-   * @public
-   * Returns the poker table's `id`.
-   * @returns {number} The poker table's `id`.
-   *
-   * @example
-   * const rank = card.getRank();
-   * console.log(rank); // "A"
-   */
-  private setSeats(seats: PokerSeatInterface[]): boolean {
-    this.__seats = seats;
-    return true;
-  }
-
-  private occupySeat(position: number, player: PokerPlayerInterface): boolean {
-    for (let i = 0; i < this.getSeats().length; i++) {
-      let seat = this.getSeats()[i];
-      let seatPosition = seat.getPosition();
-      if (seatPosition === position) {
-        if (!seat.isOccupied()) {
-          seat.setPlayer(player);
-          console.log("Seat has been assigned");
-          return true;
-        }
-      }
-    }
-    return false;
-  }
 
    /**
    * #### Description
@@ -408,12 +432,65 @@ class PokerTable extends EventEmitter implements PokerTableInterface {
   /**************************************************************************************************************
    * INTERNAL METHODS (PROTECTED)
    **************************************************************************************************************/
-
   
   protected _setQueue(queue: PokerPlayerInterface[]): PokerPlayerInterface[] {
     this.__queue = queue;
     return this.__queue;
   }
+  /**************************************************************************************************************
+   * INTERNAL METHODS (PRIVATE)
+   **************************************************************************************************************/
+
+  /**
+   * @method `setId`
+   * @public
+   * Returns the poker table's `id`.
+   * @returns {string} The poker table's `id`.
+   *
+   * @example
+   * const rank = card.getRank();
+   * console.log(rank); // "A"
+   */
+  private __setId(id: string): string {
+    this.__id = id;
+    return this.__id;
+  }
+
+  
+  /**
+   * @method `setSeats`
+   * @public
+   * Returns the poker table's `id`.
+   * @returns {number} The poker table's `id`.
+   *
+   * @example
+   * const rank = card.getRank();
+   * console.log(rank); // "A"
+   */
+  private __setSeats(seats: PokerSeatInterface[]): boolean {
+    this.__seats = seats;
+    return true;
+  }
+
+  
+  private __occupySeat(position: number, player: PokerPlayerInterface): boolean {
+    for (let i = 0; i < this.getSeats().length; i++) {
+      let seat = this.getSeats()[i];
+      let seatPosition = seat.getPosition();
+      if (seatPosition === position) {
+        if (!seat.isOccupied()) {
+          seat.setPlayer(player);
+          console.log("Seat has been assigned");
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+
+  
+ 
 }
 
 export { PokerTable };

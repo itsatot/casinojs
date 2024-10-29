@@ -408,6 +408,48 @@ interface PokerRoomInterface extends NodeJS.EventEmitter {
   /**************************************************************************************************************
    * WRAPPER METHODS (UTILITY & CONVENIENCE)
    **************************************************************************************************************/
+
+  /**
+   * #### Description
+   * Retrieves the total number of `PokerRoom` instances currently managed by the Casino.
+   *
+   * #### Implements
+   * `N/A`
+   *
+   * #### Overrides
+   * `N/A`
+   *
+   * #### Purpose
+   * This method provides insight into the number of poker rooms that the Casino manages, supporting
+   * validation for index-bound operations or general information on Casino state.
+   *
+   * #### Events
+   * `N/A`
+   *
+   * #### Parameters
+   * `N/A`
+   *
+   * #### Requirements
+   * `N/A`
+   *
+   * #### Returns
+   * - Returns the total count of rooms managed by the Casino.
+   *
+   * #### Usage
+   * Use this method to retrieve the total count of active poker rooms, which is helpful when iterating over
+   * rooms or confirming index-bound conditions.
+   *
+   * @returns {number} - The current count of rooms in the Casino.
+   *
+   * @example
+   * ```typescript
+   * const casino = new Casino();
+   * const count = casino.roomCount();
+   * console.log(count); // Logs the total number of managed rooms, e.g., 5
+   * ```
+   */
+  tableCount(): number;
+
 }
 
 export { PokerRoomConfig, PokerRoomInterface };

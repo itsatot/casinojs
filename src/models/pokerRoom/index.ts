@@ -1,15 +1,11 @@
 import { EventEmitter } from "events";
 import {
   PokerRoomConfig,
-  PokerPlayerInterface,
   PokerRoomInterface,
   PokerTableInterface,
-  PokerPlayerConfig,
   PokerTableConfig,
 } from "../../interfaces";
 import { PokerTable } from "../pokerTable";
-import { PokerPlayer } from "../pokerPlayer";
-import { getActiveResourcesInfo } from "process";
 import {generateUniqueId} from "../../utils";
 
 /**
@@ -131,9 +127,9 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
     if (config) {
       this.__id = config.id ? config.id : this.__generateId();
       this.__name = config.name ? config.name : this.__name;
-      // this.__tables = config.tableConfigs
-      //   ? new PokerTable(config.tableConfigs)
-      //   : this.__tables;
+      config.tableConfigs?.forEach(tconfig => {
+        this._createTable(tconfig);
+      });
     }
   }
 
@@ -432,6 +428,49 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
   /**************************************************************************************************************
    * WRAPPER METHODS (UTILITY & CONVENIENCE)
    **************************************************************************************************************/
+  
+  /**
+   * #### Description
+   * Returns the total number of `PokerRoom` instances currently managed by the Casino.
+   *
+   * #### Implements
+   * Implements the `roomCount` method of `CasinoInterface`.
+   *
+   * #### Overrides
+   * `N/A`
+   *
+   * #### Purpose
+   * Provides a simple way to check how many poker rooms the Casino is currently managing. Useful for general
+   * information about the Casino's state and for validating indices or conditions that depend on room count.
+   *
+   * #### Events
+   * `N/A`
+   *
+   * #### Parameters
+   * `N/A`
+   *
+   * #### Requirements
+   * `N/A`
+   *
+   * #### Returns
+   * - Returns the number of rooms currently managed by the Casino.
+   *
+   * #### Usage
+   * This method is useful for any scenario where the total number of active rooms is needed, such as iterating
+   * over all rooms or validating index-based operations.
+   *
+   * @returns {number} - The current count of rooms in the Casino.
+   *
+   * @example
+   * ```typescript
+   * const casino = new Casino();
+   * const count = casino.roomCount();
+   * console.log(count); // Logs the total number of managed rooms, e.g., 5
+   * ```
+   */
+  public tableCount(): number {
+    return this.__tables.length;
+  }
 
   /**************************************************************************************************************
    * INTERNAL METHODS (PROTECTED)
