@@ -206,13 +206,36 @@ class PokerTable extends EventEmitter implements PokerTableInterface {
    **************************************************************************************************************/
 
   /**
-   * @method constructor
-   * @public
-   * Creates an instance of a Deck with 52 cards.
-   * Automatically initializes the deck with all combinations of ranks and suits.
+   * #### Description
+   * Creates a new `PokerTable` instance with configuration settings for table ID, small blind, and number of seats.
+   * If a configuration object is provided, it customizes the table based on this data; otherwise, default values are used.
+   *
+   * #### Implements
+   * - N/A (standard constructor for object instantiation).
+   *
+   * #### Overrides
+   * - N/A
+   *
+   * #### Purpose
+   * This constructor initiates a new instance of `PokerTable`, setting up basic table properties and triggering the initialization process.
+   *
+   * #### Parameters
+   * - `config` _(optional)_: A configuration object that includes table properties such as `id`, `smallBlind`, and `size`.
+   *
+   * #### Requirements
+   * - **Optional**: If no configuration is provided, default values for small blind and seat count are applied.
+   *
+   * #### Usage
+   * This constructor is typically called when a new table is added to a poker room, allowing optional customization for game settings.
+   *
+   * @param {PokerTableConfig} [config] - Configuration settings for the poker table.
    *
    * @example
-   * const deck = new Deck();
+   * ```typescript
+   * const config = { id: "Table42", smallBlind: 25, size: 6 };
+   * const pokerTable = new PokerTable(config);
+   * console.log(pokerTable.getSeats().length); // Output: 6
+   * ```
    */
   constructor(config?: PokerTableConfig) {
     super();
@@ -220,12 +243,43 @@ class PokerTable extends EventEmitter implements PokerTableInterface {
   }
 
   /**
-   * @method `init`
-   * @private
-   * Initializes the deck with 52 unique cards.
-   * This method is called automatically inside the constructor during deck creation.
-   * @emits `deck:initialized` : Emits a `deck:initialized` event when the deck is created.
-   * @returns {void}
+   * #### Description
+   * The `__init` method initializes the table based on a provided configuration, setting up the table ID, blinds, and seating arrangement.
+   * It is automatically called within the constructor during instantiation.
+   *
+   * #### Implements
+   * - N/A (private method).
+   *
+   * #### Overrides
+   * - N/A
+   *
+   * #### Purpose
+   * This method completes the setup of the poker table by establishing its unique ID, small blind amount, and number of seats.
+   * It also triggers the seating arrangement based on the specified or default seat count.
+   *
+   * #### Events
+   * - Emits `table:initialized` when the table setup is complete, allowing external components to take actions upon initialization.
+   *
+   * #### Parameters
+   * - `config` _(optional)_: A configuration object that can contain `id`, `smallBlind`, and `size` properties.
+   *
+   * #### Requirements
+   * - **Optional**: If no configuration is provided, it will default to a table with a small blind of 5 and a standard seating arrangement.
+   *
+   * #### Returns
+   * - `void`: This method does not return any value.
+   *
+   * #### Usage
+   * Used internally within the constructor to complete table setup, including assigning blinds and initializing seats.
+   *
+   * @param {PokerTableConfig} [config] - Configuration settings for initializing the poker table.
+   * @returns {void} - No return value.
+   *
+   * @example
+   * ```typescript
+   * const pokerTable = new PokerTable({ id: "MainTable", smallBlind: 20, size: 8 });
+   * pokerTable.on("table:initialized", () => console.log("Table setup complete"));
+   * ```
    */
   private __init(config?: PokerTableConfig): void {
     if (config) {
@@ -241,6 +295,8 @@ class PokerTable extends EventEmitter implements PokerTableInterface {
         });
         this.__seats?.push(seat);
       }
+
+      this.emit("table:initialized");
     }
   }
 
