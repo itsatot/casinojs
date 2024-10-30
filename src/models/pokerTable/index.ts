@@ -11,12 +11,51 @@ import { PokerSeat } from "../pokerSeat";
 import { generateUniqueId } from "../../utils";
 
 /**
- * @interface `PokerTable`
- * Represents a PokerTable within a PokerRoom.
- * The PokerTable manages player seats, tracks the dealer, small blind, and big blind positions,
- * and handles the start and stop of the PokerGame.
+ * @class `PokerTable`
  *
- * @extends EventEmitter
+ * Represents a poker table within a larger casino or poker room environment. This class manages player seating,
+ * tracks the positions of the dealer, small blind, and big blind, and coordinates the start and stop of poker games.
+ * It includes several methods and properties to control game flow and player seating effectively.
+ *
+ * #### Purpose
+ * The `PokerTable` class is central to organizing poker games within a room. It keeps track of players, manages game
+ * states, and ensures a smooth flow of actions at the table by overseeing betting rounds, blind assignments, and game
+ * progression.
+ *
+ * #### Extends
+ * This class extends the Node.js `EventEmitter`, enabling it to emit events for key actions such as player seating,
+ * game start, or game completion. This event-driven approach facilitates integration with other parts of the casino
+ * system, allowing external components to listen and respond to table actions.
+ *
+ * #### Implements
+ * Implements the `PokerTableInterface`, ensuring a consistent structure and a clear contract for managing poker games,
+ * player queues, and table configuration.
+ *
+ * #### Methods Overview
+ * The `PokerTable` class includes essential methods for:
+ * - **Player Management**: `seatPlayer`, `removePlayer`, `getQueue`, `setQueue`.
+ * - **Game Control**: `startGame`, `endGame`, `setBlinds`.
+ * - **Table Configuration**: `setTableConfig`, `getTableConfig`, `resetTable`.
+ *
+ * #### Events Overview
+ * The `PokerTable` emits events to signal key actions, including:
+ * - `table:playerSeated` - Emitted when a new player is seated.
+ * - `table:gameStarted` - Emitted at the start of a new game.
+ * - `table:gameEnded` - Emitted upon game completion.
+ *
+ * #### Usage
+ * This class is designed to be used within a larger poker or casino environment, providing a structured system for
+ * managing player actions, game states, and blind assignments at a poker table. It offers methods to control various
+ * aspects of the game and seating, making it a foundational part of managing poker tables in an organized way.
+ *
+ * @example
+ * ```typescript
+ * const pokerTable = new PokerTable();
+ * pokerTable.on('table:gameStarted', () => console.log("Game has started"));
+ * pokerTable.seatPlayer({ name: "Alice", chips: 100 });
+ * pokerTable.startGame();
+ * console.log(pokerTable.getQueue()); // Logs the current queue of waiting players
+ * ```
  */
 class PokerTable extends EventEmitter implements PokerTableInterface {
   /**************************************************************************************************************
@@ -24,124 +63,141 @@ class PokerTable extends EventEmitter implements PokerTableInterface {
    **************************************************************************************************************/
 
   /**
-   * @property {PokerRoomInterface[]} __rooms
-   * A private array that holds all the `PokerRoom` instances managed by the Casino.
+   * @property {string} __id
    *
-   * #### Access Level
-   * This property is private, meaning it can only be accessed directly within the
-   * `Casino` class itself. This encapsulation ensures that external modifications
-   * to the list of rooms are controlled through the class’s public methods.
+   * A unique identifier for the PokerTable, used to differentiate each table within the Casino system.
    *
-   * #### Default Value
-   * The `__rooms` property is initialized as an empty array `[]`, indicating that
-   * the Casino starts with no rooms. Rooms are added to this array using the `createRoom`
-   * or `addRoom` methods.
+   * #### Purpose
+   * The `__id` serves as a unique identifier for each PokerTable, allowing for precise management and reference.
+   *
+   * #### Requirements
+   * - **Optional**: Can be auto-generated if not provided.
    *
    * @example
    * ```typescript
-   * const casino = new Casino();
-   * console.log(casino.getRooms()); // Returns an empty array initially
+   * const table = new PokerTable();
+   * console.log(table.getId()); // Console Output: A unique table ID
    * ```
    */
-  private __id: string = ``;
+  private __id: string = generateUniqueId();
 
   /**
-   * @property {PokerRoomInterface[]} __rooms
-   * A private array that holds all the `PokerRoom` instances managed by the Casino.
+   * @property {string} __name
    *
-   * #### Access Level
-   * This property is private, meaning it can only be accessed directly within the
-   * `Casino` class itself. This encapsulation ensures that external modifications
-   * to the list of rooms are controlled through the class’s public methods.
+   * A name label for the PokerTable, which can be used in the user interface or logs for easy identification.
    *
-   * #### Default Value
-   * The `__rooms` property is initialized as an empty array `[]`, indicating that
-   * the Casino starts with no rooms. Rooms are added to this array using the `createRoom`
-   * or `addRoom` methods.
+   * #### Purpose
+   * Provides a human-readable label for the table, aiding both administrators and players in table identification.
+   *
+   * #### Requirements
+   * - **Optional**: If not set, it defaults to an empty string.
    *
    * @example
    * ```typescript
-   * const casino = new Casino();
-   * console.log(casino.getRooms()); // Returns an empty array initially
+   * const table = new PokerTable();
+   * table.setName("High Stakes Table");
+   * console.log(table.getName()); // Console Output: "High Stakes Table"
    * ```
    */
   private __name: string = ``;
 
   /**
-   * @property {PokerRoomInterface[]} __rooms
-   * A private array that holds all the `PokerRoom` instances managed by the Casino.
+   * @property {number} __smallBlind
    *
-   * #### Access Level
-   * This property is private, meaning it can only be accessed directly within the
-   * `Casino` class itself. This encapsulation ensures that external modifications
-   * to the list of rooms are controlled through the class’s public methods.
+   * Defines the small blind amount for the table, setting the minimum bet that initiates the betting round.
    *
-   * #### Default Value
-   * The `__rooms` property is initialized as an empty array `[]`, indicating that
-   * the Casino starts with no rooms. Rooms are added to this array using the `createRoom`
-   * or `addRoom` methods.
+   * #### Purpose
+   * Establishes the basic small blind amount for the game, setting a standard for betting progression at this table.
+   *
+   * #### Requirements
+   * - **Default**: 5
+   * - **Non-Negotiable**: Must be a positive number.
    *
    * @example
    * ```typescript
-   * const casino = new Casino();
-   * console.log(casino.getRooms()); // Returns an empty array initially
+   * const table = new PokerTable();
+   * console.log(table.getSmallBlind()); // Console Output: 5
    * ```
    */
   private __smallBlind: number = 5;
 
   /**
-   * @property {PokerRoomInterface[]} __rooms
-   * A private array that holds all the `PokerRoom` instances managed by the Casino.
+   * @property {number} __bigBlindAmount
    *
-   * #### Access Level
-   * This property is private, meaning it can only be accessed directly within the
-   * `Casino` class itself. This encapsulation ensures that external modifications
-   * to the list of rooms are controlled through the class’s public methods.
+   * Represents the big blind amount, which is usually double the small blind and a required ante for players.
    *
-   * #### Default Value
-   * The `__rooms` property is initialized as an empty array `[]`, indicating that
-   * the Casino starts with no rooms. Rooms are added to this array using the `createRoom`
-   * or `addRoom` methods.
+   * #### Purpose
+   * Sets the big blind, which defines the minimum second bet for the table, supporting the betting structure.
+   *
+   * #### Requirements
+   * - **Default**: Twice the small blind amount.
    *
    * @example
    * ```typescript
-   * const casino = new Casino();
-   * console.log(casino.getRooms()); // Returns an empty array initially
+   * const table = new PokerTable();
+   * console.log(table.getBigBlind()); // Console Output: 10
    * ```
    */
   private __bigBlindAmount: number = this.__smallBlind * 2;
 
   /**
    * @property {PokerSeatInterface[]} __seats
-   * An array of players currently seated at the PokerTable.
+   *
+   * An array that stores each player’s seating arrangement, tracking available and occupied seats at the table.
+   *
+   * #### Purpose
+   * The `__seats` property enables efficient management of seating arrangements for the players at the table.
+   *
+   * #### Requirements
+   * - **Optional**: Starts as an empty array, populated as players take seats.
+   *
+   * @example
+   * ```typescript
+   * const table = new PokerTable();
+   * console.log(table.getSeats());
+   *
+   * // Console Output: [] (initially empty)
+   * ```
    */
   private __seats: PokerSeatInterface[] = [];
 
   /**
-   * @property {PokerRoomInterface[]} __rooms
-   * A private array that holds all the `PokerRoom` instances managed by the Casino.
+   * @property {PokerPlayerInterface[]} __queue
    *
-   * #### Access Level
-   * This property is private, meaning it can only be accessed directly within the
-   * `Casino` class itself. This encapsulation ensures that external modifications
-   * to the list of rooms are controlled through the class’s public methods.
+   * A queue of players waiting to join the table, useful in cases where the table has limited seating.
    *
-   * #### Default Value
-   * The `__rooms` property is initialized as an empty array `[]`, indicating that
-   * the Casino starts with no rooms. Rooms are added to this array using the `createRoom`
-   * or `addRoom` methods.
+   * #### Purpose
+   * The queue ensures that players awaiting an open seat can be managed and seated as spots become available.
+   *
+   * #### Requirements
+   * - **Optional**: Begins as an empty array.
    *
    * @example
    * ```typescript
-   * const casino = new Casino();
-   * console.log(casino.getRooms()); // Returns an empty array initially
+   * const table = new PokerTable();
+   * console.log(table.getQueue()); // Console Output: [] (initially empty)
    * ```
    */
   private __queue: PokerPlayerInterface[] = [];
 
   /**
-   * @property {boolean} gameInProgress
-   * A boolean indicating whether a PokerGame is currently in progress at the table.
+   * @property {boolean} __gameInProgress
+   *
+   * Indicates if a poker game is currently active at the table.
+   *
+   * #### Purpose
+   * Helps track the table’s state, signaling whether a game is in progress or the table is free.
+   *
+   * #### Requirements
+   * - **Default**: `false`, meaning the table is initially open for new games.
+   *
+   * @example
+   * ```typescript
+   * const table = new PokerTable();
+   * console.log(table.isGameInProgress());
+   *
+   * // Console Output: false (initially)
+   * ```
    */
   private __gameInProgress: boolean = false;
 

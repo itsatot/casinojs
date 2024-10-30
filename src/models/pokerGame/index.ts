@@ -31,37 +31,37 @@ class PokerGame extends EventEmitter implements PokerGameInterface {
   private __id: string = ``;
 
   /**
-   * @property {string} _currentPhase
+   * @property {string} __deck
    * The current phase of the game (e.g., "pre-flop", "flop", "turn", "river").
    */
   private __deck: DeckInterface = new Deck();
 
   /**
-   * @property {number} _smallBlindAmount
+   * @property {number} __smallBlind
    * The maximum number of players that can be seated at the PokerTable[2-14].
    */
-  private __smallBlindAmount: number = 5;
+  private __smallBlind: number = 5;
 
   /**
-   * @property {number} _bigBlindAmount
+   * @property {number} __bigBlind
    * The maximum number of players that can be seated at the PokerTable[2-14].
    */
-  private __bigBlindAmount: number = this.__smallBlindAmount * 2;
+  private __bigBlind: number = this.__smallBlind * 2;
 
   /**
-   * @property {number} _bigBlindAmount
+   * @property {number} __bigBlind
    * The maximum number of players that can be seated at the PokerTable[2-14].
    */
   private __phases: PokerPhaseInterface[] = [];
 
   /**
-   * @property {number} _bigBlindAmount
+   * @property {number} __bigBlind
    * The maximum number of players that can be seated at the PokerTable[2-14].
    */
   private __currentPhase: PokerPhaseInterface = new PokerPhase();
 
   /**
-   * @property {CardInterface[]} _communityCards
+   * @property {CardInterface[]} __communityCards
    * The community cards that are dealt face-up and shared by all players.
    */
   private __communityCards: CardInterface[] = [];
@@ -106,18 +106,16 @@ class PokerGame extends EventEmitter implements PokerGameInterface {
     if (config) {
       this.__id = config.id ? config.id : this.__generateId();
       this.__deck = new Deck();
-      this._smallBlindAmount = config.smallBlindAmount
-        ? config.smallBlindAmount
-        : 5;
-      this._bigBlindAmount = config.bigBlindAmount ? config.bigBlindAmount : 10;
-      this._communityCards = [];
-      this._players = config.players ? config.players : [];
-      this._pot = 0;
-      this._dealerPos = 0;
-      this._smallBlindPos = 0;
+      this.__smallBlind = config.smallBlind ? config.smallBlind : 5;
+      this.__bigBlind = config.bigBlind ? config.bigBlind : 10;
+      this.__communityCards = [];
+      this.__players = config.players ? config.players : [];
+      this.__pot = 0;
+      this.__dealerPos = 0;
+      this.__smallBlindPos = 0;
       this.__bigBlindPos = 0;
-      this._phases = [];
-      this._currentPhase = new PokerPhase({
+      this.__phases = [];
+      this.__currentPhase = new PokerPhase({
         name: PokerPhaseName.PRE_FLOP,
         deck: this.__deck,
         players: [],
@@ -132,7 +130,7 @@ class PokerGame extends EventEmitter implements PokerGameInterface {
   }
 
   public getPlayers(): PokerPlayerInterface[] {
-    return this._players;
+    return this.__players;
   }
 
   public getDeck(): DeckInterface {
@@ -140,32 +138,32 @@ class PokerGame extends EventEmitter implements PokerGameInterface {
   }
 
   public getPot(): number {
-    return this._pot;
+    return this.__pot;
   }
 
   private setPlayers(players: PokerPlayerInterface[]): PokerPlayerInterface[] {
-    return (this._players = players);
+    return (this.__players = players);
   }
 
   public setPot(pot: number): number {
-    return (this._pot = pot);
+    return (this.__pot = pot);
   }
 
   public getDealerPos(): number {
-    return this._dealerPos;
+    return this.__dealerPos;
   }
 
   private setDealerPos(pos: number): boolean {
-    this._dealerPos = pos;
+    this.__dealerPos = pos;
     return true;
   }
 
   public getSmallBlindPos(): number {
-    return this._smallBlindPos;
+    return this.__smallBlindPos;
   }
 
   private setSmallBlindPos(pos: number): boolean {
-    this._smallBlindPos = pos;
+    this.__smallBlindPos = pos;
     return true;
   }
 

@@ -46,6 +46,9 @@ interface PokerPlayerConfig {
  *
  * @extends NodeJS.EventEmitter
  */
-interface PokerPlayerInterface extends NodeJS.EventEmitter {}
+interface PokerPlayerInterface extends NodeJS.EventEmitter {
+  bet(amount: number): boolean;
+  setIsFolded(bool: boolean): boolean;
+}
 
 export { PokerPlayerConfig, PokerPlayerInterface };
