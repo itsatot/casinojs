@@ -15,3 +15,5 @@
  */
 export * as _BaseEvents from "./_BaseEvent";
 export * from "./_BaseEvent";
+export * as PokerSeatEvents from "./PokerSeatEvents";
+export * from "./PokerSeatEvents";

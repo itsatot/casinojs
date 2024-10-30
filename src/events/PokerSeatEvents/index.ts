@@ -17,3 +17,5 @@
  */
 export * as PokerSeatOccupiedEvents from "./PokerSeatOccupiedEvent";
 export * from "./PokerSeatOccupiedEvent";
+export * as PokerSeatVacatedEvents from "./PokerSeatVacatedEvent";
+export * from "./PokerSeatVacatedEvent";

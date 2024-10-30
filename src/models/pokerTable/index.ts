@@ -640,7 +640,7 @@ class PokerTable extends EventEmitter implements PokerTableInterface {
       let seatPosition = seat.getPosition();
       if (seatPosition === position) {
         if (!seat.isOccupied()) {
-          seat.setPlayer(player);
+          seat.occupy(player);
           console.log("Seat has been assigned");
           return true;
         }
