@@ -237,10 +237,7 @@ class PokerTable extends EventEmitter implements PokerTableInterface {
 
       for (let i = 0; this.getSeats().length !== config.size; i++) {
         const seat = new PokerSeat({
-          id: ``,
           position: i,
-          isDealer: false,
-          player: undefined,
         });
         this.__seats?.push(seat);
       }
