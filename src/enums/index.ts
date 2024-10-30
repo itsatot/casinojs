@@ -17,6 +17,8 @@ export * as CasinoEventNameEnums from "./casinoEventName";
 export * from "./casinoEventName";
 export * as PokerPhaseNameEnums from "./pokerPhaseName";
 export * from "./pokerPhaseName";
+export * as PokerSeatEventNameEnums from "./pokerSeatEventName";
+export * from "./pokerSeatEventName";
 export * as RankEnums from "./rank";
 export * from "./rank";
 export * as SuitEnums from "./suit";

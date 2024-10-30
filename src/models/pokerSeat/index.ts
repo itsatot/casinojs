@@ -165,6 +165,7 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
   public getPlayer(): PokerPlayerInterface | undefined {
     return this.__player;
   }
+
   /**************************************************************************************************************
    * UPDATE METHODS (MODIFYING EXISTING OBJECTS)
    **************************************************************************************************************/
@@ -183,6 +184,7 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
     }
     return true;
   }
+
   /**************************************************************************************************************
    * WRAPPER METHODS (UTILITY & CONVENIENCE)
    **************************************************************************************************************/
@@ -254,6 +256,23 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
   private __setPosition(position: number): number {
     this.__position = position;
     return this.__position;
+  }
+
+  /**
+   * Emits an event with a standardized format.
+   *
+   * @param {string} eventName - The name of the event to emit.
+   * @param {object} eventData - The data associated with the event.
+   *
+   * @returns {void}
+   *
+   * @example
+   * ```typescript
+   * this.__emitEvent("casino:roomUpdated", { roomId: 1, status: "active" });
+   * ```
+   */
+  private __emitEvent(eventName: string, eventData: object): void {
+    this.emit(eventName, eventData);
   }
 }
 
