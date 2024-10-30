@@ -1,3 +1,5 @@
+/**@collapse */
+
 import { EventEmitter } from "events";
 import {
   PokerPlayerConfig,
@@ -24,7 +26,7 @@ class MockPokerRoom extends EventEmitter implements PokerRoomInterface {
     super();
     this.id = config.id || "default-id";
     this.name = config.name || "default-room";
-    this.table = new  config.tableConfig as PokerTableConfig;
+    this.table = new config.tableConfig() as PokerTableConfig;
   }
 
   getId(): string {

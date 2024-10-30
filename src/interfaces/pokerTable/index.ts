@@ -1,5 +1,6 @@
+/**@collapse */
+
 import { PokerSeatInterface } from "../pokerSeat";
-import { PokerPlayerInterface } from "../pokerPlayer";
 
 /**
  * @interface `PokerTableConfig`

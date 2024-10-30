@@ -1,4 +1,5 @@
-//@collapse
+/**@collapse */
+
 import { Rank, Suit } from "../../enums";
 import { CardConfig, CardInterface } from "../../interfaces";
 

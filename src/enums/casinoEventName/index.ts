@@ -1,3 +1,5 @@
+/**@collapse */
+
 /**
  * @enum {string} `CasinoEventName`
  * Defines the events emitted by the `Casino` class for mutable operations.

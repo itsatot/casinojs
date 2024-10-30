@@ -1,3 +1,5 @@
+/**@collapse */
+
 import { PokerTableConfig, PokerTableInterface } from "../pokerTable";
 
 /**

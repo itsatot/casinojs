@@ -1,3 +1,5 @@
+/**@collapse */
+
 import { PokerPlayerInterface } from "../pokerPlayer";
 
 /**

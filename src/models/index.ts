@@ -1,3 +1,5 @@
+/**@collapse */
+
 /**
  * @module `Models`
  * Centralized export for all poker-related models.

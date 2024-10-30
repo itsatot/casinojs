@@ -1,3 +1,5 @@
+/**@collapse */
+
 /**
  * @enum {string} `Rank`
  * Represents the ranks of playing cards used in poker.

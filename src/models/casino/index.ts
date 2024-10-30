@@ -1,4 +1,5 @@
-//@collapse
+/**@collapse */
+
 import { EventEmitter } from "events";
 
 // Import Enums
@@ -70,7 +71,7 @@ class Casino extends EventEmitter implements CasinoInterface {
    * console.log(casino.getRooms()); // Returns an empty array initially
    * ```
    */
-  private __rooms: PokerRoomInterface[];
+  private __rooms: PokerRoomInterface[] = [];
 
   /**************************************************************************************************************
    * CONSTRUCTOR & INITIALIZERS
@@ -86,13 +87,7 @@ class Casino extends EventEmitter implements CasinoInterface {
    * ```
    */
   constructor() {
-    // Call the parent class constructor from EventEmitter
     super();
-
-    // Initialize the list of rooms as an empty array
-    this.__rooms = [];
-
-    // Perform any additional initialization logic
     this.__init();
   }
 

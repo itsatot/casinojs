@@ -1,4 +1,5 @@
-//@collapse
+/**@collapse */
+
 import { EventEmitter } from "events";
 import {
   CardInterface,
@@ -657,12 +658,12 @@ class PokerPhase extends EventEmitter implements PokerPhaseInterface {
   /**************************************************************************************************************
    * BUSINESS-LOGIC METHODS (LOGIC & CALCULATIONS)
    **************************************************************************************************************/
-  
+
   /**
-     * @method `dealHoleCards`
-     * Deals two hole cards to each player.
-     * @returns {void}
-     */
+   * @method `dealHoleCards`
+   * Deals two hole cards to each player.
+   * @returns {void}
+   */
   deal(): boolean {
     for (let i = 0; i < 2; i++) {}
     return true;
@@ -696,8 +697,6 @@ class PokerPhase extends EventEmitter implements PokerPhaseInterface {
    */
   resolveBets(): void {}
 
-  
-
   /**
    * name
    */
@@ -713,8 +712,6 @@ class PokerPhase extends EventEmitter implements PokerPhaseInterface {
    * WRAPPER METHODS (UTILITY & CONVENIENCE)
    **************************************************************************************************************/
 
- 
-
   /**************************************************************************************************************
    * INTERNAL METHODS (PROTECTED)
    **************************************************************************************************************/
@@ -728,14 +725,13 @@ class PokerPhase extends EventEmitter implements PokerPhaseInterface {
   }
 
   protected _fold(): boolean {
-  this.getPlayers()[this.getCurrentPlayerPos()]?.setIsFolded(true);
-  this.nextPlayer();
-  return true;
+    this.getPlayers()[this.getCurrentPlayerPos()]?.setIsFolded(true);
+    this.nextPlayer();
+    return true;
   }
   /**************************************************************************************************************
    * INTERNAL METHODS (PRIVATE)
    **************************************************************************************************************/
-
 
   private __setPot(pot: number): number {
     return (this.__pot = pot);
@@ -761,7 +757,9 @@ class PokerPhase extends EventEmitter implements PokerPhaseInterface {
     return this.__name;
   }
 
-  private __setPlayers(players: PokerPlayerInterface[]): PokerPlayerInterface[] {
+  private __setPlayers(
+    players: PokerPlayerInterface[]
+  ): PokerPlayerInterface[] {
     return (this.__players = players);
   }
 
@@ -779,7 +777,6 @@ class PokerPhase extends EventEmitter implements PokerPhaseInterface {
     this.__bigBlindPos = pos;
     return true;
   }
-
 }
 
 export { PokerPhase };

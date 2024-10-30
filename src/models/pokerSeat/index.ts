@@ -1,4 +1,5 @@
-//@collapse
+/**@collapse */
+
 import { EventEmitter } from "events";
 import {
   PokerPlayerInterface,

@@ -1,3 +1,5 @@
+/**@collapse */
+
 /**
  * @file `index.test.ts`
  * This file contains unit tests for the centralized export of all enums related to poker and casino operations.

@@ -1,3 +1,5 @@
+/**@collapse */
+
 /**
  * @enum `Suit`
  * Represents the suits of playing cards used in poker.

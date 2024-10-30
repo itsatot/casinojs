@@ -1,3 +1,5 @@
+/**@collapse */
+
 /**
  * @module `Enums`
  * Centralized export for all poker-related enums.
@@ -9,7 +11,7 @@
  *
  * @example
  * // Import all enums from the centralized module
- * import { Rank, Suit } from './enums';
+ * import { CasinoEventName, CasinoEventNameEnums, PokerPhaseName, PokerPhaseNameEnums, Rank, RankEnums, Suit, SuitEnums } from './enums';
  */
 export * as CasinoEventNameEnums from "./casinoEventName";
 export * from "./casinoEventName";

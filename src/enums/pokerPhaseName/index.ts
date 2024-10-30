@@ -1,3 +1,5 @@
+/**@collapse */
+
 /**
  * @enum `PokerPhaseName`
  * Represents the ranks of playing cards used in poker.

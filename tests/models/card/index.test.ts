@@ -1,3 +1,5 @@
+/**@collapse */
+
 import { Card } from "../../../src/models";
 import { Rank, Suit } from "../../../src/enums";
 

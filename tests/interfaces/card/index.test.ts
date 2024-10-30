@@ -1,3 +1,5 @@
+/**@collapse */
+
 /**
  * @file `indext.test.ts`
  * This test file verifies the implementation of the `CardInterface`.

@@ -1,3 +1,5 @@
+/**@collapse */
+
 {
   "compilerOptions": {
     "module": "ESNext", // Tells TypeScript to use native ESModule syntax (import/export)

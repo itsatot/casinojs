@@ -1,3 +1,5 @@
+/**@collapse */
+
 import { Rank } from "../../../src/enums/rank";
 
 /**

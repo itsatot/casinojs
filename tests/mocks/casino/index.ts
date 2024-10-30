@@ -1,3 +1,5 @@
+/**@collapse */
+
 import { EventEmitter } from "events";
 import {
   CasinoInterface,

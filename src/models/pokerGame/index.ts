@@ -1,4 +1,5 @@
-//@collapse
+/**@collapse */
+
 import { EventEmitter } from "events";
 import {
   PokerGameConfig,
@@ -107,7 +108,9 @@ class PokerGame extends EventEmitter implements PokerGameInterface {
     if (config) {
       this.__id = config.id ? config.id : generateUniqueId();
       this.__deck = new Deck();
-      this.__smallBlind = config.smallBlind ? config.smallBlind : this.__smallBlind;
+      this.__smallBlind = config.smallBlind
+        ? config.smallBlind
+        : this.__smallBlind;
       this.__bigBlind = config.bigBlind ? config.bigBlind : this.__bigBlind;
       this.__communityCards = this.__communityCards;
       this.__players = config.players ? config.players : this.__players;
@@ -130,11 +133,9 @@ class PokerGame extends EventEmitter implements PokerGameInterface {
     }
   }
 
-  
   /**************************************************************************************************************
    * CREATE METHODS (SETTERS & OBJECT CREATION)
    **************************************************************************************************************/
-
 
   /**************************************************************************************************************
    * READ METHODS (GETTERS & DATA RETRIEVAL)
@@ -187,21 +188,21 @@ class PokerGame extends EventEmitter implements PokerGameInterface {
    * BUSINESS-LOGIC METHODS (LOGIC & CALCULATIONS)
    **************************************************************************************************************/
 
-   /**
+  /**
    * @method `advancePhase`
    * Advances the game to the next phase (pre-flop to flop, flop to turn, etc.).
    * @returns {void}
    */
-   private __advancePhase(): void {}
+  private __advancePhase(): void {}
 
-   /**
-    * @method `resolveBets`
-    * Resolves the current betting round, updating player chip stacks and determining the winner if applicable.
-    * @returns {void}
-    */
-   private __resolveBets(): void {}
+  /**
+   * @method `resolveBets`
+   * Resolves the current betting round, updating player chip stacks and determining the winner if applicable.
+   * @returns {void}
+   */
+  private __resolveBets(): void {}
 
-   private __validatePlayerList(): boolean {
+  private __validatePlayerList(): boolean {
     if (this.getPlayers().length < 2) {
       throw new Error("Players are lesser than two.");
     } else {
@@ -212,24 +213,24 @@ class PokerGame extends EventEmitter implements PokerGameInterface {
    * WRAPPER METHODS (UTILITY & CONVENIENCE)
    **************************************************************************************************************/
 
-
   /**************************************************************************************************************
    * INTERNAL METHODS (PROTECTED)
    **************************************************************************************************************/
 
   /**************************************************************************************************************
- * INTERNAL METHODS (PRIVATE)
- **************************************************************************************************************/
-
+   * INTERNAL METHODS (PRIVATE)
+   **************************************************************************************************************/
 
   private __setPot(pot: number): number {
     return (this.__pot = pot);
   }
 
-  private __setPlayers(players: PokerPlayerInterface[]): PokerPlayerInterface[] {
+  private __setPlayers(
+    players: PokerPlayerInterface[]
+  ): PokerPlayerInterface[] {
     return (this.__players = players);
   }
-  
+
   private __setDealerPos(pos: number): boolean {
     this.__dealerPos = pos;
     return true;
@@ -244,7 +245,6 @@ class PokerGame extends EventEmitter implements PokerGameInterface {
     this.__bigBlindPos = pos;
     return true;
   }
- 
 }
 
 export { PokerGame };

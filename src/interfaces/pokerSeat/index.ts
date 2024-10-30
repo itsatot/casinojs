@@ -1,3 +1,5 @@
+/**@collapse */
+
 import { PokerPlayerInterface } from "../pokerPlayer";
 
 /**
@@ -39,11 +41,10 @@ interface PokerSeatConfig {
  * @extends NodeJS.EventEmitter
  */
 interface PokerSeatInterface extends NodeJS.EventEmitter {
-
   /**************************************************************************************************************
    * CREATE METHODS (SETTERS & OBJECT CREATION)
    **************************************************************************************************************/
-  
+
   /**
    * @method `setIsDealer`
    * @public
@@ -57,24 +58,23 @@ interface PokerSeatInterface extends NodeJS.EventEmitter {
   setIsDealer(bool: boolean): boolean;
 
   /**
- * @method `setPlayer`
- * @public
- * Returns the poker table's `id`.
- * @returns {PokerPlayerInterface | undefined} The poker table's `id`.
- *
- * @example
- * const rank = card.getRank();
- * console.log(rank); // "A"
- */
+   * @method `setPlayer`
+   * @public
+   * Returns the poker table's `id`.
+   * @returns {PokerPlayerInterface | undefined} The poker table's `id`.
+   *
+   * @example
+   * const rank = card.getRank();
+   * console.log(rank); // "A"
+   */
   setPlayer(
     player: PokerPlayerInterface | undefined
   ): PokerPlayerInterface | undefined;
 
-  
   /**************************************************************************************************************
    * READ METHODS (GETTERS & DATA RETRIEVAL)
    **************************************************************************************************************/
-  
+
   /**
    * @method `getId`
    * @public
@@ -123,24 +123,23 @@ interface PokerSeatInterface extends NodeJS.EventEmitter {
    */
   getPlayer(): PokerPlayerInterface | undefined;
 
- /**************************************************************************************************************
+  /**************************************************************************************************************
    * UPDATE METHODS (MODIFYING EXISTING OBJECTS)
    **************************************************************************************************************/
-  
- /**************************************************************************************************************
- * DELETE METHODS (REMOVING OBJECTS)
- **************************************************************************************************************/
 
- /**************************************************************************************************************
- * BUSINESS-LOGIC METHODS (LOGIC & CALCULATIONS)
- **************************************************************************************************************/
+  /**************************************************************************************************************
+   * DELETE METHODS (REMOVING OBJECTS)
+   **************************************************************************************************************/
+
+  /**************************************************************************************************************
+   * BUSINESS-LOGIC METHODS (LOGIC & CALCULATIONS)
+   **************************************************************************************************************/
 
   isOccupied(): boolean;
 
-/**************************************************************************************************************
- * WRAPPER METHODS (UTILITY & CONVENIENCE)
- **************************************************************************************************************/
-
+  /**************************************************************************************************************
+   * WRAPPER METHODS (UTILITY & CONVENIENCE)
+   **************************************************************************************************************/
 }
 
 export { PokerSeatConfig, PokerSeatInterface };

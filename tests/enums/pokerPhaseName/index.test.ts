@@ -1,3 +1,5 @@
+/**@collapse */
+
 import { PokerPhaseName } from "../../../src/enums/pokerPhaseName";
 
 /**

@@ -1,4 +1,5 @@
-//@collapse
+/**@collapse */
+
 import { EventEmitter } from "events";
 import {
   CardInterface,
@@ -192,7 +193,6 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
   public setIsFolded(bool: boolean): boolean {
     return this.__setIsFolded(bool);
   }
-  
 
   /**************************************************************************************************************
    * READ METHODS (GETTERS & DATA RETRIEVAL)
@@ -281,8 +281,6 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
   public isBetMatched(): boolean {
     return this.__isBetMatched;
   }
-
-  
 
   /**************************************************************************************************************
    * UPDATE METHODS (MODIFYING EXISTING OBJECTS)

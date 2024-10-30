@@ -1,4 +1,5 @@
-//@collapse
+/**@collapse */
+
 import { EventEmitter } from "events";
 import { Suit, Rank } from "../../enums";
 import { CardInterface, DeckInterface } from "../../interfaces";

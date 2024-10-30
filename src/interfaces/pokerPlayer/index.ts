@@ -1,3 +1,5 @@
+/**@collapse */
+
 import { CardInterface } from "../card";
 
 /**

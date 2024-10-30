@@ -1,3 +1,5 @@
+/**@collapse */
+
 /**
  * @module `Interfaces`
  * Centralized export for all poker-related interfaces and types.

@@ -1,3 +1,5 @@
+/**@collapse */
+
 import { Suit } from "../../../src/enums/suit";
 
 /**
