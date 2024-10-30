@@ -41,7 +41,7 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
    * @property {PokerPlayerInterface | undefined} player
    * The maximum number of players that can be seated at the PokerTable[2-14].
    */
-  private __player: PokerPlayerInterface | undefined;
+  private __player: PokerPlayerInterface | undefined = undefined;
 
   /**************************************************************************************************************
    * CONSTRUCTOR & INITIALIZERS
@@ -65,8 +65,8 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
     if (config) {
       this.__id = config.id ? config.id : generateUniqueId();
       this.__position = config.position;
-      this.__isDealer = config.isDealer ? config.isDealer : false;
-      this.__player = config.player ? config.player : undefined;
+      this.__isDealer = config.isDealer ? config.isDealer : this.__isDealer;
+      this.__player = config.player ? config.player : this.__player;
     }
   }
 
