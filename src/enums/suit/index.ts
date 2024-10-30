@@ -1,4 +1,4 @@
-/**@collapse */
+//@collapse
 
 /**
  * @enum `Suit`

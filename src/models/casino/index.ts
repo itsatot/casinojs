@@ -1,4 +1,4 @@
-/**@collapse */
+//@collapse
 
 import { EventEmitter } from "events";
 

@@ -1,4 +1,4 @@
-/**@collapse */
+//@collapse
 
 /**
  * @file `index.test.ts`

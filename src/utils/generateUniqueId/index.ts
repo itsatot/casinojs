@@ -1,4 +1,4 @@
-/**@collapse */
+//@collapse
 
 import crypto from "crypto";
 

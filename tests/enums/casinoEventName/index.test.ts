@@ -1,4 +1,4 @@
-/**@collapse */
+//@collapse
 
 import { CasinoEventName } from "../../../src/enums/casinoEventName";
 

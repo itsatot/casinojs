@@ -1,4 +1,4 @@
-/**@collapse */
+//@collapse
 
 import { DeckInterface } from "../deck";
 import { PokerPlayerInterface } from "../pokerPlayer";
