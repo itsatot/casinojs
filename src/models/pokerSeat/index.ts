@@ -1,6 +1,7 @@
 //@collapse
 
 import { EventEmitter } from "events";
+import { PokerSeatEventName } from "../../enums";
 import {
   PokerPlayerInterface,
   PokerSeatConfig,
@@ -261,8 +262,8 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
   /**
    * Emits an event with a standardized format.
    *
-   * @param {string} eventName - The name of the event to emit.
-   * @param {object} eventData - The data associated with the event.
+   * @param {string} name - The name of the event to emit.
+   * @param {object} event - The data associated with the event.
    *
    * @returns {void}
    *
@@ -271,8 +272,8 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
    * this.__emitEvent("casino:roomUpdated", { roomId: 1, status: "active" });
    * ```
    */
-  private __emitEvent(eventName: string, eventData: object): void {
-    this.emit(eventName, eventData);
+  private __emitEvent(name: PokerSeatEventName, event: object): void {
+    this.emit(name, event);
   }
 }
 
