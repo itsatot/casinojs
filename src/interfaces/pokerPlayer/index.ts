@@ -49,6 +49,22 @@ interface PokerPlayerConfig {
  * @extends NodeJS.EventEmitter
  */
 interface PokerPlayerInterface extends NodeJS.EventEmitter {
+  /**************************************************************************************************************
+   * READ METHODS (GETTERS & DATA RETRIEVAL)
+   **************************************************************************************************************/
+
+  /**
+   * @method `getId`
+   * @public
+   * Returns the poker table's `id`.
+   * @returns {string} The poker table's `id`.
+   *
+   * @example
+   * const rank = card.getRank();
+   * console.log(rank); // "A"
+   */
+  getId(): string;
+
   bet(amount: number): boolean;
 
   setIsFolded(bool: boolean): boolean;

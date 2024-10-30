@@ -2,6 +2,7 @@
 
 import { EventEmitter } from "events";
 import { PokerSeatEventName } from "../../enums";
+import { PokerSeatEvent, PokerSeatEvents } from "../../events";
 import {
   PokerPlayerInterface,
   PokerSeatConfig,
@@ -285,16 +286,34 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
   public occupy(player: PokerPlayerInterface): void {
     this.__setPlayer(player);
     this.__emitEvent(PokerSeatEventName.SEAT_OCCUPIED, {
-      name: PokerSeatEventName.SEAT_OCCUPIED,
-      data: {},
+      head: {
+        name: PokerSeatEventName.SEAT_OCCUPIED,
+        createdAt: new Date(),
+      },
+      data: {
+        seatId: this.getId(),
+        playerId: player.getId(),
+        updatedSeat: this,
+      },
     });
   }
 
   public vacate(): void {
+    if (!this.isOccupied()) {
+      throw new Error(`PokerSeat: Seat is already vacant.`);
+    }
+    const playerid = this.getPlayer()?.getId();
     this.__setPlayer(undefined);
     this.__emitEvent(PokerSeatEventName.SEAT_VACATED, {
-      name: PokerSeatEventName.SEAT_VACATED,
-      data: {},
+      head: {
+        name: PokerSeatEventName.SEAT_VACATED,
+        createdAt: new Date(),
+      },
+      data: {
+        seatId: this.getId(),
+        playerId: playerid,
+        updatedSeat: this,
+      },
     });
   }
 
@@ -309,6 +328,7 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
   /**************************************************************************************************************
    * INTERNAL METHODS (PRIVATE)
    **************************************************************************************************************/
+
   /**
    * @method `setId`
    * @public
@@ -384,7 +404,7 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
    * this.__emitEvent("casino:roomUpdated", { roomId: 1, status: "active" });
    * ```
    */
-  private __emitEvent(name: PokerSeatEventName, event: object): void {
+  private __emitEvent(name: PokerSeatEventName, event: PokerSeatEvent): void {
     this.emit(name, event);
   }
 }
