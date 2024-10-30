@@ -602,6 +602,7 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
     this.__tables.push(table);
     return table;
   }
+
   /**************************************************************************************************************
    * INTERNAL METHODS (PRIVATE)
    **************************************************************************************************************/
