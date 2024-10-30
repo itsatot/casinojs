@@ -79,7 +79,7 @@ class PokerTable extends EventEmitter implements PokerTableInterface {
    * console.log(table.getId()); // Console Output: A unique table ID
    * ```
    */
-  private __id: string = generateUniqueId();
+  private __id: string = ``;
 
   /**
    * @property {string} __name
