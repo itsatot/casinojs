@@ -21,7 +21,9 @@ import { Card } from "../card";
  * console.log(card?.toString()); // "A of Spades"
  */
 class Deck extends EventEmitter implements DeckInterface {
-  /******************* PROPERTIES *******************/
+ /**************************************************************************************************************
+ * PROPERTIES
+ **************************************************************************************************************/
 
   /**
    * @property {CardInterface[]} cards
@@ -29,7 +31,11 @@ class Deck extends EventEmitter implements DeckInterface {
    * Holds the array of 52 playing cards in the deck.
    * @default []
    */
-  private cards: CardInterface[] = [];
+  private __cards: CardInterface[] = [];
+
+/**************************************************************************************************************
+ * CONSTRUCTOR & INITIALIZERS
+ **************************************************************************************************************/
 
   /**
    * @method constructor
@@ -42,7 +48,7 @@ class Deck extends EventEmitter implements DeckInterface {
    */
   constructor() {
     super();
-    this.init();
+    this.__init();
   }
 
   /**
@@ -53,33 +59,49 @@ class Deck extends EventEmitter implements DeckInterface {
    * @emits `deck:initialized` : Emits a `deck:initialized` event when the deck is created.
    * @returns {void}
    */
-  private init(): void {
+  private __init(): void {
     for (const suit of Object.values(Suit)) {
       for (const rank of Object.values(Rank)) {
-        this.cards.push(new Card({ rank: rank, suit: suit }));
+        this.__cards.push(new Card({ rank: rank, suit: suit }));
       }
     }
-    this.emit("deck:initialized", this.cards);
+    this.emit("deck:initialized", this.__cards);
   }
 
+/**************************************************************************************************************
+ * CREATE METHODS (SETTERS & OBJECT CREATION)
+ **************************************************************************************************************/
+
+
+/**************************************************************************************************************
+ * READ METHODS (GETTERS & DATA RETRIEVAL)
+ **************************************************************************************************************/
+
   /**
-   * @method `shuffle`
+   * @method `getCards`
    * @public
-   * Shuffles the deck of cards using the Fisher-Yates algorithm.
-   * @emits `deck:shuffled` Emits a `deck:shuffled` event after the deck is shuffled.
-   * @returns {void}
+   * Returns the current state of the deck.
+   * @returns {CardInterface[]} The array of cards in the deck.
    *
    * @example
-   * const deck = new Deck();
-   * deck.shuffle();
+   * const cards = deck.getCards();
+   * console.log(cards.length); // 52 (before shuffling or drawing)
    */
-  public shuffle(): void {
-    for (let i = this.cards.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [this.cards[i], this.cards[j]] = [this.cards[j], this.cards[i]];
-    }
-    this.emit("deck:shuffled", this.cards);
+  public getCards(): CardInterface[] {
+    return this.__cards;
   }
+
+/**************************************************************************************************************
+ * UPDATE METHODS (MODIFYING EXISTING OBJECTS)
+ **************************************************************************************************************/
+
+/**************************************************************************************************************
+ * DELETE METHODS (REMOVING OBJECTS)
+ **************************************************************************************************************/
+
+/**************************************************************************************************************
+ * BUSINESS-LOGIC METHODS (LOGIC & CALCULATIONS)
+ **************************************************************************************************************/
 
   /**
    * @method `draw`
@@ -95,24 +117,39 @@ class Deck extends EventEmitter implements DeckInterface {
    * console.log(drawnCard?.toString()); // "A of Spades"
    */
   public draw(): CardInterface | undefined {
-    const drawnCard = this.cards.pop();
+    const drawnCard = this.__cards.pop();
     this.emit("deck:drawn", drawnCard);
     return drawnCard;
   }
 
+
   /**
-   * @method `getCards`
+   * @method `shuffle`
    * @public
-   * Returns the current state of the deck.
-   * @returns {CardInterface[]} The array of cards in the deck.
+   * Shuffles the deck of cards using the Fisher-Yates algorithm.
+   * @emits `deck:shuffled` Emits a `deck:shuffled` event after the deck is shuffled.
+   * @returns {void}
    *
    * @example
-   * const cards = deck.getCards();
-   * console.log(cards.length); // 52 (before shuffling or drawing)
+   * const deck = new Deck();
+   * deck.shuffle();
    */
-  public getCards(): CardInterface[] {
-    return this.cards;
+  public shuffle(): void {
+    for (let i = this.__cards.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [this.__cards[i], this.__cards[j]] = [this.__cards[j], this.__cards[i]];
+    }
+    this.emit("deck:shuffled", this.__cards);
   }
+
+/**************************************************************************************************************
+ * WRAPPER METHODS (UTILITY & CONVENIENCE)
+ **************************************************************************************************************/
+
+/**************************************************************************************************************
+ * INTERNAL METHODS (PRIVATE)
+ **************************************************************************************************************/
+
 }
 
 export { Deck };

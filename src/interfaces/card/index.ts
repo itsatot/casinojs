@@ -1,4 +1,4 @@
-//@collapse
+//collapse
 
 import { Rank, Suit } from "../../enums";
 

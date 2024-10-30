@@ -17,21 +17,27 @@ import { CardConfig, CardInterface } from "../../interfaces";
  * console.log(card.toString()); // "A of Spades"
  */
 class Card implements CardInterface {
-  /******************* PROPERTIES *******************/
+/**************************************************************************************************************
+ * PROPERTIES
+ **************************************************************************************************************/
 
   /**
    * @property {Rank} _rank
    * @private
    * Holds the rank of the card (e.g., Ace, Two, King).
    */
-  private _rank: Rank;
+  private __rank: Rank = Rank.Ace;
 
   /**
    * @property {Suit} _suit
    * @private
    * Holds the suit of the card (e.g., Hearts, Spades).
    */
-  private _suit: Suit;
+  private __suit: Suit = Suit.Spades;
+
+/**************************************************************************************************************
+ * CONSTRUCTOR & INITIALIZERS
+ **************************************************************************************************************/
 
   /**
    * @method constructor
@@ -45,11 +51,32 @@ class Card implements CardInterface {
    * const card = new Card(Rank.Ace, Suit.Spades);
    */
   constructor(config: CardConfig) {
-    this._rank = config.rank;
-    this._suit = config.suit;
+    this.__init(config);
   }
 
-  /**
+   /**
+   * @method `init`
+   * @private
+   * Initializes the deck with 52 unique cards.
+   * This method is called automatically inside the constructor during deck creation.
+   * @emits `deck:initialized` : Emits a `deck:initialized` event when the deck is created.
+   * @returns {void}
+   */
+   private __init(config: CardConfig): void {
+    this.__rank = config.rank;
+    this.__suit = config.suit;
+  }
+
+/**************************************************************************************************************
+ * CREATE METHODS (SETTERS & OBJECT CREATION)
+ **************************************************************************************************************/
+
+
+/**************************************************************************************************************
+ * READ METHODS (GETTERS & DATA RETRIEVAL)
+ **************************************************************************************************************/
+ 
+/**
    * @method `getRank`
    * @public
    * Returns the card's rank.
@@ -59,24 +86,11 @@ class Card implements CardInterface {
    * const rank = card.getRank();
    * console.log(rank); // "A"
    */
-  public getRank(): Rank {
-    return this._rank;
-  }
+ public getRank(): Rank {
+  return this.__rank;
+}
 
-  /**
-   * @method `setRank`
-   * @private
-   * Sets the card's rank. This method is kept private to control how rank is modified.
-   *
-   * @param {Rank} rank - The new rank of the card.
-   * @returns {Rank} The updated rank of the card.
-   */
-  private setRank(rank: Rank): Rank {
-    this._rank = rank;
-    return this._rank;
-  }
-
-  /**
+ /**
    * @method `getSuit`
    * @public
    * Returns the card's suit.
@@ -86,22 +100,21 @@ class Card implements CardInterface {
    * const suit = card.getSuit();
    * console.log(suit); // "Spades"
    */
-  public getSuit(): Suit {
-    return this._suit;
-  }
+ public getSuit(): Suit {
+  return this.__suit;
+}
 
-  /**
-   * @method `setSuit`
-   * @private
-   * Sets the card's suit. This method is kept private to control how suit is modified.
-   *
-   * @param {Suit} suit - The new suit of the card.
-   * @returns {Suit} The updated suit of the card.
-   */
-  private setSuit(suit: Suit): Suit {
-    this._suit = suit;
-    return this._suit;
-  }
+/**************************************************************************************************************
+ * UPDATE METHODS (MODIFYING EXISTING OBJECTS)
+ **************************************************************************************************************/
+
+/**************************************************************************************************************
+ * DELETE METHODS (REMOVING OBJECTS)
+ **************************************************************************************************************/
+
+/**************************************************************************************************************
+ * BUSINESS-LOGIC METHODS (LOGIC & CALCULATIONS)
+ **************************************************************************************************************/
 
   /**
    * @method `toString`
@@ -114,7 +127,7 @@ class Card implements CardInterface {
    * console.log(description); // "A of Spades"
    */
   public toString(): string {
-    return `${this._rank} of ${this._suit}`;
+    return `${this.__rank} of ${this.__suit}`;
   }
 
   /**
@@ -128,8 +141,43 @@ class Card implements CardInterface {
    * console.log(cardObj); // { rank: "A", suit: "Spades" }
    */
   public toObj(): { rank: Rank; suit: Suit } {
-    return { rank: this._rank, suit: this._suit };
+    return { rank: this.__rank, suit: this.__suit };
   }
+
+/**************************************************************************************************************
+ * WRAPPER METHODS (UTILITY & CONVENIENCE)
+ **************************************************************************************************************/
+
+/**************************************************************************************************************
+ * INTERNAL METHODS (PRIVATE)
+ **************************************************************************************************************/
+
+  /**
+   * @method `setRank`
+   * @private
+   * Sets the card's rank. This method is kept private to control how rank is modified.
+   *
+   * @param {Rank} rank - The new rank of the card.
+   * @returns {Rank} The updated rank of the card.
+   */
+  private __setRank(rank: Rank): Rank {
+    this.__rank = rank;
+    return this.__rank;
+  }
+
+  /**
+   * @method `setSuit`
+   * @private
+   * Sets the card's suit. This method is kept private to control how suit is modified.
+   *
+   * @param {Suit} suit - The new suit of the card.
+   * @returns {Suit} The updated suit of the card.
+   */
+  private __setSuit(suit: Suit): Suit {
+    this.__suit = suit;
+    return this.__suit;
+  }
+
 }
 
 export { Card };
