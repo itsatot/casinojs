@@ -1,4 +1,4 @@
-//@collapse
+
 import { EventEmitter } from "events";
 import {
   PokerGameConfig,
@@ -107,15 +107,15 @@ class PokerGame extends EventEmitter implements PokerGameInterface {
     if (config) {
       this.__id = config.id ? config.id : generateUniqueId();
       this.__deck = new Deck();
-      this.__smallBlind = config.smallBlind ? config.smallBlind : 5;
-      this.__bigBlind = config.bigBlind ? config.bigBlind : 10;
-      this.__communityCards = [];
-      this.__players = config.players ? config.players : [];
-      this.__pot = 0;
-      this.__dealerPos = 0;
-      this.__smallBlindPos = 0;
-      this.__bigBlindPos = 0;
-      this.__phases = [];
+      this.__smallBlind = config.smallBlind ? config.smallBlind : this.__smallBlind;
+      this.__bigBlind = config.bigBlind ? config.bigBlind : this.__bigBlind;
+      this.__communityCards = this.__communityCards;
+      this.__players = config.players ? config.players : this.__players;
+      this.__pot = this.__pot;
+      this.__dealerPos = this.__dealerPos;
+      this.__smallBlindPos = this.__smallBlindPos;
+      this.__bigBlindPos = this.__bigBlindPos;
+      this.__phases = this.__phases;
       this.__currentPhase = new PokerPhase({
         name: PokerPhaseName.PRE_FLOP,
         deck: this.__deck,
@@ -130,6 +130,19 @@ class PokerGame extends EventEmitter implements PokerGameInterface {
     }
   }
 
+  
+  /**************************************************************************************************************
+   * CREATE METHODS (SETTERS & OBJECT CREATION)
+   **************************************************************************************************************/
+
+  public setPot(pot: number): number {
+    return (this.__pot = pot);
+  }
+  
+  /**************************************************************************************************************
+   * READ METHODS (GETTERS & DATA RETRIEVAL)
+   **************************************************************************************************************/
+
   public getPlayers(): PokerPlayerInterface[] {
     return this.__players;
   }
@@ -142,35 +155,61 @@ class PokerGame extends EventEmitter implements PokerGameInterface {
     return this.__pot;
   }
 
-  private setPlayers(players: PokerPlayerInterface[]): PokerPlayerInterface[] {
-    return (this.__players = players);
-  }
-
-  public setPot(pot: number): number {
-    return (this.__pot = pot);
-  }
-
   public getDealerPos(): number {
     return this.__dealerPos;
-  }
-
-  private setDealerPos(pos: number): boolean {
-    this.__dealerPos = pos;
-    return true;
   }
 
   public getSmallBlindPos(): number {
     return this.__smallBlindPos;
   }
 
+  public getBigBlindPos(): number {
+    return this.__bigBlindPos;
+  }
+
+  /**************************************************************************************************************
+   * UPDATE METHODS (MODIFYING EXISTING OBJECTS)
+   **************************************************************************************************************/
+
+  /**************************************************************************************************************
+   * DELETE METHODS (REMOVING OBJECTS)
+   **************************************************************************************************************/
+
+  /**************************************************************************************************************
+   * BUSINESS-LOGIC METHODS (LOGIC & CALCULATIONS)
+   **************************************************************************************************************/
+
+  /**************************************************************************************************************
+   * WRAPPER METHODS (UTILITY & CONVENIENCE)
+   **************************************************************************************************************/
+
+
+  /**************************************************************************************************************
+   * INTERNAL METHODS (PROTECTED)
+   **************************************************************************************************************/
+
+  /**************************************************************************************************************
+ * INTERNAL METHODS (PRIVATE)
+ **************************************************************************************************************/
+
+
+
+  private setPlayers(players: PokerPlayerInterface[]): PokerPlayerInterface[] {
+    return (this.__players = players);
+  }
+  
+  private setDealerPos(pos: number): boolean {
+    this.__dealerPos = pos;
+    return true;
+  }
+
+
   private setSmallBlindPos(pos: number): boolean {
     this.__smallBlindPos = pos;
     return true;
   }
 
-  public getBigBlindPos(): number {
-    return this.__bigBlindPos;
-  }
+ 
 
   private setBigBlindPos(pos: number): boolean {
     this.__bigBlindPos = pos;
