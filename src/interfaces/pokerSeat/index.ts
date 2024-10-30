@@ -55,21 +55,7 @@ interface PokerSeatInterface extends NodeJS.EventEmitter {
    * const rank = card.getRank();
    * console.log(rank); // "A"
    */
-  setIsDealer(bool: boolean): boolean;
-
-  /**
-   * @method `setPlayer`
-   * @public
-   * Returns the poker table's `id`.
-   * @returns {PokerPlayerInterface | undefined} The poker table's `id`.
-   *
-   * @example
-   * const rank = card.getRank();
-   * console.log(rank); // "A"
-   */
-  setPlayer(
-    player: PokerPlayerInterface | undefined
-  ): PokerPlayerInterface | undefined;
+  setDealer(bool: boolean): boolean;
 
   /**************************************************************************************************************
    * READ METHODS (GETTERS & DATA RETRIEVAL)
@@ -109,7 +95,7 @@ interface PokerSeatInterface extends NodeJS.EventEmitter {
    * const rank = card.getRank();
    * console.log(rank); // "A"
    */
-  getIsDealer(): boolean;
+  isDealer(): boolean;
 
   /**
    * @method `getPlayer`
