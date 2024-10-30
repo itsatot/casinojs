@@ -1,4 +1,4 @@
-import { PokerRoomConfig, PokerRoomInterface } from "../pokerRoom";
+import { PokerRoomConfig, PokerRoomInterface } from "../../interfaces";
 
 /**
  * @interface `CasinoInterface`
