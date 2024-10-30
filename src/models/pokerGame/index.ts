@@ -138,7 +138,7 @@ class PokerGame extends EventEmitter implements PokerGameInterface {
   public setPot(pot: number): number {
     return (this.__pot = pot);
   }
-  
+
   /**************************************************************************************************************
    * READ METHODS (GETTERS & DATA RETRIEVAL)
    **************************************************************************************************************/
@@ -170,6 +170,17 @@ class PokerGame extends EventEmitter implements PokerGameInterface {
   /**************************************************************************************************************
    * UPDATE METHODS (MODIFYING EXISTING OBJECTS)
    **************************************************************************************************************/
+  private tagPos(): void {
+    if ((this.getPlayers().length = 2)) {
+      this.setDealerPos(0);
+      this.setSmallBlindPos(1);
+      this.setBigBlindPos(0);
+    } else if (this.getPlayers().length >= 3) {
+      this.setDealerPos(0);
+      this.setSmallBlindPos(1);
+      this.setBigBlindPos(2);
+    }
+  }
 
   /**************************************************************************************************************
    * DELETE METHODS (REMOVING OBJECTS)
@@ -179,6 +190,19 @@ class PokerGame extends EventEmitter implements PokerGameInterface {
    * BUSINESS-LOGIC METHODS (LOGIC & CALCULATIONS)
    **************************************************************************************************************/
 
+   /**
+   * @method `advancePhase`
+   * Advances the game to the next phase (pre-flop to flop, flop to turn, etc.).
+   * @returns {void}
+   */
+   advancePhase(): void {}
+
+   /**
+    * @method `resolveBets`
+    * Resolves the current betting round, updating player chip stacks and determining the winner if applicable.
+    * @returns {void}
+    */
+   resolveBets(): void {}
   /**************************************************************************************************************
    * WRAPPER METHODS (UTILITY & CONVENIENCE)
    **************************************************************************************************************/
@@ -203,29 +227,14 @@ class PokerGame extends EventEmitter implements PokerGameInterface {
     return true;
   }
 
-
   private setSmallBlindPos(pos: number): boolean {
     this.__smallBlindPos = pos;
     return true;
   }
 
- 
-
   private setBigBlindPos(pos: number): boolean {
     this.__bigBlindPos = pos;
     return true;
-  }
-
-  private tagPos(): void {
-    if ((this.getPlayers().length = 2)) {
-      this.setDealerPos(0);
-      this.setSmallBlindPos(1);
-      this.setBigBlindPos(0);
-    } else if (this.getPlayers().length >= 3) {
-      this.setDealerPos(0);
-      this.setSmallBlindPos(1);
-      this.setBigBlindPos(2);
-    }
   }
 
   private validatePlayerList(): boolean {
@@ -236,19 +245,7 @@ class PokerGame extends EventEmitter implements PokerGameInterface {
     }
   }
 
-  /**
-   * @method `advancePhase`
-   * Advances the game to the next phase (pre-flop to flop, flop to turn, etc.).
-   * @returns {void}
-   */
-  advancePhase(): void {}
-
-  /**
-   * @method `resolveBets`
-   * Resolves the current betting round, updating player chip stacks and determining the winner if applicable.
-   * @returns {void}
-   */
-  resolveBets(): void {}
+ 
 }
 
 export { PokerGame };
