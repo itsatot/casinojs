@@ -178,7 +178,6 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
     return this.__setisBetMatched(betMatched);
   }
 
-
   /**************************************************************************************************************
    * READ METHODS (GETTERS & DATA RETRIEVAL)
    **************************************************************************************************************/
@@ -249,7 +248,7 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
    * const rank = card.getRank();
    * console.log(rank); // "A"
    */
-  public getIsFolded(): boolean {
+  public isFolded(): boolean {
     return this.__isFolded;
   }
 
@@ -263,19 +262,19 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
    * const rank = card.getRank();
    * console.log(rank); // "A"
    */
-  public getIsBetMatched(): boolean {
+  public isBetMatched(): boolean {
     return this.__isBetMatched;
   }
+
   /**************************************************************************************************************
    * UPDATE METHODS (MODIFYING EXISTING OBJECTS)
    **************************************************************************************************************/
-  
 
   public bet(amount: number): boolean {
     this.__chips = this.getChips() - amount;
     return true;
   }
-  
+
   /**
    * @method `setHand`
    * @private
@@ -360,7 +359,7 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
     this.__id = id;
     return this.__id;
   }
- 
+
   /**
    * @method `setIsFolded`
    * @private
@@ -390,9 +389,6 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
     this.__isBetMatched = betMatched;
     return this.__isBetMatched;
   }
-
-
-
 }
 
 export { PokerPlayer };
