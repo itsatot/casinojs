@@ -123,6 +123,10 @@ interface PokerSeatInterface extends NodeJS.EventEmitter {
 
   isOccupied(): boolean;
 
+  occupy(player: PokerPlayerInterface): void;
+
+  vacate(): void;
+
   /**************************************************************************************************************
    * WRAPPER METHODS (UTILITY & CONVENIENCE)
    **************************************************************************************************************/

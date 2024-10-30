@@ -282,6 +282,22 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
     return true;
   }
 
+  public occupy(player: PokerPlayerInterface): void {
+    this.__setPlayer(player);
+    this.__emitEvent(PokerSeatEventName.SEAT_OCCUPIED, {
+      name: PokerSeatEventName.SEAT_OCCUPIED,
+      data: {},
+    });
+  }
+
+  public vacate(): void {
+    this.__setPlayer(undefined);
+    this.__emitEvent(PokerSeatEventName.SEAT_VACATED, {
+      name: PokerSeatEventName.SEAT_VACATED,
+      data: {},
+    });
+  }
+
   /**************************************************************************************************************
    * WRAPPER METHODS (UTILITY & CONVENIENCE)
    **************************************************************************************************************/
