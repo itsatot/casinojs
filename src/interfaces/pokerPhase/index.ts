@@ -64,6 +64,7 @@ interface PokerPhaseConfig {
  *
  * @extends NodeJS.EventEmitter
  */
-interface PokerPhaseInterface extends NodeJS.EventEmitter {}
+interface PokerPhaseInterface extends NodeJS.EventEmitter {
+}
 
 export { PokerPhaseConfig, PokerPhaseInterface };

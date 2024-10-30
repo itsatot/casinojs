@@ -320,13 +320,13 @@ class PokerPhase extends EventEmitter implements PokerPhaseInterface {
     if (config) {
       this.__name = config.name ?? PokerPhaseName.PRE_FLOP;
       this.__deck = config.deck ?? new Deck();
-      this.__communityCards = config.communityCards ?? [];
-      this.__players = config.players ?? [];
-      this.__pot = config.pot ?? 0;
-      this.__currentPlayerPos = 1;
-      this.__dealerPos = config.dealerPos ?? 0;
-      this.__smallBlindPos = config.smallBlindPos ?? 1;
-      this.__bigBlindPos = config.bigBlindPos ?? 2;
+      this.__communityCards = config.communityCards ?? this.__communityCards;
+      this.__players = config.players ?? this.__players;
+      this.__pot = config.pot ?? this.__pot;
+      this.__currentPlayerPos = this.__currentPlayerPos;
+      this.__dealerPos = config.dealerPos ?? this.__dealerPos;
+      this.__smallBlindPos = config.smallBlindPos ?? this.__smallBlindPos;
+      this.__bigBlindPos = config.bigBlindPos ?? this.__bigBlindPos;
     }
 
     if (this.getName() === PokerPhaseName.PRE_FLOP) {
@@ -338,49 +338,13 @@ class PokerPhase extends EventEmitter implements PokerPhaseInterface {
    * CREATE METHODS (SETTERS & OBJECT CREATION)
    **************************************************************************************************************/
 
-  public setPot(pot: number): number {
-    return (this.__pot = pot);
+  public bet(amount: number): boolean {
+    return this._bet(amount);
   }
 
-  public setCurrentPlayerPos(player: number): boolean {
-    this.__currentPlayerPos = player;
-    return true;
+  public fold(): boolean {
+    return this._fold();
   }
-
-  /**
-   * @method `setName`
-   * @public
-   * Returns the poker table's `id`.
-   * @returns {string} The poker table's `id`.
-   *
-   * @example
-   * const rank = card.getRank();
-   * console.log(rank); // "A"
-   */
-  public setName(name: PokerPhaseName): PokerPhaseName {
-    this.__name = name;
-    return this.__name;
-  }
-
-  public setPlayers(players: PokerPlayerInterface[]): PokerPlayerInterface[] {
-    return (this.__players = players);
-  }
-
-  public setDealerPos(pos: number): boolean {
-    this.__dealerPos = pos;
-    return true;
-  }
-
-  public setSmallBlindPos(pos: number): boolean {
-    this.__smallBlindPos = pos;
-    return true;
-  }
-
-  public setBigBlindPos(pos: number): boolean {
-    this.__bigBlindPos = pos;
-    return true;
-  }
-
   /**************************************************************************************************************
    * READ METHODS (GETTERS & DATA RETRIEVAL)
    **************************************************************************************************************/
@@ -693,16 +657,12 @@ class PokerPhase extends EventEmitter implements PokerPhaseInterface {
   /**************************************************************************************************************
    * BUSINESS-LOGIC METHODS (LOGIC & CALCULATIONS)
    **************************************************************************************************************/
-
-  /**************************************************************************************************************
-   * WRAPPER METHODS (UTILITY & CONVENIENCE)
-   **************************************************************************************************************/
-
+  
   /**
-   * @method `dealHoleCards`
-   * Deals two hole cards to each player.
-   * @returns {void}
-   */
+     * @method `dealHoleCards`
+     * Deals two hole cards to each player.
+     * @returns {void}
+     */
   deal(): boolean {
     for (let i = 0; i < 2; i++) {}
     return true;
@@ -736,38 +696,90 @@ class PokerPhase extends EventEmitter implements PokerPhaseInterface {
    */
   resolveBets(): void {}
 
-  public bet(amount: number): boolean {
-    this.getPlayers()[this.getCurrentPlayerPos()]?.bet(amount);
-    this.setPot(this.getPot() + amount);
-    this.nextPlayer();
-
-    return true;
-  }
-
-  // public fold(): boolean {
-  //   this.getPlayers()[this.getCurrentPlayerPos()]?.setIsFolded(true);
-  //   this.nextPlayer();
-  //   return true;
-  // }
+  
 
   /**
    * name
    */
-  public nextPlayer(): void {
+  private nextPlayer(): void {
     if (this.getPlayers().length - 1 === this.getCurrentPlayerPos()) {
-      this.setCurrentPlayerPos(0);
+      this.__setCurrentPlayerPos(0);
     } else {
-      this.setCurrentPlayerPos(this.getCurrentPlayerPos() + 1);
+      this.__setCurrentPlayerPos(this.getCurrentPlayerPos() + 1);
     }
   }
+
+  /**************************************************************************************************************
+   * WRAPPER METHODS (UTILITY & CONVENIENCE)
+   **************************************************************************************************************/
+
+ 
 
   /**************************************************************************************************************
    * INTERNAL METHODS (PROTECTED)
    **************************************************************************************************************/
 
+  protected _bet(amount: number): boolean {
+    this.getPlayers()[this.getCurrentPlayerPos()]?.bet(amount);
+    this.__setPot(this.getPot() + amount);
+    this.nextPlayer();
+
+    return true;
+  }
+
+  protected _fold(): boolean {
+  this.getPlayers()[this.getCurrentPlayerPos()]?.setIsFolded(true);
+  this.nextPlayer();
+  return true;
+  }
   /**************************************************************************************************************
    * INTERNAL METHODS (PRIVATE)
    **************************************************************************************************************/
+
+
+  private __setPot(pot: number): number {
+    return (this.__pot = pot);
+  }
+
+  private __setCurrentPlayerPos(player: number): boolean {
+    this.__currentPlayerPos = player;
+    return true;
+  }
+
+  /**
+   * @method `setName`
+   * @public
+   * Returns the poker table's `id`.
+   * @returns {string} The poker table's `id`.
+   *
+   * @example
+   * const rank = card.getRank();
+   * console.log(rank); // "A"
+   */
+  private __setName(name: PokerPhaseName): PokerPhaseName {
+    this.__name = name;
+    return this.__name;
+  }
+
+  private __setPlayers(players: PokerPlayerInterface[]): PokerPlayerInterface[] {
+    return (this.__players = players);
+  }
+
+  private __setDealerPos(pos: number): boolean {
+    this.__dealerPos = pos;
+    return true;
+  }
+
+  private __setSmallBlindPos(pos: number): boolean {
+    this.__smallBlindPos = pos;
+    return true;
+  }
+
+  private __setBigBlindPos(pos: number): boolean {
+    this.__bigBlindPos = pos;
+    return true;
+  }
+
 }
 
 export { PokerPhase };
