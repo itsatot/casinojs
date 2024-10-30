@@ -165,21 +165,6 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
   }
 
   /**
-   * @method `setIsFolded`
-   * @private
-   * Returns the poker table's `id`.
-   * @returns {boolean} The poker table's `id`.
-   *
-   * @example
-   * const rank = card.getRank();
-   * console.log(rank); // "A"
-   */
-  public setIsFolded(bool: boolean): boolean {
-    this.__isFolded = bool;
-    return this.__isFolded;
-  }
-
-  /**
    * @method `getHand`
    * @public
    * Returns the poker table's `id`.
@@ -190,14 +175,9 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
    * console.log(rank); // "A"
    */
   public setisBetMatched(betMatched: boolean): boolean {
-    this.__isBetMatched = betMatched;
-    return this.__isBetMatched;
+    return this.__setisBetMatched(betMatched);
   }
 
-  public bet(amount: number): boolean {
-    this.__chips = this.getChips() - amount;
-    return true;
-  }
 
   /**************************************************************************************************************
    * READ METHODS (GETTERS & DATA RETRIEVAL)
@@ -289,7 +269,28 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
   /**************************************************************************************************************
    * UPDATE METHODS (MODIFYING EXISTING OBJECTS)
    **************************************************************************************************************/
+  
 
+  public bet(amount: number): boolean {
+    this.__chips = this.getChips() - amount;
+    return true;
+  }
+  
+  /**
+   * @method `setHand`
+   * @private
+   * Returns the poker table's `id`.
+   * @returns {number} The poker table's `id`.
+   *
+   * @example
+   * const rank = card.getRank();
+   * console.log(rank); // "A"
+   */
+
+  public addToHand(hand: CardInterface): boolean {
+    this.getHand().push(hand);
+    return true;
+  }
   /**************************************************************************************************************
    * DELETE METHODS (REMOVING OBJECTS)
    **************************************************************************************************************/
@@ -359,8 +360,7 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
     this.__id = id;
     return this.__id;
   }
-
-  
+ 
   /**
    * @method `setIsFolded`
    * @private
@@ -376,22 +376,23 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
     return this.__isFolded;
   }
 
-
   /**
-   * @method `setHand`
-   * @private
+   * @method `getHand`
+   * @public
    * Returns the poker table's `id`.
-   * @returns {number} The poker table's `id`.
+   * @returns {CardInterface[]} The poker table's `id`.
    *
    * @example
    * const rank = card.getRank();
    * console.log(rank); // "A"
    */
-
-  public addToHand(hand: CardInterface): boolean {
-    this.getHand().push(hand);
-    return true;
+  private __setisBetMatched(betMatched: boolean): boolean {
+    this.__isBetMatched = betMatched;
+    return this.__isBetMatched;
   }
+
+
+
 }
 
 export { PokerPlayer };
