@@ -158,29 +158,94 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
     return this._setName(name);
   }
 
+  /**************************************************************************************************************
+   * READ METHODS (GETTERS & DATA RETRIEVAL)
+   **************************************************************************************************************/
+
   /**
-   * @method `getId`
-   * @public
-   * Returns the poker table's `id`.
-   * @returns {string} The poker table's `id`.
+   * #### Description
+   * Creates a new `PokerRoom` instance based on the provided configuration and adds it to the Casino's rooms list.
+   *
+   * #### Implements
+   * `N/A`
+   *
+   * #### Overrides
+   * `N/A`
+   *
+   * #### Purpose
+   * Allows the Casino to dynamically create new rooms as needed by providing specific room configurations.
+   *
+   * #### Events
+   * - Emits a `CasinoEventName.ROOM_CREATED` event, enabling listeners to respond to the creation of a new room.
+   *
+   * #### Parameters
+   * - `config`: A `PokerRoomConfig` object containing details like `name`, `tableSize`, `smallBlind`, and `bigBlind`.
+   *
+   * #### Requirements
+   * `N/A`
+   *
+   * #### Returns
+   * - Returns the newly created `PokerRoomInterface` instance.
+   *
+   * #### Usage
+   * Primarily used within subclasses or protected methods to dynamically create and add rooms to the Casino.
+   *
+   * @param {PokerRoomConfig} config - Configuration settings for creating a new `PokerRoom`.
+   * @returns {PokerRoomInterface} - The newly created room instance.
    *
    * @example
-   * const rank = card.getRank();
-   * console.log(rank); // "A"
+   * ```typescript
+   * class SpecialCasino extends Casino {
+   *   public createSpecialRoom(config: PokerRoomConfig): PokerRoomInterface {
+   *     return this._createRoom(config);
+   *   }
+   * }
+   * const specialCasino = new SpecialCasino();
+   * const newRoom = specialCasino.createSpecialRoom({ name: "Champions Lounge", tableSize: 10, smallBlind: 100, bigBlind: 200 });
+   * console.log(newRoom.getName()); // Outputs: "Champions Lounge"
+   * ```
    */
   public getId(): string {
     return this.__id;
   }
 
   /**
-   * @method `getName`
-   * @public
-   * Returns the poker table's `id`.
-   * @returns {string} The poker table's `id`.
+   * #### Description
+   * Retrieves the current name of the `PokerRoom`.
+   *
+   * #### Implements
+   * `N/A` - This method is defined within `PokerRoomInterface` and is implemented by any class adhering to this interface.
+   *
+   * #### Overrides
+   * `N/A` - This method does not override any superclass or parent methods.
+   *
+   * #### Purpose
+   * The `getName` method enables access to the current name of a `PokerRoom`, which can be essential for
+   * identification, logging, and displaying room information to users.
+   *
+   * #### Events
+   * `N/A` - No events are emitted by this method.
+   *
+   * #### Parameters
+   * `N/A` - This method does not require any parameters.
+   *
+   * #### Requirements
+   * `N/A` - This method simply returns the current name as set by `setName`.
+   *
+   * #### Returns
+   * - Returns the current name of the `PokerRoom` as a string.
+   *
+   * #### Usage
+   * Use this method to fetch the current name of a `PokerRoom`. This can be particularly helpful for displaying
+   * or verifying the room name during operations.
+   *
+   * @returns {string} - The current name of the `PokerRoom`.
    *
    * @example
-   * const rank = card.getRank();
-   * console.log(rank); // "A"
+   * ```typescript
+   * const pokerRoom = new PokerRoom({ name: "VIP Room", tableSize: 6 });
+   * console.log(pokerRoom.getName()); // Logs "VIP Room"
+   * ```
    */
   public getName(): string {
     return this.__name;
@@ -213,6 +278,22 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
   public getHand(): CardInterface[] {
     return this._hand;
   }
+
+  /**************************************************************************************************************
+   * UPDATE METHODS (MODIFYING EXISTING OBJECTS)
+   **************************************************************************************************************/
+
+  /**************************************************************************************************************
+   * DELETE METHODS (REMOVING OBJECTS)
+   **************************************************************************************************************/
+
+  /**************************************************************************************************************
+   * BUSINESS-LOGIC METHODS (LOGIC & CALCULATIONS)
+   **************************************************************************************************************/
+
+  /**************************************************************************************************************
+   * WRAPPER METHODS (UTILITY & CONVENIENCE)
+   **************************************************************************************************************/
 
   /**
    * @method `isFolded`
@@ -252,7 +333,7 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
    * const rank = card.getRank();
    * console.log(rank); // "A"
    */
-  private setChips(chips: number): number {
+  private __setChips(chips: number): number {
     this._chips = chips;
     return this._chips;
   }
