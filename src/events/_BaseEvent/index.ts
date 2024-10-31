@@ -3,27 +3,29 @@
 /**
  * @interface `_BaseEvent`
  *
- * Represents a foundational structure for events emitted within the library, including metadata (`head`)
- * and dynamic payload (`data`) sections. This structure supports the creation of standardized events
- * across the application.
+ * Represents a foundational structure for events emitted within the library, ensuring consistency
+ * across event types by including both metadata (`head`) and event-specific payload (`data`) sections.
  *
  * #### Purpose
- * Designed to provide a consistent structure for all events, `_BaseEvent` acts as a base for extending
- * specific event types, ensuring that all events have a similar format with metadata and data fields.
+ * The `_BaseEvent` interface establishes a standardized structure for all events across the library.
+ * It is designed to be extended by specific event types, providing core fields while supporting extensibility
+ * for additional metadata and payload properties. The `_BaseEvent` structure ensures that all events are
+ * easy to identify, track, and extend as needed by various components within the library.
  *
  * #### Structure
- * - **head**: Contains metadata such as the event name, timestamps, and other identifying information.
- * - **data**: Holds event-specific details, allowing each derived event to provide custom data relevant
- *   to the event being emitted.
- *
- * #### Extensibility
- * Both `head` and `data` support additional optional properties to facilitate custom fields as required
- * by various event types. The `_BaseEvent` interface itself can be extended with sibling properties,
- * allowing for maximum flexibility.
+ * - **head**: Contains key metadata, including the event's name, creation timestamp, and other optional
+ *   fields like status and priority. These fields offer essential tracking and categorization data for the event.
+ * - **data**: Carries dynamic content specific to each event, allowing derived event interfaces to add
+ *   event-relevant details that can be processed by listeners.
+ * - **Extensibility**: Both the `head` and `data` sections can support optional additional properties, making
+ *   it possible to adapt the structure for a range of scenarios. The `_BaseEvent` interface itself allows
+ *   sibling properties to be added as needed by extending interfaces.
  *
  * #### Usage
- * `_BaseEvent` provides the base structure for all library events. It is typically extended by other
- * event interfaces to add event-specific data in the `data` section.
+ * `_BaseEvent` provides the foundation for defining any event within the library. It is intended to be
+ * extended by event-specific interfaces that may introduce additional fields within `data`. In this way,
+ * `_BaseEvent` serves as a flexible base for creating a wide variety of standardized events across the
+ * library’s features.
  *
  * @example
  * ```typescript
@@ -36,47 +38,20 @@
  * // Console Output: { head: { name: "Casino:RoomCreated", createdAt: <Date>, customMeta: "extra metadata" }, data: { customData: "event-specific details" }, customSibling: "additional info" }
  * ```
  */
-interface _BaseEvent {
-  /**************************************************************************************************************
-   * PROPERTIES
-   **************************************************************************************************************/
-
-  /**
-   * @property {object} head
-   *
-   * Contains metadata about the event, such as the event name, creation time, and optional custom fields.
-   *
-   * #### Purpose
-   * Provides essential information for identifying and tracking events, including the event name and
-   * creation timestamp.
-   *
-   * #### Structure
-   * - **name**: A unique string identifier representing the event type.
-   * - **createdAt**: Timestamp of when the event was created.
-   * - **lastModifiedAt**: Optional timestamp for when the event was last modified.
-   *
-   * #### Extensibility
-   * This property allows additional metadata fields using key-value pairs to accommodate specific needs
-   * of extended event types.
-   *
-   * @example
-   * ```typescript
-   * const eventHead = event.head;
-   * console.log(eventHead);
-   * // Console Output: { name: "Casino:RoomCreated", createdAt: <Date>, lastModifiedAt: <Date> }
-   * ```
-   */
+interface _BaseEvent<T = any> {
   head: {
     /**
      * @property {string} name
      *
-     * Unique identifier for the event, typically indicating the event type (e.g., "PokerSeat:Occupied").
+     * Identifies the name of the event, which specifies the nature and purpose of the event
+     * within the library.
      *
      * #### Purpose
-     * Labels the event for easy filtering and identification by event listeners and handlers.
+     * Used by event listeners to filter and categorize events.
      *
      * #### Requirements
-     * - Should be a descriptive string that indicates the event type.
+     * - Should be a descriptive name that provides a clear indication of the event's purpose,
+     *   such as `"Casino:RoomCreated"` or `"PokerSeat:Occupied"`.
      *
      * @example
      * ```typescript
@@ -93,16 +68,17 @@ interface _BaseEvent {
      * Timestamp indicating when the event was created.
      *
      * #### Purpose
-     * Allows tracking of the event creation time for time-sensitive operations, logging, or auditing.
+     * Used for tracking the exact time of event emission, which is essential for sequencing,
+     * logging, and auditing purposes.
      *
      * #### Requirements
-     * - Must be a valid `Date` object representing the creation time.
+     * - Should be a valid `Date` object.
      *
      * @example
      * ```typescript
-     * const eventTime = event.head.createdAt;
-     * console.log(eventTime);
-     * // Console Output: <Date>
+     * const creationTime = event.head.createdAt;
+     * console.log(creationTime);
+     * // Console Output: Date object representing the event's creation time.
      * ```
      */
     createdAt: Date;
@@ -110,82 +86,124 @@ interface _BaseEvent {
     /**
      * @property {Date} lastModifiedAt
      *
-     * Optional timestamp for when the event was last modified, if applicable.
+     * Timestamp indicating the last time the event was modified, if applicable.
      *
      * #### Purpose
-     * Enables tracking of updates or changes to the event, useful for event-driven systems that rely
-     * on the latest event data.
+     * Useful for tracking updates to the event after initial creation, particularly in cases
+     * where the event's data might change as it is processed.
      *
-     * #### Requirements
-     * - **Optional**: Only provided if the event undergoes modifications post-creation.
+     * #### Optional
+     * - This field is optional and should be a valid `Date` object if present.
      *
      * @example
      * ```typescript
-     * const lastModified = event.head.lastModifiedAt;
-     * console.log(lastModified);
-     * // Console Output: <Date>
+     * const modificationTime = event.head.lastModifiedAt;
+     * console.log(modificationTime);
+     * // Console Output: Date object representing the event's last modification time, if set.
      * ```
      */
     lastModifiedAt?: Date;
 
     /**
-     * Supports additional metadata fields in the `head` section for extensibility.
+     * @property {string} status
      *
-     * #### Usage
-     * Allows custom key-value pairs to be added for specific requirements or future extensions.
+     * Current processing status of the event.
+     *
+     * #### Purpose
+     * Indicates the event's state, useful for monitoring and debugging the event's lifecycle.
+     *
+     * #### Optional
+     * - Possible values include `"initiated"`, `"in-progress"`, `"completed"`, or custom statuses.
      *
      * @example
      * ```typescript
-     * event.head.customField = "Extra metadata";
+     * const eventStatus = event.head.status;
+     * console.log(eventStatus);
+     * // Console Output: "in-progress" or other string value indicating status.
      * ```
+     */
+    status?: "initiated" | "in-progress" | "completed" | string;
+
+    /**
+     * @property {number} priority
+     *
+     * Priority level of the event, where higher numbers indicate higher priority.
+     *
+     * #### Purpose
+     * Helps in prioritizing event handling, especially when multiple events are emitted
+     * and processed in sequence.
+     *
+     * #### Optional
+     * - This field is optional, and values can range from `0` (lowest) to any positive integer.
+     *
+     * @example
+     * ```typescript
+     * const eventPriority = event.head.priority;
+     * console.log(eventPriority);
+     * // Console Output: Integer representing event priority level.
+     * ```
+     */
+    priority?: number;
+
+    /**
+     * @property {string} source
+     *
+     * Identifier or name of the component or module that generated the event.
+     *
+     * #### Purpose
+     * Used for tracing the origin of the event, especially useful in larger applications
+     * with multiple modules.
+     *
+     * #### Optional
+     * - This field is optional and can be a string representing the source component or module.
+     *
+     * @example
+     * ```typescript
+     * const eventSource = event.head.source;
+     * console.log(eventSource);
+     * // Console Output: "PokerRoom" or similar string value.
+     * ```
+     */
+    source?: string;
+
+    /**
+     * Allows additional metadata fields in `head` for extensibility.
+     *
+     * #### Usage
+     * Enables flexible additions to `head` metadata, supporting any custom key-value pair
+     * that may be required for specific events.
      */
     [key: string]: any;
   };
 
   /**
-   * @property {object} data
+   * @property {T} data
    *
-   * Contains the event-specific data payload, which varies depending on the event type.
+   * Contains event-specific details, customized by each derived event interface, allowing
+   * flexibility in event data management.
    *
    * #### Purpose
-   * Provides details relevant to the event, allowing each extended event interface to customize this
-   * section as needed.
+   * Carries unique data associated with the event, such as specific identifiers, payloads,
+   * or any other information relevant to the event.
    *
    * #### Requirements
-   * - This property is customized per event, supporting key-value pairs based on the event requirements.
-   *
-   * #### Extensibility
-   * Allows additional properties to be added as required by specific event types.
+   * - `data` should be structured according to the specific event requirements.
    *
    * @example
    * ```typescript
    * const eventData = event.data;
    * console.log(eventData);
-   * // Console Output: { customData: "event-specific details" }
+   * // Console Output: Custom data object relevant to the specific event type.
    * ```
    */
-  data: {
-    /**
-     * Enables adding custom properties within `data` to accommodate specific event needs.
-     *
-     * #### Usage
-     * Allows for a flexible event payload structure, adding custom key-value pairs as needed.
-     */
-    [key: string]: any;
-  };
+  data: T;
 
   /**
    * Allows additional sibling properties within `_BaseEvent` for extensibility.
    *
    * #### Usage
-   * Enables flexible additions to `_BaseEvent` directly, supporting any key-value pair at the root level.
-   *
-   * @example
-   * ```typescript
-   * const event: _BaseEvent = { customSibling: "extra information" };
-   * console.log(event.customSibling);
-   * // Console Output: "extra information"
-   * ```
+   * Supports additional fields at the root level of `_BaseEvent`, providing flexibility
+   * to meet custom requirements.
    */
   [key: string]: any;
 }

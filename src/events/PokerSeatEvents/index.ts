@@ -10,64 +10,53 @@ import { _BaseEvent } from "../_BaseEvent";
 import { PokerSeatInterface } from "../../interfaces";
 
 /**
- * @interface `PokerSeatOccupiedEvent`
+ * @interface `PokerSeatEvent`
  *
- * Represents an event structure for when a `PokerSeat` is occupied by a player.
- * Extends `_BaseEvent` to maintain a standardized format, ensuring consistent event data
- * encapsulation across the library.
+ * A standardized event structure for events concerning a `PokerSeat`, particularly when it is occupied
+ * by a player. This interface extends `_BaseEvent`, ensuring consistent format and encapsulation for all
+ * seat-related events within the poker library.
  *
  * #### Purpose
- * The `PokerSeatOccupiedEvent` interface captures and relays detailed information whenever
- * a seat is occupied during a poker game. By emitting this event, subscribers can respond
- * immediately to seat occupancy changes and manage game state accordingly.
+ * The `PokerSeatEvent` interface enables accurate and uniform event handling each time a player occupies a seat.
+ * By using this structure, subscribers can respond to seat occupancy changes in real-time, adjusting the game
+ * state and visual displays accordingly.
  *
  * #### Extends
- * Inherits from `_BaseEvent`, incorporating core metadata (`head`) and payload (`data`) fields,
- * which can be extended with specific information about the occupied seat.
+ * `PokerSeatEvent` extends `_BaseEvent`, incorporating common metadata (`head`) and event-specific data (`data`),
+ * while allowing flexibility through optional additional fields.
  *
  * #### Structure
- * - `head`: Provides metadata such as event `name` and `createdAt` timestamp.
- * - `data`: Holds seat-specific details, like `seatId`, `playerId`, and a reference to the updated seat interface.
+ * - `head`: Provides essential metadata like `name`, `createdAt`, and `lastModifiedAt` (optional) for
+ *           easy tracking and identification of the event.
+ * - `data`: Holds specific details about the occupied seat, such as `seatId`, `playerId`, and the updated
+ *           seat reference.
  *
  * #### Usage
- * Emitted each time a player occupies a seat, the `PokerSeatOccupiedEvent` facilitates flexible
- * extensions by allowing optional additional properties within `head` and `data`.
+ * The `PokerSeatEvent` is emitted whenever a player occupies a seat in a poker game. This event
+ * supports custom extensions through optional fields within `head` and `data`, offering flexible adaptation
+ * for different game requirements or additional metadata.
+ *
+ * #### Events Overview
+ * This interface is primarily used to convey seat-related events such as:
+ * - **PokerSeat:Occupied**: Indicates that a player has occupied the seat.
+ * - **PokerSeat:Vacated**: Indicates that a player has vacated the seat (though managed by sibling interfaces).
  *
  * @extends _BaseEvent
  *
  * @example
  * ```typescript
- * const event: PokerSeatOccupiedEvent = {
- *   head: { name: "PokerSeat:Occupied", createdAt: new Date(), additionalMeta: "seat change" },
+ * const event: PokerSeatEvent = {
+ *   head: { name: "PokerSeat:Occupied", createdAt: new Date(), lastModifiedAt: new Date(), additionalMeta: "seat change" },
  *   data: { seatId: "12345", playerId: "p7890", updatedSeat: seatInstance, extraInfo: "reserved" }
  * };
  * console.log(event);
- * // Console Output: { head: { name: "PokerSeat:Occupied", createdAt: <Date>, additionalMeta: "seat change" }, data: { seatId: "12345", playerId: "p7890", updatedSeat: <PokerSeatInterface>, extraInfo: "reserved" } }
+ * // Console Output: { head: { name: "PokerSeat:Occupied", createdAt: <Date>, lastModifiedAt: <Date>, additionalMeta: "seat change" }, data: { seatId: "12345", playerId: "p7890", updatedSeat: <PokerSeatInterface>, extraInfo: "reserved" } }
  * ```
  */
-interface PokerSeatEvent extends _BaseEvent {
-  /**************************************************************************************************************
-   * PROPERTIES
-   **************************************************************************************************************/
-
-  /**
-   * @property {PokerSeatEventName} head
-   *
-   * Represents the event name, identifying it as a `PokerSeatOccupiedEvent`.
-   *
-   * #### Purpose
-   * Labels the event type to allow easy filtering and subscription by listeners.
-   *
-   * #### Requirements
-   * - Should be descriptive and set as `"PokerSeat:Occupied"`.
-   *
-   * @example
-   * ```typescript
-   * const eventHead = event.head;
-   * console.log(eventHead);
-   * // Console Output: "PokerSeat:Occupied"
-   * ```
-   */
+interface PokerSeatEvent<T = any>
+  extends _BaseEvent<{
+    [key: string]: any;
+  }> {
   head: {
     /**
      * @property {PokerSeatEventName} name
@@ -89,132 +78,154 @@ interface PokerSeatEvent extends _BaseEvent {
      */
     name: PokerSeatEventName;
 
-    /**
-     * @property {Date} createdAt
-     *
-     * Timestamp of when the event was emitted.
-     *
-     * #### Purpose
-     * Tracks the event emission time, useful for time-sensitive operations like logging.
-     *
-     * #### Requirements
-     * - Must be a valid `Date` object representing the exact emission time.
-     *
-     * @example
-     * ```typescript
-     * const eventTime = event.head.createdAt;
-     * console.log(eventTime);
-     * // Console Output: <Date>
-     * ```
-     */
     createdAt: Date;
 
+    source: "PokerSeat";
+  };
+}
+
+/**
+ * @interface `PokerSeatEvent`
+ *
+ * A standardized event structure for events concerning a `PokerSeat`, particularly when it is occupied
+ * by a player. This interface extends `_BaseEvent`, ensuring consistent format and encapsulation for all
+ * seat-related events within the poker library.
+ *
+ * #### Purpose
+ * The `PokerSeatEvent` interface enables accurate and uniform event handling each time a player occupies a seat.
+ * By using this structure, subscribers can respond to seat occupancy changes in real-time, adjusting the game
+ * state and visual displays accordingly.
+ *
+ * #### Extends
+ * `PokerSeatEvent` extends `_BaseEvent`, incorporating common metadata (`head`) and event-specific data (`data`),
+ * while allowing flexibility through optional additional fields.
+ *
+ * #### Structure
+ * - `head`: Provides essential metadata like `name`, `createdAt`, and `lastModifiedAt` (optional) for
+ *           easy tracking and identification of the event.
+ * - `data`: Holds specific details about the occupied seat, such as `seatId`, `playerId`, and the updated
+ *           seat reference.
+ *
+ * #### Usage
+ * The `PokerSeatEvent` is emitted whenever a player occupies a seat in a poker game. This event
+ * supports custom extensions through optional fields within `head` and `data`, offering flexible adaptation
+ * for different game requirements or additional metadata.
+ *
+ * #### Events Overview
+ * This interface is primarily used to convey seat-related events such as:
+ * - **PokerSeat:Occupied**: Indicates that a player has occupied the seat.
+ * - **PokerSeat:Vacated**: Indicates that a player has vacated the seat (though managed by sibling interfaces).
+ *
+ * @extends _BaseEvent
+ *
+ * @example
+ * ```typescript
+ * const event: PokerSeatEvent = {
+ *   head: { name: "PokerSeat:Occupied", createdAt: new Date(), lastModifiedAt: new Date(), additionalMeta: "seat change" },
+ *   data: { seatId: "12345", playerId: "p7890", updatedSeat: seatInstance, extraInfo: "reserved" }
+ * };
+ * console.log(event);
+ * // Console Output: { head: { name: "PokerSeat:Occupied", createdAt: <Date>, lastModifiedAt: <Date>, additionalMeta: "seat change" }, data: { seatId: "12345", playerId: "p7890", updatedSeat: <PokerSeatInterface>, extraInfo: "reserved" } }
+ * ```
+ */
+interface PokerSeatOccupiedEvent<T = any> extends PokerSeatEvent {
+  head: {
     /**
-     * @property {Date} createdAt
+     * @property {PokerSeatEventName} name
      *
-     * Timestamp of when the event was emitted.
+     * Represents the event name, identifying it as a `PokerSeatOccupiedEvent`.
      *
      * #### Purpose
-     * Tracks the event emission time, useful for time-sensitive operations like logging.
+     * Labels the event type to allow easy filtering and subscription by listeners.
      *
      * #### Requirements
-     * - Must be a valid `Date` object representing the exact emission time.
+     * - Should be descriptive and set as `"PokerSeat:Occupied"`.
      *
      * @example
      * ```typescript
-     * const eventTime = event.head.createdAt;
-     * console.log(eventTime);
-     * // Console Output: <Date>
+     * const eventName = event.head.name;
+     * console.log(eventName);
+     * // Console Output: "PokerSeat:Occupied"
      * ```
      */
-    lastModifiedAt?: Date;
+    name: PokerSeatEventName.SEAT_OCCUPIED;
 
-    /**
-     * Allows additional metadata fields in the `head` for extensibility.
-     *
-     * #### Usage
-     * Enables flexible additions to `head` metadata, supporting any key-value pair.
-     */
-    [key: string]: any;
+    createdAt: Date;
+
+    source: "PokerSeat";
   };
-
-  data: {
-    // /**
-    //  * @property {string} seatId
-    //  *
-    //  * Unique identifier for the seat that has been occupied.
-    //  *
-    //  * #### Purpose
-    //  * Tracks which specific seat has been occupied, assisting in managing seat states.
-    //  *
-    //  * #### Requirements
-    //  * - Should correspond to the seat’s unique identifier.
-    //  *
-    //  * @example
-    //  * ```typescript
-    //  * const seatId = event.data.seatId;
-    //  * console.log(seatId);
-    //  * // Console Output: "12345"
-    //  * ```
-    //  */
-    // seatId: string;
-
-    // /**
-    //  * @property {string} playerId
-    //  *
-    //  * Unique identifier of the player occupying the seat.
-    //  *
-    //  * #### Purpose
-    //  * Links the player to the occupied seat, assisting in event tracking and game state management.
-    //  *
-    //  * #### Requirements
-    //  * - Should match the player’s unique identifier in the game.
-    //  *
-    //  * @example
-    //  * ```typescript
-    //  * const playerId = event.data.playerId;
-    //  * console.log(playerId);
-    //  * // Console Output: "p7890"
-    //  * ```
-    //  */
-    // playerId: string | undefined;
-
-    // /**
-    //  * @property {PokerSeatInterface} updatedSeat
-    //  *
-    //  * Reference to the updated seat interface, reflecting its new occupied status.
-    //  *
-    //  * #### Purpose
-    //  * Provides a detailed view of the seat after occupation, useful for downstream processing.
-    //  *
-    //  * #### Requirements
-    //  * - Must be a valid `PokerSeatInterface` object.
-    //  *
-    //  * @example
-    //  * ```typescript
-    //  * const updatedSeat = event.data.updatedSeat;
-    //  * console.log(updatedSeat);
-    //  * // Console Output: <PokerSeatInterface>
-    //  * ```
-    //  */
-    // updatedSeat: PokerSeatInterface;
-
-    /**
-     * Supports additional properties within `data` for further extensibility.
-     *
-     * #### Usage
-     * Allows custom properties to be added to `data` to accommodate specific requirements.
-     */
-    [key: string]: any;
-  };
-
-  /**
-   * Allows additional data fields in the `PokerSeatEvent` for extensibility.
-   *
-   * #### Usage
-   * Enables flexible additions to `PokerSeatEvent` metadata, supporting any key-value pair.
-   */
-  [key: string]: any;
 }
 
-export { PokerSeatEvent };
+/**
+ * @interface `PokerSeatEvent`
+ *
+ * A standardized event structure for events concerning a `PokerSeat`, particularly when it is occupied
+ * by a player. This interface extends `_BaseEvent`, ensuring consistent format and encapsulation for all
+ * seat-related events within the poker library.
+ *
+ * #### Purpose
+ * The `PokerSeatEvent` interface enables accurate and uniform event handling each time a player occupies a seat.
+ * By using this structure, subscribers can respond to seat occupancy changes in real-time, adjusting the game
+ * state and visual displays accordingly.
+ *
+ * #### Extends
+ * `PokerSeatEvent` extends `_BaseEvent`, incorporating common metadata (`head`) and event-specific data (`data`),
+ * while allowing flexibility through optional additional fields.
+ *
+ * #### Structure
+ * - `head`: Provides essential metadata like `name`, `createdAt`, and `lastModifiedAt` (optional) for
+ *           easy tracking and identification of the event.
+ * - `data`: Holds specific details about the occupied seat, such as `seatId`, `playerId`, and the updated
+ *           seat reference.
+ *
+ * #### Usage
+ * The `PokerSeatEvent` is emitted whenever a player occupies a seat in a poker game. This event
+ * supports custom extensions through optional fields within `head` and `data`, offering flexible adaptation
+ * for different game requirements or additional metadata.
+ *
+ * #### Events Overview
+ * This interface is primarily used to convey seat-related events such as:
+ * - **PokerSeat:Occupied**: Indicates that a player has occupied the seat.
+ * - **PokerSeat:Vacated**: Indicates that a player has vacated the seat (though managed by sibling interfaces).
+ *
+ * @extends _BaseEvent
+ *
+ * @example
+ * ```typescript
+ * const event: PokerSeatEvent = {
+ *   head: { name: "PokerSeat:Occupied", createdAt: new Date(), lastModifiedAt: new Date(), additionalMeta: "seat change" },
+ *   data: { seatId: "12345", playerId: "p7890", updatedSeat: seatInstance, extraInfo: "reserved" }
+ * };
+ * console.log(event);
+ * // Console Output: { head: { name: "PokerSeat:Occupied", createdAt: <Date>, lastModifiedAt: <Date>, additionalMeta: "seat change" }, data: { seatId: "12345", playerId: "p7890", updatedSeat: <PokerSeatInterface>, extraInfo: "reserved" } }
+ * ```
+ */
+interface PokerSeatVacatedEvent<T = any> extends PokerSeatEvent {
+  head: {
+    /**
+     * @property {PokerSeatEventName} name
+     *
+     * Represents the event name, identifying it as a `PokerSeatOccupiedEvent`.
+     *
+     * #### Purpose
+     * Labels the event type to allow easy filtering and subscription by listeners.
+     *
+     * #### Requirements
+     * - Should be descriptive and set as `"PokerSeat:Occupied"`.
+     *
+     * @example
+     * ```typescript
+     * const eventName = event.head.name;
+     * console.log(eventName);
+     * // Console Output: "PokerSeat:Occupied"
+     * ```
+     */
+    name: PokerSeatEventName.SEAT_VACATED;
+
+    createdAt: Date;
+
+    source: "PokerSeat";
+  };
+}
+
+export { PokerSeatEvent, PokerSeatOccupiedEvent, PokerSeatVacatedEvent };
