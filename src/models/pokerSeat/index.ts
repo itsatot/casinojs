@@ -321,76 +321,6 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
    * WRAPPER METHODS (UTILITY & CONVENIENCE)
    **************************************************************************************************************/
 
-  /**************************************************************************************************************
-   * INTERNAL METHODS (PROTECTED)
-   **************************************************************************************************************/
-
-  /**************************************************************************************************************
-   * INTERNAL METHODS (PRIVATE)
-   **************************************************************************************************************/
-
-  /**
-   * @method `setId`
-   * @public
-   * Returns the poker table's `id`.
-   * @returns {string} The poker table's `id`.
-   *
-   * @example
-   * const rank = card.getRank();
-   * console.log(rank); // "A"
-   */
-  private __setId(id: string): string {
-    this.__id = id;
-    return this.__id;
-  }
-
-  /**
-   * @method `setPosition`
-   * @public
-   * Returns the poker table's `id`.
-   * @returns {number} The poker table's `id`.
-   *
-   * @example
-   * const rank = card.getRank();
-   * console.log(rank); // "A"
-   */
-  private __setPosition(position: number): number {
-    this.__position = position;
-    return this.__position;
-  }
-
-  /**
-   * @method `__setDealer`
-   * @public
-   * Returns the poker table's `id`.
-   * @returns {boolean} The poker table's `id`.
-   *
-   * @example
-   * const rank = card.getRank();
-   * console.log(rank); // "A"
-   */
-  private __setDealer(bool: boolean): boolean {
-    this.__isDealer = bool;
-    return this.__isDealer;
-  }
-
-  /**
-   * @method `__setPlayer`
-   * @public
-   * Returns the poker table's `id`.
-   * @returns {number} The poker table's `id`.
-   *
-   * @example
-   * const rank = card.getRank();
-   * console.log(rank); // "A"
-   */
-  private __setPlayer(
-    player: PokerPlayerInterface | undefined
-  ): PokerPlayerInterface | undefined {
-    this.__player = player;
-    return this.__player;
-  }
-
   /**
    * Emits an event with a standardized format.
    *
@@ -404,8 +334,268 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
    * this.__emitEvent("casino:roomUpdated", { roomId: 1, status: "active" });
    * ```
    */
+  public attachEventListener<T extends PokerSeatEvent = PokerSeatEvent>(
+    name: PokerSeatEventName,
+    middlewares: Array<(event: T, next: () => void) => void | false> = []
+  ): void {
+    this.__attachEventListener(name, middlewares);
+  }
+
+  /**************************************************************************************************************
+   * INTERNAL METHODS (PROTECTED)
+   **************************************************************************************************************/
+
+  /**************************************************************************************************************
+   * INTERNAL METHODS (PRIVATE)
+   **************************************************************************************************************/
+
+  /**
+   * #### Description
+   * Sets a unique identifier (`id`) for the `PokerSeat` instance.
+   *
+   * #### Purpose
+   * Ensures that each `PokerSeat` has a unique identifier, allowing distinct identification across different seats
+   * at a poker table.
+   *
+   * #### Parameters
+   * - `id: string` - The unique identifier to be assigned to the `PokerSeat`.
+   *
+   * #### Requirements
+   * - The `id` should be a valid, unique string that identifies this specific seat.
+   *
+   * #### Returns
+   * - Returns the `id` assigned to the seat.
+   *
+   * #### Usage
+   * Use this method to assign or update the unique identifier of the seat during initialization.
+   *
+   * @param {string} id - A unique identifier for the seat.
+   *
+   * @returns {string} - The unique identifier of the seat after assignment.
+   *
+   * @example
+   * ```typescript
+   * const pokerSeat = new PokerSeat();
+   * pokerSeat.__setId("unique-seat-id-123");
+   * console.log(pokerSeat.getId());
+   * // Console Output: "unique-seat-id-123"
+   * ```
+   */
+  private __setId(id: string): string {
+    this.__id = id;
+    return this.__id;
+  }
+
+  /**
+   * #### Description
+   * Sets the position of the `PokerSeat` within the poker table.
+   *
+   * #### Purpose
+   * Defines the location or order of the seat at the poker table, which is critical for seating arrangements
+   * and determining player roles such as dealer or blinds.
+   *
+   * #### Parameters
+   * - `position: number` - The position index of the seat on the table.
+   *
+   * #### Requirements
+   * - `position` must be a non-negative integer and should be within the range allowed by the table configuration.
+   *
+   * #### Returns
+   * - Returns the assigned position of the seat.
+   *
+   * #### Usage
+   * Use this method to assign or update the seat’s position at the table during seat initialization.
+   *
+   * @param {number} position - Position index of the seat.
+   *
+   * @returns {number} - The position of the seat after assignment.
+   *
+   * @example
+   * ```typescript
+   * const pokerSeat = new PokerSeat();
+   * pokerSeat.__setPosition(2);
+   * console.log(pokerSeat.getPosition());
+   * // Console Output: 2
+   * ```
+   */
+  private __setPosition(position: number): number {
+    this.__position = position;
+    return this.__position;
+  }
+
+  /**
+   * #### Description
+   * Sets the dealer status for the `PokerSeat`.
+   *
+   * #### Purpose
+   * Indicates whether the player in this seat is currently assigned the role of dealer, which affects game flow,
+   * especially in managing blinds and player turns.
+   *
+   * #### Parameters
+   * - `bool: boolean` - Boolean value indicating whether this seat is designated as the dealer seat.
+   *
+   * #### Requirements
+   * - `bool` should be a boolean value where `true` marks the seat as dealer and `false` removes the dealer status.
+   *
+   * #### Returns
+   * - Returns the dealer status after assignment.
+   *
+   * #### Usage
+   * Use this method to assign or update the dealer status of the seat.
+   *
+   * @param {boolean} bool - Indicates if this seat is the dealer seat.
+   *
+   * @returns {boolean} - Returns the assigned dealer status.
+   *
+   * @example
+   * ```typescript
+   * const pokerSeat = new PokerSeat();
+   * pokerSeat.__setDealer(true);
+   * console.log(pokerSeat.isDealer());
+   * // Console Output: true
+   * ```
+   */
+  private __setDealer(bool: boolean): boolean {
+    this.__isDealer = bool;
+    return this.__isDealer;
+  }
+
+  /**
+   * #### Description
+   * Sets the player occupying this `PokerSeat`.
+   *
+   * #### Purpose
+   * Assigns a player to occupy the seat or sets it to `undefined` if vacant, allowing the system to track seat occupancy.
+   *
+   * #### Parameters
+   * - `player: PokerPlayerInterface | undefined` - The player instance to be assigned to the seat, or `undefined` if the seat is vacant.
+   *
+   * #### Requirements
+   * - `player` should implement the `PokerPlayerInterface` or be `undefined` to mark the seat as vacant.
+   *
+   * #### Returns
+   * - Returns the player occupying the seat or `undefined` if the seat is vacant.
+   *
+   * #### Usage
+   * Use this method to assign or update the player occupying the seat.
+   *
+   * @param {PokerPlayerInterface | undefined} player - The player to occupy the seat, or `undefined` if no player is assigned.
+   *
+   * @returns {PokerPlayerInterface | undefined} - The player instance or `undefined` after assignment.
+   *
+   * @example
+   * ```typescript
+   * const pokerSeat = new PokerSeat();
+   * pokerSeat.__setPlayer(playerInstance);
+   * console.log(pokerSeat.getPlayer());
+   * // Console Output: <PlayerInstance>
+   * ```
+   */
+  private __setPlayer(
+    player: PokerPlayerInterface | undefined
+  ): PokerPlayerInterface | undefined {
+    this.__player = player;
+    return this.__player;
+  }
+
+  /**
+   * #### Description
+   * Emits an event with a predefined structure, containing metadata and data specific to the event.
+   *
+   * #### Purpose
+   * The `__emitEvent` method standardizes the emission of events from `PokerSeat`, allowing event listeners to
+   * receive structured information regarding seat-related actions.
+   *
+   * #### Parameters
+   * - `name: PokerSeatEventName` - The name of the event to emit.
+   * - `event: PokerSeatEvent` - The data associated with the event, encapsulated in a standardized structure.
+   *
+   * #### Requirements
+   * - `name` should be a valid `PokerSeatEventName` and correspond to predefined seat events.
+   * - `event` should follow the `PokerSeatEvent` interface format, providing structured event data.
+   *
+   * #### Returns
+   * - This method does not return any value (`void`).
+   *
+   * #### Usage
+   * Use this method to emit events related to the seat, such as seat occupancy changes or dealer assignments.
+   *
+   * @param {PokerSeatEventName} name - The event name to emit.
+   * @param {PokerSeatEvent} event - Structured data associated with the event.
+   *
+   * @returns {void}
+   *
+   * @example
+   * ```typescript
+   * pokerSeat.__emitEvent(PokerSeatEventName.SEAT_OCCUPIED, {
+   *   head: { name: "PokerSeat:Occupied", createdAt: new Date() },
+   *   data: { seatId: "seat123", playerId: "player789" }
+   * });
+   * // Event emitted: listeners receive { head: { name: "PokerSeat:Occupied", createdAt: <Date> }, data: { seatId: "seat123", playerId: "player789" } }
+   * ```
+   */
   private __emitEvent(name: PokerSeatEventName, event: PokerSeatEvent): void {
     this.emit(name, event);
+  }
+
+  /**
+   * #### Description
+   * Attaches an event listener with an optional sequence of middleware functions to preprocess event data.
+   *
+   * #### Purpose
+   * This method allows attaching a listener for a specified event with middleware for additional data handling
+   * or validation before the final event is emitted.
+   *
+   * #### Parameters
+   * - `name: PokerSeatEventName` - The event name for which the listener is attached.
+   * - `middlewares: Array<(event: T, next: () => void) => void | false>` - A sequence of middleware functions to process
+   *   the event data before the final emission. Each middleware can modify `event` or terminate propagation by returning `false`.
+   *
+   * #### Requirements
+   * - `name` must be a valid `PokerSeatEventName`.
+   * - Each middleware in `middlewares` should follow the expected `(event: T, next: () => void) => void | false` format.
+   *
+   * #### Returns
+   * - This method does not return any value (`void`).
+   *
+   * #### Usage
+   * Use this method to attach custom event listeners and middleware for events, allowing advanced data processing.
+   *
+   * @param {PokerSeatEventName} name - The event name for which the listener is attached.
+   * @param {Array<(event: T, next: () => void) => void | false>} middlewares - An array of middleware functions.
+   *
+   * @returns {void}
+   *
+   * @example
+   * ```typescript
+   * pokerSeat.__attachEventListener(PokerSeatEventName.SEAT_OCCUPIED, [
+   *   (event, next) => {
+   *     event.data.timestamp = Date.now();
+   *     next();
+   *   },
+   *   (event, next) => {
+   *     if (event.data.seatId) next();
+   *     else return false;
+   *   }
+   * ]);
+   * ```
+   */
+  private __attachEventListener<T extends PokerSeatEvent = PokerSeatEvent>(
+    name: PokerSeatEventName,
+    middlewares: Array<(event: T, next: () => void) => void | false> = []
+  ): void {
+    this.on(name, (eventData: T) => {
+      const runMiddlewares = (index: number) => {
+        if (index < middlewares.length) {
+          middlewares[index](eventData, () => {
+            runMiddlewares(index + 1);
+          });
+        } else {
+          this.__emitEvent(name, eventData);
+        }
+      };
+      runMiddlewares(0);
+    });
   }
 }
 
