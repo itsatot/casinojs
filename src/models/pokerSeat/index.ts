@@ -540,6 +540,58 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
 
   /**
    * #### Description
+   * Instantiates an event object and processes it through middleware functions before emitting.
+   *
+   * #### Purpose
+   * Allows for event data to be processed and modified via middleware before final emission,
+   * ensuring the event adheres to required validations and transformations.
+   *
+   * #### Parameters
+   * - `name: PokerSeatEventName` - The name of the event to emit.
+   * - `eventData: object` - The raw data for the event, used to instantiate the full event object.
+   * - `middlewares: Array<(event: PokerSeatEvent, next: () => void) => void | false>` - Array of middleware functions.
+   *
+   * #### Returns
+   * - `void` - This method does not return any value.
+   *
+   * #### Example
+   * ```typescript
+   * this.__emitEventWithMiddlewares(PokerSeatEventName.SEAT_OCCUPIED, { seatId: "123", playerId: "456" }, [
+   *   (event, next) => { event.data.processed = true; next(); },
+   *   (event, next) => { console.log("Middleware log:", event); next(); }
+   * ]);
+   * ```
+   *
+   * @param {PokerSeatEventName} name - The name of the event to emit.
+   * @param {object} eventData - The initial raw event data.
+   * @param {Array<(event: PokerSeatEvent, next: () => void) => void | false>} middlewares - Array of middleware functions.
+   */
+  private __emitEventWithMiddlewares(
+    name: PokerSeatEventName,
+    eventData: { [key: string]: any },
+    middlewares: Array<
+      (event: PokerSeatEvent, next: () => void) => void | false
+    > = []
+  ): void {
+    // Instantiate the actual event object with metadata and provided data
+    const event: PokerSeatEvent = {
+      head: { name, createdAt: new Date() },
+      data: eventData,
+    };
+
+    const runMiddlewares = (index: number) => {
+      if (index < middlewares.length) {
+        middlewares[index](event, () => runMiddlewares(index + 1));
+      } else {
+        this.__emitEvent(name, event); // Emit after all middlewares have run
+      }
+    };
+
+    runMiddlewares(0); // Start processing middlewares
+  }
+
+  /**
+   * #### Description
    * Attaches an event listener with an optional sequence of middleware functions to preprocess event data.
    *
    * #### Purpose
