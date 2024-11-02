@@ -440,8 +440,8 @@ class Casino extends EventEmitter implements CasinoInterface {
    * Use this method when removing a room that is no longer active or required, ensuring that only
    * currently used rooms remain managed by the Casino.
    *
-   * @param {string} roomName - The name of the `PokerRoom` to be removed.
-   * @returns {boolean} - Returns `true` if the room was removed; `false` if not found.
+   * @param {number} index - The name of the `PokerRoom` to be removed.
+   * @returns {PokerRoomInterface[]} - Returns `true` if the room was removed; `false` if not found.
    *
    * @example
    * ```typescript

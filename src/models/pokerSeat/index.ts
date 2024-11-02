@@ -2,7 +2,11 @@
 
 import { EventEmitter } from "events";
 import { PokerSeatEventName } from "../../enums";
-import { PokerSeatEvent, PokerSeatEvents } from "../../events";
+import {
+  PokerSeatEvent,
+  PokerSeatOccupiedEvent,
+  PokerSeatVacatedEvent,
+} from "../../events";
 import {
   PokerPlayerInterface,
   PokerSeatConfig,
@@ -285,17 +289,17 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
 
   public occupy(player: PokerPlayerInterface): void {
     this.__setPlayer(player);
-    this.__emitEvent(PokerSeatEventName.SEAT_OCCUPIED, {
-      head: {
-        name: PokerSeatEventName.SEAT_OCCUPIED,
-        createdAt: new Date(),
-      },
-      data: {
-        seatId: this.getId(),
-        playerId: player.getId(),
-        updatedSeat: this,
-      },
-    });
+    // this.__emitEvent(PokerSeatEventName.SEAT_OCCUPIED, {
+    //   head: {
+    //     name: PokerSeatEventName.SEAT_OCCUPIED,
+    //     createdAt: new Date(),
+    //   },
+    //   data: {
+    //     seatId: this.getId(),
+    //     playerId: player.getId(),
+    //     updatedSeat: this,
+    //   },
+    // });
   }
 
   public vacate(): void {
@@ -304,42 +308,22 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
     }
     const playerid = this.getPlayer()?.getId();
     this.__setPlayer(undefined);
-    this.__emitEvent(PokerSeatEventName.SEAT_VACATED, {
-      head: {
-        name: PokerSeatEventName.SEAT_VACATED,
-        createdAt: new Date(),
-      },
-      data: {
-        seatId: this.getId(),
-        playerId: playerid,
-        updatedSeat: this,
-      },
-    });
+    // this.__emitEvent(PokerSeatEventName.SEAT_VACATED, {
+    //   head: {
+    //     name: PokerSeatEventName.SEAT_VACATED,
+    //     createdAt: new Date(),
+    //   },
+    //   data: {
+    //     seatId: this.getId(),
+    //     playerId: playerid,
+    //     updatedSeat: this,
+    //   },
+    // });
   }
 
   /**************************************************************************************************************
    * WRAPPER METHODS (UTILITY & CONVENIENCE)
    **************************************************************************************************************/
-
-  /**
-   * Emits an event with a standardized format.
-   *
-   * @param {string} name - The name of the event to emit.
-   * @param {object} event - The data associated with the event.
-   *
-   * @returns {void}
-   *
-   * @example
-   * ```typescript
-   * this.__emitEvent("casino:roomUpdated", { roomId: 1, status: "active" });
-   * ```
-   */
-  public attachEventListener<T extends PokerSeatEvent = PokerSeatEvent>(
-    name: PokerSeatEventName,
-    middlewares: Array<(event: T, next: () => void) => void | false> = []
-  ): void {
-    this.__attachEventListener(name, middlewares);
-  }
 
   /**************************************************************************************************************
    * INTERNAL METHODS (PROTECTED)
@@ -500,28 +484,40 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
 
   /**
    * #### Description
-   * Emits an event with a predefined structure, containing metadata and data specific to the event.
+   * Emits an event with a structured format that includes metadata and event-specific data.
    *
    * #### Purpose
-   * The `__emitEvent` method standardizes the emission of events from `PokerSeat`, allowing event listeners to
-   * receive structured information regarding seat-related actions.
+   * The `__emitEvent` method provides a standardized way to emit events from `PokerSeat`, ensuring that event listeners
+   * receive consistent and informative data about seat-related actions.
+   *
+   * #### Implements
+   * N/A
+   *
+   * #### Overrides
+   * N/A
+   *
+   * #### Events
+   * This method emits the following events:
+   * - **PokerSeatEventName.SEAT_OCCUPIED**: Indicates that a player has occupied the seat.
+   * - **PokerSeatEventName.SEAT_VACATED**: Indicates that a seat has been vacated.
    *
    * #### Parameters
    * - `name: PokerSeatEventName` - The name of the event to emit.
-   * - `event: PokerSeatEvent` - The data associated with the event, encapsulated in a standardized structure.
+   * - `event: PokerSeatEvent` - The structured data associated with the event, which includes both metadata and specific event data.
    *
    * #### Requirements
-   * - `name` should be a valid `PokerSeatEventName` and correspond to predefined seat events.
-   * - `event` should follow the `PokerSeatEvent` interface format, providing structured event data.
+   * - `name` must be a valid `PokerSeatEventName` value, corresponding to predefined seat events.
+   * - `event` should adhere to the `PokerSeatEvent` interface structure to ensure consistency in emitted data.
    *
    * #### Returns
-   * - This method does not return any value (`void`).
+   * - `void` - This method does not return a value.
    *
    * #### Usage
-   * Use this method to emit events related to the seat, such as seat occupancy changes or dealer assignments.
+   * Use this method to emit standardized events from `PokerSeat`, enabling other components to listen for and respond to
+   * seat-related updates.
    *
    * @param {PokerSeatEventName} name - The event name to emit.
-   * @param {PokerSeatEvent} event - Structured data associated with the event.
+   * @param {PokerSeatEvent} event - Structured data containing event metadata and details.
    *
    * @returns {void}
    *
@@ -531,7 +527,7 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
    *   head: { name: "PokerSeat:Occupied", createdAt: new Date() },
    *   data: { seatId: "seat123", playerId: "player789" }
    * });
-   * // Event emitted: listeners receive { head: { name: "PokerSeat:Occupied", createdAt: <Date> }, data: { seatId: "seat123", playerId: "player789" } }
+   * // Event emitted: Listeners receive { head: { name: "PokerSeat:Occupied", createdAt: <Date> }, data: { seatId: "seat123", playerId: "player789" } }
    * ```
    */
   private __emitEvent(name: PokerSeatEventName, event: PokerSeatEvent): void {
@@ -540,114 +536,138 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
 
   /**
    * #### Description
-   * Instantiates an event object and processes it through middleware functions before emitting.
+   * Emits an event after processing it through an array of middleware functions, allowing for data validation or transformation.
    *
    * #### Purpose
-   * Allows for event data to be processed and modified via middleware before final emission,
-   * ensuring the event adheres to required validations and transformations.
+   * This method provides a flexible way to handle event data through a sequence of middleware functions before emission,
+   * allowing modifications or validations to be applied to the event data as needed.
+   *
+   * #### Implements
+   * N/A
+   *
+   * #### Overrides
+   * N/A
+   *
+   * #### Events
+   * This method emits events as defined by `name`, after all middlewares are processed:
+   * - **PokerSeatEventName.SEAT_OCCUPIED**: Emitted when a player occupies the seat.
+   * - **PokerSeatEventName.SEAT_VACATED**: Emitted when a seat is vacated.
    *
    * #### Parameters
-   * - `name: PokerSeatEventName` - The name of the event to emit.
-   * - `eventData: object` - The raw data for the event, used to instantiate the full event object.
-   * - `middlewares: Array<(event: PokerSeatEvent, next: () => void) => void | false>` - Array of middleware functions.
-   *
-   * #### Returns
-   * - `void` - This method does not return any value.
-   *
-   * #### Example
-   * ```typescript
-   * this.__emitEventWithMiddlewares(PokerSeatEventName.SEAT_OCCUPIED, { seatId: "123", playerId: "456" }, [
-   *   (event, next) => { event.data.processed = true; next(); },
-   *   (event, next) => { console.log("Middleware log:", event); next(); }
-   * ]);
-   * ```
-   *
-   * @param {PokerSeatEventName} name - The name of the event to emit.
-   * @param {object} eventData - The initial raw event data.
-   * @param {Array<(event: PokerSeatEvent, next: () => void) => void | false>} middlewares - Array of middleware functions.
-   */
-  private __emitEventWithMiddlewares(
-    name: PokerSeatEventName,
-    eventData: { [key: string]: any },
-    middlewares: Array<
-      (event: PokerSeatEvent, next: () => void) => void | false
-    > = []
-  ): void {
-    // Instantiate the actual event object with metadata and provided data
-    const event: PokerSeatEvent = {
-      head: { name, createdAt: new Date() },
-      data: eventData,
-    };
-
-    const runMiddlewares = (index: number) => {
-      if (index < middlewares.length) {
-        middlewares[index](event, () => runMiddlewares(index + 1));
-      } else {
-        this.__emitEvent(name, event); // Emit after all middlewares have run
-      }
-    };
-
-    runMiddlewares(0); // Start processing middlewares
-  }
-
-  /**
-   * #### Description
-   * Attaches an event listener with an optional sequence of middleware functions to preprocess event data.
-   *
-   * #### Purpose
-   * This method allows attaching a listener for a specified event with middleware for additional data handling
-   * or validation before the final event is emitted.
-   *
-   * #### Parameters
-   * - `name: PokerSeatEventName` - The event name for which the listener is attached.
-   * - `middlewares: Array<(event: T, next: () => void) => void | false>` - A sequence of middleware functions to process
-   *   the event data before the final emission. Each middleware can modify `event` or terminate propagation by returning `false`.
+   * - `eventName: PokerSeatEventName` - The name of the event to emit.
+   * - `eventData: object` - The initial raw data associated with the event.
+   * - `middlewares: Array<(event: PokerSeatEvent, next: () => void) => void | false>` - Array of middleware functions to process the event.
    *
    * #### Requirements
-   * - `name` must be a valid `PokerSeatEventName`.
-   * - Each middleware in `middlewares` should follow the expected `(event: T, next: () => void) => void | false` format.
+   * - `eventName` should be a valid `PokerSeatEventName`.
+   * - `eventData` must be structured to follow the `PokerSeatEvent` data format.
+   * - Each function in `middlewares` should follow the `(event: PokerSeatEvent, next: () => void) => void | false` signature.
    *
    * #### Returns
-   * - This method does not return any value (`void`).
+   * - `void` - This method does not return a value.
    *
    * #### Usage
-   * Use this method to attach custom event listeners and middleware for events, allowing advanced data processing.
+   * This method is useful when emitting events that require additional processing or validation. Middleware functions
+   * can augment or modify `eventData` before final emission, allowing for dynamic control over event behavior.
    *
-   * @param {PokerSeatEventName} name - The event name for which the listener is attached.
-   * @param {Array<(event: T, next: () => void) => void | false>} middlewares - An array of middleware functions.
+   * @param {PokerSeatEventName} eventName - The name of the event to emit.
+   * @param {object} eventData - The initial raw data associated with the event.
+   * @param {Array<(event: PokerSeatEvent, next: () => void) => void | false>} middlewares - Array of middleware functions to process the event.
    *
    * @returns {void}
    *
    * @example
    * ```typescript
-   * pokerSeat.__attachEventListener(PokerSeatEventName.SEAT_OCCUPIED, [
-   *   (event, next) => {
-   *     event.data.timestamp = Date.now();
-   *     next();
-   *   },
-   *   (event, next) => {
-   *     if (event.data.seatId) next();
-   *     else return false;
-   *   }
+   * pokerSeat.__emitEventWithMiddlewares(PokerSeatEventName.SEAT_OCCUPIED, { seatId: "123", playerId: "456" }, [
+   *   (event, next) => { event.data.processed = true; next(); },
+   *   (event, next) => { console.log("Middleware log:", event); next(); }
    * ]);
+   * // Middlewares process the event, modifying `event.data.processed` to true before emitting the event.
    * ```
    */
-  private __attachEventListener<T extends PokerSeatEvent = PokerSeatEvent>(
-    name: PokerSeatEventName,
-    middlewares: Array<(event: T, next: () => void) => void | false> = []
+  private __emitEventWithMiddlewares(
+    eventName: PokerSeatEventName,
+    eventData: { [key: string]: any },
+    middlewares: Array<
+      (event: PokerSeatEvent, next: () => void) => void | false
+    > = []
   ): void {
-    this.on(name, (eventData: T) => {
-      const runMiddlewares = (index: number) => {
-        if (index < middlewares.length) {
-          middlewares[index](eventData, () => {
-            runMiddlewares(index + 1);
-          });
-        } else {
-          this.__emitEvent(name, eventData);
-        }
-      };
-      runMiddlewares(0);
-    });
+    // Create the event object with metadata and initial data
+    const event: PokerSeatEvent = this.__initializeEventObj(
+      eventName,
+      eventData
+    );
+
+    // Process each middleware, applying modifications if needed
+    const runMiddlewares = (index: number) => {
+      if (index < middlewares.length) {
+        middlewares[index](event, () => runMiddlewares(index + 1));
+      } else {
+        this.__emitEvent(eventName, event); // Emit the final event after processing
+      }
+    };
+
+    runMiddlewares(0); // Start middleware processing chain
+  }
+
+  /**
+   * #### Description
+   * Creates an event object with metadata and data, initializing it for further processing or emission.
+   *
+   * #### Purpose
+   * This method constructs a `PokerSeatEvent` object with standardized metadata, facilitating a uniform structure
+   * for seat-related events across the application.
+   *
+   * #### Implements
+   * N/A
+   *
+   * #### Overrides
+   * N/A
+   *
+   * #### Events
+   * N/A
+   *
+   * #### Parameters
+   * - `eventName: PokerSeatEventName` - The name of the event, used to identify the event type.
+   * - `eventData: { [key: string]: any }` - The initial data associated with the event, such as seat or player details.
+   *
+   * #### Requirements
+   * - `eventName` should be a valid value of `PokerSeatEventName`.
+   * - `eventData` must be an object with key-value pairs relevant to the specific event type.
+   *
+   * #### Returns
+   * - `PokerSeatEvent` - Returns the fully initialized event object with metadata and data fields.
+   *
+   * #### Usage
+   * Use this method to create a structured `PokerSeatEvent` object before emitting, enabling consistent event formatting
+   * and easing further event handling or processing.
+   *
+   * @param {PokerSeatEventName} eventName - The name of the event.
+   * @param {object} eventData - The associated data for the event.
+   *
+   * @returns {PokerSeatEvent} - A complete event object ready for processing or emission.
+   *
+   * @example
+   * ```typescript
+   * const event = pokerSeat.__initializeEventObj(PokerSeatEventName.SEAT_OCCUPIED, { seatId: "seat123", playerId: "player456" });
+   * console.log(event);
+   * // Console Output: { head: { name: "PokerSeat:Occupied", createdAt: <Date> }, data: { seatId: "seat123", playerId: "player456" } }
+   * ```
+   */
+  private __initializeEventObj(
+    eventName: PokerSeatEventName,
+    eventData: { [key: string]: any }
+  ): PokerSeatEvent {
+    const event: PokerSeatEvent = {
+      head: {
+        id: generateUniqueId(),
+        name: eventName,
+        createdAt: new Date(),
+        source: `PokerSeat`,
+      },
+      data: eventData,
+    };
+    return event;
   }
 }
 
