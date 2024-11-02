@@ -41,6 +41,26 @@
 interface _BaseEvent<T = any> {
   head: {
     /**
+     * @property {string} id
+     *
+     * Unique identifier for the event instance, ensuring traceability across emitted events.
+     *
+     * #### Purpose
+     * Used for tracking the event instance, especially useful in scenarios with multiple simultaneous events.
+     *
+     * #### Requirements
+     * - Should be a unique string.
+     *
+     * @example
+     * ```typescript
+     * const eventId = event.head.id;
+     * console.log(eventId);
+     * // Console Output: "unique-id-1234"
+     * ```
+     */
+    id: string;
+
+    /**
      * @property {string} name
      *
      * Identifies the name of the event, which specifies the nature and purpose of the event
@@ -179,31 +199,42 @@ interface _BaseEvent<T = any> {
   /**
    * @property {T} data
    *
-   * Contains event-specific details, customized by each derived event interface, allowing
-   * flexibility in event data management.
+   * Contains event-specific details, dynamically adapted based on the type `T`, which can represent any structure.
    *
    * #### Purpose
-   * Carries unique data associated with the event, such as specific identifiers, payloads,
-   * or any other information relevant to the event.
+   * Carries unique data associated with the event, allowing specific identifiers, payloads, or any other
+   * information relevant to each type of event.
    *
    * #### Requirements
-   * - `data` should be structured according to the specific event requirements.
+   * - `data` should be structured as per the requirements of each derived event type.
    *
    * @example
    * ```typescript
-   * const eventData = event.data;
-   * console.log(eventData);
-   * // Console Output: Custom data object relevant to the specific event type.
+   * const seatEventData = event.data;
+   * console.log(seatEventData);
+   * // Console Output: Custom data object, e.g., { seatId: "123", playerId: "p789" }
    * ```
    */
   data: T;
 
   /**
+   * @property {[key: string]: any}
    * Allows additional sibling properties within `_BaseEvent` for extensibility.
    *
    * #### Usage
    * Supports additional fields at the root level of `_BaseEvent`, providing flexibility
-   * to meet custom requirements.
+   * for specific event needs.
+   *
+   * @example
+   * ```typescript
+   * const customEvent: _BaseEvent = {
+   *   head: { name: "CustomEvent", createdAt: new Date() },
+   *   data: { customData: "details" },
+   *   customProperty: "custom value"
+   * };
+   * console.log(customEvent.customProperty);
+   * // Console Output: "custom value"
+   * ```
    */
   [key: string]: any;
 }

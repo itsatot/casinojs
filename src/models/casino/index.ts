@@ -3,7 +3,7 @@
 import { EventEmitter } from "events";
 
 // Import Enums
-import { CasinoEventName } from "../../enums/CasinoEventNames";
+import { CasinoEventName } from "../../enums/casinoEventNames";
 
 // Import Interfaces
 import {

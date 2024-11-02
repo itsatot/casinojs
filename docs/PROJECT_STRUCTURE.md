@@ -1,199 +1,313 @@
 # Project Structure
 
+## Introduction
+
 This document provides a comprehensive overview of the directory structure for the `CasinoJs` repository. It outlines the purpose and organization of each directory and file, ensuring a clear understanding of where to find various components of the project.
 
 ## Table of Contents
 
 - [Project Structure](#project-structure)
+  - [Introduction](#introduction)
   - [Table of Contents](#table-of-contents)
-  - [Root Directory Layout](#root-directory-layout)
+  - [./ Directory Layout](#-directory-layout)
+  - [./.envs Directory Layout](#envs-directory-layout)
+  - [./.github Directory Layout](#github-directory-layout)
+  - [./coverage Directory Layout](#coverage-directory-layout)
+  - [./dist Directory Layout](#dist-directory-layout)
+  - [./docs Directory Layout](#docs-directory-layout)
+  - [./src Directory Layout](#src-directory-layout)
+  - [./src/enums Directory Layout](#srcenums-directory-layout)
+  - [./src/events Directory Layout](#srcevents-directory-layout)
+  - [./src/interfaces Directory Layout](#srcinterfaces-directory-layout)
+  - [./src/models Directory Layout](#srcmodels-directory-layout)
+  - [./tests Directory Layout](#tests-directory-layout)
+  - [./tests/enums Directory Layout](#testsenums-directory-layout)
+  - [./tests/events Directory Layout](#testsevents-directory-layout)
+  - [./tests/interfaces Directory Layout](#testsinterfaces-directory-layout)
+  - [./tests/models Directory Layout](#testsmodels-directory-layout)
 
-## Root Directory Layout
+## ./ Directory Layout
 
 ```bash
 ├── /.envs                                    # Environment configuration files for different environments
-│   ├── .env.development.local.example        # Example environment configuration file for the development environment
-│   ├── .env.example                          # Example environment configuration file for general local development
-│   ├── .env.local.example                    # Example environment configuration file for local overrides (machine-specific)
-│   ├── .env.production.local.example         # Example environment configuration file for production deployment
-│   └── .env.test.local.example               # Example environment configuration file for test-specific environments
-│
-├── /.github                                  # GitHub-specific configuration files related to commit, issue, and pull request templates
-│   ├── /COMMIT_TEMPLATE                      # Directory holding templates for commit messages
-│   │   └── commit_template.md                # Markdown template for consistent commit messages with a specific structure
-│   │
-│   ├── /ISSUE_TEMPLATE                       # Templates for creating issues in GitHub
-│   │   ├── bug_report_form.yml               # YAML configuration for submitting bug reports through a form
-│   │   ├── bug_report_template.md            # Template to report bugs in Markdown format
-│   │   └── feature_request_template.md       # Template to request new features or improvements in Markdown format
-│   │
-│   └── /PULL_REQUEST_TEMPLATE                # Templates for submitting pull requests
-│       └── pull_request_template.md          # Markdown template ensuring consistent structure and information in pull requests
-│
-├── /coverage                                 # Directory for test coverage reports generated after running the test suite
-│   ├── /Icov-report                          # Directory for HTML-based coverage reports
-│   │   ├── /enums                            # Coverage results related to enums used in the project
-│   │   ├── /models                           # Coverage results for the models implemented in the project
-│   │   ├── base.css                          # CSS used for styling the coverage report pages
-│   │   ├── block-navigation.js               # JavaScript for handling navigation within the coverage report
-│   │   ├── favicon.png                       # Favicon for the coverage report HTML pages
-│   │   ├── index.html                        # Entry point for the generated coverage report site
-│   │   ├── prettify.css                      # CSS for prettifying the coverage report's code snippets
-│   │   ├── prettify.js                       # JavaScript for syntax highlighting in coverage reports
-│   │   ├── sort-arrow-sprite.png             # Sprite used for sorting arrows in the report's navigation
-│   │   └── sorter.js                         # JavaScript responsible for sorting the report data by lines, statements, branches, and functions
-│   │
-│   ├── clover.xml                            # XML format test coverage report, compatible with tools like Atlassian Clover
-│   ├── coverage-final.json                   # Final JSON summary of the coverage results used for reporting and analysis
-│   └── lcov.info                             # LCOV format coverage report, used by tools such as Coveralls or SonarQube
-│
-├── /dist                                     # Compiled output files generated by TypeScript, ready for distribution
-│   ├── /cjs                                  # CommonJS entry point after TypeScript compilation (used in Node.js environments)
-│   │   ├── enums/                            # Compiled TypeScript enums for the CommonJS module format
-│   │   ├── interfaces/                       # Compiled TypeScript interfaces for the CommonJS module format
-│   │   ├── models/                           # Compiled TypeScript models for the CommonJS module format
-│   │   ├── index.d.ts                        # TypeScript declaration file for the CommonJS entry point
-│   │   ├── index.js                          # CommonJS entry point after TypeScript compilation
-│   │   └── index.js.map                      # Source map for the CommonJS entry point
-│   │
-│   └── /esm                                  # ESModule entry point after TypeScript compilation (used in ESModule-based environments)
-│   │   ├── enums/                            # Compiled TypeScript enums for the ESModule format
-│   │   ├── interfaces/                       # Compiled TypeScript interfaces for the ESModule format
-│   │   ├── models/                           # Compiled TypeScript models for the ESModule format
-│   │   ├── index.d.ts                        # TypeScript declaration file for the ESModule entry point
-│   │   ├── index.js                          # ESModule entry point after TypeScript compilation
-│   │   └── index.js.map                      # Source map for the ESModule entry point
-│
-├── /docs                                     # Documentation and guides related to the project
-│   ├── /site                                 # Generated documentation from Typedoc for the project
-│   │   ├── assets/                           # Static assets (e.g., CSS, JS) used within the documentation site
-│   │   ├── classes/                          # Documentation generated for classes used in the project
-│   │   ├── enums/                            # Documentation generated for enums defined in the project
-│   │   ├── interfaces/                       # Documentation generated for interfaces defined in the project
-│   │   ├── media/                            # Media files (e.g., images, diagrams) used in the documentation site
-│   │   ├── modules/                          # Documentation of various modules in the project, categorized by their type (e.g., classes, enums)
-│   │   ├── .nojekyll                         # Prevents GitHub Pages from processing the site with Jekyll, allowing custom file types
-│   │   ├── hierarchy.html                    # Hierarchical view of the project structure in the documentation
-│   │   ├── index.html                        # Main entry point for the documentation site
-│   │   └── modules.html                      # List of modules documented within the site
-│   │
-│   ├── CHANGELOG.md                          # Record of changes, updates, and version history of the project
-│   ├── CONTRIBUTING.md                       # Guidelines for contributing to the project, including best practices and rules
-│   ├── DEVELOPMENT_GUIDE.md                  # Step-by-step guide for setting up the development environment and contributing to the project
-│   ├── DOCS.md                               # General documentation for the project, including API details, usage instructions, and best practices
-│   └── PROJECT_STRUCTURE.md                  # Detailed explanation of the project's file and folder structure, like this document
-│
+├── /.github                                  # GitHub configuration files for commits, issues, and PR templates
+├── /coverage                                 # Test coverage reports generated after running the test suite
+├── /dist                                     # Compiled output files generated by TypeScript for distribution
+├── /docs                                     # Documentation and guides for the project
 ├── /src                                      # Source code for the CasinoJs library
-│   ├── /enums                                # TypeScript enums for various poker game-related entities
-│   │   ├── /pokerPhaseName                   # Enum representing the names of different poker phases (e.g., pre-flop, flop, turn, river)
-│   │   │   └── index.ts                      # Export for the poker phase name enum
-│   │   ├── /rank                             # Enum representing the ranks of playing cards (e.g., Ace, King, Queen, etc.)
-│   │   │   └── index.ts                      # Export for rank-related types
-│   │   ├── /suit                             # Enum representing the suits of playing cards (e.g., Hearts, Spades)
-│   │   │   └── index.ts                      # Export for suit-related types
-│   │   └── index.ts                          # Main export for all enums in the project
-│   │
-│   ├── /interfaces                           # TypeScript interfaces for poker game entities
-│   │   ├── /card                             # Interface defining the structure of a poker card (e.g., rank, suit)
-│   │   │   └── index.ts                      # Export for card-related interfaces
-│   │   ├── /casino                           # Interface defining the structure of a casino (e.g., rooms, tables)
-│   │   │   └── index.ts                      # Export for casino-related interfaces
-│   │   ├── /deck                             # Interface defining the structure and behavior of a deck of cards
-│   │   │   └── index.ts                      # Export for deck-related interfaces
-│   │   ├── /pokerGame                        # Interface defining the structure of a poker game (e.g., phases, players)
-│   │   │   └── index.ts                      # Export for poker game-related interfaces
-│   │   ├── /pokerPhase                       # Interface defining poker phases and phase transitions during gameplay
-│   │   │   └── index.ts                      # Export for poker phase-related interfaces
-│   │   ├── /pokerPlayer                      # Interface defining the structure and behavior of a poker player
-│   │   │   └── index.ts                      # Export for poker player-related interfaces
-│   │   ├── /pokerRoom                        # Interface defining the structure of a poker room, including table and player management
-│   │   │   └── index.ts                      # Export for poker room-related interfaces
-│   │   ├── /pokerSeat                        # Interface defining a seat at a poker table (e.g., player sitting, bet tracking)
-│   │   │   └── index.ts                      # Export for poker seat-related interfaces
-│   │   ├── /pokerTable                       # Interface defining the structure and behavior of a poker table (e.g., seating, blinds)
-│   │   │   └── index.ts                      # Export for poker table-related interfaces
-│   │   └── index.ts                          # Main export for all interfaces in the project
-│   │
-│   ├── /models                               # Core poker models and logic implementations
-│   │   ├── /card                             # Class implementation for a poker card, handling rank and suit logic
-│   │   │   └── index.ts                      # Class definition and export for card logic
-│   │   ├── /casino                           # Class implementation for a casino, handling multiple rooms and tables
-│   │   │   └── index.ts                      # Class definition and export for casino logic
-│   │   ├── /deck                             # Class implementation for a deck of cards, including shuffle and draw logic
-│   │   │   └── index.ts                      # Class definition and export for deck logic
-│   │   ├── /pokerGame                        # Class implementation for managing poker game phases, bets, and progression
-│   │   │   └── index.ts                      # Class definition and export for poker game logic
-│   │   ├── /pokerPhase                       # Class implementation for handling transitions between poker phases
-│   │   │   └── index.ts                      # Class definition and export for poker phase logic
-│   │   ├── /pokerPlayer                      # Class implementation for a poker player, handling actions, chips, and hands
-│   │   │   └── index.ts                      # Class definition and export for poker player logic
-│   │   ├── /pokerRoom                        # Class implementation for managing poker rooms and player seating
-│   │   │   └── index.ts                      # Class definition and export for poker room logic
-│   │   ├── /pokerSeat                        # Class implementation for poker seat behavior (e.g., seating, betting)
-│   │   │   └── index.ts                      # Class definition and export for poker seat logic
-│   │   ├── /pokerTable                       # Class implementation for poker table behavior (e.g., player seating, blinds)
-│   │   │   └── index.ts                      # Class definition and export for poker table logic
-│   │   └── index.ts                          # Main export for all models in the project
+├── /tests                                    # Unit tests for verifying poker models and project functionality
+├── .gitignore                                # Specifies files and directories ignored by Git
+├── jest.config.js                            # Configuration file for Jest, defining paths and options for testing
+├── LICENSE                                   # License file outlining the terms of distribution
+├── package-lock.json                         # Dependency tree capture for consistent installations
+├── package.json                              # Project metadata, including dependencies and scripts
+├── README.md                                 # Overview of the project, with setup and usage information
+├── tsconfig.cjs.json                         # TypeScript configuration for CommonJS builds
+├── tsconfig.esm.json                         # TypeScript configuration for ESModule builds
+└── tsconfig.json                             # Main TypeScript configuration for overall compiler options
+```
+
+## ./.envs Directory Layout
+
+```bash
+├── .env.development.local.example        # Development environment configuration file example
+├── .env.example                          # General local development configuration file example
+├── .env.local.example                    # Local overrides configuration file example (machine-specific)
+├── .env.production.local.example         # Production deployment configuration file example
+└── .env.test.local.example               # Test environment configuration file example
+```
+
+## ./.github Directory Layout
+
+```bash
+├── /COMMIT_TEMPLATE                      # Directory holding templates for commit messages
+│   └── commit_template.md                # Markdown template for consistent commit messages, ensuring detailed descriptions with title, summary, type, and other sections
+├── /ISSUE_TEMPLATE                       # Directory containing templates for creating GitHub issues
+│   ├── bug_report_form.yml               # YAML configuration for submitting bug reports via GitHub’s form-based interface
+│   ├── bug_report_template.md            # Markdown template for reporting bugs, with fields for issue description, steps to reproduce, expected vs. actual behavior, etc.
+│   └── feature_request_template.md       # Markdown template for requesting new features or improvements, outlining the feature's purpose and desired functionality
+└── /PULL_REQUEST_TEMPLATE                # Directory containing templates for submitting pull requests
+    └── pull_request_template.md          # Markdown template with structured fields for pull request descriptions, including changes summary, purpose, testing notes, and checklist
+```
+
+## ./coverage Directory Layout
+
+```bash
+├── /Icov-report                          # HTML-based coverage reports directory
+│   ├── /enums                            # Coverage for enums in the project
+│   ├── /models                           # Coverage for models in the project
+│   ├── base.css                          # CSS styling for coverage reports
+│   ├── block-navigation.js               # JavaScript for navigation within the report
+│   ├── favicon.png                       # Favicon for the report HTML pages
+│   ├── index.html                        # Main entry point for the coverage report
+│   ├── prettify.css                      # CSS for code snippet formatting
+│   ├── prettify.js                       # JavaScript for syntax highlighting
+│   ├── sort-arrow-sprite.png             # Arrow sprite used in report navigation
+│   └── sorter.js                         # JavaScript for sorting report data
 │
-├── /tests                                    # Unit tests for verifying the logic and functionality of poker models
-│   ├── /enums                                # Unit tests for enums verifying the behavior of card ranks and suits
-│   │   ├── /pokerPhaseName                   # Unit tests for the `pokerPhaseName` enum, representing different phases of a poker game
-│   │   │   └── index.test.ts                 # Test file for verifying poker phase names (e.g., pre-flop, flop, turn, river)
-│   │   ├── /rank                             # Unit tests for the `rank` enum, representing the ranks of playing cards (e.g., Ace, King, Queen)
-│   │   │   └── index.test.ts                 # Test file for verifying rank values (e.g., Ace, King, Queen)
-│   │   ├── /suit                             # Unit tests for the `suit` enum, representing the suits of playing cards (e.g., Hearts, Spades)
-│   │   │   └── index.test.ts                 # Test file for verifying suit values (e.g., Hearts, Spades)
-│   │   └── index.test.ts                     # Main test file exporting all enum-related tests in the project
-│   │
-│   ├── /interfaces                           # Unit tests for verifying the behavior of poker interfaces
-│   │   ├── /card                             # Interface tests for the structure of a poker card, including rank and suit
-│   │   │   └── index.test.ts                 # Test file for the card interface, verifying rank and suit structure
-│   │   ├── /casino                           # Interface tests for the structure of a casino, managing multiple poker rooms and tables
-│   │   │   └── index.test.ts                 # Test file for the casino interface, verifying the casino's room and table management
-│   │   ├── /deck                             # Interface tests for a deck of cards, ensuring proper structure and behavior
-│   │   │   └── index.test.ts                 # Test file for the deck interface, verifying shuffle, draw, and deck structure
-│   │   ├── /pokerGame                        # Interface tests for the structure and phases of a poker game
-│   │   │   └── index.test.ts                 # Test file for the poker game interface, verifying gameplay phases and player interaction
-│   │   ├── /pokerPhase                       # Interface tests for managing transitions between poker phases during a game
-│   │   │   └── index.test.ts                 # Test file for poker phase interface, ensuring proper handling of game phases
-│   │   ├── /pokerPlayer                      # Interface tests for the structure and actions of poker players
-│   │   │   └── index.test.ts                 # Test file for poker player interface, verifying player actions, chips, and hands
-│   │   ├── /pokerRoom                        # Interface tests for managing a poker room, including player seating and table management
-│   │   │   └── index.test.ts                 # Test file for poker room interface, ensuring proper player and table handling
-│   │   ├── /pokerSeat                        # Interface tests for poker seat structure, tracking player bets and seating positions
-│   │   │   └── index.test.ts                 # Test file for poker seat interface, verifying seat and betting behavior
-│   │   ├── /pokerTable                       # Interface tests for poker table structure, managing seating and blind positions
-│   │   │   └── index.test.ts                 # Test file for poker table interface, ensuring table structure and blind handling
-│   │   └── index.test.ts                     # Main test file exporting all interface-related tests in the project
-│   │
-│   ├── /models                               # Unit tests for verifying the logic and behavior of poker models
-│   │   ├── /card                             # Unit tests for the `Card` class, verifying rank and suit logic
-│   │   │   └── index.test.ts                 # Test file for the `Card` model, ensuring proper functionality of rank, suit, and card operations
-│   │   ├── /casino                           # Unit tests for the `Casino` class, verifying room and table management
-│   │   │   └── index.test.ts                 # Test file for the `Casino` model, ensuring functionality in managing multiple rooms and tables
-│   │   ├── /deck                             # Unit tests for the `Deck` class, verifying card shuffling, drawing, and deck behavior
-│   │   │   └── index.test.ts                 # Test file for the `Deck` model, ensuring proper shuffle and draw functionality
-│   │   ├── /pokerGame                        # Unit tests for the `PokerGame` class, verifying game progression, betting, and phase transitions
-│   │   │   └── index.test.ts                 # Test file for the `PokerGame` model, ensuring proper game state management and progression
-│   │   ├── /pokerPhase                       # Unit tests for the `PokerPhase` class, verifying phase transitions during poker gameplay
-│   │   │   └── index.test.ts                 # Test file for the `PokerPhase` model, ensuring phase progression and handling within a poker game
-│   │   ├── /pokerPlayer                      # Unit tests for the `PokerPlayer` class, verifying player actions, chip management, and interactions
-│   │   │   └── index.test.ts                 # Test file for the `PokerPlayer` model, ensuring proper handling of player actions and chip management
-│   │   ├── /pokerRoom                        # Unit tests for the `PokerRoom` class, verifying player seating and room management
-│   │   │   └── index.test.ts                 # Test file for the `PokerRoom` model, ensuring proper room management, player seating, and table handling
-│   │   ├── /pokerSeat                        # Unit tests for the `PokerSeat` class, verifying player seating and betting behavior at a table
-│   │   │   └── index.test.ts                 # Test file for the `PokerSeat` model, ensuring correct seat and betting functionality at the poker table
-│   │   ├── /pokerTable                       # Unit tests for the `PokerTable` class, verifying table structure, seating, and blind handling
-│   │   │   └── index.test.ts                 # Test file for the `PokerTable` model, ensuring proper seating arrangements and blind positions
-│   │   └── index.test.ts                     # Main export file for all model-related unit tests in the project
+├── clover.xml                            # XML format report for coverage analysis tools
+├── coverage-final.json                   # JSON summary of coverage results
+└── lcov.info                             # LCOV format coverage report for tools like Coveralls
+```
+
+## ./dist Directory Layout
+
+```bash
+├── /cjs                                  # CommonJS entry point after TypeScript compilation
+│   ├── enums/                            # Compiled enums for CommonJS
+│   ├── interfaces/                       # Compiled interfaces for CommonJS
+│   ├── models/                           # Compiled models for CommonJS
+│   ├── index.d.ts                        # TypeScript declaration for CommonJS entry point
+│   ├── index.js                          # CommonJS entry point after compilation
+│   └── index.js.map                      # Source map for CommonJS entry point
 │
-├── .gitignore                                # Specifies files and directories that should be ignored by Git (e.g., node_modules, dist, coverage)
-├── jest.config.js                            # Configuration file for Jest, defining test environment settings, paths, and other options
-├── LICENSE                                   # License file outlining the terms under which the project is distributed, specifying usage rights and restrictions
-├── package-lock.json                         # Automatically generated file that captures the exact dependency tree for the project to ensure consistent installs
-├── package.json                              # Project metadata including name, version, dependencies, scripts, author information, and project configuration
-├── README.md                                 # Overview of the project, including its purpose, setup instructions, usage examples, and additional resources
-├── tsconfig.cjs.json                         # TypeScript configuration file for CommonJS builds, specifying compiler options and output paths
-├── tsconfig.esm.json                         # TypeScript configuration file for ESModule builds, specifying compiler options and output paths
-└── tsconfig.json                             # Main TypeScript configuration file, defining the overall compiler options, file inclusions, and exclusions for the project
+└── /esm                                  # ESModule entry point after TypeScript compilation
+    ├── enums/                            # Compiled enums for ESModule
+    ├── interfaces/                       # Compiled interfaces for ESModule
+    ├── models/                           # Compiled models for ESModule
+    ├── index.d.ts                        # TypeScript declaration for ESModule entry point
+    ├── index.js                          # ESModule entry point after compilation
+    └── index.js.map                      # Source map for ESModule entry point
+```
+
+## ./docs Directory Layout
+
+```bash
+├── /site                                 # Typedoc generated documentation
+│   ├── assets/                           # Static assets for the documentation site
+│   ├── classes/                          # Documentation for classes in the project
+│   ├── enums/                            # Documentation for enums in the project
+│   ├── interfaces/                       # Documentation for interfaces in the project
+│   ├── media/                            # Media files like images and diagrams
+│   ├── modules/                          # Categorized documentation for modules
+│   ├── .nojekyll                         # Prevents GitHub Pages from processing with Jekyll
+│   ├── hierarchy.html                    # Project structure in hierarchical format
+│   ├── index.html                        # Main entry for the documentation site
+│   └── modules.html                      # List of modules documented within the site
+│
+├── CHANGELOG.md                          # Record of changes, updates, and version history
+├── CONTRIBUTING.md                       # Guidelines for contributing to the project
+├── DEVELOPMENT_GUIDE.md                  # Guide for setting up and contributing to the project
+├── DOCS.md                               # API details, usage instructions, and best practices
+└── PROJECT_STRUCTURE.md                  # Detailed explanation of the project directory structure
+```
+
+## ./src Directory Layout
+
+```bash
+├── /enums                                # TypeScript enums for various poker game-related entities
+├── /events                               # TypeScript event structures for handling and managing poker events
+├── /interfaces                           # TypeScript interfaces for poker game entities defining structures
+├── /models                               # Core poker models and logic implementations for the game mechanics
+└── index.ts                              # Main export for all modules in the src directory
+```
+
+## ./src/enums Directory Layout
+
+```bash
+├── /casinoEventNames                 # Enum for different casino-related event names
+│   └── index.ts                      # Main export for the casino event names enum
+├── /pokerPhaseNames                  # Enum for the names of different poker phases
+│   └── index.ts                      # Main export for the poker phase names enum
+├── /pokerSeatEventNames              # Enum for seat-related event names in poker
+│   └── index.ts                      # Main export for the poker seat event names enum
+├── /rank                             # Enum for the ranks of playing cards
+│   └── index.ts                      # Main export for card rank types
+├── /suit                             # Enum for the suits of playing cards
+│   └── index.ts                      # Main export for card suit types
+└── index.ts                          # Aggregated export for all enums in the project
+```
+
+## ./src/events Directory Layout
+
+```bash
+├── /_baseEvent                       # Base event structure shared across all poker-related events
+│   └── index.ts                      # Main export for the base event structure (_BaseEvent)
+├── /pokerSeatEvents                  # Events specific to seat management in poker (e.g., seat occupancy)
+│   ├── /pokerSeatEvent               # Core event structure for seat-related events
+│   │   └── index.ts                  # Export for the poker seat event interface
+│   ├── /pokerSeatOccupiedEvent       # Specific event structure for seat occupancy
+│   │   └── index.ts                  # Export for the poker seat occupied event interface
+│   ├── /pokerSeatVacatedEvent        # Specific event structure for vacating a seat
+│   │   └── index.ts                  # Export for the poker seat vacated event interface
+│   └── index.ts                      # Aggregated export for all poker seat events
+└── index.ts                          # Main export for all events in the project
+```
+
+## ./src/interfaces Directory Layout
+
+```bash
+├── /card                             # Interface defining the structure of a poker card (e.g., rank, suit)
+│   └── index.ts                      # Export for card-related interfaces
+├── /casino                           # Interface defining the structure of a casino (e.g., rooms, tables)
+│   └── index.ts                      # Export for casino-related interfaces
+├── /deck                             # Interface defining the structure and behavior of a deck of cards
+│   └── index.ts                      # Export for deck-related interfaces
+├── /pokerGame                        # Interface defining the structure of a poker game (e.g., phases, players)
+│   └── index.ts                      # Export for poker game-related interfaces
+├── /pokerPhase                       # Interface defining poker phases and phase transitions during gameplay
+│   └── index.ts                      # Export for poker phase-related interfaces
+├── /pokerPlayer                      # Interface defining the structure and behavior of a poker player
+│   └── index.ts                      # Export for poker player-related interfaces
+├── /pokerRoom                        # Interface defining the structure of a poker room, including table and player management
+│   └── index.ts                      # Export for poker room-related interfaces
+├── /pokerSeat                        # Interface defining a seat at a poker table (e.g., player sitting, bet tracking)
+│   └── index.ts                      # Export for poker seat-related interfaces
+├── /pokerTable                       # Interface defining the structure and behavior of a poker table (e.g., seating, blinds)
+│   └── index.ts                      # Export for poker table-related interfaces
+└── index.ts                          # Main export for all interfaces in the project
+```
+
+## ./src/models Directory Layout
+
+```bash
+├── /card                             # Class implementation for a poker card, handling rank and suit logic
+│   └── index.ts                      # Class definition and export for card logic
+├── /casino                           # Class implementation for a casino, handling multiple rooms and tables
+│   └── index.ts                      # Class definition and export for casino logic
+├── /deck                             # Class implementation for a deck of cards, including shuffle and draw logic
+│   └── index.ts                      # Class definition and export for deck logic
+├── /pokerGame                        # Class implementation for managing poker game phases, bets, and progression
+│   └── index.ts                      # Class definition and export for poker game logic
+├── /pokerPhase                       # Class implementation for handling transitions between poker phases
+│   └── index.ts                      # Class definition and export for poker phase logic
+├── /pokerPlayer                      # Class implementation for a poker player, handling actions, chips, and hands
+│   └── index.ts                      # Class definition and export for poker player logic
+├── /pokerRoom                        # Class implementation for managing poker rooms and player seating
+│   └── index.ts                      # Class definition and export for poker room logic
+├── /pokerSeat                        # Class implementation for poker seat behavior (e.g., seating, betting)
+│   └── index.ts                      # Class definition and export for poker seat logic
+├── /pokerTable                       # Class implementation for poker table behavior (e.g., player seating, blinds)
+│   └── index.ts                      # Class definition and export for poker table logic
+└── index.ts                          # Main export for all models in the project
+```
+
+## ./tests Directory Layout
+
+```bash
+├── /enums                                # Unit tests for enums
+├── /events                               # Unit tests for events
+├── /interfaces                           # Unit tests for interfaces
+├── /models                               # Unit tests for models
+└── index.test.ts                         # Main test file exporting all test modules
+```
+
+## ./tests/enums Directory Layout
+
+```bash
+├── /casinoEventNames                 # Enum for different casino-related event names
+│   └── index.test.ts                 # Test for the casino event names enum
+├── /pokerPhaseNames                  # Enum for the names of different poker phases
+│   └── index.test.ts                 # Test for the poker phase names enum
+├── /pokerSeatEventNames              # Enum for seat-related event names in poker
+│   └── index.test.ts                 # Test for the poker seat event names enum
+├── /rank                             # Enum for the ranks of playing cards
+│   └── index.test.ts                 # Test for card rank types
+├── /suit                             # Enum for the suits of playing cards
+│   └── index.test.ts                 # Test for card suit types
+└── index.test.ts                     # Aggregated export for all enums in the project
+```
+
+## ./tests/events Directory Layout
+
+```bash
+├── /_baseEvent                       # Base event structure shared across all poker-related events
+│   └── index.test.ts                 # Test for the base event structure (_BaseEvent)
+├── /pokerSeatEvents                  # Events specific to seat management in poker (e.g., seat occupancy)
+│   ├── /pokerSeatEvent               # Core event structure for seat-related events
+│   │   └── index.test.ts             # Test for the poker seat event interface
+│   ├── /pokerSeatOccupiedEvent       # Specific event structure for seat occupancy
+│   │   └── index.test.ts             # Test for the poker seat occupied event interface
+│   ├── /pokerSeatVacatedEvent        # Specific event structure for vacating a seat
+│   │   └── index.test.ts             # Test for the poker seat vacated event interface
+│   └── index.test.ts                 # Aggregated export for all poker seat events
+└── index.test.ts                     # Main export for all events in the project
+```
+
+## ./tests/interfaces Directory Layout
+
+```bash
+├── /card                             # Interface defining the structure of a poker card (e.g., rank, suit)
+│   └── index.test.ts                 # Test for card-related interfaces
+├── /casino                           # Interface defining the structure of a casino (e.g., rooms, tables)
+│   └── index.test.ts                 # Test for casino-related interfaces
+├── /deck                             # Interface defining the structure and behavior of a deck of cards
+│   └── index.test.ts                 # Test for deck-related interfaces
+├── /pokerGame                        # Interface defining the structure of a poker game (e.g., phases, players)
+│   └── index.test.ts                 # Test for poker game-related interfaces
+├── /pokerPhase                       # Interface defining poker phases and phase transitions during gameplay
+│   └── index.test.ts                 # Test for poker phase-related interfaces
+├── /pokerPlayer                      # Interface defining the structure and behavior of a poker player
+│   └── index.test.ts                 # Test for poker player-related interfaces
+├── /pokerRoom                        # Interface defining the structure of a poker room, including table and player management
+│   └── index.test.ts                 # Test for poker room-related interfaces
+├── /pokerSeat                        # Interface defining a seat at a poker table (e.g., player sitting, bet tracking)
+│   └── index.test.ts                 # Test for poker seat-related interfaces
+├── /pokerTable                       # Interface defining the structure and behavior of a poker table (e.g., seating, blinds)
+│   └── index.test.ts                 # Test for poker table-related interfaces
+└── index.test.ts                     # Main export for all interfaces in the project
+```
+
+## ./tests/models Directory Layout
+
+```bash
+├── /card                             # Class implementation for a poker card, handling rank and suit logic
+│   └── index.test.ts                 # Test for card logic
+├── /casino                           # Class implementation for a casino, handling multiple rooms and tables
+│   └── index.test.ts                 # Test for casino logic
+├── /deck                             # Class implementation for a deck of cards, including shuffle and draw logic
+│   └── index.test.ts                 # Test for deck logic
+├── /pokerGame                        # Class implementation for managing poker game phases, bets, and progression
+│   └── index.test.ts                 # Test for poker game logic
+├── /pokerPhase                       # Class implementation for handling transitions between poker phases
+│   └── index.test.ts                 # Test for poker phase logic
+├── /pokerPlayer                      # Class implementation for a poker player, handling actions, chips, and hands
+│   └── index.test.ts                 # Test for poker player logic
+├── /pokerRoom                        # Class implementation for managing poker rooms and player seating
+│   └── index.test.ts                 # Test for poker room logic
+├── /pokerSeat                        # Class implementation for poker seat behavior (e.g., seating, betting)
+│   └── index.test.ts                 # Test for poker seat logic
+├── /pokerTable                       # Class implementation for poker table behavior (e.g., player seating, blinds)
+│   └── index.test.ts                 # Test for poker table logic
+└── index.test.ts                     # Main export for all models in the project
 ```
