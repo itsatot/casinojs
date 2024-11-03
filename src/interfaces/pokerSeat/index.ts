@@ -1,6 +1,6 @@
 //@collapse
 
-import { EventEmitterBase } from "../_base";
+import { BaseEventEmitterInterface } from "../_base";
 import { PokerPlayerInterface } from "../pokerPlayer";
 
 /**
@@ -41,7 +41,7 @@ interface PokerSeatConfig {
  *
  * @extends NodeJS.EventEmitter
  */
-interface PokerSeatInterface extends EventEmitterBase {
+interface PokerSeatInterface extends BaseEventEmitterInterface {
   /**************************************************************************************************************
    * CREATE METHODS (SETTERS & OBJECT CREATION)
    **************************************************************************************************************/

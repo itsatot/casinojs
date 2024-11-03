@@ -13,7 +13,7 @@
  * // Import all enums from the centralized module
  * import { CasinoEventName, CasinoEventNameEvents, PokerPhaseName, PokerPhaseNameEvents, Rank, RankEvents, Suit, SuitEvents } from './enums';
  */
-export * as _BaseEvents from "./_baseEvent";
-export * from "./_baseEvent";
-export * as PokerSeatEvents from "./pokerSeatEvents";
-export * from "./pokerSeatEvents";
+export * as BaseEvents from "./_base";
+export * from "./_base";
+export * as PokerSeatEvents from "./pokerSeat";
+export * from "./pokerSeat";

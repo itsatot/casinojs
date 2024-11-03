@@ -1,6 +1,6 @@
 //@collapse
 
-import { EventEmitterBase } from "../_base";
+import { BaseEventEmitterInterface } from "../_base";
 import { CardInterface } from "../card";
 
 /**
@@ -16,7 +16,7 @@ import { CardInterface } from "../card";
  * const card = deck.draw();
  * console.log(card?.toString()); // "A of Spades"
  */
-interface DeckInterface extends EventEmitterBase {
+interface DeckInterface extends BaseEventEmitterInterface {
   /**************************************************************************************************************
    * CREATE METHODS (SETTERS & OBJECT CREATION)
    **************************************************************************************************************/

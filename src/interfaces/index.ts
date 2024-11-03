@@ -11,7 +11,8 @@
  * // Import all interfaces and types from the centralized module
  * import { CardInterface, DeckInterface } from './interfaces';
  */
-
+export * as BaseInterfaces from "./_base";
+export * from "./_base";
 export * as CardInterfaces from "./card";
 export * from "./card";
 export * as CasinoInterfaces from "./casino";

@@ -1,6 +1,6 @@
 //@collapse
 
-import { EventEmitterBase } from "../_base";
+import { BaseEventEmitterInterface } from "../_base";
 import { PokerTableConfig, PokerTableInterface } from "../pokerTable";
 
 /**
@@ -168,7 +168,7 @@ interface PokerRoomConfig {
  * console.log(pokerRoom.getName()); // Logs "HighRollers"
  * ```
  */
-interface PokerRoomInterface extends EventEmitterBase {
+interface PokerRoomInterface extends BaseEventEmitterInterface {
   /**************************************************************************************************************
    * CREATE METHODS (SETTERS & OBJECT CREATION)
    **************************************************************************************************************/

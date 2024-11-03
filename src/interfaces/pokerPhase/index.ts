@@ -1,6 +1,6 @@
 //@collapse
 
-import { EventEmitterBase } from "../_base";
+import { BaseEventEmitterInterface } from "../_base";
 import { DeckInterface } from "../deck";
 import { PokerPlayerInterface } from "../pokerPlayer";
 import { PokerPhaseName } from "../../enums";
@@ -67,6 +67,6 @@ interface PokerPhaseConfig {
  *
  * @extends NodeJS.EventEmitter
  */
-interface PokerPhaseInterface extends EventEmitterBase {}
+interface PokerPhaseInterface extends BaseEventEmitterInterface {}
 
 export { PokerPhaseConfig, PokerPhaseInterface };

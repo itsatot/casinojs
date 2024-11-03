@@ -1,16 +1,16 @@
 //@collapse
 
 // Import Enums
-import { PokerSeatEventName } from "../../enums";
+import { PokerSeatEventName, Source } from "../../enums";
 
 // Import Events
-import { _BaseEvent } from "../_baseEvent";
+import { BaseEvent } from "../_base";
 
 /**
  * @interface `PokerSeatEvent`
  *
  * Represents an event structure specifically for actions concerning a `PokerSeat`, such as when a seat is occupied
- * by a player. Extending `_BaseEvent`, this interface ensures that all seat-related events within the poker library
+ * by a player. Extending `BaseEvent`, this interface ensures that all seat-related events within the poker library
  * follow a consistent format, encapsulating both essential metadata and event-specific details.
  *
  * #### Purpose
@@ -19,7 +19,7 @@ import { _BaseEvent } from "../_baseEvent";
  * across all listeners.
  *
  * #### Extends
- * This interface extends `_BaseEvent`, incorporating core metadata fields (`head`) and allowing custom data fields
+ * This interface extends `BaseEvent`, incorporating core metadata fields (`head`) and allowing custom data fields
  * (`data`) specific to seat occupancy events.
  *
  * #### Structure
@@ -36,7 +36,7 @@ import { _BaseEvent } from "../_baseEvent";
  * - **PokerSeat:Occupied**: Signals that a player has occupied the seat.
  * - **PokerSeat:Vacated**: Signals that a player has vacated the seat (handled by a sibling interface).
  *
- * @extends _BaseEvent
+ * @extends BaseEvent
  *
  * @example
  * ```typescript
@@ -48,31 +48,28 @@ import { _BaseEvent } from "../_baseEvent";
  * // Console Output: { head: { id: "unique-event-id", name: "PokerSeat:Occupied", createdAt: <Date>, source: "PokerSeat" }, data: { seatId: "12345", playerId: "p7890", additionalInfo: "special seating" } }
  * ```
  */
-interface PokerSeatEvent<T = any>
-  extends _BaseEvent<{
-    [key: string]: any;
-  }> {
+interface PokerSeatEvent<T = any> extends BaseEvent<T> {
   /**************************************************************************************************************
    * PROPERTIES
    **************************************************************************************************************/
 
   head: {
     /**
-     * @property {PokerSeatEventName} name
+     * @property {string} id
      *
-     * Represents the event name, identifying it as a `PokerSeatOccupiedEvent`.
+     * Unique identifier for the event instance, ensuring traceability across emitted events.
      *
      * #### Purpose
-     * Labels the event type to allow easy filtering and subscription by listeners.
+     * Used for tracking the event instance, especially useful in scenarios with multiple simultaneous events.
      *
      * #### Requirements
-     * - Should be descriptive and set as `"PokerSeat:Occupied"`.
+     * - Must be a unique string.
      *
      * @example
      * ```typescript
-     * const eventName = event.head.name;
-     * console.log(eventName);
-     * // Console Output: "PokerSeat:Occupied"
+     * const eventId = event.head.id;
+     * console.log(eventId);
+     * // Console Output: "unique-event-id"
      * ```
      */
     id: string;
@@ -97,9 +94,46 @@ interface PokerSeatEvent<T = any>
      */
     name: PokerSeatEventName;
 
+    /**
+     * @property {Date} createdAt
+     *
+     * Timestamp indicating when the event was created.
+     *
+     * #### Purpose
+     * Used for tracking the exact time of event emission, which is essential for sequencing,
+     * logging, and auditing purposes.
+     *
+     * #### Requirements
+     * - Should be a valid `Date` object.
+     *
+     * @example
+     * ```typescript
+     * const creationTime = event.head.createdAt;
+     * console.log(creationTime);
+     * // Console Output: Date object representing the event's creation time.
+     * ```
+     */
     createdAt: Date;
 
-    source: "PokerSeat";
+    /**
+     * @property {string} source
+     *
+     * Identifies the origin of the event as "PokerSeat".
+     *
+     * #### Purpose
+     * Helps in tracing the source of the event, especially within larger applications with multiple components.
+     *
+     * #### Requirements
+     * - Must be set as `Source.POKER_SEAT` enum.
+     *
+     * @example
+     * ```typescript
+     * const eventSource = event.head.source;
+     * console.log(eventSource);
+     * // Console Output: "PokerSeat"
+     * ```
+     */
+    source: Source.POKER_SEAT;
   };
 }
 

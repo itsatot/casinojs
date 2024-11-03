@@ -1,13 +1,22 @@
 //@collapse
 
-import { EventEmitter } from "events";
-import { PokerSeatEventName } from "../../enums";
+// Import Enums
+import { PokerSeatEventName, Source } from "../../enums";
+
+// Import Events
 import { PokerSeatEvent } from "../../events";
+
+// Import Interfaces
 import {
   PokerPlayerInterface,
   PokerSeatConfig,
   PokerSeatInterface,
 } from "../../interfaces";
+
+// Import Models
+import { BaseEventEmitter } from "../_base";
+
+// Import Utils
 import { generateUniqueId } from "../../utils";
 
 /**
@@ -54,7 +63,7 @@ import { generateUniqueId } from "../../utils";
  * console.log(pokerSeat.isSeatOccupied()); // Console Output: true
  * ```
  */
-class PokerSeat extends EventEmitter implements PokerSeatInterface {
+class PokerSeat extends BaseEventEmitter implements PokerSeatInterface {
   /**************************************************************************************************************
    * PROPERTIES
    **************************************************************************************************************/
@@ -856,147 +865,6 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
   ): PokerPlayerInterface | undefined {
     this.__player = player;
     return this.__player;
-  }
-
-  /**
-   * #### Description
-   * The `__emitEvent` method emits an event with optional middleware processing, allowing for validation or transformation
-   * before final emission.
-   *
-   * #### Purpose
-   * This method centralizes event emission, supporting direct and middleware-processed emissions for flexible event handling.
-   *
-   * #### Implements
-   * N/A
-   *
-   * #### Overrides
-   * N/A
-   *
-   * #### Events
-   * This method can emit any event defined in `PokerSeatEventName`, including:
-   * - **PokerSeatEventName.SEAT_OCCUPIED**: Emitted when a player occupies the seat.
-   * - **PokerSeatEventName.SEAT_VACATED**: Emitted when a seat is vacated.
-   *
-   * #### Parameters
-   * - `eventName: PokerSeatEventName` - The name of the event to emit.
-   * - `eventData: { [key: string]: any }` - Data specific to the event, like seat and player details.
-   * - `options?: { middlewares?: Array<(event: PokerSeatEvent, next: () => void) => void | false> }`
-   *    - `middlewares`: Optional. Array of middleware functions for processing the event data before emission.
-   *
-   * #### Requirements
-   * - `eventName` must be a valid `PokerSeatEventName`.
-   * - If `middlewares` are provided, they must follow the `(event: PokerSeatEvent, next: () => void) => void | false` signature.
-   *
-   * #### Returns
-   * - `void` - This method does not return a value.
-   *
-   * #### Usage
-   * This method is used for both direct and middleware-processed event emissions, allowing for sequential processing
-   * of the event data when middlewares are specified.
-   *
-   * @param {PokerSeatEventName} eventName - The event name to emit.
-   * @param {object} eventData - Data specific to the event.
-   * @param {object} [options] - Optional parameter with middleware functions.
-   * @param {Array<(event: PokerSeatEvent, next: () => void) => void | false>} [options.middlewares] - Optional array of middleware functions.
-   *
-   * @returns {void}
-   *
-   * @example
-   * ```typescript
-   * pokerSeat.__emitEvent(PokerSeatEventName.SEAT_OCCUPIED, { seatId: "seat123", playerId: "player456" }, {
-   *   middlewares: [
-   *     (event, next) => { event.data.processed = true; next(); },
-   *     (event, next) => { console.log("Middleware log:", event); next(); }
-   *   ]
-   * });
-   * // Middlewares process the event, modifying `event.data.processed` to true before emitting the event.
-   * ```
-   */
-  private __emitEvent(
-    eventName: PokerSeatEventName,
-    eventData: { [key: string]: any },
-    options?: {
-      middlewares?: Array<
-        (event: PokerSeatEvent, next: () => void) => void | false
-      >;
-    }
-  ): void {
-    const event: PokerSeatEvent = this.__initializeEventObj(
-      eventName,
-      eventData
-    );
-    const middlewares = options?.middlewares ?? [];
-
-    if (middlewares.length > 0) {
-      const runMiddlewares = (index: number) => {
-        if (index < middlewares.length) {
-          middlewares[index](event, () => runMiddlewares(index + 1));
-        } else {
-          this.emit(eventName, event);
-        }
-      };
-      runMiddlewares(0);
-    } else {
-      this.emit(eventName, event);
-    }
-  }
-
-  /**
-   * #### Description
-   * The `__initializeEventObj` method creates a structured event object, initializing it with metadata and data.
-   *
-   * #### Purpose
-   * This method constructs a `PokerSeatEvent` object with consistent metadata, ensuring uniformity for seat-related events.
-   *
-   * #### Implements
-   * N/A
-   *
-   * #### Overrides
-   * N/A
-   *
-   * #### Events
-   * N/A
-   *
-   * #### Parameters
-   * - `eventName: PokerSeatEventName` - The name of the event.
-   * - `eventData: { [key: string]: any }` - Data related to the event, such as seat or player details.
-   *
-   * #### Requirements
-   * - `eventName` must be a valid `PokerSeatEventName`.
-   * - `eventData` should be a well-defined object containing event details.
-   *
-   * #### Returns
-   * - `PokerSeatEvent` - A complete event object ready for processing or emission.
-   *
-   * #### Usage
-   * Use this method to create a structured `PokerSeatEvent` object before emission, allowing for consistent event handling.
-   *
-   * @param {PokerSeatEventName} eventName - The name of the event.
-   * @param {object} eventData - Data associated with the event.
-   *
-   * @returns {PokerSeatEvent} - A structured event object ready for emission.
-   *
-   * @example
-   * ```typescript
-   * const event = pokerSeat.__initializeEventObj(PokerSeatEventName.SEAT_OCCUPIED, { seatId: "seat123", playerId: "player456" });
-   * console.log(event);
-   * // Console Output: { head: { name: "PokerSeat:Occupied", createdAt: <Date> }, data: { seatId: "seat123", playerId: "player456" } }
-   * ```
-   */
-  private __initializeEventObj(
-    eventName: PokerSeatEventName,
-    eventData: { [key: string]: any }
-  ): PokerSeatEvent {
-    const event: PokerSeatEvent = {
-      head: {
-        id: generateUniqueId(),
-        name: eventName,
-        createdAt: new Date(),
-        source: `PokerSeat`,
-      },
-      data: eventData,
-    };
-    return event;
   }
 }
 

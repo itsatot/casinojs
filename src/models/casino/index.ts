@@ -1,19 +1,18 @@
 //@collapse
 
-import { EventEmitter } from "events";
-
 // Import Enums
-import { CasinoEventName } from "../../enums/casinoEventNames";
+import { CasinoEventName } from "../../enums";
 
 // Import Interfaces
 import {
+  CasinoInterface,
   PokerRoomConfig,
   PokerRoomInterface,
-} from "../../interfaces/pokerRoom";
-import { CasinoInterface } from "../../interfaces/casino";
+} from "../../interfaces";
 
 // Import Models
 import { PokerRoom } from "../pokerRoom";
+import { BaseEventEmitter } from "../_base";
 
 /**
  * @class `Casino`
@@ -25,11 +24,11 @@ import { PokerRoom } from "../pokerRoom";
  * Each room can accommodate players and maintain its own game state.
  *
  * #### Extends
- * Additionally, it extends the Node.js `EventEmitter` to emit events when specific actions
+ * Additionally, it extends the Node.js `BaseEventEmitter` to emit events when specific actions
  * occur, such as creating or removing a room.
  *
  * #### Implements
- * This class implements the `CasinoInterface` and inherits from the `EventEmitter` class,
+ * This class implements the `CasinoInterface` and inherits from the `BaseEventEmitter` class,
  * allowing it to emit events and conform to the defined interface structure for consistency
  * and predictability.
  *
@@ -46,7 +45,7 @@ import { PokerRoom } from "../pokerRoom";
  * console.log(room); // Logs details of "Room1"
  * ```
  */
-class Casino extends EventEmitter implements CasinoInterface {
+class Casino extends BaseEventEmitter implements CasinoInterface {
   /**************************************************************************************************************
    * PROPERTIES
    **************************************************************************************************************/
