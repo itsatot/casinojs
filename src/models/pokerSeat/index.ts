@@ -284,14 +284,55 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
    **************************************************************************************************************/
 
   /**
-   * `setDealer`
-   * @public
-   * Returns the poker table's `id`.
-   * @returns {boolean} The poker table's `id`.
+   * #### Description
+   * The `setDealer` method is a public setter that designates the `PokerSeat` instance as the dealer seat if `true`
+   * is passed, or removes the dealer designation if `false` is passed.
+   *
+   * #### Implements
+   * N/A
+   *
+   * #### Overrides
+   * N/A
+   *
+   * #### Purpose
+   * This method allows toggling the dealer status for a seat, which is essential for poker games where the dealer
+   * role shifts between players. By marking a seat as the dealer, this method helps manage game flow, particularly
+   * in the context of determining blinds, turn order, and betting phases.
+   *
+   * #### Events
+   * N/A
+   *
+   * #### Parameters
+   * - `bool: boolean` - A boolean value indicating whether this seat should be designated as the dealer.
+   *   - If `true`, the seat is set as the dealer.
+   *   - If `false`, the seat's dealer status is removed.
+   *
+   * #### Requirements
+   * - `bool` must be a boolean value (`true` or `false`).
+   * - Passing `true` designates the seat as the dealer, while `false` removes the dealer status.
+   *
+   * #### Returns
+   * - `boolean` - The assigned dealer status for the seat.
+   *   - Returns `true` if the seat is designated as the dealer, and `false` if it is not.
+   *
+   * #### Usage
+   * Use this method to assign or remove the dealer status of a seat. Typically, only one seat at a table should
+   * have the dealer status at any given time. This method is useful in scenarios where the dealer role rotates,
+   * such as in each new round of a poker game.
+   *
+   * @param {boolean} bool - A boolean indicating whether this seat is the dealer.
+   *
+   * @returns {boolean} - The updated dealer status of the seat.
    *
    * @example
-   * const rank = card.getRank();
-   * console.log(rank); // "A"
+   * ```typescript
+   * const pokerSeat = new PokerSeat({ position: 2 });
+   * pokerSeat.setDealer(true); // Sets the seat as the dealer
+   * console.log(pokerSeat.isDealer()); // Console Output: true
+   *
+   * pokerSeat.setDealer(false); // Removes dealer designation
+   * console.log(pokerSeat.isDealer()); // Console Output: false
+   * ```
    */
   public setDealer(bool: boolean): boolean {
     return this.__setDealer(bool);
@@ -302,56 +343,175 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
    **************************************************************************************************************/
 
   /**
-   * `getId`
-   * @public
-   * Returns the poker table's `id`.
-   * @returns {string} The poker table's `id`.
+   * #### Description
+   * The `getId` method is a public getter that retrieves the unique identifier (`id`) of the `PokerSeat` instance.
+   *
+   * #### Implements
+   * N/A
+   *
+   * #### Overrides
+   * N/A
+   *
+   * #### Purpose
+   * This method provides access to the unique `id` of each `PokerSeat`, allowing it to be referenced or compared
+   * with other seats at the table. This identifier is essential for managing individual seats, especially in a table
+   * with multiple players.
+   *
+   * #### Events
+   * N/A
+   *
+   * #### Parameters
+   * N/A
+   *
+   * #### Requirements
+   * - This method requires no parameters.
+   *
+   * #### Returns
+   * - `string` - Returns the unique identifier (`id`) assigned to the seat.
+   *
+   * #### Usage
+   * Use this method to retrieve the `id` of the seat, which can be useful for logging, comparisons, or when tracking
+   * which seat a player occupies.
+   *
+   * @returns {string} - The unique identifier of the seat.
    *
    * @example
-   * const rank = card.getRank();
-   * console.log(rank); // "A"
+   * ```typescript
+   * const pokerSeat = new PokerSeat();
+   * console.log(pokerSeat.getId());
+   * // Console Output: a unique string identifier, e.g., "123e4567-e89b-12d3-a456-426614174000"
+   * ```
    */
   public getId(): string {
     return this.__id;
   }
 
   /**
-   * `getPosition`
-   * @public
-   * Returns the poker table's `id`.
-   * @returns {string} The poker table's `id`.
+   * #### Description
+   * The `getPosition` method is a public getter that retrieves the seat’s position at the poker table.
+   *
+   * #### Implements
+   * N/A
+   *
+   * #### Overrides
+   * N/A
+   *
+   * #### Purpose
+   * This method provides access to the seat's specific position on the poker table, which is important for managing
+   * turn order, dealer rotation, and blind assignments in poker games.
+   *
+   * #### Events
+   * N/A
+   *
+   * #### Parameters
+   * N/A
+   *
+   * #### Requirements
+   * - This method requires no parameters.
+   *
+   * #### Returns
+   * - `number` - Returns the position of the seat at the table.
+   *
+   * #### Usage
+   * Use this method to retrieve the position of the seat, which can be essential for turn-based logic and managing
+   * seating order at the poker table.
+   *
+   * @returns {number} - The position of the seat at the table.
    *
    * @example
-   * const rank = card.getRank();
-   * console.log(rank); // "A"
+   * ```typescript
+   * const pokerSeat = new PokerSeat({ position: 3 });
+   * console.log(pokerSeat.getPosition());
+   * // Console Output: 3
+   * ```
    */
   public getPosition(): number {
     return this.__position;
   }
 
   /**
-   * `isDealer`
-   * @public
-   * Returns the poker table's `id`.
-   * @returns {boolean} The poker table's `id`.
+   * #### Description
+   * The `isDealer` method is a public getter that checks if this seat is currently designated as the dealer seat.
+   *
+   * #### Implements
+   * N/A
+   *
+   * #### Overrides
+   * N/A
+   *
+   * #### Purpose
+   * This method indicates whether the seat has been designated as the dealer, which is critical for determining
+   * turn order and managing the game's flow, especially in games where the dealer role rotates between players.
+   *
+   * #### Events
+   * N/A
+   *
+   * #### Parameters
+   * N/A
+   *
+   * #### Requirements
+   * - This method requires no parameters.
+   *
+   * #### Returns
+   * - `boolean` - Returns `true` if this seat is designated as the dealer, otherwise `false`.
+   *
+   * #### Usage
+   * Use this method to check if the seat has the dealer role, which is particularly useful for managing dealer-related
+   * functions like initiating blinds or handling turn order.
+   *
+   * @returns {boolean} - The dealer status of the seat.
    *
    * @example
-   * const rank = card.getRank();
-   * console.log(rank); // "A"
+   * ```typescript
+   * const pokerSeat = new PokerSeat();
+   * pokerSeat.setDealer(true);
+   * console.log(pokerSeat.isDealer());
+   * // Console Output: true
+   * ```
    */
   public isDealer(): boolean {
     return this.__isDealer;
   }
 
   /**
-   * `getPlayer`
-   * @public
-   * Returns the poker table's `id`.
-   * @returns {PokerPlayerInterface | undefined} The poker table's `id`.
+   * #### Description
+   * The `getPlayer` method is a public getter that retrieves the player occupying this seat, if any.
+   *
+   * #### Implements
+   * N/A
+   *
+   * #### Overrides
+   * N/A
+   *
+   * #### Purpose
+   * This method provides access to the player currently occupying the seat, allowing the application to retrieve
+   * player-specific data, manage player actions, or determine seat vacancy.
+   *
+   * #### Events
+   * N/A
+   *
+   * #### Parameters
+   * N/A
+   *
+   * #### Requirements
+   * - This method requires no parameters.
+   *
+   * #### Returns
+   * - `PokerPlayerInterface | undefined` - Returns the player instance occupying this seat, or `undefined` if the seat is vacant.
+   *
+   * #### Usage
+   * Use this method to retrieve the player occupying this seat, which is helpful in managing player actions or
+   * determining if the seat is available for another player.
+   *
+   * @returns {PokerPlayerInterface | undefined} - The player instance if occupied, or `undefined` if vacant.
    *
    * @example
-   * const rank = card.getRank();
-   * console.log(rank); // "A"
+   * ```typescript
+   * const pokerSeat = new PokerSeat();
+   * pokerSeat.occupySeat(player); // player implements PokerPlayerInterface
+   * console.log(pokerSeat.getPlayer());
+   * // Console Output: <PlayerInstance>
+   * ```
    */
   public getPlayer(): PokerPlayerInterface | undefined {
     return this.__player;
@@ -369,21 +529,147 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
    * BUSINESS-LOGIC METHODS (LOGIC & CALCULATIONS)
    **************************************************************************************************************/
 
+  /**
+   * #### Description
+   * The `isOccupied` method checks if the seat is currently occupied by a player.
+   *
+   * #### Implements
+   * N/A
+   *
+   * #### Overrides
+   * N/A
+   *
+   * #### Purpose
+   * This method is essential for determining seat occupancy status, enabling other parts of the program to
+   * verify if a seat is taken before allowing actions such as seating another player.
+   *
+   * #### Events
+   * N/A
+   *
+   * #### Parameters
+   * N/A
+   *
+   * #### Requirements
+   * - This method does not take any parameters.
+   *
+   * #### Returns
+   * - `boolean` - Returns `true` if the seat is occupied, otherwise `false`.
+   *
+   * #### Usage
+   * Use this method to check the seat occupancy status, which is particularly helpful when managing game actions,
+   * such as assigning seats to players or checking for available seating.
+   *
+   * @returns {boolean} - `true` if the seat has a player, otherwise `false`.
+   *
+   * @example
+   * ```typescript
+   * const pokerSeat = new PokerSeat();
+   * console.log(pokerSeat.isOccupied());
+   * // Console Output: false
+   *
+   * pokerSeat.occupy(player); // Assume `player` is an instance of PokerPlayerInterface
+   * console.log(pokerSeat.isOccupied());
+   * // Console Output: true
+   * ```
+   */
   public isOccupied(): boolean {
-    if (this.getPlayer() === undefined) {
-      return false;
-    }
-    return true;
+    return this.getPlayer() !== undefined;
   }
 
+  /**
+   * #### Description
+   * The `occupy` method assigns a player to occupy this seat.
+   *
+   * #### Implements
+   * N/A
+   *
+   * #### Overrides
+   * N/A
+   *
+   * #### Purpose
+   * This method assigns a player to the seat, indicating the seat is occupied. It is essential for seating
+   * management, allowing a player to be seated at a specific position at the poker table.
+   *
+   * #### Events
+   * - **PokerSeat:Occupied**: This event could be emitted if event-based occupancy handling is implemented in the future.
+   *
+   * #### Parameters
+   * - `player: PokerPlayerInterface` - The player instance to occupy the seat.
+   *
+   * #### Requirements
+   * - `player` must implement `PokerPlayerInterface` to ensure compatibility with seat management logic.
+   *
+   * #### Returns
+   * - `void` - This method does not return a value.
+   *
+   * #### Usage
+   * Use this method to assign a player to the seat, marking it as occupied. This is particularly useful in managing
+   * seating order and initializing the player setup for a game round.
+   *
+   * @param {PokerPlayerInterface} player - The player instance to assign to the seat.
+   *
+   * @returns {void}
+   *
+   * @example
+   * ```typescript
+   * const pokerSeat = new PokerSeat();
+   * pokerSeat.occupy(player); // Assume `player` is an instance of PokerPlayerInterface
+   * console.log(pokerSeat.isOccupied());
+   * // Console Output: true
+   * ```
+   */
   public occupy(player: PokerPlayerInterface): void {
     this.__setPlayer(player);
   }
 
+  /**
+   * #### Description
+   * The `vacate` method removes the player from the seat, marking it as unoccupied.
+   *
+   * #### Implements
+   * N/A
+   *
+   * #### Overrides
+   * N/A
+   *
+   * #### Purpose
+   * This method allows for freeing up the seat by removing the player, which is essential in poker games
+   * where players may need to leave their seat or be reassigned to a different seat.
+   *
+   * #### Events
+   * - **PokerSeat:Vacated**: This event could be emitted if event-based vacancy handling is implemented in the future.
+   *
+   * #### Parameters
+   * N/A
+   *
+   * #### Requirements
+   * - The seat must be occupied before calling this method; otherwise, an error is thrown.
+   *
+   * #### Returns
+   * - `void` - This method does not return a value.
+   *
+   * #### Usage
+   * Use this method to free up a seat, making it available for other players. This is particularly useful in managing
+   * player turnover or when a player voluntarily vacates their seat.
+   *
+   * @returns {void}
+   *
+   * @throws {Error} - Throws an error if the seat is already vacant, as no player can be removed from an empty seat.
+   *
+   * @example
+   * ```typescript
+   * const pokerSeat = new PokerSeat();
+   * pokerSeat.occupy(player); // Assume `player` is an instance of PokerPlayerInterface
+   * pokerSeat.vacate();
+   * console.log(pokerSeat.isOccupied());
+   * // Console Output: false
+   * ```
+   */
   public vacate(): void {
     if (!this.isOccupied()) {
       throw new Error(`PokerSeat: Seat is already vacant.`);
     }
+    this.__setPlayer(undefined);
   }
 
   /**************************************************************************************************************
@@ -400,11 +686,11 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
 
   /**
    * #### Description
-   * Sets a unique identifier (`id`) for the `PokerSeat` instance.
+   * The `__setId` method assigns a unique identifier (`id`) to this `PokerSeat` instance.
    *
    * #### Purpose
-   * This method ensures that each `PokerSeat` has a unique identifier, allowing distinct identification across
-   * different seats at a poker table.
+   * This method ensures each `PokerSeat` instance has a unique `id`, enabling it to be individually identified
+   * within a poker table, which is essential for managing seats in complex games.
    *
    * #### Implements
    * N/A
@@ -416,17 +702,17 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
    * - `id: string` - The unique identifier to be assigned to the `PokerSeat`.
    *
    * #### Requirements
-   * - `id` must be a valid, unique string that identifies this specific seat.
+   * - `id` must be a valid, unique string, typically generated when the seat is initialized.
    *
    * #### Returns
-   * - Returns the `id` assigned to the seat as a string.
+   * - `string` - The assigned unique identifier of the seat.
    *
    * #### Usage
-   * This method is used internally to assign or update the unique identifier of the seat during initialization.
+   * This method is called internally during seat initialization to set or update the seat's unique `id`.
    *
    * @param {string} id - A unique identifier for the seat.
    *
-   * @returns {string} - The unique identifier of the seat after assignment.
+   * @returns {string} - The assigned unique identifier of the seat.
    *
    * @example
    * ```typescript
@@ -443,11 +729,11 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
 
   /**
    * #### Description
-   * Sets the position of the `PokerSeat` within the poker table.
+   * The `__setPosition` method assigns a specific position index to this `PokerSeat` instance within the poker table.
    *
    * #### Purpose
-   * Defines the seat's location at the poker table, which is critical for seating arrangements and determining
-   * player roles such as dealer or blinds.
+   * This method specifies the seat's location on the table, essential for player turn management and role assignments
+   * like the dealer or blinds.
    *
    * #### Implements
    * N/A
@@ -456,20 +742,20 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
    * N/A
    *
    * #### Parameters
-   * - `position: number` - The position index of the seat on the table.
+   * - `position: number` - The index position of the seat on the table.
    *
    * #### Requirements
-   * - `position` must be a non-negative integer and within the range allowed by the table configuration.
+   * - `position` must be a non-negative integer and within the allowed range for the table.
    *
    * #### Returns
-   * - Returns the assigned position of the seat as a number.
+   * - `number` - The position of the seat after assignment.
    *
    * #### Usage
-   * This method is used internally to assign or update the seat’s position during seat initialization.
+   * This method is called internally to set or update the seat’s position at the table during initialization.
    *
    * @param {number} position - Position index of the seat.
    *
-   * @returns {number} - The position of the seat after assignment.
+   * @returns {number} - The position index of the seat.
    *
    * @example
    * ```typescript
@@ -486,11 +772,11 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
 
   /**
    * #### Description
-   * Sets the dealer status for the `PokerSeat`.
+   * The `__setDealer` method designates this `PokerSeat` as the dealer’s seat.
    *
    * #### Purpose
-   * Indicates if the player in this seat is assigned as the dealer, affecting game flow, especially in managing
-   * blinds and player turns.
+   * This method toggles the dealer status for the seat, essential for game flow management, such as assigning blinds
+   * and determining the first player action.
    *
    * #### Implements
    * N/A
@@ -499,20 +785,20 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
    * N/A
    *
    * #### Parameters
-   * - `bool: boolean` - Boolean value indicating whether this seat is designated as the dealer seat.
+   * - `bool: boolean` - Indicates if the seat is assigned the dealer role.
    *
    * #### Requirements
-   * - `bool` should be a boolean value where `true` designates the seat as the dealer, and `false` removes the dealer status.
+   * - `bool` should be `true` to assign the dealer status, or `false` to remove it.
    *
    * #### Returns
-   * - Returns the dealer status after assignment as a boolean.
+   * - `boolean` - The updated dealer status of the seat.
    *
    * #### Usage
-   * This method is used internally to assign or update the dealer status of the seat.
+   * This method is called internally to assign or toggle the dealer status of the seat.
    *
-   * @param {boolean} bool - Indicates if this seat is the dealer seat.
+   * @param {boolean} bool - Specifies if the seat is the dealer.
    *
-   * @returns {boolean} - Returns the assigned dealer status.
+   * @returns {boolean} - The assigned dealer status.
    *
    * @example
    * ```typescript
@@ -529,10 +815,11 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
 
   /**
    * #### Description
-   * Sets the player occupying this `PokerSeat`.
+   * The `__setPlayer` method assigns a player to this `PokerSeat`.
    *
    * #### Purpose
-   * Assigns a player to occupy the seat or sets it to `undefined` if vacant, enabling the system to track seat occupancy.
+   * This method designates a player to occupy the seat or clears the seat if set to `undefined`, allowing for
+   * seat availability management.
    *
    * #### Implements
    * N/A
@@ -541,16 +828,16 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
    * N/A
    *
    * #### Parameters
-   * - `player: PokerPlayerInterface | undefined` - The player instance assigned to the seat, or `undefined` if the seat is vacant.
+   * - `player: PokerPlayerInterface | undefined` - The player instance to be assigned to the seat, or `undefined` to mark the seat vacant.
    *
    * #### Requirements
-   * - `player` must implement the `PokerPlayerInterface` or be `undefined` to mark the seat as vacant.
+   * - `player` must be an instance of `PokerPlayerInterface`, or `undefined` to vacate the seat.
    *
    * #### Returns
-   * - Returns the player occupying the seat or `undefined` if vacant.
+   * - `PokerPlayerInterface | undefined` - The player occupying the seat or `undefined` if vacant.
    *
    * #### Usage
-   * This method is used internally to assign or update the player occupying the seat.
+   * This method is used internally to assign a player to the seat or clear the seat.
    *
    * @param {PokerPlayerInterface | undefined} player - The player to occupy the seat, or `undefined` if no player is assigned.
    *
@@ -573,11 +860,11 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
 
   /**
    * #### Description
-   * Emits an event with an optional middleware processing chain, allowing for event data validation, transformation,
-   * or additional handling before final emission.
+   * The `__emitEvent` method emits an event with optional middleware processing, allowing for validation or transformation
+   * before final emission.
    *
    * #### Purpose
-   * Consolidates event emission into a single method that supports both direct emissions and middleware-processed emissions.
+   * This method centralizes event emission, supporting direct and middleware-processed emissions for flexible event handling.
    *
    * #### Implements
    * N/A
@@ -586,31 +873,30 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
    * N/A
    *
    * #### Events
-   * This method can emit any event specified by `PokerSeatEventName`, including:
+   * This method can emit any event defined in `PokerSeatEventName`, including:
    * - **PokerSeatEventName.SEAT_OCCUPIED**: Emitted when a player occupies the seat.
    * - **PokerSeatEventName.SEAT_VACATED**: Emitted when a seat is vacated.
    *
    * #### Parameters
    * - `eventName: PokerSeatEventName` - The name of the event to emit.
-   * - `eventData: { [key: string]: any }` - Data specific to the event, such as seat and player details.
+   * - `eventData: { [key: string]: any }` - Data specific to the event, like seat and player details.
    * - `options?: { middlewares?: Array<(event: PokerSeatEvent, next: () => void) => void | false> }`
-   *    - `middlewares`: Optional. Array of middleware functions to process the event data before emission.
+   *    - `middlewares`: Optional. Array of middleware functions for processing the event data before emission.
    *
    * #### Requirements
    * - `eventName` must be a valid `PokerSeatEventName`.
-   * - `eventData` must be an object with key-value pairs relevant to the event type.
-   * - If `middlewares` are provided, they must follow the `(event: PokerSeatEvent, next: () => void) => void | false` function signature.
+   * - If `middlewares` are provided, they must follow the `(event: PokerSeatEvent, next: () => void) => void | false` signature.
    *
    * #### Returns
    * - `void` - This method does not return a value.
    *
    * #### Usage
-   * This method is used for both direct and middleware-processed event emissions. When middlewares are provided,
-   * each function processes the event data sequentially before final emission.
+   * This method is used for both direct and middleware-processed event emissions, allowing for sequential processing
+   * of the event data when middlewares are specified.
    *
    * @param {PokerSeatEventName} eventName - The event name to emit.
    * @param {object} eventData - Data specific to the event.
-   * @param {object} [options] - Optional parameter containing middleware functions.
+   * @param {object} [options] - Optional parameter with middleware functions.
    * @param {Array<(event: PokerSeatEvent, next: () => void) => void | false>} [options.middlewares] - Optional array of middleware functions.
    *
    * @returns {void}
@@ -657,11 +943,10 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
 
   /**
    * #### Description
-   * Creates an event object with metadata and data, initializing it for further processing or emission.
+   * The `__initializeEventObj` method creates a structured event object, initializing it with metadata and data.
    *
    * #### Purpose
-   * This method constructs a `PokerSeatEvent` object with standardized metadata, ensuring a uniform structure for
-   * seat-related events.
+   * This method constructs a `PokerSeatEvent` object with consistent metadata, ensuring uniformity for seat-related events.
    *
    * #### Implements
    * N/A
@@ -674,23 +959,22 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
    *
    * #### Parameters
    * - `eventName: PokerSeatEventName` - The name of the event.
-   * - `eventData: { [key: string]: any }` - Data associated with the event, such as seat or player details.
+   * - `eventData: { [key: string]: any }` - Data related to the event, such as seat or player details.
    *
    * #### Requirements
    * - `eventName` must be a valid `PokerSeatEventName`.
-   * - `eventData` should be an object containing relevant key-value pairs for the event.
+   * - `eventData` should be a well-defined object containing event details.
    *
    * #### Returns
    * - `PokerSeatEvent` - A complete event object ready for processing or emission.
    *
    * #### Usage
-   * Use this method to create a structured `PokerSeatEvent` object before emitting, enabling consistent event formatting
-   * and easing further event handling or processing.
+   * Use this method to create a structured `PokerSeatEvent` object before emission, allowing for consistent event handling.
    *
    * @param {PokerSeatEventName} eventName - The name of the event.
    * @param {object} eventData - Data associated with the event.
    *
-   * @returns {PokerSeatEvent} - A complete event object ready for processing or emission.
+   * @returns {PokerSeatEvent} - A structured event object ready for emission.
    *
    * @example
    * ```typescript
