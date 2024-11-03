@@ -66,17 +66,20 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
    *
    * #### Purpose
    * The `__id` property uniquely identifies each `PokerSeat` instance, helping to distinguish between different
-   * seats at a table, especially when multiple seats are involved in the game.
+   * seats at a poker table, especially when multiple seats are involved in the game.
    *
    * #### Requirements
-   * - This property is auto-generated and assigned a unique string identifier upon seat creation.
+   * - This property is auto-generated upon creation, providing a unique string identifier for each seat.
+   * - Immutable: This property is set once and does not change throughout the seat's lifecycle.
+   *
+   * #### Usage
+   * The `__id` is used internally to track and differentiate seats, especially for operations that require distinct
+   * seat identification.
    *
    * @example
    * ```typescript
    * const pokerSeat = new PokerSeat();
-   * console.log(pokerSeat.getId);
-   *
-   * // Console Output: a unique string identifier, e.g., "123e4567-e89b-12d3-a456-426614174000"
+   * console.log(pokerSeat.getId()); // Outputs a unique identifier, e.g., "123e4567-e89b-12d3-a456-426614174000"
    * ```
    */
   private __id: string = ``;
@@ -84,20 +87,24 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
   /**
    * @property {number} __position
    *
-   * Represents the seat's position at the poker table, generally between 0 and the table’s maximum seating capacity.
+   * Represents the seat's position at the poker table, usually ranging from 0 to the table’s maximum capacity.
    *
    * #### Purpose
-   * The `__position` property assigns each seat a specific position on the table, helping to manage seating
-   * order, player turns, and blind assignments.
+   * The `__position` property assigns each seat a specific position on the table, essential for managing seating
+   * order, determining player turns, and assigning blinds.
    *
    * #### Requirements
-   * - The `__position` is set during seat creation and must be an integer within the table’s allowed range (e.g., 0-13 for a 14-seat table).
+   * - Immutable: This property is set during seat creation and must be within the table’s seating range.
+   * - Example range: 0 to 13 for a table with 14 seats.
+   *
+   * #### Usage
+   * The `__position` is used internally to keep track of each seat’s order at the table, allowing logical seat
+   * arrangements and role assignments.
    *
    * @example
    * ```typescript
-   * const pokerSeat = new PokerSeat({position: 3});
-   * console.log(pokerSeat.getPosition());
-   * // Console Output: 3
+   * const pokerSeat = new PokerSeat({ position: 3 });
+   * console.log(pokerSeat.getPosition()); // Console Output: 3
    * ```
    */
   private __position: number = 0;
@@ -105,20 +112,24 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
   /**
    * @property {boolean} __isDealer
    *
-   * Indicates if this seat is designated as the dealer’s seat.
+   * Indicates if this seat is designated as the dealer’s seat for the current round.
    *
    * #### Purpose
-   * The `__isDealer` property tracks whether a player seated here is currently the dealer, which is essential for managing
-   * game flow, determining blinds, and starting each round.
+   * The `__isDealer` property helps track whether a player in this seat is assigned the dealer role, which is critical
+   * for determining game flow, blinds, and the starting point of each round.
    *
    * #### Requirements
-   * - Optional: `__isDealer` is false by default and can be toggled based on the game's current dealer assignment.
+   * - Mutable: The `__isDealer` value can change between `true` or `false` depending on the game's dealer rotation.
+   * - Default: `false` by default, indicating the seat is not a dealer unless explicitly set.
+   *
+   * #### Usage
+   * This property is toggled as the game progresses to assign the dealer role to different seats.
    *
    * @example
    * ```typescript
    * const pokerSeat = new PokerSeat();
    * pokerSeat.setDealerStatus(true);
-   * console.log(pokerSeat.isDealer()); // Console Output: true if set as dealer
+   * console.log(pokerSeat.isDealer()); // Console Output: true, if set as dealer
    * ```
    */
   private __isDealer: boolean = false;
@@ -129,17 +140,21 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
    * Holds the reference to the player occupying this seat, or `undefined` if no player is seated.
    *
    * #### Purpose
-   * The `__player` property is used to track which player occupies this seat, facilitating management of player-specific
-   * actions, status, and interactions at the table.
+   * The `__player` property keeps track of which player occupies this seat, facilitating player-specific interactions,
+   * actions, and status updates at the table.
    *
    * #### Requirements
-   * - Optional: `__player` is undefined by default until a player occupies the seat.
+   * - Mutable: The `__player` can be assigned when a player occupies the seat and set to `undefined` when the seat is vacated.
+   * - Default: `undefined` by default, indicating no player occupies the seat.
+   *
+   * #### Usage
+   * The `__player` property is set when a player occupies the seat and is cleared when the seat is vacated.
    *
    * @example
    * ```typescript
    * const pokerSeat = new PokerSeat();
    * pokerSeat.occupySeat(player); // player implements PokerPlayerInterface
-   * console.log(pokerSeat.getplayer); // Console Output: Player instance if occupied
+   * console.log(pokerSeat.getPlayer()); // Console Output: <PlayerInstance>
    * ```
    */
   private __player: PokerPlayerInterface | undefined = undefined;
@@ -149,13 +164,44 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
    **************************************************************************************************************/
 
   /**
-   * constructor
-   * @public
-   * Creates an instance of a Deck with 52 cards.
-   * Automatically initializes the deck with all combinations of ranks and suits.
+   * #### Description
+   * The public `constructor` method initializes a new instance of `PokerSeat`, setting up its configuration based on the
+   * provided `PokerSeatConfig` parameter. This configuration includes seat properties such as `id`, `position`, `isDealer`,
+   * and the `player` occupying the seat.
+   *
+   * #### Purpose
+   * The `constructor` method creates a fully initialized `PokerSeat` instance. It provides a structure for each seat
+   * at a poker table and uses the `__init` method to ensure all required configurations are applied.
+   *
+   * #### Implements
+   * N/A
+   *
+   * #### Overrides
+   * N/A
+   *
+   * #### Parameters
+   * - `config: PokerSeatConfig` - An optional configuration object that defines initial properties for the seat.
+   *   This includes the `id`, `position`, `isDealer` status, and the `player`.
+   *
+   * #### Requirements
+   * - The `config` object should be structured to align with the `PokerSeatConfig` interface.
+   * - Default values are set if `config` is missing or incomplete.
+   *
+   * #### Returns
+   * - `N/A` - As a constructor, this does not return a value.
+   *
+   * #### Usage
+   * Use this constructor to create new `PokerSeat` instances for each seat at a poker table, each with a unique
+   * configuration. This can be particularly useful when setting up multiple seats within a table class.
+   *
+   * @param {PokerSeatConfig} config - Configuration object for setting initial seat properties.
    *
    * @example
-   * const deck = new Deck();
+   * ```typescript
+   * const seatConfig = { id: "seat1", position: 3, isDealer: false };
+   * const pokerSeat = new PokerSeat(seatConfig);
+   * console.log(pokerSeat.getPosition()); // Console Output: 3
+   * ```
    */
   constructor(config: PokerSeatConfig) {
     super();
@@ -163,32 +209,70 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
   }
 
   /**
-   * constructor
-   * @public
-   * Creates an instance of a Deck with 52 cards.
-   * Automatically initializes the deck with all combinations of ranks and suits.
+   * #### Description
+   * The `__init` method is a private initializer function that applies the provided configuration to the `PokerSeat` instance.
+   * It sets the unique `id`, seat `position`, `isDealer` status, and any player occupying the seat. If a property in the
+   * configuration is missing, a default value or auto-generated value is assigned.
+   *
+   * #### Purpose
+   * This initializer separates configuration logic from the main `constructor`, enhancing readability and modularity.
+   * It ensures that each seat has consistent properties and auto-generates values where necessary, such as `id` if
+   * it is not provided.
+   *
+   * #### Implements
+   * N/A
+   *
+   * #### Overrides
+   * N/A
+   *
+   * #### Parameters
+   * - `config?: PokerSeatConfig` - An optional configuration object that provides initial values for the seat.
+   *   - `id: string` - Optional. If provided, sets a unique identifier for the seat. Defaults to an auto-generated ID if missing.
+   *   - `position: number` - Optional. Sets the seat’s position at the table. Throws an error if position is undefined.
+   *   - `isDealer: boolean` - Optional. Determines if the seat is designated as the dealer seat.
+   *   - `player: PokerPlayerInterface | undefined` - Optional. Assigns a player to the seat if occupied.
+   *
+   * #### Requirements
+   * - If `id` is missing, an auto-generated unique identifier is assigned.
+   * - `position` must be a valid number within the allowed seating range; otherwise, an error is thrown.
+   * - If `isDealer` is omitted, it defaults to `false`.
+   * - If `player` is not provided, the seat remains empty (`undefined`).
+   *
+   * #### Returns
+   * - `void` - This method does not return a value.
+   *
+   * #### Usage
+   * The `__init` method is called by the `constructor` to apply initial configuration to the `PokerSeat`.
+   * It sets default values where needed, ensuring a consistent setup for each seat. Typically, this method is not
+   * called directly but through the `constructor`.
+   *
+   * @param {PokerSeatConfig} config - An optional configuration object for initializing seat properties.
    *
    * @example
-   * const deck = new Deck();
+   * ```typescript
+   * const seatConfig = { position: 1, isDealer: true };
+   * const pokerSeat = new PokerSeat(seatConfig);
+   * // The seat is initialized with position 1 and dealer status as true.
+   * ```
    */
-  private __init(config?: PokerSeatConfig) {
+  private __init(config?: PokerSeatConfig): void {
     if (config) {
-      //
+      // Set the unique seat ID; generate a new ID if not provided.
       config.id && config.id !== ``
         ? this.__setId(config.id)
         : this.__setId(generateUniqueId());
 
-      //
+      // Set the seat position; if undefined, an error is thrown.
       config.position
         ? this.__setPosition(config.position)
-        : new Error(`PokerSeat: Apt Descriptive Error message.`);
+        : new Error(`PokerSeat: Position must be defined for each seat.`);
 
-      //
+      // Set the dealer status; default to `false` if not provided.
       config.isDealer
         ? this.setDealer(config.isDealer)
         : this.setDealer(this.__isDealer);
 
-      //
+      // Assign a player to the seat if provided; otherwise, seat remains unoccupied.
       config.player
         ? this.__setPlayer(config.player)
         : this.__setPlayer(this.__player);
