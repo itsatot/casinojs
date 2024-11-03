@@ -2,11 +2,7 @@
 
 import { EventEmitter } from "events";
 import { PokerSeatEventName } from "../../enums";
-import {
-  PokerSeatEvent,
-  PokerSeatOccupiedEvent,
-  PokerSeatVacatedEvent,
-} from "../../events";
+import { PokerSeatEvent } from "../../events";
 import {
   PokerPlayerInterface,
   PokerSeatConfig,

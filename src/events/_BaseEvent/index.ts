@@ -215,7 +215,7 @@ interface _BaseEvent<T = any> {
    * // Console Output: Custom data object, e.g., { seatId: "123", playerId: "p789" }
    * ```
    */
-  data: T;
+  data?: T;
 
   /**
    * @property {[key: string]: any}
