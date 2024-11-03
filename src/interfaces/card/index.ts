@@ -45,7 +45,7 @@ interface CardInterface {
  **************************************************************************************************************/
  
   /**
-   * @method `getRank`
+   * `getRank`
    * @public
    * Returns the card's rank.
    * @returns {Rank} The card's rank.
@@ -57,7 +57,7 @@ interface CardInterface {
   getRank(): Rank;
 
   /**
-   * @method `getSuit`
+   * `getSuit`
    * @public
    * Returns the card's suit.
    * @returns {Suit} The card's suit.
@@ -82,7 +82,7 @@ interface CardInterface {
  **************************************************************************************************************/
 
   /**
-   * @method `toString`
+   * `toString`
    * @public
    * Returns a string representation of the card, displaying its rank and suit.
    * @returns {string} The card's rank and suit as a formatted string.
@@ -94,7 +94,7 @@ interface CardInterface {
   toString(): string;
 
   /**
-   * @method `toObj`
+   * `toObj`
    * @public
    * Returns an object representation of the card, containing its rank and suit.
    * @returns {object<{ rank: Rank; suit: Suit }>} The card's rank and suit as an object.

@@ -216,8 +216,8 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
    * Call this method to configure or update the settings of a poker table in the room. This helps ensure
    * all game-related settings, such as seating and blinds, are properly managed.
    *
-   * @param {PokerTableInterface} table - The configuration settings for the poker table.
-   * @returns {PokerTableInterface} - Returns the table configuration set for the room.
+   * @param {PokerTableInterface[]} tables - The configuration settings for the poker table.
+   * @returns {PokerTableInterface[]} - Returns the table configuration set for the room.
    *
    * @example
    * ```typescript
@@ -310,7 +310,6 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
    * #### Usage
    * Primarily used within subclasses or protected methods to dynamically create and add rooms to the Casino.
    *
-   * @param {PokerRoomConfig} config - Configuration settings for creating a new `PokerRoom`.
    * @returns {PokerRoomInterface} - The newly created room instance.
    *
    * @example
@@ -431,7 +430,7 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
    **************************************************************************************************************/
 
   /**
-   * @method `size`
+   * `size`
    * Starts a new PokerGame if there are at least two active players at the PokerTable.
    * This method initiates the game flow, including assigning blinds and starting the rounds.
    * @returns {number}
@@ -609,7 +608,7 @@ class PokerRoom extends EventEmitter implements PokerRoomInterface {
    **************************************************************************************************************/
 
   /**
-   * @method `setId`
+   * `setId`
    * @private
    * Returns the poker table's `id`.
    * @returns {string} The poker table's `id`.

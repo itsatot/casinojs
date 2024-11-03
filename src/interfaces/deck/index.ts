@@ -1,5 +1,6 @@
 //@collapse
 
+import { EventEmitterBase } from "../_base";
 import { CardInterface } from "../card";
 
 /**
@@ -15,50 +16,50 @@ import { CardInterface } from "../card";
  * const card = deck.draw();
  * console.log(card?.toString()); // "A of Spades"
  */
-interface DeckInterface extends NodeJS.EventEmitter {
-/**************************************************************************************************************
- * CREATE METHODS (SETTERS & OBJECT CREATION)
- **************************************************************************************************************/
+interface DeckInterface extends EventEmitterBase {
+  /**************************************************************************************************************
+   * CREATE METHODS (SETTERS & OBJECT CREATION)
+   **************************************************************************************************************/
 
-/**************************************************************************************************************
- * READ METHODS (GETTERS & DATA RETRIEVAL)
- **************************************************************************************************************/
+  /**************************************************************************************************************
+   * READ METHODS (GETTERS & DATA RETRIEVAL)
+   **************************************************************************************************************/
 
-getCards(): CardInterface[];
+  getCards(): CardInterface[];
 
-/**************************************************************************************************************
- * UPDATE METHODS (MODIFYING EXISTING OBJECTS)
- **************************************************************************************************************/
+  /**************************************************************************************************************
+   * UPDATE METHODS (MODIFYING EXISTING OBJECTS)
+   **************************************************************************************************************/
 
-/**************************************************************************************************************
- * DELETE METHODS (REMOVING OBJECTS)
- **************************************************************************************************************/
+  /**************************************************************************************************************
+   * DELETE METHODS (REMOVING OBJECTS)
+   **************************************************************************************************************/
 
-/**************************************************************************************************************
- * BUSINESS-LOGIC METHODS (LOGIC & CALCULATIONS)
- **************************************************************************************************************/
+  /**************************************************************************************************************
+   * BUSINESS-LOGIC METHODS (LOGIC & CALCULATIONS)
+   **************************************************************************************************************/
 
-/**
- * @method `shuffle`
- * Shuffles the deck of cards.
- *
- * @example
- * const deck = new Deck();
- * deck.shuffle();
- */
-shuffle(): void;
+  /**
+   * `shuffle`
+   * Shuffles the deck of cards.
+   *
+   * @example
+   * const deck = new Deck();
+   * deck.shuffle();
+   */
+  shuffle(): void;
 
-/**
- * @method `draw`
- * Draws a card from the top of the deck.
- *
- * @returns {CardInterface | undefined} Returns the drawn card or `undefined` if no cards remain.
- *
- * @example
- * const drawnCard = deck.draw();
- * console.log(drawnCard?.toString()); // "A of Spades"
- */
-draw(): CardInterface | undefined;
+  /**
+   * `draw`
+   * Draws a card from the top of the deck.
+   *
+   * @returns {CardInterface | undefined} Returns the drawn card or `undefined` if no cards remain.
+   *
+   * @example
+   * const drawnCard = deck.draw();
+   * console.log(drawnCard?.toString()); // "A of Spades"
+   */
+  draw(): CardInterface | undefined;
 }
 
 /**************************************************************************************************************

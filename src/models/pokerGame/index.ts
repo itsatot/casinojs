@@ -83,7 +83,7 @@ class PokerGame extends EventEmitter implements PokerGameInterface {
    *************************************************************************************/
 
   /**
-   * @method constructor
+   * constructor
    * @public
    * Creates an instance of a Deck with 52 cards.
    * Automatically initializes the deck with all combinations of ranks and suits.
@@ -97,11 +97,11 @@ class PokerGame extends EventEmitter implements PokerGameInterface {
   }
 
   /**
-   * @method `init`
+   * `init`
    * @private
    * Initializes the deck with 52 unique cards.
    * This method is called automatically inside the constructor during deck creation.
-   * @emits `deck:initialized` : Emits a `deck:initialized` event when the deck is created.
+   * `deck:initialized` : Emits a `deck:initialized` event when the deck is created.
    * @returns {void}
    */
   private __init(config?: PokerGameConfig): void {
@@ -189,14 +189,14 @@ class PokerGame extends EventEmitter implements PokerGameInterface {
    **************************************************************************************************************/
 
   /**
-   * @method `advancePhase`
+   * `advancePhase`
    * Advances the game to the next phase (pre-flop to flop, flop to turn, etc.).
    * @returns {void}
    */
   private __advancePhase(): void {}
 
   /**
-   * @method `resolveBets`
+   * `resolveBets`
    * Resolves the current betting round, updating player chip stacks and determining the winner if applicable.
    * @returns {void}
    */

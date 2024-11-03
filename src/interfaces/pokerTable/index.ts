@@ -1,5 +1,6 @@
 //@collapse
 
+import { EventEmitterBase } from "../_base";
 import { PokerSeatInterface } from "../pokerSeat";
 
 /**
@@ -167,7 +168,7 @@ interface PokerTableConfig {
  *
  * @extends NodeJS.EventEmitter
  */
-interface PokerTableInterface extends NodeJS.EventEmitter {
+interface PokerTableInterface extends EventEmitterBase {
   /**************************************************************************************************************
    * CREATE METHODS (SETTERS & OBJECT CREATION)
    **************************************************************************************************************/
@@ -221,7 +222,7 @@ interface PokerTableInterface extends NodeJS.EventEmitter {
    **************************************************************************************************************/
 
   /**
-   * @method `getId`
+   * `getId`
    * @public
    * Returns the poker table's `id`.
    * @returns {string} The poker table's `id`.
@@ -233,7 +234,7 @@ interface PokerTableInterface extends NodeJS.EventEmitter {
   getId(): string;
 
   /**
-   * @method `getSeats`
+   * `getSeats`
    * Starts a new PokerGame if there are at least two active players at the PokerTable.
    * This method initiates the game flow, including assigning blinds and starting the rounds.
    * @returns {number}

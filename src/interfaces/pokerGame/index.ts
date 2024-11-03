@@ -1,5 +1,6 @@
 //@collapse
 
+import { EventEmitterBase } from "../_base";
 import { PokerPlayerInterface } from "../pokerPlayer";
 
 /**
@@ -39,6 +40,6 @@ interface PokerGameConfig {
  *
  * @extends NodeJS.EventEmitter
  */
-interface PokerGameInterface extends NodeJS.EventEmitter {}
+interface PokerGameInterface extends EventEmitterBase {}
 
 export { PokerGameConfig, PokerGameInterface };

@@ -65,7 +65,7 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
    **************************************************************************************************************/
 
   /**
-   * @method constructor
+   * constructor
    * @public
    * Creates an instance of a Deck with 52 cards.
    * Automatically initializes the deck with all combinations of ranks and suits.
@@ -139,7 +139,7 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
   }
 
   /**
-   * @method `setChips`
+   * `setChips`
    * @private
    * Returns the poker table's `id`.
    * @returns {number} The poker table's `id`.
@@ -153,7 +153,7 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
   }
 
   /**
-   * @method `setHand`
+   * `setHand`
    * @private
    * Returns the poker table's `id`.
    * @returns {number} The poker table's `id`.
@@ -167,7 +167,7 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
   }
 
   /**
-   * @method `getHand`
+   * `getHand`
    * @public
    * Returns the poker table's `id`.
    * @returns {CardInterface[]} The poker table's `id`.
@@ -181,7 +181,7 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
   }
 
   /**
-   * @method `setIsFolded`
+   * `setIsFolded`
    * @private
    * Returns the poker table's `id`.
    * @returns {boolean} The poker table's `id`.
@@ -199,7 +199,7 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
    **************************************************************************************************************/
 
   /**
-   * @method `getId`
+   * `getId`
    * @public
    * Returns the poker table's `id`.
    * @returns {string} The poker table's `id`.
@@ -213,7 +213,7 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
   }
 
   /**
-   * @method `getName`
+   * `getName`
    * @public
    * Returns the poker table's `id`.
    * @returns {string} The poker table's `id`.
@@ -227,7 +227,7 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
   }
 
   /**
-   * @method `getChips`
+   * `getChips`
    * @public
    * Returns the poker table's `id`.
    * @returns {number} The poker table's `id`.
@@ -241,7 +241,7 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
   }
 
   /**
-   * @method `getHand`
+   * `getHand`
    * @public
    * Returns the poker table's `id`.
    * @returns {CardInterface[]} The poker table's `id`.
@@ -255,7 +255,7 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
   }
 
   /**
-   * @method `isFolded`
+   * `isFolded`
    * @public
    * Returns the poker table's `id`.
    * @returns {boolean} The poker table's `id`.
@@ -269,7 +269,7 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
   }
 
   /**
-   * @method `getHand`
+   * `getHand`
    * @public
    * Returns the poker table's `id`.
    * @returns {CardInterface[]} The poker table's `id`.
@@ -292,7 +292,7 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
   }
 
   /**
-   * @method `setHand`
+   * `setHand`
    * @private
    * Returns the poker table's `id`.
    * @returns {number} The poker table's `id`.
@@ -328,7 +328,7 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
   }
 
   /**
-   * @method `setChips`
+   * `setChips`
    * @private
    * Returns the poker table's `id`.
    * @returns {number} The poker table's `id`.
@@ -343,7 +343,7 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
   }
 
   /**
-   * @method `setHand`
+   * `setHand`
    * @private
    * Returns the poker table's `id`.
    * @returns {number} The poker table's `id`.
@@ -362,7 +362,7 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
    **************************************************************************************************************/
 
   /**
-   * @method `setId`
+   * `setId`
    * @private
    * Returns the poker table's `id`.
    * @returns {string} The poker table's `id`.
@@ -377,7 +377,7 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
   }
 
   /**
-   * @method `setIsFolded`
+   * `setIsFolded`
    * @private
    * Returns the poker table's `id`.
    * @returns {boolean} The poker table's `id`.
@@ -392,7 +392,7 @@ class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
   }
 
   /**
-   * @method `getHand`
+   * `getHand`
    * @public
    * Returns the poker table's `id`.
    * @returns {CardInterface[]} The poker table's `id`.

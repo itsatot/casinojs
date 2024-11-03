@@ -236,7 +236,7 @@ class PokerPhase extends EventEmitter implements PokerPhaseInterface {
    **************************************************************************************************************/
 
   /**
-   * @method constructor
+   * constructor
    * @public
    * Initializes a new instance of `PokerPhase` with configurable settings for the game round, including players, deck,
    * community cards, pot, and player positions (dealer, small blind, big blind).
@@ -275,7 +275,7 @@ class PokerPhase extends EventEmitter implements PokerPhaseInterface {
   }
 
   /**
-   * @method __init
+   * __init
    * @private
    * Handles detailed initialization for `PokerPhase`, setting up phase properties like phase name, deck, community cards,
    * players, and positional markers. This method is automatically called within the constructor.
@@ -660,7 +660,7 @@ class PokerPhase extends EventEmitter implements PokerPhaseInterface {
    **************************************************************************************************************/
 
   /**
-   * @method `dealHoleCards`
+   * `dealHoleCards`
    * Deals two hole cards to each player.
    * @returns {void}
    */
@@ -670,7 +670,7 @@ class PokerPhase extends EventEmitter implements PokerPhaseInterface {
   }
 
   /**
-   * @method `dealCommunityCards`
+   * `dealCommunityCards`
    * Deals the community cards to the table during the flop, turn, or river phases.
    * @param {number} count - The number of community cards to deal (3 for the flop, 1 for the turn/river).
    * @returns {boolean}
@@ -684,14 +684,14 @@ class PokerPhase extends EventEmitter implements PokerPhaseInterface {
   }
 
   /**
-   * @method `advancePhase`
+   * `advancePhase`
    * Advances the game to the next phase (pre-flop to flop, flop to turn, etc.).
    * @returns {void}
    */
   advancePhase(): void {}
 
   /**
-   * @method `resolveBets`
+   * `resolveBets`
    * Resolves the current betting round, updating player chip stacks and determining the winner if applicable.
    * @returns {void}
    */
@@ -743,7 +743,7 @@ class PokerPhase extends EventEmitter implements PokerPhaseInterface {
   }
 
   /**
-   * @method `setName`
+   * `setName`
    * @public
    * Returns the poker table's `id`.
    * @returns {string} The poker table's `id`.

@@ -365,8 +365,8 @@ class PokerTable extends EventEmitter implements PokerTableInterface {
    * Use this method to set or update the player queue in cases where player flow needs control,
    * ensuring smooth transitions as players are seated at the table.
    *
-   * @param {PokerPlayerInterface[]} queue - The new list of players waiting to enter the table.
-   * @returns {PokerPlayerInterface[]} - Returns the updated player queue.
+   * @param {number} smallBlind - The new list of players waiting to enter the table.
+   * @returns {number} - Returns the updated player queue.
    *
    * @example
    * ```typescript
@@ -385,7 +385,7 @@ class PokerTable extends EventEmitter implements PokerTableInterface {
    **************************************************************************************************************/
 
   /**
-   * @method `getId`
+   * `getId`
    * @public
    * Returns the poker table's `id`.
    * @returns {string} The poker table's `id`.
@@ -399,7 +399,7 @@ class PokerTable extends EventEmitter implements PokerTableInterface {
   }
 
   /**
-   * @method `getId`
+   * `getId`
    * @public
    * Returns the poker table's `id`.
    * @returns {string} The poker table's `id`.
@@ -413,7 +413,7 @@ class PokerTable extends EventEmitter implements PokerTableInterface {
   }
 
   /**
-   * @method `getId`
+   * `getId`
    * @public
    * Returns the poker table's `id`.
    * @returns {string} The poker table's `id`.
@@ -427,7 +427,7 @@ class PokerTable extends EventEmitter implements PokerTableInterface {
   }
 
   /**
-   * @method `getSeats`
+   * `getSeats`
    * Starts a new PokerGame if there are at least two active players at the PokerTable.
    * This method initiates the game flow, including assigning blinds and starting the rounds.
    * @returns {number}
@@ -462,7 +462,7 @@ class PokerTable extends EventEmitter implements PokerTableInterface {
    **************************************************************************************************************/
 
   /**
-   * @method `size`
+   * `size`
    * Starts a new PokerGame if there are at least two active players at the PokerTable.
    * This method initiates the game flow, including assigning blinds and starting the rounds.
    * @returns {number}
@@ -602,7 +602,7 @@ class PokerTable extends EventEmitter implements PokerTableInterface {
    **************************************************************************************************************/
 
   /**
-   * @method `setId`
+   * `setId`
    * @public
    * Returns the poker table's `id`.
    * @returns {string} The poker table's `id`.
@@ -617,7 +617,7 @@ class PokerTable extends EventEmitter implements PokerTableInterface {
   }
 
   /**
-   * @method `setSeats`
+   * `setSeats`
    * @public
    * Returns the poker table's `id`.
    * @returns {number} The poker table's `id`.

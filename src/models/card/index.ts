@@ -40,14 +40,11 @@ class Card implements CardInterface {
    **************************************************************************************************************/
 
   /**
-   * @method constructor
+   * constructor
    * @public
    * Creates an instance of a `Card` with the given rank and suit.
    *
    * @param {CardConfig} config - The configuration of the card.
-   * @param {Rank} config.rank - The rank of the card.
-   * @param {Suit} config.suit - The suit of the card.
-   *
    * @example
    * const card = new Card(Rank.Ace, Suit.Spades);
    */
@@ -56,11 +53,11 @@ class Card implements CardInterface {
   }
 
   /**
-   * @method `init`
+   * `init`
    * @private
    * Initializes the deck with 52 unique cards.
    * This method is called automatically inside the constructor during deck creation.
-   * @emits `deck:initialized` : Emits a `deck:initialized` event when the deck is created.
+   * `deck:initialized` : Emits a `deck:initialized` event when the deck is created.
    * @returns {void}
    */
   private __init(config: CardConfig): void {
@@ -77,7 +74,7 @@ class Card implements CardInterface {
    **************************************************************************************************************/
 
   /**
-   * @method `getRank`
+   * `getRank`
    * @public
    * Returns the card's rank.
    * @returns {Rank} The card's rank.
@@ -91,7 +88,7 @@ class Card implements CardInterface {
   }
 
   /**
-   * @method `getSuit`
+   * `getSuit`
    * @public
    * Returns the card's suit.
    * @returns {Suit} The card's suit.
@@ -117,7 +114,7 @@ class Card implements CardInterface {
    **************************************************************************************************************/
 
   /**
-   * @method `toString`
+   * `toString`
    * @public
    * Returns a string representation of the card, displaying its rank and suit.
    * @returns {string} The card's rank and suit as a formatted string.
@@ -131,7 +128,7 @@ class Card implements CardInterface {
   }
 
   /**
-   * @method `toObj`
+   * `toObj`
    * @public
    * Returns an object representation of the card, containing its rank and suit.
    * @returns {object<{ rank: Rank; suit: Suit }>} The card's rank and suit as an object.
@@ -153,7 +150,7 @@ class Card implements CardInterface {
    **************************************************************************************************************/
 
   /**
-   * @method `setRank`
+   * `setRank`
    * @private
    * Sets the card's rank. This method is kept private to control how rank is modified.
    *
@@ -166,7 +163,7 @@ class Card implements CardInterface {
   }
 
   /**
-   * @method `setSuit`
+   * `setSuit`
    * @private
    * Sets the card's suit. This method is kept private to control how suit is modified.
    *

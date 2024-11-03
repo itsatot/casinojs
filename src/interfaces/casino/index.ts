@@ -1,5 +1,6 @@
 //@collapse
 
+import { EventEmitterBase } from "../_base";
 import { PokerRoomConfig, PokerRoomInterface } from "../pokerRoom";
 
 /**
@@ -32,7 +33,7 @@ import { PokerRoomConfig, PokerRoomInterface } from "../pokerRoom";
  * console.log(casino.listRooms());
  * ```
  */
-interface CasinoInterface extends NodeJS.EventEmitter {
+interface CasinoInterface extends EventEmitterBase {
   /**************************************************************************************************************
    * CREATE METHODS (SETTERS & OBJECT CREATION)
    **************************************************************************************************************/

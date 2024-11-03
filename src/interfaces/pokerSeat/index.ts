@@ -1,5 +1,6 @@
 //@collapse
 
+import { EventEmitterBase } from "../_base";
 import { PokerPlayerInterface } from "../pokerPlayer";
 
 /**
@@ -40,13 +41,13 @@ interface PokerSeatConfig {
  *
  * @extends NodeJS.EventEmitter
  */
-interface PokerSeatInterface extends NodeJS.EventEmitter {
+interface PokerSeatInterface extends EventEmitterBase {
   /**************************************************************************************************************
    * CREATE METHODS (SETTERS & OBJECT CREATION)
    **************************************************************************************************************/
 
   /**
-   * @method `setIsDealer`
+   * `setIsDealer`
    * @public
    * Returns the poker table's `id`.
    * @returns {boolean} The poker table's `id`.
@@ -62,7 +63,7 @@ interface PokerSeatInterface extends NodeJS.EventEmitter {
    **************************************************************************************************************/
 
   /**
-   * @method `getId`
+   * `getId`
    * @public
    * Returns the poker table's `id`.
    * @returns {string} The poker table's `id`.
@@ -74,7 +75,7 @@ interface PokerSeatInterface extends NodeJS.EventEmitter {
   getId(): string;
 
   /**
-   * @method `getPosition`
+   * `getPosition`
    * @public
    * Returns the poker table's `id`.
    * @returns {number} The poker table's `id`.
@@ -86,7 +87,7 @@ interface PokerSeatInterface extends NodeJS.EventEmitter {
   getPosition(): number;
 
   /**
-   * @method `isDealer`
+   * `isDealer`
    * @public
    * Returns the poker table's `id`.
    * @returns {boolean} The poker table's `id`.
@@ -98,7 +99,7 @@ interface PokerSeatInterface extends NodeJS.EventEmitter {
   isDealer(): boolean;
 
   /**
-   * @method `getPlayer`
+   * `getPlayer`
    * @public
    * Returns the poker table's `id`.
    * @returns {PokerPlayerInterface | undefined} The poker table's `id`.

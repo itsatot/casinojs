@@ -12,8 +12,8 @@
  *
  * #### Events Overview
  * The `PokerSeatEventName` includes the following events:
- * - **SEAT_OCCUPIED**: Indicates a seat has been occupied by a player.
- * - **SEAT_VACATED**: Indicates a seat has been vacated by a player.
+ * - **OCCUPIED**: Indicates a seat has been occupied by a player.
+ * - **VACATED**: Indicates a seat has been vacated by a player.
  *
  * #### Usage
  * This enum standardizes the handling of seat events, making it easy to manage player movements
@@ -21,7 +21,7 @@
  *
  * @example
  * ```typescript
- * const seatEvent: PokerSeatEventName = PokerSeatEventName.SEAT_OCCUPIED;
+ * const seatEvent: PokerSeatEventName = PokerSeatEventName.OCCUPIED;
  * console.log(seatEvent);
  * // Console Output: "PokerSeat:Occupied"
  * ```
@@ -32,24 +32,48 @@ enum PokerSeatEventName {
    *
    * @example
    * ```typescript
-   * const seatEvent: PokerSeatEventName = PokerSeatEventName.SEAT_OCCUPIED;
+   * const seatEvent: PokerSeatEventName = PokerSeatEventName.OCCUPIED;
    * console.log(seatEvent);
    * // Console Output: "PokerSeat:Occupied"
    * ```
    */
-  SEAT_OCCUPIED = "PokerSeat:Occupied",
+  INITIALIZED = "PokerSeat:Initialized",
+
+  /**
+   * Indicates a seat has been occupied by a player.
+   *
+   * @example
+   * ```typescript
+   * const seatEvent: PokerSeatEventName = PokerSeatEventName.OCCUPIED;
+   * console.log(seatEvent);
+   * // Console Output: "PokerSeat:Occupied"
+   * ```
+   */
+  OCCUPIED = "PokerSeat:Occupied",
 
   /**
    * Indicates a seat has been vacated by a player.
    *
    * @example
    * ```typescript
-   * const seatEvent: PokerSeatEventName = PokerSeatEventName.SEAT_VACATED;
+   * const seatEvent: PokerSeatEventName = PokerSeatEventName.VACATED;
    * console.log(seatEvent);
    * // Console Output: "PokerSeat:Vacated"
    * ```
    */
-  SEAT_VACATED = "PokerSeat:Vacated",
+  VACATED = "PokerSeat:Vacated",
+
+  /**
+   * Indicates a seat has been vacated by a player.
+   *
+   * @example
+   * ```typescript
+   * const seatEvent: PokerSeatEventName = PokerSeatEventName.VACATED;
+   * console.log(seatEvent);
+   * // Console Output: "PokerSeat:Vacated"
+   * ```
+   */
+  ERROR = "PokerSeat:Error",
 }
 
 export { PokerSeatEventName };

@@ -38,7 +38,7 @@ class Deck extends EventEmitter implements DeckInterface {
  **************************************************************************************************************/
 
   /**
-   * @method constructor
+   * constructor
    * @public
    * Creates an instance of a Deck with 52 cards.
    * Automatically initializes the deck with all combinations of ranks and suits.
@@ -52,11 +52,11 @@ class Deck extends EventEmitter implements DeckInterface {
   }
 
   /**
-   * @method `init`
+   * `init`
    * @private
    * Initializes the deck with 52 unique cards.
    * This method is called automatically inside the constructor during deck creation.
-   * @emits `deck:initialized` : Emits a `deck:initialized` event when the deck is created.
+   * `deck:initialized` : Emits a `deck:initialized` event when the deck is created.
    * @returns {void}
    */
   private __init(): void {
@@ -78,7 +78,7 @@ class Deck extends EventEmitter implements DeckInterface {
  **************************************************************************************************************/
 
   /**
-   * @method `getCards`
+   * `getCards`
    * @public
    * Returns the current state of the deck.
    * @returns {CardInterface[]} The array of cards in the deck.
@@ -104,11 +104,11 @@ class Deck extends EventEmitter implements DeckInterface {
  **************************************************************************************************************/
 
   /**
-   * @method `draw`
+   * `draw`
    * @public
    * Draws a card from the top of the deck.
    * Removes and returns the top card from the deck, or `undefined` if the deck is empty.
-   * @emits `deck:drawn` : Emits a `deck:drawn` event when a card is drawn.
+   * `deck:drawn` : Emits a `deck:drawn` event when a card is drawn.
    * @returns {CardInterface | undefined} Returns the drawn card or `undefined` if no cards remain.
    *
    * @example
@@ -124,10 +124,10 @@ class Deck extends EventEmitter implements DeckInterface {
 
 
   /**
-   * @method `shuffle`
+   * `shuffle`
    * @public
    * Shuffles the deck of cards using the Fisher-Yates algorithm.
-   * @emits `deck:shuffled` Emits a `deck:shuffled` event after the deck is shuffled.
+   * `deck:shuffled` Emits a `deck:shuffled` event after the deck is shuffled.
    * @returns {void}
    *
    * @example

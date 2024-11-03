@@ -149,7 +149,7 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
    **************************************************************************************************************/
 
   /**
-   * @method constructor
+   * constructor
    * @public
    * Creates an instance of a Deck with 52 cards.
    * Automatically initializes the deck with all combinations of ranks and suits.
@@ -162,6 +162,15 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
     this.__init(config);
   }
 
+  /**
+   * constructor
+   * @public
+   * Creates an instance of a Deck with 52 cards.
+   * Automatically initializes the deck with all combinations of ranks and suits.
+   *
+   * @example
+   * const deck = new Deck();
+   */
   private __init(config?: PokerSeatConfig) {
     if (config) {
       //
@@ -191,7 +200,7 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
    **************************************************************************************************************/
 
   /**
-   * @method `setDealer`
+   * `setDealer`
    * @public
    * Returns the poker table's `id`.
    * @returns {boolean} The poker table's `id`.
@@ -209,7 +218,7 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
    **************************************************************************************************************/
 
   /**
-   * @method `getId`
+   * `getId`
    * @public
    * Returns the poker table's `id`.
    * @returns {string} The poker table's `id`.
@@ -223,7 +232,7 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
   }
 
   /**
-   * @method `getPosition`
+   * `getPosition`
    * @public
    * Returns the poker table's `id`.
    * @returns {string} The poker table's `id`.
@@ -237,7 +246,7 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
   }
 
   /**
-   * @method `isDealer`
+   * `isDealer`
    * @public
    * Returns the poker table's `id`.
    * @returns {boolean} The poker table's `id`.
@@ -251,7 +260,7 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
   }
 
   /**
-   * @method `getPlayer`
+   * `getPlayer`
    * @public
    * Returns the poker table's `id`.
    * @returns {PokerPlayerInterface | undefined} The poker table's `id`.
@@ -285,36 +294,12 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
 
   public occupy(player: PokerPlayerInterface): void {
     this.__setPlayer(player);
-    // this.__emitEvent(PokerSeatEventName.SEAT_OCCUPIED, {
-    //   head: {
-    //     name: PokerSeatEventName.SEAT_OCCUPIED,
-    //     createdAt: new Date(),
-    //   },
-    //   data: {
-    //     seatId: this.getId(),
-    //     playerId: player.getId(),
-    //     updatedSeat: this,
-    //   },
-    // });
   }
 
   public vacate(): void {
     if (!this.isOccupied()) {
       throw new Error(`PokerSeat: Seat is already vacant.`);
     }
-    const playerid = this.getPlayer()?.getId();
-    this.__setPlayer(undefined);
-    // this.__emitEvent(PokerSeatEventName.SEAT_VACATED, {
-    //   head: {
-    //     name: PokerSeatEventName.SEAT_VACATED,
-    //     createdAt: new Date(),
-    //   },
-    //   data: {
-    //     seatId: this.getId(),
-    //     playerId: playerid,
-    //     updatedSeat: this,
-    //   },
-    // });
   }
 
   /**************************************************************************************************************
@@ -334,20 +319,26 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
    * Sets a unique identifier (`id`) for the `PokerSeat` instance.
    *
    * #### Purpose
-   * Ensures that each `PokerSeat` has a unique identifier, allowing distinct identification across different seats
-   * at a poker table.
+   * This method ensures that each `PokerSeat` has a unique identifier, allowing distinct identification across
+   * different seats at a poker table.
+   *
+   * #### Implements
+   * N/A
+   *
+   * #### Overrides
+   * N/A
    *
    * #### Parameters
    * - `id: string` - The unique identifier to be assigned to the `PokerSeat`.
    *
    * #### Requirements
-   * - The `id` should be a valid, unique string that identifies this specific seat.
+   * - `id` must be a valid, unique string that identifies this specific seat.
    *
    * #### Returns
-   * - Returns the `id` assigned to the seat.
+   * - Returns the `id` assigned to the seat as a string.
    *
    * #### Usage
-   * Use this method to assign or update the unique identifier of the seat during initialization.
+   * This method is used internally to assign or update the unique identifier of the seat during initialization.
    *
    * @param {string} id - A unique identifier for the seat.
    *
@@ -371,20 +362,26 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
    * Sets the position of the `PokerSeat` within the poker table.
    *
    * #### Purpose
-   * Defines the location or order of the seat at the poker table, which is critical for seating arrangements
-   * and determining player roles such as dealer or blinds.
+   * Defines the seat's location at the poker table, which is critical for seating arrangements and determining
+   * player roles such as dealer or blinds.
+   *
+   * #### Implements
+   * N/A
+   *
+   * #### Overrides
+   * N/A
    *
    * #### Parameters
    * - `position: number` - The position index of the seat on the table.
    *
    * #### Requirements
-   * - `position` must be a non-negative integer and should be within the range allowed by the table configuration.
+   * - `position` must be a non-negative integer and within the range allowed by the table configuration.
    *
    * #### Returns
-   * - Returns the assigned position of the seat.
+   * - Returns the assigned position of the seat as a number.
    *
    * #### Usage
-   * Use this method to assign or update the seat’s position at the table during seat initialization.
+   * This method is used internally to assign or update the seat’s position during seat initialization.
    *
    * @param {number} position - Position index of the seat.
    *
@@ -408,20 +405,26 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
    * Sets the dealer status for the `PokerSeat`.
    *
    * #### Purpose
-   * Indicates whether the player in this seat is currently assigned the role of dealer, which affects game flow,
-   * especially in managing blinds and player turns.
+   * Indicates if the player in this seat is assigned as the dealer, affecting game flow, especially in managing
+   * blinds and player turns.
+   *
+   * #### Implements
+   * N/A
+   *
+   * #### Overrides
+   * N/A
    *
    * #### Parameters
    * - `bool: boolean` - Boolean value indicating whether this seat is designated as the dealer seat.
    *
    * #### Requirements
-   * - `bool` should be a boolean value where `true` marks the seat as dealer and `false` removes the dealer status.
+   * - `bool` should be a boolean value where `true` designates the seat as the dealer, and `false` removes the dealer status.
    *
    * #### Returns
-   * - Returns the dealer status after assignment.
+   * - Returns the dealer status after assignment as a boolean.
    *
    * #### Usage
-   * Use this method to assign or update the dealer status of the seat.
+   * This method is used internally to assign or update the dealer status of the seat.
    *
    * @param {boolean} bool - Indicates if this seat is the dealer seat.
    *
@@ -445,19 +448,25 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
    * Sets the player occupying this `PokerSeat`.
    *
    * #### Purpose
-   * Assigns a player to occupy the seat or sets it to `undefined` if vacant, allowing the system to track seat occupancy.
+   * Assigns a player to occupy the seat or sets it to `undefined` if vacant, enabling the system to track seat occupancy.
+   *
+   * #### Implements
+   * N/A
+   *
+   * #### Overrides
+   * N/A
    *
    * #### Parameters
-   * - `player: PokerPlayerInterface | undefined` - The player instance to be assigned to the seat, or `undefined` if the seat is vacant.
+   * - `player: PokerPlayerInterface | undefined` - The player instance assigned to the seat, or `undefined` if the seat is vacant.
    *
    * #### Requirements
-   * - `player` should implement the `PokerPlayerInterface` or be `undefined` to mark the seat as vacant.
+   * - `player` must implement the `PokerPlayerInterface` or be `undefined` to mark the seat as vacant.
    *
    * #### Returns
-   * - Returns the player occupying the seat or `undefined` if the seat is vacant.
+   * - Returns the player occupying the seat or `undefined` if vacant.
    *
    * #### Usage
-   * Use this method to assign or update the player occupying the seat.
+   * This method is used internally to assign or update the player occupying the seat.
    *
    * @param {PokerPlayerInterface | undefined} player - The player to occupy the seat, or `undefined` if no player is assigned.
    *
@@ -480,10 +489,11 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
 
   /**
    * #### Description
-   * Emits an event with an optional middleware processing chain, allowing for event data validation, transformation, or additional handling before final emission.
+   * Emits an event with an optional middleware processing chain, allowing for event data validation, transformation,
+   * or additional handling before final emission.
    *
    * #### Purpose
-   * Consolidates event emission into a single method that handles both direct emissions and middleware-processed emissions, ensuring flexibility and simplicity in event handling.
+   * Consolidates event emission into a single method that supports both direct emissions and middleware-processed emissions.
    *
    * #### Implements
    * N/A
@@ -492,7 +502,7 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
    * N/A
    *
    * #### Events
-   * This method can emit any event specified by `PokerSeatEventName`, such as:
+   * This method can emit any event specified by `PokerSeatEventName`, including:
    * - **PokerSeatEventName.SEAT_OCCUPIED**: Emitted when a player occupies the seat.
    * - **PokerSeatEventName.SEAT_VACATED**: Emitted when a seat is vacated.
    *
@@ -503,15 +513,16 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
    *    - `middlewares`: Optional. Array of middleware functions to process the event data before emission.
    *
    * #### Requirements
-   * - `eventName` should be a valid `PokerSeatEventName`.
+   * - `eventName` must be a valid `PokerSeatEventName`.
    * - `eventData` must be an object with key-value pairs relevant to the event type.
-   * - If `middlewares` are provided, they should follow the `(event: PokerSeatEvent, next: () => void) => void | false` function signature.
+   * - If `middlewares` are provided, they must follow the `(event: PokerSeatEvent, next: () => void) => void | false` function signature.
    *
    * #### Returns
    * - `void` - This method does not return a value.
    *
    * #### Usage
-   * Use this method for both direct and middleware-processed event emissions. When middlewares are provided, each middleware function will process the event data sequentially before final emission.
+   * This method is used for both direct and middleware-processed event emissions. When middlewares are provided,
+   * each function processes the event data sequentially before final emission.
    *
    * @param {PokerSeatEventName} eventName - The event name to emit.
    * @param {object} eventData - Data specific to the event.
@@ -540,26 +551,22 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
       >;
     }
   ): void {
-    // Initialize the event with metadata and provided data
     const event: PokerSeatEvent = this.__initializeEventObj(
       eventName,
       eventData
     );
-
-    // If middlewares are provided, process them sequentially
     const middlewares = options?.middlewares ?? [];
+
     if (middlewares.length > 0) {
       const runMiddlewares = (index: number) => {
         if (index < middlewares.length) {
           middlewares[index](event, () => runMiddlewares(index + 1));
         } else {
-          // Final emission after all middlewares have been processed
           this.emit(eventName, event);
         }
       };
       runMiddlewares(0);
     } else {
-      // Direct emission if no middlewares are provided
       this.emit(eventName, event);
     }
   }
@@ -569,8 +576,8 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
    * Creates an event object with metadata and data, initializing it for further processing or emission.
    *
    * #### Purpose
-   * This method constructs a `PokerSeatEvent` object with standardized metadata, facilitating a uniform structure
-   * for seat-related events across the application.
+   * This method constructs a `PokerSeatEvent` object with standardized metadata, ensuring a uniform structure for
+   * seat-related events.
    *
    * #### Implements
    * N/A
@@ -582,22 +589,22 @@ class PokerSeat extends EventEmitter implements PokerSeatInterface {
    * N/A
    *
    * #### Parameters
-   * - `eventName: PokerSeatEventName` - The name of the event, used to identify the event type.
-   * - `eventData: { [key: string]: any }` - The initial data associated with the event, such as seat or player details.
+   * - `eventName: PokerSeatEventName` - The name of the event.
+   * - `eventData: { [key: string]: any }` - Data associated with the event, such as seat or player details.
    *
    * #### Requirements
-   * - `eventName` should be a valid value of `PokerSeatEventName`.
-   * - `eventData` must be an object with key-value pairs relevant to the specific event type.
+   * - `eventName` must be a valid `PokerSeatEventName`.
+   * - `eventData` should be an object containing relevant key-value pairs for the event.
    *
    * #### Returns
-   * - `PokerSeatEvent` - Returns the fully initialized event object with metadata and data fields.
+   * - `PokerSeatEvent` - A complete event object ready for processing or emission.
    *
    * #### Usage
    * Use this method to create a structured `PokerSeatEvent` object before emitting, enabling consistent event formatting
    * and easing further event handling or processing.
    *
    * @param {PokerSeatEventName} eventName - The name of the event.
-   * @param {object} eventData - The associated data for the event.
+   * @param {object} eventData - Data associated with the event.
    *
    * @returns {PokerSeatEvent} - A complete event object ready for processing or emission.
    *
