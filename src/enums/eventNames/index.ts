@@ -1,7 +1,5 @@
 //@collapse
 
-import { Source } from "./source";
-
 /**
  * @module `Enums`
  * Centralized export for all poker-related enums.
@@ -15,13 +13,7 @@ import { Source } from "./source";
  * // Import all enums from the centralized module
  * import { CasinoEventName, CasinoEventNamesEnum, PokerPhaseName, PokerPhaseNamesEnum, Rank, RanksEnum, Suit, SuitsEnum } from './enums';
  */
-export * as EventNamesEnum from "./eventNames";
-export * from "./eventNames";
-export * as PokerPhaseNamesEnum from "./pokerPhaseNames";
-export * from "./pokerPhaseNames";
-export * as RanksEnum from "./rank";
-export * from "./rank";
-export * as Sources from "./source";
-export * from "./source";
-export * as SuitsEnum from "./suit";
-export * from "./suit";
+export * as CasinoEventNamesEnum from "./casino";
+export * from "./casino";
+export * as PokerSeatEventNamesEnum from "./pokerSeat";
+export * from "./pokerSeat";
