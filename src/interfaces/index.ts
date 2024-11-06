@@ -19,6 +19,8 @@ export * as CasinoInterfaces from "./casino";
 export * from "./casino";
 export * as DeckInterfaces from "./deck";
 export * from "./deck";
+export * as LoggerInterfaces from "./logger";
+export * from "./logger";
 export * as PokerGameInterfaces from "./pokerGame";
 export * from "./pokerGame";
 export * as PokerPhaseInterfaces from "./pokerPhase";

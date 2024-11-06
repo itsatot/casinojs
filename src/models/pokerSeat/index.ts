@@ -286,6 +286,13 @@ class PokerSeat extends BaseEventEmitter implements PokerSeatInterface {
         ? this.__setPlayer(config.player)
         : this.__setPlayer(this.__player);
     }
+
+    // Emit `INITIALIZED` event after initialization
+    // this.emitEvent(PokerSeatEventName.INITIALIZED, {
+    //   seatId: this.__id,
+    //   position: this.__position,
+    //   isDealer: this.__isDealer,
+    // });
   }
 
   /**************************************************************************************************************

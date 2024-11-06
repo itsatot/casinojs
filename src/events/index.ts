@@ -1,5 +1,11 @@
 //@collapse
 
+// import * as BaseEvents from "./_base";
+// import { BaseEvent } from "./_base";
+// import * as PokerSeatEvents from "./pokerSeat";
+// import { PokerSeatEvent } from "./pokerSeat";
+// const Events = { BaseEvent, BaseEvents };
+
 /**
  * @module `Events`
  * Centralized export for all poker-related enums.

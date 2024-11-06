@@ -17,6 +17,8 @@ import { Source } from "./source";
  */
 export * as EventNamesEnum from "./eventNames";
 export * from "./eventNames";
+export * as LogLevelsEnum from "./logLevel";
+export * from "./logLevel";
 export * as PokerPhaseNamesEnum from "./pokerPhaseNames";
 export * from "./pokerPhaseNames";
 export * as RanksEnum from "./rank";
