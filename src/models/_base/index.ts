@@ -97,8 +97,6 @@ class BaseEventEmitter
    *
    * @param {string} eventName - The name of the event to emit.
    * @param {object} options - Configuration for event emission.
-   * @param {object} options.eventHead - Event metadata including `source` and other properties.
-   * @param {object} options.eventData - Data relevant to the event.
    * @param {Array<(event: BaseEvent, next: () => void) => void | false>} [options.middlewares] - Optional array of middleware functions for processing.
    *
    * #### Description
