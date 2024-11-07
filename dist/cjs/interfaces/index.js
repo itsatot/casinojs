@@ -1,15 +1,5 @@
 "use strict";
-/**
- * @module `Interfaces`
- * Centralized export for all poker-related interfaces and types.
- * This module gathers and exports interfaces and types for `Card`, `Deck`.
- * This allows for streamlined imports in other modules, ensuring that all poker-related interfaces
- * and types can be accessed from a single location.
- *
- * @example
- * // Import all interfaces and types from the centralized module
- * import { CardInterface, DeckInterface } from './interfaces';
- */
+//@collapse
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -37,23 +27,40 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PokerTableInterfaces = exports.PokerSeatInterfaces = exports.PokerRoomInterfaces = exports.PokerPlayerInterfaces = exports.PokerPhaseInterfaces = exports.PokerGameInterfaces = exports.DeckInterfaces = exports.CasinoInterfaces = exports.CardInterfaces = void 0;
-exports.CardInterfaces = __importStar(require("./card"));
+exports.PokerTableInterfaceModule = exports.PokerSeatInterfaceModule = exports.PokerRoomInterfaceModule = exports.PokerPlayerInterfaceModule = exports.PokerPhaseInterfaceModule = exports.PokerGameInterfaceModule = exports.LoggerInterfaceModule = exports.DeckInterfaceModule = exports.CasinoInterfaceModule = exports.CardInterfaceModule = exports.BaseEventInterfaceModule = exports.BaseInterfaceModule = void 0;
+/**
+ * @module `Interfaces`
+ * Centralized export for all poker-related interfaces and types.
+ * This module gathers and exports interfaces and types for `Card`, `Deck`.
+ * This allows for streamlined imports in other modules, ensuring that all poker-related interfaces
+ * and types can be accessed from a single location.
+ *
+ * @example
+ * // Import all interfaces and types from the centralized module
+ * import { CardInterface, DeckInterface } from './interfaces';
+ */
+exports.BaseInterfaceModule = __importStar(require("./_base"));
+__exportStar(require("./_base"), exports);
+exports.BaseEventInterfaceModule = __importStar(require("./baseEvent"));
+__exportStar(require("./baseEvent"), exports);
+exports.CardInterfaceModule = __importStar(require("./card"));
 __exportStar(require("./card"), exports);
-exports.CasinoInterfaces = __importStar(require("./casino"));
+exports.CasinoInterfaceModule = __importStar(require("./casino"));
 __exportStar(require("./casino"), exports);
-exports.DeckInterfaces = __importStar(require("./deck"));
+exports.DeckInterfaceModule = __importStar(require("./deck"));
 __exportStar(require("./deck"), exports);
-exports.PokerGameInterfaces = __importStar(require("./pokerGame"));
+exports.LoggerInterfaceModule = __importStar(require("./logger"));
+__exportStar(require("./logger"), exports);
+exports.PokerGameInterfaceModule = __importStar(require("./pokerGame"));
 __exportStar(require("./pokerGame"), exports);
-exports.PokerPhaseInterfaces = __importStar(require("./pokerPhase"));
+exports.PokerPhaseInterfaceModule = __importStar(require("./pokerPhase"));
 __exportStar(require("./pokerPhase"), exports);
-exports.PokerPlayerInterfaces = __importStar(require("./pokerPlayer"));
+exports.PokerPlayerInterfaceModule = __importStar(require("./pokerPlayer"));
 __exportStar(require("./pokerPlayer"), exports);
-exports.PokerRoomInterfaces = __importStar(require("./pokerRoom"));
+exports.PokerRoomInterfaceModule = __importStar(require("./pokerRoom"));
 __exportStar(require("./pokerRoom"), exports);
-exports.PokerSeatInterfaces = __importStar(require("./pokerSeat"));
+exports.PokerSeatInterfaceModule = __importStar(require("./pokerSeat"));
 __exportStar(require("./pokerSeat"), exports);
-exports.PokerTableInterfaces = __importStar(require("./pokerTable"));
+exports.PokerTableInterfaceModule = __importStar(require("./pokerTable"));
 __exportStar(require("./pokerTable"), exports);
 //# sourceMappingURL=index.js.map

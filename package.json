@@ -11,8 +11,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.cjs.json && tsc -p tsconfig.esm.json",
     "test": "jest --coverage",
-    "docify": "typedoc --entryPointStrategy expand src --out docs/site",
-    "start": "node dist/index.js"
+    "docify": "typedoc --entryPointStrategy expand src --out docs/site"
   },
   "repository": {
     "type": "git",

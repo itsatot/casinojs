@@ -1,3 +1,4 @@
+import { BaseEventEmitterInterface } from "../_base";
 import { PokerRoomConfig, PokerRoomInterface } from "../pokerRoom";
 /**
  * @interface `CasinoInterface`
@@ -29,7 +30,7 @@ import { PokerRoomConfig, PokerRoomInterface } from "../pokerRoom";
  * console.log(casino.listRooms());
  * ```
  */
-interface CasinoInterface extends NodeJS.EventEmitter {
+interface CasinoInterface extends BaseEventEmitterInterface {
     /**************************************************************************************************************
      * CREATE METHODS (SETTERS & OBJECT CREATION)
      **************************************************************************************************************/
@@ -281,7 +282,7 @@ interface CasinoInterface extends NodeJS.EventEmitter {
      * #### Usage
      * Typically used in scenarios where the Casino environment needs to expand by adding more gaming rooms.
      *
-     * @param {PokerRoomInterface} room - The `PokerRoom` instance to add.
+     * @param {PokerRoomInterface[]} rooms - The `PokerRoom` instance to add.
      * @returns {boolean} - Returns `true` when the room has been added successfully.
      *
      * @example
@@ -328,8 +329,8 @@ interface CasinoInterface extends NodeJS.EventEmitter {
      * Use this method when removing a room that is no longer active or required, ensuring that only
      * currently used rooms remain managed by the Casino.
      *
-     * @param {string} roomName - The name of the `PokerRoom` to be removed.
-     * @returns {boolean} - Returns `true` if the room was removed; `false` if not found.
+     * @param {number} index - The name of the `PokerRoom` to be removed.
+     * @returns {PokerRoomInterface[]} - Returns `true` if the room was removed; `false` if not found.
      *
      * @example
      * ```typescript

@@ -1,3 +1,4 @@
+import { BaseEventEmitterInterface } from "../_base";
 import { CardInterface } from "../card";
 /**
  * @interface `PokerPlayerConfig`
@@ -5,33 +6,33 @@ import { CardInterface } from "../card";
  */
 interface PokerPlayerConfig {
     /**
-     * @property {string | undefined} id
+     * @property {string} id
      * The maximum number of players that can be seated at the PokerTable[2-14].
      */
-    id: string | undefined;
+    id?: string;
     /**
-     * @property {string | undefined} name
+     * @property {string} name
      * The maximum number of players that can be seated at the PokerTable[2-14].
      */
-    name: string | undefined;
+    name?: string;
     /**
      * @property {number} chips
      * @private
      * The number of chips the player currently has.
      */
-    chips: number;
+    chips?: number;
     /**
      * @property {CardInterface[]} hand
      * @private
      * The player's hole cards (the two cards dealt to the player at the start of the game).
      */
-    hand: CardInterface[];
+    hand?: CardInterface[];
     /**
      * @property {boolean} isFolded
      * @private
      * Indicates whether the player is still active in the current round or has folded.
      */
-    isFolded: boolean;
+    isFolded?: boolean;
 }
 /**
  * @interface `PokerPlayerInterface`
@@ -40,10 +41,12 @@ interface PokerPlayerConfig {
  *
  * @extends NodeJS.EventEmitter
  */
-interface PokerPlayerInterface extends NodeJS.EventEmitter {
-    /******************* GETTERS *******************/
+interface PokerPlayerInterface extends BaseEventEmitterInterface {
+    /**************************************************************************************************************
+     * READ METHODS (GETTERS & DATA RETRIEVAL)
+     **************************************************************************************************************/
     /**
-     * @method `getId`
+     * `getId`
      * @public
      * Returns the poker table's `id`.
      * @returns {string} The poker table's `id`.
@@ -53,62 +56,7 @@ interface PokerPlayerInterface extends NodeJS.EventEmitter {
      * console.log(rank); // "A"
      */
     getId(): string;
-    /**
-     * @method `getName`
-     * @public
-     * Returns the poker table's `id`.
-     * @returns {string} The poker table's `id`.
-     *
-     * @example
-     * const rank = card.getRank();
-     * console.log(rank); // "A"
-     */
-    getName(): string;
-    /**
-     * @method `getChips`
-     * @public
-     * Returns the poker table's `id`.
-     * @returns {number} The poker table's `id`.
-     *
-     * @example
-     * const rank = card.getRank();
-     * console.log(rank); // "A"
-     */
-    getChips(): number;
-    /**
-     * @method `getHand`
-     * @public
-     * Returns the poker table's `id`.
-     * @returns {CardInterface[]} The poker table's `id`.
-     *
-     * @example
-     * const rank = card.getRank();
-     * console.log(rank); // "A"
-     */
-    getHand(): CardInterface[];
-    /**
-     * @method `isFolded`
-     * @public
-     * Returns the poker table's `id`.
-     * @returns {boolean} The poker table's `id`.
-     *
-     * @example
-     * const rank = card.getRank();
-     * console.log(rank); // "A"
-     */
-    isFolded(): boolean;
-    /**
-     * @method `setHand`
-     * @private
-     * Returns the poker table's `id`.
-     * @returns {number} The poker table's `id`.
-     *
-     * @example
-     * const rank = card.getRank();
-     * console.log(rank); // "A"
-     */
     bet(amount: number): boolean;
-    addToHand(hand: CardInterface): boolean;
     setIsFolded(bool: boolean): boolean;
 }
 export { PokerPlayerConfig, PokerPlayerInterface };

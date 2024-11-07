@@ -1,4 +1,5 @@
 "use strict";
+//@collapse
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -26,7 +27,7 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SuitEnums = exports.RankEnums = exports.PokerPhaseNameEnums = exports.CasinoEventNameEnums = void 0;
+exports.SuitsEnumModule = exports.SourcesEnumModule = exports.RanksEnumModule = exports.PokerPhaseNamesEnumModule = exports.LogLevelsEnumModule = exports.EventsEnumModule = void 0;
 /**
  * @module `Enums`
  * Centralized export for all poker-related enums.
@@ -38,14 +39,18 @@ exports.SuitEnums = exports.RankEnums = exports.PokerPhaseNameEnums = exports.Ca
  *
  * @example
  * // Import all enums from the centralized module
- * import { Rank, Suit } from './enums';
+ * import { CasinoEventName, CasinoEventNamesEnum, PokerPhaseName, PokerPhaseNamesEnum, Rank, RanksEnum, Suit, SuitsEnum } from './enums';
  */
-exports.CasinoEventNameEnums = __importStar(require("./casinoEventName"));
-__exportStar(require("./casinoEventName"), exports);
-exports.PokerPhaseNameEnums = __importStar(require("./pokerPhaseName"));
-__exportStar(require("./pokerPhaseName"), exports);
-exports.RankEnums = __importStar(require("./rank"));
+exports.EventsEnumModule = __importStar(require("./events"));
+__exportStar(require("./events"), exports);
+exports.LogLevelsEnumModule = __importStar(require("./logLevel"));
+__exportStar(require("./logLevel"), exports);
+exports.PokerPhaseNamesEnumModule = __importStar(require("./pokerPhaseNames"));
+__exportStar(require("./pokerPhaseNames"), exports);
+exports.RanksEnumModule = __importStar(require("./rank"));
 __exportStar(require("./rank"), exports);
-exports.SuitEnums = __importStar(require("./suit"));
+exports.SourcesEnumModule = __importStar(require("./source"));
+__exportStar(require("./source"), exports);
+exports.SuitsEnumModule = __importStar(require("./suit"));
 __exportStar(require("./suit"), exports);
 //# sourceMappingURL=index.js.map

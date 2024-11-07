@@ -1,6 +1,8 @@
 "use strict";
+//@collapse
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Card = void 0;
+const enums_1 = require("../../enums");
 /**
  * @class `Card`
  * Represents a playing card in a poker game, consisting of a rank and a suit.
@@ -15,23 +17,56 @@ exports.Card = void 0;
  * console.log(card.toString()); // "A of Spades"
  */
 class Card {
+    /**************************************************************************************************************
+     * CONSTRUCTOR & INITIALIZERS
+     **************************************************************************************************************/
     /**
-     * @method constructor
+     * constructor
      * @public
      * Creates an instance of a `Card` with the given rank and suit.
      *
-     * @param {Rank} rank - The rank of the card.
-     * @param {Suit} suit - The suit of the card.
-     *
+     * @param {CardConfig} config - The configuration of the card.
      * @example
      * const card = new Card(Rank.Ace, Suit.Spades);
      */
     constructor(config) {
-        this._rank = config.rank;
-        this._suit = config.suit;
+        /**************************************************************************************************************
+         * PROPERTIES
+         **************************************************************************************************************/
+        /**
+         * @property {Rank} _rank
+         * @private
+         * Holds the rank of the card (e.g., Ace, Two, King).
+         */
+        this.__rank = enums_1.Rank.Ace;
+        /**
+         * @property {Suit} _suit
+         * @private
+         * Holds the suit of the card (e.g., Hearts, Spades).
+         */
+        this.__suit = enums_1.Suit.Spades;
+        this.__init(config);
     }
     /**
-     * @method `getRank`
+     * `init`
+     * @private
+     * Initializes the deck with 52 unique cards.
+     * This method is called automatically inside the constructor during deck creation.
+     * `deck:initialized` : Emits a `deck:initialized` event when the deck is created.
+     * @returns {void}
+     */
+    __init(config) {
+        this.__rank = config.rank;
+        this.__suit = config.suit;
+    }
+    /**************************************************************************************************************
+     * CREATE METHODS (SETTERS & OBJECT CREATION)
+     **************************************************************************************************************/
+    /**************************************************************************************************************
+     * READ METHODS (GETTERS & DATA RETRIEVAL)
+     **************************************************************************************************************/
+    /**
+     * `getRank`
      * @public
      * Returns the card's rank.
      * @returns {Rank} The card's rank.
@@ -41,22 +76,10 @@ class Card {
      * console.log(rank); // "A"
      */
     getRank() {
-        return this._rank;
+        return this.__rank;
     }
     /**
-     * @method `setRank`
-     * @private
-     * Sets the card's rank. This method is kept private to control how rank is modified.
-     *
-     * @param {Rank} rank - The new rank of the card.
-     * @returns {Rank} The updated rank of the card.
-     */
-    setRank(rank) {
-        this._rank = rank;
-        return this._rank;
-    }
-    /**
-     * @method `getSuit`
+     * `getSuit`
      * @public
      * Returns the card's suit.
      * @returns {Suit} The card's suit.
@@ -66,22 +89,19 @@ class Card {
      * console.log(suit); // "Spades"
      */
     getSuit() {
-        return this._suit;
+        return this.__suit;
     }
+    /**************************************************************************************************************
+     * UPDATE METHODS (MODIFYING EXISTING OBJECTS)
+     **************************************************************************************************************/
+    /**************************************************************************************************************
+     * DELETE METHODS (REMOVING OBJECTS)
+     **************************************************************************************************************/
+    /**************************************************************************************************************
+     * BUSINESS-LOGIC METHODS (LOGIC & CALCULATIONS)
+     **************************************************************************************************************/
     /**
-     * @method `setSuit`
-     * @private
-     * Sets the card's suit. This method is kept private to control how suit is modified.
-     *
-     * @param {Suit} suit - The new suit of the card.
-     * @returns {Suit} The updated suit of the card.
-     */
-    setSuit(suit) {
-        this._suit = suit;
-        return this._suit;
-    }
-    /**
-     * @method `toString`
+     * `toString`
      * @public
      * Returns a string representation of the card, displaying its rank and suit.
      * @returns {string} The card's rank and suit as a formatted string.
@@ -91,10 +111,10 @@ class Card {
      * console.log(description); // "A of Spades"
      */
     toString() {
-        return `${this._rank} of ${this._suit}`;
+        return `${this.__rank} of ${this.__suit}`;
     }
     /**
-     * @method `toObj`
+     * `toObj`
      * @public
      * Returns an object representation of the card, containing its rank and suit.
      * @returns {object<{ rank: Rank; suit: Suit }>} The card's rank and suit as an object.
@@ -104,7 +124,37 @@ class Card {
      * console.log(cardObj); // { rank: "A", suit: "Spades" }
      */
     toObj() {
-        return { rank: this._rank, suit: this._suit };
+        return { rank: this.__rank, suit: this.__suit };
+    }
+    /**************************************************************************************************************
+     * WRAPPER METHODS (UTILITY & CONVENIENCE)
+     **************************************************************************************************************/
+    /**************************************************************************************************************
+     * INTERNAL METHODS (PRIVATE)
+     **************************************************************************************************************/
+    /**
+     * `setRank`
+     * @private
+     * Sets the card's rank. This method is kept private to control how rank is modified.
+     *
+     * @param {Rank} rank - The new rank of the card.
+     * @returns {Rank} The updated rank of the card.
+     */
+    __setRank(rank) {
+        this.__rank = rank;
+        return this.__rank;
+    }
+    /**
+     * `setSuit`
+     * @private
+     * Sets the card's suit. This method is kept private to control how suit is modified.
+     *
+     * @param {Suit} suit - The new suit of the card.
+     * @returns {Suit} The updated suit of the card.
+     */
+    __setSuit(suit) {
+        this.__suit = suit;
+        return this.__suit;
     }
 }
 exports.Card = Card;

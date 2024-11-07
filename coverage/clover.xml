@@ -1,11 +1,86 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1730991109008" clover="3.2.0">
-  <project timestamp="1730991109008" name="All files">
-    <metrics statements="67" coveredstatements="67" conditionals="14" coveredconditionals="14" methods="7" coveredmethods="7" elements="88" coveredelements="88" complexity="0" loc="67" ncloc="67" packages="9" files="9" classes="9"/>
+<coverage generated="1730992454228" clover="3.2.0">
+  <project timestamp="1730992454228" name="All files">
+    <metrics statements="66" coveredstatements="66" conditionals="14" coveredconditionals="14" methods="7" coveredmethods="7" elements="87" coveredelements="87" complexity="0" loc="66" ncloc="66" packages="9" files="9" classes="9"/>
     <package name="enums">
       <metrics statements="12" coveredstatements="12" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       <file name="index.ts" path="D:\projects\CasinoJs\src\enums\index.ts">
         <metrics statements="12" coveredstatements="12" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="16" count="1" type="stmt"/>
+        <line num="17" count="1" type="stmt"/>
+        <line num="18" count="1" type="stmt"/>
+        <line num="19" count="1" type="stmt"/>
+        <line num="20" count="1" type="stmt"/>
+        <line num="21" count="1" type="stmt"/>
+        <line num="22" count="1" type="stmt"/>
+        <line num="23" count="1" type="stmt"/>
+        <line num="24" count="1" type="stmt"/>
+        <line num="25" count="1" type="stmt"/>
+        <line num="26" count="1" type="stmt"/>
+        <line num="27" count="1" type="stmt"/>
+      </file>
+    </package>
+    <package name="enums.events">
+      <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <file name="index.ts" path="D:\projects\CasinoJs\src\enums\events\index.ts">
+        <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="16" count="1" type="stmt"/>
+        <line num="17" count="1" type="stmt"/>
+        <line num="18" count="1" type="stmt"/>
+        <line num="19" count="1" type="stmt"/>
+      </file>
+    </package>
+    <package name="enums.events.casino">
+      <metrics statements="6" coveredstatements="6" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
+      <file name="index.ts" path="D:\projects\CasinoJs\src\enums\events\casino\index.ts">
+        <metrics statements="6" coveredstatements="6" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
+        <line num="15" count="1" type="cond" truecount="2" falsecount="0"/>
+        <line num="22" count="1" type="stmt"/>
+        <line num="30" count="1" type="stmt"/>
+        <line num="38" count="1" type="stmt"/>
+        <line num="46" count="1" type="stmt"/>
+        <line num="54" count="1" type="stmt"/>
+      </file>
+    </package>
+    <package name="enums.events.pokerSeat">
+      <metrics statements="4" coveredstatements="4" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
+      <file name="index.ts" path="D:\projects\CasinoJs\src\enums\events\pokerSeat\index.ts">
+        <metrics statements="4" coveredstatements="4" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
+        <line num="31" count="1" type="cond" truecount="2" falsecount="0"/>
+        <line num="42" count="1" type="stmt"/>
+        <line num="54" count="1" type="stmt"/>
+        <line num="66" count="1" type="stmt"/>
+      </file>
+    </package>
+    <package name="enums.logLevel">
+      <metrics statements="4" coveredstatements="4" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
+      <file name="index.ts" path="D:\projects\CasinoJs\src\enums\logLevel\index.ts">
+        <metrics statements="4" coveredstatements="4" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
+        <line num="28" count="1" type="cond" truecount="2" falsecount="0"/>
+        <line num="46" count="1" type="stmt"/>
+        <line num="65" count="1" type="stmt"/>
+        <line num="83" count="1" type="stmt"/>
+      </file>
+    </package>
+    <package name="enums.pokerPhaseNames">
+      <metrics statements="6" coveredstatements="6" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
+      <file name="index.ts" path="D:\projects\CasinoJs\src\enums\pokerPhaseNames\index.ts">
+        <metrics statements="6" coveredstatements="6" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
+        <line num="32" count="1" type="cond" truecount="2" falsecount="0"/>
+        <line num="43" count="1" type="stmt"/>
+        <line num="54" count="1" type="stmt"/>
+        <line num="65" count="1" type="stmt"/>
+        <line num="76" count="1" type="stmt"/>
+        <line num="87" count="1" type="stmt"/>
+      </file>
+    </package>
+    <package name="enums.rank">
+      <metrics statements="14" coveredstatements="14" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
+      <file name="index.ts" path="D:\projects\CasinoJs\src\enums\rank\index.ts">
+        <metrics statements="14" coveredstatements="14" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
+        <line num="15" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="16" count="2" type="stmt"/>
+        <line num="17" count="2" type="stmt"/>
         <line num="18" count="2" type="stmt"/>
         <line num="19" count="2" type="stmt"/>
         <line num="20" count="2" type="stmt"/>
@@ -17,110 +92,34 @@
         <line num="26" count="2" type="stmt"/>
         <line num="27" count="2" type="stmt"/>
         <line num="28" count="2" type="stmt"/>
-        <line num="29" count="2" type="stmt"/>
-      </file>
-    </package>
-    <package name="enums.eventNames">
-      <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-      <file name="index.ts" path="D:\projects\CasinoJs\src\enums\eventNames\index.ts">
-        <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-        <line num="16" count="2" type="stmt"/>
-        <line num="17" count="2" type="stmt"/>
-        <line num="18" count="2" type="stmt"/>
-        <line num="19" count="2" type="stmt"/>
-      </file>
-    </package>
-    <package name="enums.eventNames.casino">
-      <metrics statements="6" coveredstatements="6" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
-      <file name="index.ts" path="D:\projects\CasinoJs\src\enums\eventNames\casino\index.ts">
-        <metrics statements="6" coveredstatements="6" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
-        <line num="15" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="22" count="2" type="stmt"/>
-        <line num="30" count="2" type="stmt"/>
-        <line num="38" count="2" type="stmt"/>
-        <line num="46" count="2" type="stmt"/>
-        <line num="54" count="2" type="stmt"/>
-      </file>
-    </package>
-    <package name="enums.eventNames.pokerSeat">
-      <metrics statements="5" coveredstatements="5" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
-      <file name="index.ts" path="D:\projects\CasinoJs\src\enums\eventNames\pokerSeat\index.ts">
-        <metrics statements="5" coveredstatements="5" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
-        <line num="32" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="43" count="2" type="stmt"/>
-        <line num="55" count="2" type="stmt"/>
-        <line num="67" count="2" type="stmt"/>
-        <line num="79" count="2" type="stmt"/>
-      </file>
-    </package>
-    <package name="enums.logLevel">
-      <metrics statements="4" coveredstatements="4" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
-      <file name="index.ts" path="D:\projects\CasinoJs\src\enums\logLevel\index.ts">
-        <metrics statements="4" coveredstatements="4" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
-        <line num="28" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="46" count="2" type="stmt"/>
-        <line num="65" count="2" type="stmt"/>
-        <line num="83" count="2" type="stmt"/>
-      </file>
-    </package>
-    <package name="enums.pokerPhaseNames">
-      <metrics statements="6" coveredstatements="6" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
-      <file name="index.ts" path="D:\projects\CasinoJs\src\enums\pokerPhaseNames\index.ts">
-        <metrics statements="6" coveredstatements="6" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
-        <line num="32" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="43" count="2" type="stmt"/>
-        <line num="54" count="2" type="stmt"/>
-        <line num="65" count="2" type="stmt"/>
-        <line num="76" count="2" type="stmt"/>
-        <line num="87" count="2" type="stmt"/>
-      </file>
-    </package>
-    <package name="enums.rank">
-      <metrics statements="14" coveredstatements="14" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
-      <file name="index.ts" path="D:\projects\CasinoJs\src\enums\rank\index.ts">
-        <metrics statements="14" coveredstatements="14" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
-        <line num="15" count="3" type="cond" truecount="2" falsecount="0"/>
-        <line num="16" count="3" type="stmt"/>
-        <line num="17" count="3" type="stmt"/>
-        <line num="18" count="3" type="stmt"/>
-        <line num="19" count="3" type="stmt"/>
-        <line num="20" count="3" type="stmt"/>
-        <line num="21" count="3" type="stmt"/>
-        <line num="22" count="3" type="stmt"/>
-        <line num="23" count="3" type="stmt"/>
-        <line num="24" count="3" type="stmt"/>
-        <line num="25" count="3" type="stmt"/>
-        <line num="26" count="3" type="stmt"/>
-        <line num="27" count="3" type="stmt"/>
-        <line num="28" count="3" type="stmt"/>
       </file>
     </package>
     <package name="enums.source">
       <metrics statements="11" coveredstatements="11" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
       <file name="index.ts" path="D:\projects\CasinoJs\src\enums\source\index.ts">
         <metrics statements="11" coveredstatements="11" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
-        <line num="38" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="49" count="2" type="stmt"/>
-        <line num="61" count="2" type="stmt"/>
-        <line num="73" count="2" type="stmt"/>
-        <line num="85" count="2" type="stmt"/>
-        <line num="97" count="2" type="stmt"/>
-        <line num="109" count="2" type="stmt"/>
-        <line num="121" count="2" type="stmt"/>
-        <line num="133" count="2" type="stmt"/>
-        <line num="145" count="2" type="stmt"/>
-        <line num="157" count="2" type="stmt"/>
+        <line num="38" count="1" type="cond" truecount="2" falsecount="0"/>
+        <line num="49" count="1" type="stmt"/>
+        <line num="61" count="1" type="stmt"/>
+        <line num="73" count="1" type="stmt"/>
+        <line num="85" count="1" type="stmt"/>
+        <line num="97" count="1" type="stmt"/>
+        <line num="109" count="1" type="stmt"/>
+        <line num="121" count="1" type="stmt"/>
+        <line num="133" count="1" type="stmt"/>
+        <line num="145" count="1" type="stmt"/>
+        <line num="157" count="1" type="stmt"/>
       </file>
     </package>
     <package name="enums.suit">
       <metrics statements="5" coveredstatements="5" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
       <file name="index.ts" path="D:\projects\CasinoJs\src\enums\suit\index.ts">
         <metrics statements="5" coveredstatements="5" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
-        <line num="12" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="13" count="2" type="stmt"/>
-        <line num="14" count="2" type="stmt"/>
-        <line num="15" count="2" type="stmt"/>
-        <line num="16" count="2" type="stmt"/>
+        <line num="12" count="1" type="cond" truecount="2" falsecount="0"/>
+        <line num="13" count="1" type="stmt"/>
+        <line num="14" count="1" type="stmt"/>
+        <line num="15" count="1" type="stmt"/>
+        <line num="16" count="1" type="stmt"/>
       </file>
     </package>
   </project>

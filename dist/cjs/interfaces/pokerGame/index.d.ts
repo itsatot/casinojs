@@ -1,3 +1,4 @@
+import { BaseEventEmitterInterface } from "../_base";
 import { PokerPlayerInterface } from "../pokerPlayer";
 /**
  * @interface `PokerGameConfig`
@@ -5,20 +6,20 @@ import { PokerPlayerInterface } from "../pokerPlayer";
  */
 interface PokerGameConfig {
     /**
-     * @property {string | undefined} id
+     * @property {string} id
      * The maximum number of players that can be seated at the PokerTable[2-14].
      */
-    id: string | undefined;
+    id?: string;
     /**
-     * @property {number} smallBlindAmount
+     * @property {number} smallBlind
      * The maximum number of players that can be seated at the PokerTable[2-14].
      */
-    smallBlindAmount: number;
+    smallBlind: number;
     /**
-     * @property {number} bigBlindAmount
+     * @property {number} bigBlind
      * The maximum number of players that can be seated at the PokerTable[2-14].
      */
-    bigBlindAmount: number;
+    bigBlind: number;
     /**
      * @property {string | undefined} name
      * The maximum number of players that can be seated at the PokerTable[2-14].
@@ -32,13 +33,6 @@ interface PokerGameConfig {
  *
  * @extends NodeJS.EventEmitter
  */
-interface PokerGameInterface extends NodeJS.EventEmitter {
-    /**
-     * @method `resolveBets`
-     * Resolves the current betting round, updating player chip stacks and determining the winner if applicable.
-     * @returns {void}
-     */
-    resolveBets(): void;
-    getPlayers(): PokerPlayerInterface[];
+interface PokerGameInterface extends BaseEventEmitterInterface {
 }
 export { PokerGameConfig, PokerGameInterface };

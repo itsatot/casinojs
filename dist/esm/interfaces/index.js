@@ -1,3 +1,4 @@
+//@collapse
 /**
  * @module `Interfaces`
  * Centralized export for all poker-related interfaces and types.
@@ -9,22 +10,28 @@
  * // Import all interfaces and types from the centralized module
  * import { CardInterface, DeckInterface } from './interfaces';
  */
-export * as CardInterfaces from "./card";
+export * as BaseInterfaceModule from "./_base";
+export * from "./_base";
+export * as BaseEventInterfaceModule from "./baseEvent";
+export * from "./baseEvent";
+export * as CardInterfaceModule from "./card";
 export * from "./card";
-export * as CasinoInterfaces from "./casino";
+export * as CasinoInterfaceModule from "./casino";
 export * from "./casino";
-export * as DeckInterfaces from "./deck";
+export * as DeckInterfaceModule from "./deck";
 export * from "./deck";
-export * as PokerGameInterfaces from "./pokerGame";
+export * as LoggerInterfaceModule from "./logger";
+export * from "./logger";
+export * as PokerGameInterfaceModule from "./pokerGame";
 export * from "./pokerGame";
-export * as PokerPhaseInterfaces from "./pokerPhase";
+export * as PokerPhaseInterfaceModule from "./pokerPhase";
 export * from "./pokerPhase";
-export * as PokerPlayerInterfaces from "./pokerPlayer";
+export * as PokerPlayerInterfaceModule from "./pokerPlayer";
 export * from "./pokerPlayer";
-export * as PokerRoomInterfaces from "./pokerRoom";
+export * as PokerRoomInterfaceModule from "./pokerRoom";
 export * from "./pokerRoom";
-export * as PokerSeatInterfaces from "./pokerSeat";
+export * as PokerSeatInterfaceModule from "./pokerSeat";
 export * from "./pokerSeat";
-export * as PokerTableInterfaces from "./pokerTable";
+export * as PokerTableInterfaceModule from "./pokerTable";
 export * from "./pokerTable";
 //# sourceMappingURL=index.js.map

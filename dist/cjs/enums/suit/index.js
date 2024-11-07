@@ -1,4 +1,5 @@
 "use strict";
+//@collapse
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Suit = void 0;
 /**

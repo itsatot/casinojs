@@ -1,23 +1,28 @@
 "use strict";
+//@collapse
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PokerGame = void 0;
-const events_1 = require("events");
+// Import Enums
+const enums_1 = require("../../enums");
+// Import Models
+const _base_1 = require("../_base");
 const deck_1 = require("../deck");
 const pokerPhase_1 = require("../pokerPhase");
-const enums_1 = require("../../enums");
+// Import Utils
+const utils_1 = require("../../utils");
 /**
  * @class `PokerGame`
  * Represents the current PokerGame being played at the PokerTable.
  * Manages the deck, community cards, and game phases, such as pre-flop, flop, turn, and river.
  *
- * @extends EventEmitter
+ * @extends BaseEventEmitter
  */
-class PokerGame extends events_1.EventEmitter {
+class PokerGame extends _base_1.BaseEventEmitter {
     /*************************************************************************************
      * CONSTRUCTOR & INITIALIZERS
      *************************************************************************************/
     /**
-     * @method constructor
+     * constructor
      * @public
      * Creates an instance of a Deck with 52 cards.
      * Automatically initializes the deck with all combinations of ranks and suits.
@@ -27,89 +32,146 @@ class PokerGame extends events_1.EventEmitter {
      */
     constructor(config) {
         super();
-        this._id = this._id = config.id ? config.id : ``;
-        this._deck = new deck_1.Deck();
-        this._smallBlindAmount = config.smallBlindAmount
-            ? config.smallBlindAmount
-            : 5;
-        this._bigBlindAmount = config.bigBlindAmount ? config.bigBlindAmount : 10;
-        this._communityCards = [];
-        this._players = config.players ? config.players : [];
-        this._pot = 0;
-        this._dealerPos = 0;
-        this._smallBlindPos = 0;
-        this._bigBlindPos = 0;
-        this._phases = [];
-        this._currentPhase = new pokerPhase_1.PokerPhase({
-            name: enums_1.PokerPhaseName.PRE_FLOP,
-            deck: this._deck,
-            players: [],
-            pot: 0,
-            dealerPos: 0,
-            smallBlindPos: 0,
-            bigBlindPos: 0,
-        });
+        /*************************************************************************************
+         * PROPERTIES
+         *************************************************************************************/
+        /**
+         * @property {DeckInterface} __id
+         * The deck of cards used in the current PokerGame.
+         */
+        this.__id = ``;
+        /**
+         * @property {string} __deck
+         * The current phase of the game (e.g., "pre-flop", "flop", "turn", "river").
+         */
+        this.__deck = new deck_1.Deck();
+        /**
+         * @property {number} __smallBlind
+         * The maximum number of players that can be seated at the PokerTable[2-14].
+         */
+        this.__smallBlind = 5;
+        /**
+         * @property {number} __bigBlind
+         * The maximum number of players that can be seated at the PokerTable[2-14].
+         */
+        this.__bigBlind = this.__smallBlind * 2;
+        /**
+         * @property {number} __bigBlind
+         * The maximum number of players that can be seated at the PokerTable[2-14].
+         */
+        this.__phases = [];
+        /**
+         * @property {number} __bigBlind
+         * The maximum number of players that can be seated at the PokerTable[2-14].
+         */
+        this.__currentPhase = new pokerPhase_1.PokerPhase();
+        /**
+         * @property {CardInterface[]} __communityCards
+         * The community cards that are dealt face-up and shared by all players.
+         */
+        this.__communityCards = [];
+        this.__players = [];
+        this.__dealerPos = 0;
+        this.__smallBlindPos = 1;
+        this.__bigBlindPos = 2;
+        this.__pot = 0;
+        config ? this.__init(config) : this.__init();
     }
     /**
-     * @method `init`
+     * `init`
      * @private
      * Initializes the deck with 52 unique cards.
      * This method is called automatically inside the constructor during deck creation.
-     * @emits `deck:initialized` : Emits a `deck:initialized` event when the deck is created.
+     * `deck:initialized` : Emits a `deck:initialized` event when the deck is created.
      * @returns {void}
      */
-    init() {
-        this.validatePlayerList();
+    __init(config) {
+        if (config) {
+            this.__id = config.id ? config.id : (0, utils_1.generateUniqueId)();
+            this.__deck = new deck_1.Deck();
+            this.__smallBlind = config.smallBlind
+                ? config.smallBlind
+                : this.__smallBlind;
+            this.__bigBlind = config.bigBlind ? config.bigBlind : this.__bigBlind;
+            this.__communityCards = this.__communityCards;
+            this.__players = config.players ? config.players : this.__players;
+            this.__pot = this.__pot;
+            this.__dealerPos = this.__dealerPos;
+            this.__smallBlindPos = this.__smallBlindPos;
+            this.__bigBlindPos = this.__bigBlindPos;
+            this.__phases = this.__phases;
+            this.__currentPhase = new pokerPhase_1.PokerPhase({
+                name: enums_1.PokerPhaseName.PRE_FLOP,
+                deck: this.__deck,
+                players: [],
+                pot: 0,
+                dealerPos: 0,
+                smallBlindPos: 0,
+                bigBlindPos: 0,
+            });
+            this.__validatePlayerList();
+        }
+        else {
+        }
     }
+    /**************************************************************************************************************
+     * CREATE METHODS (SETTERS & OBJECT CREATION)
+     **************************************************************************************************************/
+    /**************************************************************************************************************
+     * READ METHODS (GETTERS & DATA RETRIEVAL)
+     **************************************************************************************************************/
     getPlayers() {
-        return this._players;
+        return this.__players;
     }
     getDeck() {
-        return this._deck;
+        return this.__deck;
     }
     getPot() {
-        return this._pot;
-    }
-    setPlayers(players) {
-        return (this._players = players);
-    }
-    setPot(pot) {
-        return (this._pot = pot);
+        return this.__pot;
     }
     getDealerPos() {
-        return this._dealerPos;
-    }
-    setDealerPos(pos) {
-        this._dealerPos = pos;
-        return true;
+        return this.__dealerPos;
     }
     getSmallBlindPos() {
-        return this._smallBlindPos;
-    }
-    setSmallBlindPos(pos) {
-        this._smallBlindPos = pos;
-        return true;
+        return this.__smallBlindPos;
     }
     getBigBlindPos() {
-        return this._bigBlindPos;
+        return this.__bigBlindPos;
     }
-    setBigBlindPos(pos) {
-        this._bigBlindPos = pos;
-        return true;
-    }
-    tagPos() {
+    /**************************************************************************************************************
+     * UPDATE METHODS (MODIFYING EXISTING OBJECTS)
+     **************************************************************************************************************/
+    __tagPos() {
         if ((this.getPlayers().length = 2)) {
-            this.setDealerPos(0);
-            this.setSmallBlindPos(1);
-            this.setBigBlindPos(0);
+            this.__setDealerPos(0);
+            this.__setSmallBlindPos(1);
+            this.__setBigBlindPos(0);
         }
         else if (this.getPlayers().length >= 3) {
-            this.setDealerPos(0);
-            this.setSmallBlindPos(1);
-            this.setBigBlindPos(2);
+            this.__setDealerPos(0);
+            this.__setSmallBlindPos(1);
+            this.__setBigBlindPos(2);
         }
     }
-    validatePlayerList() {
+    /**************************************************************************************************************
+     * DELETE METHODS (REMOVING OBJECTS)
+     **************************************************************************************************************/
+    /**************************************************************************************************************
+     * BUSINESS-LOGIC METHODS (LOGIC & CALCULATIONS)
+     **************************************************************************************************************/
+    /**
+     * `advancePhase`
+     * Advances the game to the next phase (pre-flop to flop, flop to turn, etc.).
+     * @returns {void}
+     */
+    __advancePhase() { }
+    /**
+     * `resolveBets`
+     * Resolves the current betting round, updating player chip stacks and determining the winner if applicable.
+     * @returns {void}
+     */
+    __resolveBets() { }
+    __validatePlayerList() {
         if (this.getPlayers().length < 2) {
             throw new Error("Players are lesser than two.");
         }
@@ -117,18 +179,33 @@ class PokerGame extends events_1.EventEmitter {
             return true;
         }
     }
-    /**
-     * @method `advancePhase`
-     * Advances the game to the next phase (pre-flop to flop, flop to turn, etc.).
-     * @returns {void}
-     */
-    advancePhase() { }
-    /**
-     * @method `resolveBets`
-     * Resolves the current betting round, updating player chip stacks and determining the winner if applicable.
-     * @returns {void}
-     */
-    resolveBets() { }
+    /**************************************************************************************************************
+     * WRAPPER METHODS (UTILITY & CONVENIENCE)
+     **************************************************************************************************************/
+    /**************************************************************************************************************
+     * INTERNAL METHODS (PROTECTED)
+     **************************************************************************************************************/
+    /**************************************************************************************************************
+     * INTERNAL METHODS (PRIVATE)
+     **************************************************************************************************************/
+    __setPot(pot) {
+        return (this.__pot = pot);
+    }
+    __setPlayers(players) {
+        return (this.__players = players);
+    }
+    __setDealerPos(pos) {
+        this.__dealerPos = pos;
+        return true;
+    }
+    __setSmallBlindPos(pos) {
+        this.__smallBlindPos = pos;
+        return true;
+    }
+    __setBigBlindPos(pos) {
+        this.__bigBlindPos = pos;
+        return true;
+    }
 }
 exports.PokerGame = PokerGame;
 //# sourceMappingURL=index.js.map

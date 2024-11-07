@@ -1,22 +1,5 @@
 "use strict";
-/**
- * @module `casinojs`
- * Centralized export for the entire `pokerjs` library, providing access to interfaces, models, and types.
- *
- * This module exports all necessary components for working with poker games, including:
- * - Interfaces (`CardInterface`, `DeckInterface`)
- * - Models (`Card`, `Deck`)
- * - Enums (`Rank`, `Suit`)
- *
- * @example
- * // Importing from the centralized library module
- * import { CardInterface, Card, Deck, Rank, Suit } from 'pokerjs';
- *
- * const deck = new Deck();
- * deck.shuffle();
- * const card = deck.draw();
- * console.log(card?.toString());
- */
+//@collapse
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -44,11 +27,31 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Models = exports.Interfaces = exports.Enums = void 0;
+exports.Utils = exports.Models = exports.Interfaces = exports.Enums = void 0;
+/**
+ * @module `casinojs`
+ * Centralized export for the entire `pokerjs` library, providing access to interfaces, models, and types.
+ *
+ * This module exports all necessary components for working with poker games, including:
+ * - Interfaces (`CardInterface`, `DeckInterface`)
+ * - Models (`Card`, `Deck`)
+ * - Enums (`Rank`, `Suit`)
+ *
+ * @example
+ * // Importing from the centralized library module
+ * import { CardInterface, Card, Deck, Rank, Suit } from 'pokerjs';
+ *
+ * const deck = new Deck();
+ * deck.shuffle();
+ * const card = deck.draw();
+ * console.log(card?.toString());
+ */
 exports.Enums = __importStar(require("./enums"));
 __exportStar(require("./enums"), exports);
 exports.Interfaces = __importStar(require("./interfaces"));
 __exportStar(require("./interfaces"), exports);
 exports.Models = __importStar(require("./models"));
 __exportStar(require("./models"), exports);
+exports.Utils = __importStar(require("./utils"));
+__exportStar(require("./utils"), exports);
 //# sourceMappingURL=index.js.map

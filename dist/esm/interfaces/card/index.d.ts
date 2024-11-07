@@ -4,6 +4,9 @@ import { Rank, Suit } from "../../enums";
  * Represents a Card Config.
  */
 interface CardConfig {
+    /**************************************************************************************************************
+     * PROPERTIES
+     **************************************************************************************************************/
     /**
      * @property {string | undefined} rank
      * The maximum number of players that can be seated at the PokerTable[2-14].
@@ -25,8 +28,14 @@ interface CardConfig {
  * console.log(card.toString()); // "A of Spades"
  */
 interface CardInterface {
+    /**************************************************************************************************************
+     * CREATE METHODS (SETTERS & OBJECT CREATION)
+     **************************************************************************************************************/
+    /**************************************************************************************************************
+     * READ METHODS (GETTERS & DATA RETRIEVAL)
+     **************************************************************************************************************/
     /**
-     * @method `getRank`
+     * `getRank`
      * @public
      * Returns the card's rank.
      * @returns {Rank} The card's rank.
@@ -37,7 +46,7 @@ interface CardInterface {
      */
     getRank(): Rank;
     /**
-     * @method `getSuit`
+     * `getSuit`
      * @public
      * Returns the card's suit.
      * @returns {Suit} The card's suit.
@@ -47,8 +56,17 @@ interface CardInterface {
      * console.log(suit); // "Spades"
      */
     getSuit(): Suit;
+    /**************************************************************************************************************
+     * UPDATE METHODS (MODIFYING EXISTING OBJECTS)
+     **************************************************************************************************************/
+    /**************************************************************************************************************
+     * DELETE METHODS (REMOVING OBJECTS)
+     **************************************************************************************************************/
+    /**************************************************************************************************************
+     * BUSINESS-LOGIC METHODS (LOGIC & CALCULATIONS)
+     **************************************************************************************************************/
     /**
-     * @method `toString`
+     * `toString`
      * @public
      * Returns a string representation of the card, displaying its rank and suit.
      * @returns {string} The card's rank and suit as a formatted string.
@@ -59,7 +77,7 @@ interface CardInterface {
      */
     toString(): string;
     /**
-     * @method `toObj`
+     * `toObj`
      * @public
      * Returns an object representation of the card, containing its rank and suit.
      * @returns {object<{ rank: Rank; suit: Suit }>} The card's rank and suit as an object.

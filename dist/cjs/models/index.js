@@ -1,13 +1,5 @@
 "use strict";
-/**
- * @module `Models`
- * Centralized export for all poker-related models.
- * This module gathers and exports models like `Card` and `Deck`.
- *
- * @example
- * // Import models from the centralized module
- * import { Card, Deck } from './models';
- */
+//@collapse
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -35,21 +27,34 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PokerTableModels = exports.PokerSeatModels = exports.PokerRoomModels = exports.PokerPlayerModels = exports.PokerGameModels = exports.DeckModels = exports.CasinoModels = exports.CardModels = void 0;
-exports.CardModels = __importStar(require("./card"));
+exports.PokerTableModel = exports.PokerSeatModel = exports.PokerRoomModel = exports.PokerPlayerModel = exports.PokerGameModel = exports.LoggerModel = exports.DeckModel = exports.CasinoModel = exports.CardModel = exports.BaseModel = void 0;
+/**
+ * @module `Models`
+ * Centralized export for all poker-related models.
+ * This module gathers and exports models like `Card` and `Deck`.
+ *
+ * @example
+ * // Import models from the centralized module
+ * import { Card, Deck } from './models';
+ */
+exports.BaseModel = __importStar(require("./_base"));
+__exportStar(require("./_base"), exports);
+exports.CardModel = __importStar(require("./card"));
 __exportStar(require("./card"), exports);
-exports.CasinoModels = __importStar(require("./casino"));
+exports.CasinoModel = __importStar(require("./casino"));
 __exportStar(require("./casino"), exports);
-exports.DeckModels = __importStar(require("./deck"));
+exports.DeckModel = __importStar(require("./deck"));
 __exportStar(require("./deck"), exports);
-exports.PokerGameModels = __importStar(require("./pokerGame"));
+exports.LoggerModel = __importStar(require("./logger"));
+__exportStar(require("./logger"), exports);
+exports.PokerGameModel = __importStar(require("./pokerGame"));
 __exportStar(require("./pokerGame"), exports);
-exports.PokerPlayerModels = __importStar(require("./pokerPlayer"));
+exports.PokerPlayerModel = __importStar(require("./pokerPlayer"));
 __exportStar(require("./pokerPlayer"), exports);
-exports.PokerRoomModels = __importStar(require("./pokerRoom"));
+exports.PokerRoomModel = __importStar(require("./pokerRoom"));
 __exportStar(require("./pokerRoom"), exports);
-exports.PokerSeatModels = __importStar(require("./pokerSeat"));
+exports.PokerSeatModel = __importStar(require("./pokerSeat"));
 __exportStar(require("./pokerSeat"), exports);
-exports.PokerTableModels = __importStar(require("./pokerTable"));
+exports.PokerTableModel = __importStar(require("./pokerTable"));
 __exportStar(require("./pokerTable"), exports);
 //# sourceMappingURL=index.js.map

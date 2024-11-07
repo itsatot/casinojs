@@ -1,3 +1,4 @@
+import { BaseEventEmitterInterface } from "../_base";
 import { CardInterface } from "../card";
 /**
  * @interface `DeckInterface`
@@ -12,9 +13,25 @@ import { CardInterface } from "../card";
  * const card = deck.draw();
  * console.log(card?.toString()); // "A of Spades"
  */
-interface DeckInterface extends NodeJS.EventEmitter {
+interface DeckInterface extends BaseEventEmitterInterface {
+    /**************************************************************************************************************
+     * CREATE METHODS (SETTERS & OBJECT CREATION)
+     **************************************************************************************************************/
+    /**************************************************************************************************************
+     * READ METHODS (GETTERS & DATA RETRIEVAL)
+     **************************************************************************************************************/
+    getCards(): CardInterface[];
+    /**************************************************************************************************************
+     * UPDATE METHODS (MODIFYING EXISTING OBJECTS)
+     **************************************************************************************************************/
+    /**************************************************************************************************************
+     * DELETE METHODS (REMOVING OBJECTS)
+     **************************************************************************************************************/
+    /**************************************************************************************************************
+     * BUSINESS-LOGIC METHODS (LOGIC & CALCULATIONS)
+     **************************************************************************************************************/
     /**
-     * @method `shuffle`
+     * `shuffle`
      * Shuffles the deck of cards.
      *
      * @example
@@ -23,7 +40,7 @@ interface DeckInterface extends NodeJS.EventEmitter {
      */
     shuffle(): void;
     /**
-     * @method `draw`
+     * `draw`
      * Draws a card from the top of the deck.
      *
      * @returns {CardInterface | undefined} Returns the drawn card or `undefined` if no cards remain.
@@ -34,4 +51,7 @@ interface DeckInterface extends NodeJS.EventEmitter {
      */
     draw(): CardInterface | undefined;
 }
+/**************************************************************************************************************
+ * WRAPPER METHODS (UTILITY & CONVENIENCE)
+ **************************************************************************************************************/
 export { DeckInterface };

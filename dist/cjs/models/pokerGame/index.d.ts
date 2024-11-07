@@ -1,61 +1,61 @@
-import { EventEmitter } from "events";
 import { PokerGameConfig, DeckInterface, PokerGameInterface, PokerPlayerInterface } from "../../interfaces";
+import { BaseEventEmitter } from "../_base";
 /**
  * @class `PokerGame`
  * Represents the current PokerGame being played at the PokerTable.
  * Manages the deck, community cards, and game phases, such as pre-flop, flop, turn, and river.
  *
- * @extends EventEmitter
+ * @extends BaseEventEmitter
  */
-declare class PokerGame extends EventEmitter implements PokerGameInterface {
+declare class PokerGame extends BaseEventEmitter implements PokerGameInterface {
     /*************************************************************************************
      * PROPERTIES
      *************************************************************************************/
     /**
-     * @property {DeckInterface} _id
+     * @property {DeckInterface} __id
      * The deck of cards used in the current PokerGame.
      */
-    private _id;
+    private __id;
     /**
-     * @property {string} _currentPhase
+     * @property {string} __deck
      * The current phase of the game (e.g., "pre-flop", "flop", "turn", "river").
      */
-    private _deck;
+    private __deck;
     /**
-     * @property {number} _smallBlindAmount
+     * @property {number} __smallBlind
      * The maximum number of players that can be seated at the PokerTable[2-14].
      */
-    private _smallBlindAmount;
+    private __smallBlind;
     /**
-     * @property {number} _bigBlindAmount
+     * @property {number} __bigBlind
      * The maximum number of players that can be seated at the PokerTable[2-14].
      */
-    private _bigBlindAmount;
+    private __bigBlind;
     /**
-     * @property {number} _bigBlindAmount
+     * @property {number} __bigBlind
      * The maximum number of players that can be seated at the PokerTable[2-14].
      */
-    private _phases;
+    private __phases;
     /**
-     * @property {number} _bigBlindAmount
+     * @property {number} __bigBlind
      * The maximum number of players that can be seated at the PokerTable[2-14].
      */
-    private _currentPhase;
+    private __currentPhase;
     /**
-     * @property {CardInterface[]} _communityCards
+     * @property {CardInterface[]} __communityCards
      * The community cards that are dealt face-up and shared by all players.
      */
-    private _communityCards;
-    private _players;
-    private _dealerPos;
-    private _smallBlindPos;
-    private _bigBlindPos;
-    private _pot;
+    private __communityCards;
+    private __players;
+    private __dealerPos;
+    private __smallBlindPos;
+    private __bigBlindPos;
+    private __pot;
     /*************************************************************************************
      * CONSTRUCTOR & INITIALIZERS
      *************************************************************************************/
     /**
-     * @method constructor
+     * constructor
      * @public
      * Creates an instance of a Deck with 52 cards.
      * Automatically initializes the deck with all combinations of ranks and suits.
@@ -63,40 +63,64 @@ declare class PokerGame extends EventEmitter implements PokerGameInterface {
      * @example
      * const deck = new Deck();
      */
-    constructor(config: PokerGameConfig);
+    constructor(config?: PokerGameConfig);
     /**
-     * @method `init`
+     * `init`
      * @private
      * Initializes the deck with 52 unique cards.
      * This method is called automatically inside the constructor during deck creation.
-     * @emits `deck:initialized` : Emits a `deck:initialized` event when the deck is created.
+     * `deck:initialized` : Emits a `deck:initialized` event when the deck is created.
      * @returns {void}
      */
-    private init;
+    private __init;
+    /**************************************************************************************************************
+     * CREATE METHODS (SETTERS & OBJECT CREATION)
+     **************************************************************************************************************/
+    /**************************************************************************************************************
+     * READ METHODS (GETTERS & DATA RETRIEVAL)
+     **************************************************************************************************************/
     getPlayers(): PokerPlayerInterface[];
     getDeck(): DeckInterface;
     getPot(): number;
-    private setPlayers;
-    setPot(pot: number): number;
     getDealerPos(): number;
-    private setDealerPos;
     getSmallBlindPos(): number;
-    private setSmallBlindPos;
     getBigBlindPos(): number;
-    private setBigBlindPos;
-    private tagPos;
-    private validatePlayerList;
+    /**************************************************************************************************************
+     * UPDATE METHODS (MODIFYING EXISTING OBJECTS)
+     **************************************************************************************************************/
+    private __tagPos;
+    /**************************************************************************************************************
+     * DELETE METHODS (REMOVING OBJECTS)
+     **************************************************************************************************************/
+    /**************************************************************************************************************
+     * BUSINESS-LOGIC METHODS (LOGIC & CALCULATIONS)
+     **************************************************************************************************************/
     /**
-     * @method `advancePhase`
+     * `advancePhase`
      * Advances the game to the next phase (pre-flop to flop, flop to turn, etc.).
      * @returns {void}
      */
-    advancePhase(): void;
+    private __advancePhase;
     /**
-     * @method `resolveBets`
+     * `resolveBets`
      * Resolves the current betting round, updating player chip stacks and determining the winner if applicable.
      * @returns {void}
      */
-    resolveBets(): void;
+    private __resolveBets;
+    private __validatePlayerList;
+    /**************************************************************************************************************
+     * WRAPPER METHODS (UTILITY & CONVENIENCE)
+     **************************************************************************************************************/
+    /**************************************************************************************************************
+     * INTERNAL METHODS (PROTECTED)
+     **************************************************************************************************************/
+    /**************************************************************************************************************
+     * INTERNAL METHODS (PRIVATE)
+     **************************************************************************************************************/
+    private __setPot;
+    private __setPlayers;
+    private __setDealerPos;
+    private __setSmallBlindPos;
+    private __setBigBlindPos;
 }
 export { PokerGame };

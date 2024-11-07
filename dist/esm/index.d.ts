@@ -22,3 +22,5 @@ export * as Interfaces from "./interfaces";
 export * from "./interfaces";
 export * as Models from "./models";
 export * from "./models";
+export * as Utils from "./utils";
+export * from "./utils";
