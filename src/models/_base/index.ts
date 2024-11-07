@@ -3,7 +3,7 @@
 import { EventEmitter } from "events";
 
 // Import Enums
-import { PokerSeatEventName } from "../../enums";
+import { LogLevel } from "../../enums";
 
 // Import Events
 import { BaseEvent } from "../../events";
@@ -11,7 +11,7 @@ import { BaseEvent } from "../../events";
 // Import Interfaces
 import { BaseEventEmitterInterface } from "../../interfaces";
 
-import { generateUniqueId } from "../../utils";
+import { generateUniqueId, logger } from "../../utils";
 
 /**
  * @class `BaseEventEmitter`
@@ -93,36 +93,51 @@ class BaseEventEmitter
    **************************************************************************************************************/
 
   /**
-   * Emits an event, optionally with middleware processing for validation or transformation.
-   *
-   * @param {string} eventName - The name of the event to emit.
-   * @param {object} options - Configuration for event emission.
-   * @param {Array<(event: BaseEvent, next: () => void) => void | false>} [options.middlewares] - Optional array of middleware functions for processing.
-   *
    * #### Description
-   * The `emitEvent` method is a public method for emitting events with optional middleware functions. These middlewares allow
-   * for custom processing, validation, or transformation of the event before it is emitted to all listeners.
+   * The `emitEvent` method is a public method for emitting events, with an optional configuration that allows
+   * middleware processing. Middleware functions can intercept and transform the event before it reaches the listeners,
+   * allowing custom validation or data modifications.
    *
    * #### Purpose
-   * Provides a central method for emitting events, ensuring that each emitted event can be customized through middleware processing
-   * if needed.
+   * This method enables flexible event emission with support for middleware, providing a robust event processing
+   * mechanism in the `BaseEventEmitter`. It’s useful for customizing event behavior based on application-specific needs.
+   *
+   * #### Implements
+   * N/A
+   *
+   * #### Overrides
+   * N/A
    *
    * #### Events
-   * This method can emit any valid event name specified in the `eventName` parameter, allowing flexible event handling
-   * in the application.
+   * This method can emit any event specified by `eventName`, which can then be processed by middleware functions if defined.
+   *
+   * #### Parameters
+   * - `eventName: string` - The name of the event to emit.
+   * - `options: { event: { data: { [key: string]: any }; [key: string]: any; }, middlewares?: Array<(event: BaseEvent, next: () => void) => void | false> }`
+   *   - **event** - The primary event data to emit, containing specific details.
+   *   - **middlewares** - An optional array of middleware functions that process the event before emission.
+   *
+   * #### Requirements
+   * - `eventName` must be a valid string.
+   * - `options.event` should include relevant data for the event. If `middlewares` are provided, they should be functions with an event and next parameter.
+   *
+   * #### Returns
+   * - `void` - This method does not return a value.
    *
    * #### Usage
-   * Use this method to emit events with or without middleware processing. Middlewares, if provided, can alter the event data
-   * before it reaches the listeners.
+   * Use this method to emit events with middleware-based customization, which allows for specific processing
+   * logic or transformations before the event reaches listeners.
+   *
+   * @param {string} eventName - The name of the event to emit.
+   * @param {object} options - Configuration for the event and optional middleware functions.
    *
    * @example
    * ```typescript
-   * emitter.emitEvent("CustomEvent", {
-   *   eventHead: { source: "PokerSeat" },
-   *   eventData: { seatId: "123" },
+   * emitter.emitEvent("game:started", {
+   *   event: { data: { gameId: "001", status: "active" } },
    *   middlewares: [
-   *     (event, next) => { console.log("Middleware 1"); next(); },
-   *     (event, next) => { console.log("Middleware 2"); next(); }
+   *     (event, next) => { console.log("Processing event:", event); next(); },
+   *     (event, next) => { event.data.processed = true; next(); }
    *   ]
    * });
    * ```
@@ -154,33 +169,43 @@ class BaseEventEmitter
 
   /**
    * #### Description
-   * The `__emitEvent` method emits an event with optional middleware processing, allowing for validation or transformation
-   * before the final emission.
+   * The `__emitEvent` method is an internal method that emits an event with optional middleware processing.
+   * Middleware functions can process, validate, or modify the event data before the final emission to listeners.
    *
    * #### Purpose
-   * This method centralizes event emission, supporting both direct and middleware-processed emissions. This provides
-   * flexible event handling, where middleware functions can alter the event data or perform validation before the event
-   * is officially emitted.
+   * This private method centralizes event emission within the `BaseEventEmitter`, supporting middleware-based
+   * customization for flexible event handling and data transformation.
    *
    * #### Events
-   * This method can emit any valid event, with processing provided by middlewares if specified.
+   * Emits the specified event after optional middleware processing.
+   *
+   * #### Parameters
+   * - `eventName: string` - The event name to emit.
+   * - `options: { event: { data: { [key: string]: any } }, middlewares?: Array<(event: BaseEvent, next: () => void) => void | false> }`
+   *   - **event** - The primary event data to emit, containing relevant information.
+   *   - **middlewares** - Optional array of middleware functions for processing the event before emission.
+   *
+   * #### Requirements
+   * - `eventName` must be a valid string.
+   * - If `middlewares` are provided, they should be functions that accept an event and a `next` function.
+   *
+   * #### Returns
+   * - `void` - This method does not return a value.
    *
    * #### Usage
-   * This method can be used for both direct and middleware-processed event emissions, allowing for sequential processing
-   * of the event data through middleware functions if specified.
+   * Use this method internally within the `emitEvent` method to handle middleware-based processing before the event
+   * reaches its listeners.
    *
-   * @param {string} eventName - The name of the event to emit.
-   * @param {object} options - Optional parameter with middleware functions.
-   * @param {Array<(event: BaseEvent, next: () => void) => void | false>} [options.middlewares] - Optional array of middleware functions.
-   *
-   * @returns {void}
+   * @param {string} eventName - The event name to emit.
+   * @param {object} options - Configuration object containing the event data and optional middleware functions.
    *
    * @example
    * ```typescript
-   * pokerSeat.__emitEvent("CustomEvent", {
+   * emitter.__emitEvent("room:updated", {
+   *   event: { data: { roomId: "room123", players: 6 } },
    *   middlewares: [
-   *     (event, next) => { event.data.processed = true; next(); },
-   *     (event, next) => { console.log("Middleware log:", event); next(); }
+   *     (event, next) => { event.data.updated = true; next(); },
+   *     (event, next) => { console.log("Middleware processed event:", event); next(); }
    *   ]
    * });
    * ```
@@ -204,46 +229,49 @@ class BaseEventEmitter
           middlewares[index](event, () => runMiddlewares(index + 1));
         } else {
           this.emit(eventName, event);
+          logger.log(LogLevel.INFO, `Event emitted: "${eventName}"`, event);
         }
       };
       runMiddlewares(0);
     } else {
       this.emit(eventName, event);
+      logger.log(LogLevel.INFO, `Event emitted: "${eventName}"`, event);
     }
   }
 
   /**
    * #### Description
-   * The `__initializeEventObj` method creates a structured event object, initializing it with metadata and data.
+   * The `__initializeEventObj` method constructs a structured event object, initializing it with essential metadata
+   * and additional data specified in the options parameter.
    *
    * #### Purpose
-   * This method constructs a `PokerSeatEvent` object with consistent metadata, ensuring uniformity for seat-related events.
-   * It allows for extensibility through merging additional metadata specified in the `options` parameter.
+   * This method ensures that all emitted events in `BaseEventEmitter` follow a standardized format,
+   * with uniform metadata for consistency across the application.
    *
    * #### Parameters
    * - `eventName: string` - The name of the event.
    * - `options: { event: { data: { [key: string]: any } } }` - Configuration object for the event.
    *
    * #### Requirements
-   * - `eventName` must be a valid event name.
-   * - `event.data` should be a well-defined object containing event-specific details.
+   * - `eventName` must be a valid event identifier.
+   * - `options.event.data` should include any relevant data for the event.
    *
    * #### Returns
-   * - `BaseEvent` - A complete event object ready for processing or emission.
+   * - `BaseEvent` - The structured event object ready for processing or emission.
    *
    * #### Usage
-   * Use this method to create a structured `PokerSeatEvent` object before emission, allowing for consistent event handling.
+   * Use this method to generate a complete `BaseEvent` object for any event emission within `BaseEventEmitter`.
    *
    * @param {string} eventName - The name of the event.
-   * @param {object} options - Configuration object for the event.
-   * @param {object} options.event - Event data details.
+   * @param {object} options - Configuration object containing the event data.
    *
-   * @returns {BaseEvent} - A structured event object ready for emission.
+   * @returns {BaseEvent} - A structured event object with metadata and data.
    *
    * @example
    * ```typescript
-   * const event = pokerSeat.__initializeEventObj("CustomEvent", { event: { data: { seatId: "seat123", playerId: "player456" } } });
+   * const event = emitter.__initializeEventObj("player:joined", { event: { data: { playerId: "player123", seat: 5 } } });
    * console.log(event);
+   * // Output: { id: "generated-id", name: "player:joined", createdAt: [Date], source: "BaseEventEmitter", data: { playerId: "player123", seat: 5 } }
    * ```
    */
   private __initializeEventObj(
@@ -254,13 +282,15 @@ class BaseEventEmitter
       };
     }
   ): BaseEvent {
-    return {
+    const baseEvent: BaseEvent = {
       id: generateUniqueId(),
       name: eventName,
       createdAt: new Date(),
       source: "BaseEventEmitter",
       ...options.event,
     };
+    logger.log(LogLevel.INFO, `Event initialized: "${eventName}"`, baseEvent);
+    return baseEvent;
   }
 }
 

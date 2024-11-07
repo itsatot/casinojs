@@ -10,6 +10,8 @@
  * import { Card, Deck } from './models';
  */
 
+export * as BaseModel from "./_base";
+export * from "./_base";
 export * as CardModel from "./card";
 export * from "./card";
 export * as CasinoModel from "./casino";
