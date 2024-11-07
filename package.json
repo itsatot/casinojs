@@ -2,8 +2,8 @@
   "name": "casinojs",
   "version": "0.1.0-alpha",
   "description": "A Casino Js Library.",
-  "main": "dist/index.js",
-  "module": "dist/index.mjs",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
   "type": "module",
   "directories": {
     "doc": "docs"
@@ -19,6 +19,8 @@
     "url": "git+https://github.com/astitvsingh/CasinoJs.git"
   },
   "keywords": [
+    "casinojs",
+    "casino",
     "pokerjs",
     "poker",
     "lib"
