@@ -1,7 +1,7 @@
 //@collapse
 
 // Import Enums
-import { LogLevel, PokerSeatEventName, Source } from "../../enums";
+import { LogLevel, PokerSeatEvents, Source } from "../../enums";
 
 // Import Interfaces
 import {
@@ -56,7 +56,7 @@ import { generateUniqueId, logger } from "../../utils";
  * @example
  * ```typescript
  * const pokerSeat = new PokerSeat();
- * pokerSeat.on(PokerSeatEventName.SEAT_OCCUPIED, () => console.log("Seat is now occupied"));
+ * pokerSeat.on(PokerSeatEvents.SEAT_OCCUPIED, () => console.log("Seat is now occupied"));
  * pokerSeat.occupySeat(player);
  * console.log(pokerSeat.isSeatOccupied()); // Console Output: true
  * ```
@@ -286,7 +286,7 @@ class PokerSeat extends BaseEventEmitter implements PokerSeatInterface {
     }
 
     // Emit `INITIALIZED` event after initialization
-    // this.emitEvent(PokerSeatEventName.INITIALIZED, {
+    // this.emitEvent(PokerSeatEvents.INITIALIZED, {
     //   seatId: this.__id,
     //   position: this.__position,
     //   isDealer: this.__isDealer,
@@ -570,7 +570,7 @@ class PokerSeat extends BaseEventEmitter implements PokerSeatInterface {
    * @returns {void}
    */
   public occupy(player: PokerPlayerInterface): void {
-    this.emitEvent(PokerSeatEventName.OCCUPIED, {
+    this.emitEvent(PokerSeatEvents.OCCUPIED, {
       event: {
         source: Source.POKER_SEAT,
         data: { seatId: this.getId(), playerId: player.getId() },
@@ -598,7 +598,7 @@ class PokerSeat extends BaseEventEmitter implements PokerSeatInterface {
    * @returns {void}
    */
   public vacate(): void {
-    this.emitEvent(PokerSeatEventName.VACATED, {
+    this.emitEvent(PokerSeatEvents.VACATED, {
       event: {
         source: Source.POKER_SEAT,
         data: { seatId: this.getId(), playerId: this.getPlayer()?.getId() },

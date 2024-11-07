@@ -1,18 +1,18 @@
 //@collapse
 
 /**
- * @enum {string} `CasinoEventName`
+ * @enum {string} `CasinoEvents`
  * Defines the events emitted by the `Casino` class for mutable operations.
  * Events are triggered only for state-changing actions like creation, additions, updates, and deletions.
  *
  * @example
  * ```typescript
- * const eventName = CasinoEventName.ROOM_CREATED;
+ * const eventName = CasinoEvents.ROOM_CREATED;
  * console.log(eventName);
  * // Output: "Casino:PokerRoomCreated"
  * ```
  */
-enum CasinoEventName {
+enum CasinoEvents {
   /**
    * `ROOM_CREATED` - Emitted when a new room is created and added to the casino's list of managed rooms.
    *
@@ -54,4 +54,4 @@ enum CasinoEventName {
   ROOMS_SET = "Casino:PokerRoomsSet",
 }
 
-export { CasinoEventName };
+export { CasinoEvents };

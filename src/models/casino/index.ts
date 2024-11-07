@@ -1,7 +1,7 @@
 //@collapse
 
 // Import Enums
-import { CasinoEventName, Source } from "../../enums";
+import { CasinoEvents, Source } from "../../enums";
 
 // Import Interfaces
 import {
@@ -624,7 +624,7 @@ class Casino extends BaseEventEmitter implements CasinoInterface {
    * when needing to replace or reset the Casino's room list.
    *
    * #### Events
-   * - Emits a `CasinoEventName.ROOMS_SET` event, allowing external listeners to respond to room updates.
+   * - Emits a `CasinoEvents.ROOMS_SET` event, allowing external listeners to respond to room updates.
    *
    * #### Parameters
    * - `rooms`: An array of `PokerRoomInterface` instances representing the new rooms for the Casino.
@@ -656,7 +656,7 @@ class Casino extends BaseEventEmitter implements CasinoInterface {
    */
   protected _setRooms(rooms: PokerRoomInterface[]): PokerRoomInterface[] {
     this.__rooms = rooms;
-    this.emit(CasinoEventName.ROOMS_SET, this.getRooms());
+    this.emit(CasinoEvents.ROOMS_SET, this.getRooms());
     return this.getRooms();
   }
 
@@ -674,7 +674,7 @@ class Casino extends BaseEventEmitter implements CasinoInterface {
    * Allows the Casino to dynamically create new rooms as needed by providing specific room configurations.
    *
    * #### Events
-   * - Emits a `CasinoEventName.ROOM_CREATED` event, enabling listeners to respond to the creation of a new room.
+   * - Emits a `CasinoEvents.ROOM_CREATED` event, enabling listeners to respond to the creation of a new room.
    *
    * #### Parameters
    * - `config`: A `PokerRoomConfig` object containing details like `name`, `tableSize`, `smallBlind`, and `bigBlind`.
@@ -708,7 +708,7 @@ class Casino extends BaseEventEmitter implements CasinoInterface {
   ): PokerRoomInterface {
     const room = new PokerRoom(config);
     this.__rooms.push(room);
-    this.emit(CasinoEventName.ROOM_CREATED, room);
+    this.emit(CasinoEvents.ROOM_CREATED, room);
     return room;
   }
 
@@ -726,7 +726,7 @@ class Casino extends BaseEventEmitter implements CasinoInterface {
    * Allows dynamic expansion of rooms within the Casino environment, enabling additional gaming options for players.
    *
    * #### Events
-   * - Emits a `CasinoEventName.ROOM_ADDED` event after adding a room.
+   * - Emits a `CasinoEvents.ROOM_ADDED` event after adding a room.
    *
    * #### Parameters
    * - `room`: The `PokerRoomInterface` instance representing the room to be added.
@@ -753,7 +753,7 @@ class Casino extends BaseEventEmitter implements CasinoInterface {
    */
   protected _addRoom(room: PokerRoomInterface): PokerRoomInterface[] {
     this.__rooms.push(room);
-    this.emit(CasinoEventName.ROOM_ADDED, this.getRooms());
+    this.emit(CasinoEvents.ROOM_ADDED, this.getRooms());
     return this.getRooms();
   }
 
@@ -771,7 +771,7 @@ class Casino extends BaseEventEmitter implements CasinoInterface {
    * Enables efficient management of batch room additions within the Casino, ensuring all rooms are processed together.
    *
    * #### Events
-   * - Emits a `CasinoEventName.ROOMS_SET` event once all rooms are added.
+   * - Emits a `CasinoEvents.ROOMS_SET` event once all rooms are added.
    *
    * #### Parameters
    * - `rooms`: An array of `PokerRoomInterface` instances to add.
@@ -816,7 +816,7 @@ class Casino extends BaseEventEmitter implements CasinoInterface {
    * Allows for the safe removal of a specific room from the Casino’s list.
    *
    * #### Events
-   * - Emits a `CasinoEventName.ROOM_DELETED` event once the room is successfully removed.
+   * - Emits a `CasinoEvents.ROOM_DELETED` event once the room is successfully removed.
    *
    * #### Parameters
    * - `index`: The zero-based index of the room to remove.
@@ -844,7 +844,7 @@ class Casino extends BaseEventEmitter implements CasinoInterface {
   protected _deleteRoom(index: number): PokerRoomInterface[] {
     if (this.isValidIndex(index)) {
       this.__rooms.splice(index, 1);
-      this.emit(CasinoEventName.ROOM_DELETED, this.getRooms());
+      this.emit(CasinoEvents.ROOM_DELETED, this.getRooms());
     }
     return this.getRooms();
   }
