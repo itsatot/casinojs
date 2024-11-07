@@ -15,15 +15,15 @@ import { Source } from "./source";
  * // Import all enums from the centralized module
  * import { CasinoEventName, CasinoEventNamesEnum, PokerPhaseName, PokerPhaseNamesEnum, Rank, RanksEnum, Suit, SuitsEnum } from './enums';
  */
-export * as EventNamesEnum from "./eventNames";
+export * as EventNamesEnumModule from "./eventNames";
 export * from "./eventNames";
-export * as LogLevelsEnum from "./logLevel";
+export * as LogLevelsEnumModule from "./logLevel";
 export * from "./logLevel";
-export * as PokerPhaseNamesEnum from "./pokerPhaseNames";
+export * as PokerPhaseNamesEnumModule from "./pokerPhaseNames";
 export * from "./pokerPhaseNames";
-export * as RanksEnum from "./rank";
+export * as RanksEnumModule from "./rank";
 export * from "./rank";
-export * as Sources from "./source";
+export * as SourcesEnumModule from "./source";
 export * from "./source";
-export * as SuitsEnum from "./suit";
+export * as SuitsEnumModule from "./suit";
 export * from "./suit";

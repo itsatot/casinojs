@@ -1,8 +1,8 @@
 //@collapse
 
-// import * as BaseEvents from "./_base";
+// import * as BaseEventModule from "./_base";
 // import { BaseEvent } from "./_base";
-// import * as PokerSeatEvents from "./pokerSeat";
+// import * as PokerSeatEventModule from "./pokerSeat";
 // import { PokerSeatEvent } from "./pokerSeat";
 // const Events = { BaseEvent, BaseEvents };
 
@@ -19,7 +19,7 @@
  * // Import all enums from the centralized module
  * import { CasinoEventName, CasinoEventNameEvents, PokerPhaseName, PokerPhaseNameEvents, Rank, RankEvents, Suit, SuitEvents } from './enums';
  */
-export * as BaseEvents from "./_base";
+export * as BaseEventModule from "./_base";
 export * from "./_base";
-export * as PokerSeatEvents from "./pokerSeat";
+export * as PokerSeatEventModule from "./pokerSeat";
 export * from "./pokerSeat";

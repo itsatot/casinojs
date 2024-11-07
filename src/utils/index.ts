@@ -10,3 +10,4 @@
  * import { Card, Deck } from './models';
  */
 export { generateUniqueId } from "./generateUniqueId";
+export { logger } from "./logger";

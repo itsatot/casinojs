@@ -28,26 +28,6 @@ import { LogLevel } from "../../enums";
  */
 interface LoggerConfig {
   /**
-   * @property {string} [logDirPath]
-   *
-   * Specifies the base directory path for log files.
-   *
-   * #### Purpose
-   * Provides the path for storing log files, making it easy to locate and access logs.
-   *
-   * #### Requirements
-   * - Optional: If not provided, the logger may default to a standard directory path.
-   *
-   * @example
-   * ```typescript
-   * const config: LoggerConfig = {
-   *   logDirPath: "./logs"
-   * };
-   * ```
-   */
-  logDirPath?: string;
-
-  /**
    * @property {boolean} [enableConsoleLogging]
    *
    * Enables or disables console output of logs in addition to file storage.
