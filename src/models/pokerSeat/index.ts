@@ -286,11 +286,13 @@ class PokerSeat extends BaseEventEmitter implements PokerSeatInterface {
     }
 
     // Emit `INITIALIZED` event after initialization
-    // this.emitEvent(PokerSeatEvents.INITIALIZED, {
-    //   seatId: this.__id,
-    //   position: this.__position,
-    //   isDealer: this.__isDealer,
-    // });
+    this.emitEvent(PokerSeatEvents.INITIALIZED, {
+      event: {
+        source: Source.POKER_SEAT,
+        data: { seatId: this.getId() },
+      },
+      middlewares: [],
+    });
   }
 
   /**************************************************************************************************************
@@ -807,7 +809,10 @@ class PokerSeat extends BaseEventEmitter implements PokerSeatInterface {
    * @param {BaseEventInterface} event - The event object containing event data.
    * @param {() => void} next - The next middleware function to call if seat is available.
    */
-  private __checkSeatVacancy(event: BaseEventInterface, next: () => void): void {
+  private __checkSeatVacancy(
+    event: BaseEventInterface,
+    next: () => void
+  ): void {
     if (this.isOccupied()) {
       logger.log(
         LogLevel.WARN,
@@ -848,7 +853,10 @@ class PokerSeat extends BaseEventEmitter implements PokerSeatInterface {
    * @param {BaseEventInterface} event - The event object containing event data.
    * @param {() => void} next - The next middleware function if the seat is occupied.
    */
-  private __checkSeatOccupancy(event: BaseEventInterface, next: () => void): void {
+  private __checkSeatOccupancy(
+    event: BaseEventInterface,
+    next: () => void
+  ): void {
     event.lastModifiedAt = new Date();
     if (!this.isOccupied()) {
       logger.log(
