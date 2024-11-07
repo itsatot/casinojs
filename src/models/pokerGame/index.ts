@@ -1,6 +1,12 @@
 //@collapse
 
-import { EventEmitter } from "events";
+// Import Enums
+import { PokerPhaseName } from "../../enums";
+
+// Import Events
+import {} from "../../events";
+
+// Import Interfaces
 import {
   PokerGameConfig,
   DeckInterface,
@@ -9,19 +15,23 @@ import {
   PokerPlayerInterface,
   PokerPhaseInterface,
 } from "../../interfaces";
+
+// Import Models
+import { BaseEventEmitter } from "../_base";
 import { Deck } from "../deck";
 import { PokerPhase } from "../pokerPhase";
-import { PokerPhaseName } from "../../enums";
-import { generateUniqueId } from "../../utils";
+
+// Import Utils
+import { generateUniqueId, logger } from "../../utils";
 
 /**
  * @class `PokerGame`
  * Represents the current PokerGame being played at the PokerTable.
  * Manages the deck, community cards, and game phases, such as pre-flop, flop, turn, and river.
  *
- * @extends EventEmitter
+ * @extends BaseEventEmitter
  */
-class PokerGame extends EventEmitter implements PokerGameInterface {
+class PokerGame extends BaseEventEmitter implements PokerGameInterface {
   /*************************************************************************************
    * PROPERTIES
    *************************************************************************************/

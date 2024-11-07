@@ -17,7 +17,7 @@ import {
 import { BaseEventEmitter } from "../_base";
 
 // Import Utils
-import { generateUniqueId } from "../../utils";
+import { generateUniqueId, logger } from "../../utils";
 
 /**
  * @class `PokerSeat`

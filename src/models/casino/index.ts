@@ -1,7 +1,7 @@
 //@collapse
 
 // Import Enums
-import { CasinoEventName } from "../../enums";
+import { CasinoEventName, Source } from "../../enums";
 
 // Import Interfaces
 import {
@@ -11,8 +11,8 @@ import {
 } from "../../interfaces";
 
 // Import Models
-import { PokerRoom } from "../pokerRoom";
 import { BaseEventEmitter } from "../_base";
+import { PokerRoom } from "../pokerRoom";
 
 /**
  * @class `Casino`

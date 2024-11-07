@@ -1,19 +1,30 @@
 //@collapse
 
-import { EventEmitter } from "events";
+// Import Enums
+import {} from "../../enums";
+
+// Import Events
+import {} from "../../events";
+
+// Import Interfaces
 import {
   CardInterface,
   PokerPlayerConfig,
   PokerPlayerInterface,
 } from "../../interfaces";
-import { generateUniqueId } from "../../utils";
+
+// Import Models
+import { BaseEventEmitter } from "../_base";
+
+// Import Utils
+import { generateUniqueId, logger } from "../../utils";
 
 /**
  * @class `PokerPlayerInterface`
  * Represents a player seated at the PokerTable.
  * The player can place bets, fold, and manage their chip stack during the game.
  */
-class PokerPlayer extends EventEmitter implements PokerPlayerInterface {
+class PokerPlayer extends BaseEventEmitter implements PokerPlayerInterface {
   /**************************************************************************************************************
    * PROPERTIES
    **************************************************************************************************************/

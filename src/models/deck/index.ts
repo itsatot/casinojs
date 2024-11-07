@@ -1,14 +1,22 @@
 //@collapse
 
-import { EventEmitter } from "events";
+// Import Enums
 import { Suit, Rank } from "../../enums";
+
+// Import Interfaces
 import { CardInterface, DeckInterface } from "../../interfaces";
+
+// Import Models
+import { BaseEventEmitter } from "../_base";
 import { Card } from "../card";
+
+// Import Utils
+import { logger } from "../../utils";
 
 /**
  * @class `Deck`
  * Represents a deck of 52 playing cards used in poker games.
- * This class extends `EventEmitter` and implements the `DeckInterface` interface.
+ * This class extends `BaseEventEmitter` and implements the `DeckInterface` interface.
  *
  * The `Deck` class provides methods to shuffle the deck, draw cards, and emits
  * events for important actions like shuffling and drawing cards.
@@ -20,7 +28,7 @@ import { Card } from "../card";
  * const card = deck.draw();
  * console.log(card?.toString()); // "A of Spades"
  */
-class Deck extends EventEmitter implements DeckInterface {
+class Deck extends BaseEventEmitter implements DeckInterface {
   /**************************************************************************************************************
    * PROPERTIES
    **************************************************************************************************************/

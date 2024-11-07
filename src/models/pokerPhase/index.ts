@@ -1,6 +1,12 @@
 //@collapse
 
-import { EventEmitter } from "events";
+// Import Enums
+import { PokerPhaseName } from "../../enums";
+
+// Import Events
+import {} from "../../events";
+
+// Import Interfaces
 import {
   CardInterface,
   DeckInterface,
@@ -8,8 +14,13 @@ import {
   PokerPhaseInterface,
   PokerPlayerInterface,
 } from "../../interfaces";
-import { PokerPhaseName } from "../../enums";
+
+// Import Models
+import { BaseEventEmitter } from "../_base";
 import { Deck } from "../deck";
+
+// Import Utils
+import { logger } from "../../utils";
 
 /**
  * @class `PokerPhase`
@@ -23,7 +34,7 @@ import { Deck } from "../deck";
  * enforcing rules specific to each phase and managing the deck and community cards.
  *
  * #### Extends
- * - Extends Node.js `EventEmitter`, enabling event-based responses to phase changes and key game events.
+ * - Extends Node.js `BaseEventEmitter`, enabling event-based responses to phase changes and key game events.
  *
  * #### Implements
  * - Implements the `PokerPhaseInterface`, defining essential methods and properties for managing a poker game phase.
@@ -49,7 +60,7 @@ import { Deck } from "../deck";
  * console.log(pokerPhase.getCurrentPhase()); // Outputs the next game phase, e.g., "Flop"
  * ```
  */
-class PokerPhase extends EventEmitter implements PokerPhaseInterface {
+class PokerPhase extends BaseEventEmitter implements PokerPhaseInterface {
   /**************************************************************************************************************
    * PROPERTIES
    **************************************************************************************************************/

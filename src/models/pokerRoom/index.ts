@@ -1,21 +1,32 @@
 //@collapse
 
-import { EventEmitter } from "events";
+// Import Enums
+import {} from "../../enums";
+
+// Import Events
+import {} from "../../events";
+
+// Import Interfaces
 import {
   PokerRoomConfig,
   PokerRoomInterface,
   PokerTableInterface,
   PokerTableConfig,
 } from "../../interfaces";
+
+// Import Models
+import { BaseEventEmitter } from "../_base";
 import { PokerTable } from "../pokerTable";
-import { generateUniqueId } from "../../utils";
+
+// Import Utils
+import { generateUniqueId, logger } from "../../utils";
 
 /**
  * @class `PokerRoom`
  * Represents a PokerRoom within a Casino that holds a single PokerTable. The PokerRoom manages the player queue, automatically assigning players to the PokerTable as seats become available.
- * This class extends `EventEmitter` and implements the `PokerRoomInterface` interface.
+ * This class extends `BaseEventEmitter` and implements the `PokerRoomInterface` interface.
  */
-class PokerRoom extends EventEmitter implements PokerRoomInterface {
+class PokerRoom extends BaseEventEmitter implements PokerRoomInterface {
   /**************************************************************************************************************
    * PROPERTIES
    **************************************************************************************************************/

@@ -1,6 +1,12 @@
 //@collapse
 
-import { EventEmitter } from "events";
+// Import Enums
+import { Source } from "../../enums";
+
+// Import Events
+import { BaseEvent } from "../../events";
+
+// Import Interfaces
 import {
   PokerPlayerInterface,
   PokerSeatInterface,
@@ -8,8 +14,13 @@ import {
   PokerTableInterface,
   PokerPlayerConfig,
 } from "../../interfaces";
+
+// Import Models
+import { BaseEventEmitter } from "../_base";
 import { PokerPlayer } from "../pokerPlayer";
 import { PokerSeat } from "../pokerSeat";
+
+// Import Utils
 import { generateUniqueId } from "../../utils";
 
 /**
@@ -25,7 +36,7 @@ import { generateUniqueId } from "../../utils";
  * progression.
  *
  * #### Extends
- * This class extends the Node.js `EventEmitter`, enabling it to emit events for key actions such as player seating,
+ * This class extends the Node.js `BaseEventEmitter`, enabling it to emit events for key actions such as player seating,
  * game start, or game completion. This event-driven approach facilitates integration with other parts of the casino
  * system, allowing external components to listen and respond to table actions.
  *
@@ -59,7 +70,7 @@ import { generateUniqueId } from "../../utils";
  * console.log(pokerTable.getQueue()); // Logs the current queue of waiting players
  * ```
  */
-class PokerTable extends EventEmitter implements PokerTableInterface {
+class PokerTable extends BaseEventEmitter implements PokerTableInterface {
   /**************************************************************************************************************
    * PROPERTIES
    **************************************************************************************************************/
