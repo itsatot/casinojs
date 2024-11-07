@@ -21,5 +21,3 @@
  */
 export * as BaseEventModule from "./_base";
 export * from "./_base";
-export * as PokerSeatEventModule from "./pokerSeat";
-export * from "./pokerSeat";

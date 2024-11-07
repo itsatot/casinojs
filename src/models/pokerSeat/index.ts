@@ -4,7 +4,7 @@
 import { LogLevel, PokerSeatEventName, Source } from "../../enums";
 
 // Import Events
-import { PokerSeatEvent } from "../../events";
+import { BaseEvent } from "../../events";
 
 // Import Interfaces
 import {
@@ -580,10 +580,10 @@ class PokerSeat extends BaseEventEmitter implements PokerSeatInterface {
       },
       middlewares: [
         (event, next) => {
-          this.__checkSeatVacancy(event as PokerSeatEvent, next);
+          this.__checkSeatVacancy(event, next);
         },
         (event, next) => {
-          this.__occupy(event as PokerSeatEvent, next);
+          this.__occupy(event, next);
         },
       ],
     });
@@ -607,10 +607,10 @@ class PokerSeat extends BaseEventEmitter implements PokerSeatInterface {
       },
       middlewares: [
         (event, next) => {
-          this.__checkSeatOccupancy(event as PokerSeatEvent, next);
+          this.__checkSeatOccupancy(event, next);
         },
         (event, next) => {
-          this.__vacate(event as PokerSeatEvent, next);
+          this.__vacate(event, next);
         },
       ],
     });
@@ -806,10 +806,10 @@ class PokerSeat extends BaseEventEmitter implements PokerSeatInterface {
    * #### Description
    * Checks seat availability to determine if it can be occupied by a player.
    *
-   * @param {PokerSeatEvent} event - The event object containing event data.
+   * @param {BaseEvent} event - The event object containing event data.
    * @param {() => void} next - The next middleware function to call if seat is available.
    */
-  private __checkSeatVacancy(event: PokerSeatEvent, next: () => void): void {
+  private __checkSeatVacancy(event: BaseEvent, next: () => void): void {
     if (this.isOccupied()) {
       logger.log(
         LogLevel.WARN,
@@ -829,10 +829,10 @@ class PokerSeat extends BaseEventEmitter implements PokerSeatInterface {
    * #### Description
    * Assigns a player to the seat.
    *
-   * @param {PokerSeatEvent} event - The event object with player information.
+   * @param {BaseEvent} event - The event object with player information.
    * @param {() => void} next - The next middleware function.
    */
-  private __occupy(event: PokerSeatEvent, next: () => void): void {
+  private __occupy(event: BaseEvent, next: () => void): void {
     this.__setPlayer(event.params.player);
     logger.log(LogLevel.INFO, "Seat occupied successfully.", {
       seatId: this.getId(),
@@ -847,10 +847,10 @@ class PokerSeat extends BaseEventEmitter implements PokerSeatInterface {
    * #### Description
    * Checks if the seat is occupied to determine if it can be vacated.
    *
-   * @param {PokerSeatEvent} event - The event object containing event data.
+   * @param {BaseEvent} event - The event object containing event data.
    * @param {() => void} next - The next middleware function if the seat is occupied.
    */
-  private __checkSeatOccupancy(event: PokerSeatEvent, next: () => void): void {
+  private __checkSeatOccupancy(event: BaseEvent, next: () => void): void {
     event.lastModifiedAt = new Date();
     if (!this.isOccupied()) {
       logger.log(
@@ -871,10 +871,10 @@ class PokerSeat extends BaseEventEmitter implements PokerSeatInterface {
    * #### Description
    * Vacates the seat by removing the current player.
    *
-   * @param {PokerSeatEvent} event - The event object with seat details.
+   * @param {BaseEvent} event - The event object with seat details.
    * @param {() => void} next - The next middleware function.
    */
-  private __vacate(event: PokerSeatEvent, next: () => void): void {
+  private __vacate(event: BaseEvent, next: () => void): void {
     this.__setPlayer(undefined);
     logger.log(LogLevel.INFO, "Seat vacated successfully.", {
       seatId: this.getId(),
