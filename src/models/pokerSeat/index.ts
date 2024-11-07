@@ -1,7 +1,7 @@
 //@collapse
 
 // Import Enums
-import { PokerSeatEventName, Source } from "../../enums";
+import { LogLevel, PokerSeatEventName, Source } from "../../enums";
 
 // Import Events
 import { PokerSeatEvent } from "../../events";
@@ -549,143 +549,71 @@ class PokerSeat extends BaseEventEmitter implements PokerSeatInterface {
    * #### Description
    * The `isOccupied` method checks if the seat is currently occupied by a player.
    *
-   * #### Implements
-   * N/A
-   *
-   * #### Overrides
-   * N/A
-   *
    * #### Purpose
    * This method is essential for determining seat occupancy status, enabling other parts of the program to
    * verify if a seat is taken before allowing actions such as seating another player.
    *
-   * #### Events
-   * N/A
-   *
-   * #### Parameters
-   * N/A
-   *
-   * #### Requirements
-   * - This method does not take any parameters.
-   *
-   * #### Returns
-   * - `boolean` - Returns `true` if the seat is occupied, otherwise `false`.
-   *
-   * #### Usage
-   * Use this method to check the seat occupancy status, which is particularly helpful when managing game actions,
-   * such as assigning seats to players or checking for available seating.
-   *
    * @returns {boolean} - `true` if the seat has a player, otherwise `false`.
-   *
-   * @example
-   * ```typescript
-   * const pokerSeat = new PokerSeat();
-   * console.log(pokerSeat.isOccupied());
-   * // Console Output: false
-   *
-   * pokerSeat.occupy(player); // Assume `player` is an instance of PokerPlayerInterface
-   * console.log(pokerSeat.isOccupied());
-   * // Console Output: true
-   * ```
    */
   public isOccupied(): boolean {
-    return this.getPlayer() !== undefined;
+    return this.getPlayer() ? true : false;
   }
 
   /**
    * #### Description
    * The `occupy` method assigns a player to occupy this seat.
    *
-   * #### Implements
-   * N/A
-   *
-   * #### Overrides
-   * N/A
-   *
    * #### Purpose
    * This method assigns a player to the seat, indicating the seat is occupied. It is essential for seating
    * management, allowing a player to be seated at a specific position at the poker table.
    *
-   * #### Events
-   * - **PokerSeat:Occupied**: This event could be emitted if event-based occupancy handling is implemented in the future.
-   *
-   * #### Parameters
-   * - `player: PokerPlayerInterface` - The player instance to occupy the seat.
-   *
-   * #### Requirements
-   * - `player` must implement `PokerPlayerInterface` to ensure compatibility with seat management logic.
-   *
-   * #### Returns
-   * - `void` - This method does not return a value.
-   *
-   * #### Usage
-   * Use this method to assign a player to the seat, marking it as occupied. This is particularly useful in managing
-   * seating order and initializing the player setup for a game round.
-   *
    * @param {PokerPlayerInterface} player - The player instance to assign to the seat.
    *
    * @returns {void}
-   *
-   * @example
-   * ```typescript
-   * const pokerSeat = new PokerSeat();
-   * pokerSeat.occupy(player); // Assume `player` is an instance of PokerPlayerInterface
-   * console.log(pokerSeat.isOccupied());
-   * // Console Output: true
-   * ```
    */
   public occupy(player: PokerPlayerInterface): void {
-    this.__setPlayer(player);
+    this.emitEvent(PokerSeatEventName.OCCUPIED, {
+      event: {
+        source: Source.POKER_SEAT,
+        data: { seatId: this.getId(), playerId: player.getId() },
+        params: { player: player },
+      },
+      middlewares: [
+        (event, next) => {
+          this.__checkSeatVacancy(event as PokerSeatEvent, next);
+        },
+        (event, next) => {
+          this.__occupy(event as PokerSeatEvent, next);
+        },
+      ],
+    });
   }
 
   /**
    * #### Description
    * The `vacate` method removes the player from the seat, marking it as unoccupied.
    *
-   * #### Implements
-   * N/A
-   *
-   * #### Overrides
-   * N/A
-   *
    * #### Purpose
    * This method allows for freeing up the seat by removing the player, which is essential in poker games
    * where players may need to leave their seat or be reassigned to a different seat.
    *
-   * #### Events
-   * - **PokerSeat:Vacated**: This event could be emitted if event-based vacancy handling is implemented in the future.
-   *
-   * #### Parameters
-   * N/A
-   *
-   * #### Requirements
-   * - The seat must be occupied before calling this method; otherwise, an error is thrown.
-   *
-   * #### Returns
-   * - `void` - This method does not return a value.
-   *
-   * #### Usage
-   * Use this method to free up a seat, making it available for other players. This is particularly useful in managing
-   * player turnover or when a player voluntarily vacates their seat.
-   *
    * @returns {void}
-   *
-   * @throws {Error} - Throws an error if the seat is already vacant, as no player can be removed from an empty seat.
-   *
-   * @example
-   * ```typescript
-   * const pokerSeat = new PokerSeat();
-   * pokerSeat.occupy(player); // Assume `player` is an instance of PokerPlayerInterface
-   * pokerSeat.vacate();
-   * console.log(pokerSeat.isOccupied());
-   * // Console Output: false
-   * ```
    */
   public vacate(): void {
-    if (!this.isOccupied()) {
-      throw new Error(`PokerSeat: Seat is already vacant.`);
-    }
-    this.__setPlayer(undefined);
+    this.emitEvent(PokerSeatEventName.VACATED, {
+      event: {
+        source: Source.POKER_SEAT,
+        data: { seatId: this.getId(), playerId: this.getPlayer()?.getId() },
+      },
+      middlewares: [
+        (event, next) => {
+          this.__checkSeatOccupancy(event as PokerSeatEvent, next);
+        },
+        (event, next) => {
+          this.__vacate(event as PokerSeatEvent, next);
+        },
+      ],
+    });
   }
 
   /**************************************************************************************************************
@@ -872,6 +800,88 @@ class PokerSeat extends BaseEventEmitter implements PokerSeatInterface {
   ): PokerPlayerInterface | undefined {
     this.__player = player;
     return this.__player;
+  }
+
+  /**
+   * #### Description
+   * Checks seat availability to determine if it can be occupied by a player.
+   *
+   * @param {PokerSeatEvent} event - The event object containing event data.
+   * @param {() => void} next - The next middleware function to call if seat is available.
+   */
+  private __checkSeatVacancy(event: PokerSeatEvent, next: () => void): void {
+    if (this.isOccupied()) {
+      logger.log(
+        LogLevel.WARN,
+        "Failed to occupy seat: seat is already occupied.",
+        {
+          seatId: this.getId(),
+        }
+      );
+      return;
+    }
+
+    event.lastModifiedAt = new Date();
+    next();
+  }
+
+  /**
+   * #### Description
+   * Assigns a player to the seat.
+   *
+   * @param {PokerSeatEvent} event - The event object with player information.
+   * @param {() => void} next - The next middleware function.
+   */
+  private __occupy(event: PokerSeatEvent, next: () => void): void {
+    this.__setPlayer(event.params.player);
+    logger.log(LogLevel.INFO, "Seat occupied successfully.", {
+      seatId: this.getId(),
+      playerId: event.params.player.getId(),
+    });
+
+    event.lastModifiedAt = new Date();
+    next();
+  }
+
+  /**
+   * #### Description
+   * Checks if the seat is occupied to determine if it can be vacated.
+   *
+   * @param {PokerSeatEvent} event - The event object containing event data.
+   * @param {() => void} next - The next middleware function if the seat is occupied.
+   */
+  private __checkSeatOccupancy(event: PokerSeatEvent, next: () => void): void {
+    event.lastModifiedAt = new Date();
+    if (!this.isOccupied()) {
+      logger.log(
+        LogLevel.WARN,
+        "Failed to vacate seat: seat is already vacant.",
+        {
+          seatId: this.getId(),
+        }
+      );
+      return;
+    }
+
+    event.lastModifiedAt = new Date();
+    next();
+  }
+
+  /**
+   * #### Description
+   * Vacates the seat by removing the current player.
+   *
+   * @param {PokerSeatEvent} event - The event object with seat details.
+   * @param {() => void} next - The next middleware function.
+   */
+  private __vacate(event: PokerSeatEvent, next: () => void): void {
+    this.__setPlayer(undefined);
+    logger.log(LogLevel.INFO, "Seat vacated successfully.", {
+      seatId: this.getId(),
+    });
+
+    event.lastModifiedAt = new Date();
+    next();
   }
 }
 
