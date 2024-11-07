@@ -13,6 +13,8 @@
  */
 export * as BaseInterfaceModule from "./_base";
 export * from "./_base";
+export * as BaseEventInterfaceModule from "./baseEvent";
+export * from "./baseEvent";
 export * as CardInterfaceModule from "./card";
 export * from "./card";
 export * as CasinoInterfaceModule from "./casino";

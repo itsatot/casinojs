@@ -3,9 +3,6 @@
 // Import Enums
 import {} from "../../enums";
 
-// Import Events
-import {} from "../../events";
-
 // Import Interfaces
 import {
   CardInterface,

@@ -3,9 +3,6 @@
 // Import Enums
 import { PokerPhaseName } from "../../enums";
 
-// Import Events
-import {} from "../../events";
-
 // Import Interfaces
 import {
   PokerGameConfig,

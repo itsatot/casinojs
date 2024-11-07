@@ -1,3 +1,5 @@
+// @collapse
+
 /**
  * @interface BaseEventEmitterInterface
  * Extends the standard Node.js EventEmitter, including listener management methods.

@@ -1,18 +1,15 @@
 // @collapse
 
-// Import Enums
-import * as Enums from "../../enums";
-
 /**
- * @interface `BaseEvent`
+ * @interface `BaseEventInterface`
  *
  * Represents a foundational structure for events emitted within the library, ensuring consistency
  * across event types by standardizing metadata and event-specific payload sections.
  *
  * #### Purpose
- * The `BaseEvent` interface establishes a uniform format for all events within the library, promoting
+ * The `BaseEventInterface` interface establishes a uniform format for all events within the library, promoting
  * a cohesive structure for both general event metadata and customizable data content. Designed for flexibility,
- * `BaseEvent` can be extended by more specific event types, allowing for additional properties as needed
+ * `BaseEventInterface` can be extended by more specific event types, allowing for additional properties as needed
  * by various components of the library.
  *
  * #### Structure
@@ -23,13 +20,13 @@ import * as Enums from "../../enums";
  *   adjustments based on diverse requirements.
  *
  * #### Usage
- * `BaseEvent` provides a structured foundation for defining library-wide events. It can be extended by
- * event-specific interfaces that introduce additional data fields. This makes `BaseEvent` a versatile
+ * `BaseEventInterface` provides a structured foundation for defining library-wide events. It can be extended by
+ * event-specific interfaces that introduce additional data fields. This makes `BaseEventInterface` a versatile
  * base for a variety of events while ensuring a consistent structure across the library.
  *
  * @example
  * ```typescript
- * const event: BaseEvent = {
+ * const event: BaseEventInterface = {
  *   id: "unique-id-1234",
  *   name: "Casino:RoomCreated",
  *   source: "PokerRoom",
@@ -42,7 +39,7 @@ import * as Enums from "../../enums";
  * // Console Output: { id: "unique-id-1234", name: "Casino:RoomCreated", source: "PokerRoom", createdAt: <Date>, data: { customData: "event-specific details" }, priority: 1, customField: "extra info" }
  * ```
  */
-interface BaseEvent<T = any> {
+interface BaseEventInterface<T = any> {
   /**************************************************************************************************************
    * PROPERTIES
    **************************************************************************************************************/
@@ -245,4 +242,4 @@ interface BaseEvent<T = any> {
   [key: string]: any;
 }
 
-export type { BaseEvent };
+export { BaseEventInterface };

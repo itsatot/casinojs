@@ -5,11 +5,8 @@ import { EventEmitter } from "events";
 // Import Enums
 import { LogLevel } from "../../enums";
 
-// Import Events
-import { BaseEvent } from "../../events";
-
 // Import Interfaces
-import { BaseEventEmitterInterface } from "../../interfaces";
+import { BaseEventEmitterInterface, BaseEventInterface } from "../../interfaces";
 
 // Import Utils
 import { generateUniqueId, logger } from "../../utils";
@@ -114,7 +111,7 @@ class BaseEventEmitter
    *
    * #### Parameters
    * - `eventName: string` - The name of the event to emit.
-   * - `options: { event: { data: { [key: string]: any }; [key: string]: any; }, middlewares?: Array<(event: BaseEvent, next: () => void) => void | false> }`
+   * - `options: { event: { data: { [key: string]: any }; [key: string]: any; }, middlewares?: Array<(event: BaseEventInterface, next: () => void) => void | false> }`
    *   - **event** - The primary event data to emit, containing specific details.
    *   - **middlewares** - An optional array of middleware functions that process the event before emission.
    *
@@ -150,7 +147,7 @@ class BaseEventEmitter
         data: { [key: string]: any };
         [key: string]: any;
       };
-      middlewares?: Array<(event: BaseEvent, next: () => void) => void | false>;
+      middlewares?: Array<(event: BaseEventInterface, next: () => void) => void | false>;
     }
   ): void {
     this.__emitEvent(eventName, options);
@@ -182,7 +179,7 @@ class BaseEventEmitter
    *
    * #### Parameters
    * - `eventName: string` - The event name to emit.
-   * - `options: { event: { data: { [key: string]: any } }, middlewares?: Array<(event: BaseEvent, next: () => void) => void | false> }`
+   * - `options: { event: { data: { [key: string]: any } }, middlewares?: Array<(event: BaseEventInterface, next: () => void) => void | false> }`
    *   - **event** - The primary event data to emit, containing relevant information.
    *   - **middlewares** - Optional array of middleware functions for processing the event before emission.
    *
@@ -218,10 +215,10 @@ class BaseEventEmitter
         data: { [key: string]: any };
         [key: string]: any;
       };
-      middlewares?: Array<(event: BaseEvent, next: () => void) => void | false>;
+      middlewares?: Array<(event: BaseEventInterface, next: () => void) => void | false>;
     }
   ): void {
-    const event: BaseEvent = this.__initializeEventObj(eventName, options);
+    const event: BaseEventInterface = this.__initializeEventObj(eventName, options);
     const middlewares = options.middlewares ?? [];
 
     if (middlewares.length > 0) {
@@ -258,15 +255,15 @@ class BaseEventEmitter
    * - `options.event.data` should include any relevant data for the event.
    *
    * #### Returns
-   * - `BaseEvent` - The structured event object ready for processing or emission.
+   * - `BaseEventInterface` - The structured event object ready for processing or emission.
    *
    * #### Usage
-   * Use this method to generate a complete `BaseEvent` object for any event emission within `BaseEventEmitter`.
+   * Use this method to generate a complete `BaseEventInterface` object for any event emission within `BaseEventEmitter`.
    *
    * @param {string} eventName - The name of the event.
    * @param {object} options - Configuration object containing the event data.
    *
-   * @returns {BaseEvent} - A structured event object with metadata and data.
+   * @returns {BaseEventInterface} - A structured event object with metadata and data.
    *
    * @example
    * ```typescript
@@ -282,8 +279,8 @@ class BaseEventEmitter
         data: { [key: string]: any };
       };
     }
-  ): BaseEvent {
-    const baseEvent: BaseEvent = {
+  ): BaseEventInterface {
+    const baseEvent: BaseEventInterface = {
       id: generateUniqueId(),
       name: eventName,
       createdAt: new Date(),
