@@ -39,5 +39,10 @@
     "ts-node": "^10.9.2",
     "typedoc": "^0.26.10",
     "typescript": "^5.6.3"
-  }
+  },
+  "files": [
+    "dist",
+    "docs",
+    "README.md"
+  ]
 }
