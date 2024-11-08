@@ -17,3 +17,5 @@ export * as CasinoEventsEnumModule from "./casino";
 export * from "./casino";
 export * as PokerSeatEventsEnumModule from "./pokerSeat";
 export * from "./pokerSeat";
+export * as PokerTableEventsEnumModule from "./pokerTable";
+export * from "./pokerTable";
