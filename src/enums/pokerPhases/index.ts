@@ -1,17 +1,17 @@
 //@collapse
 
 /**
- * @enum `PokerPhaseName`
+ * @enum `PokerPhases`
  * Defines the various phases in a standard poker game. Each phase represents a distinct stage
  * within the game sequence, governing the number of community cards dealt and player actions.
  *
  * #### Purpose
- * `PokerPhaseName` is designed to provide a clear, standardized reference for each poker phase.
+ * `PokerPhases` is designed to provide a clear, standardized reference for each poker phase.
  * It simplifies managing the game flow and ensures that each phase can be easily referenced
  * within conditional statements and game logic.
  *
  * #### Phases Overview
- * The `PokerPhaseName` includes the following phases:
+ * The `PokerPhases` includes the following phases:
  * - **PRE_FLOP**: The initial phase before any community cards are dealt.
  * - **FLOP**: The second phase, where the first three community cards are dealt.
  * - **TURN**: The third phase, where a fourth community card is dealt.
@@ -24,18 +24,18 @@
  *
  * @example
  * ```typescript
- * const currentPhase: PokerPhaseName = PokerPhaseName.PRE_FLOP;
+ * const currentPhase: PokerPhases = PokerPhases.PRE_FLOP;
  * console.log(currentPhase);
  * // Console Output: "Pre-Flop"
  * ```
  */
-enum PokerPhaseName {
+enum PokerPhases {
   /**
    * The initial phase before any community cards are dealt.
    *
    * @example
    * ```typescript
-   * const currentPhase: PokerPhaseName = PokerPhaseName.PRE_FLOP;
+   * const currentPhase: PokerPhases = PokerPhases.PRE_FLOP;
    * console.log(currentPhase);
    * // Console Output: "Pre-Flop"
    * ```
@@ -46,7 +46,7 @@ enum PokerPhaseName {
    *
    * @example
    * ```typescript
-   * const currentPhase: PokerPhaseName = PokerPhaseName.FLOP;
+   * const currentPhase: PokerPhases = PokerPhases.FLOP;
    * console.log(currentPhase);
    * // Console Output: "Flop"
    * ```
@@ -57,7 +57,7 @@ enum PokerPhaseName {
    *
    * @example
    * ```typescript
-   * const currentPhase: PokerPhaseName = PokerPhaseName.TURN;
+   * const currentPhase: PokerPhases = PokerPhases.TURN;
    * console.log(currentPhase);
    * // Console Output: "Turn"
    * ```
@@ -68,7 +68,7 @@ enum PokerPhaseName {
    *
    * @example
    * ```typescript
-   * const currentPhase: PokerPhaseName = PokerPhaseName.RIVER;
+   * const currentPhase: PokerPhases = PokerPhases.RIVER;
    * console.log(currentPhase);
    * // Console Output: "River"
    * ```
@@ -79,7 +79,7 @@ enum PokerPhaseName {
    *
    * @example
    * ```typescript
-   * const currentPhase: PokerPhaseName = PokerPhaseName.SHOWDOWN;
+   * const currentPhase: PokerPhases = PokerPhases.SHOWDOWN;
    * console.log(currentPhase);
    * // Console Output: "ShowDown"
    * ```
@@ -87,4 +87,4 @@ enum PokerPhaseName {
   SHOWDOWN = "ShowDown",
 }
 
-export { PokerPhaseName };
+export { PokerPhases };

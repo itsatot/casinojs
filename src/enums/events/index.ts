@@ -1,7 +1,7 @@
 //@collapse
 
 /**
- * @module `Enums`
+ * @module `EventsEnumModule`
  * Centralized export for all poker-related enums.
  * This module gathers and exports enums for `Rank` and `Suit`,
  * which represent the ranks and suits of playing cards in poker.
@@ -15,6 +15,8 @@
  */
 export * as CasinoEventsEnumModule from "./casino";
 export * from "./casino";
+export * as DeckEventsEnumModule from "./deck";
+export * from "./deck";
 export * as PokerSeatEventsEnumModule from "./pokerSeat";
 export * from "./pokerSeat";
 export * as PokerTableEventsEnumModule from "./pokerTable";

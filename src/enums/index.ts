@@ -11,17 +11,17 @@
  *
  * @example
  * // Import all enums from the centralized module
- * import { CasinoEventName, CasinoEventNamesEnum, PokerPhaseName, PokerPhaseNamesEnum, Rank, RanksEnum, Suit, SuitsEnum } from './enums';
+ * import { CasinoEventName, CasinoEventNamesEnum, PokerPhaseName, PokerPhasesEnum, Rank, RanksEnum, Suit, SuitsEnum } from './enums';
  */
 export * as EventsEnumModule from "./events";
 export * from "./events";
-export * as LogLevelsEnumModule from "./logLevel";
-export * from "./logLevel";
-export * as PokerPhaseNamesEnumModule from "./pokerPhaseNames";
-export * from "./pokerPhaseNames";
-export * as RanksEnumModule from "./rank";
-export * from "./rank";
-export * as SourcesEnumModule from "./source";
-export * from "./source";
-export * as SuitsEnumModule from "./suit";
-export * from "./suit";
+export * as LogLevelsEnumModule from "./logLevels";
+export * from "./logLevels";
+export * as PokerPhasesEnumModule from "./pokerPhases";
+export * from "./pokerPhases";
+export * as RanksEnumModule from "./ranks";
+export * from "./ranks";
+export * as SourcesEnumModule from "./sources";
+export * from "./sources";
+export * as SuitsEnumModule from "./suits";
+export * from "./suits";
