@@ -1,7 +1,7 @@
 //@collapse
 
 // Import Enums
-import {} from "../../enums";
+import { PokerSeatEvents } from "../../enums";
 
 // Import Interfaces
 import {
@@ -285,9 +285,12 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
           position: i,
         });
         this.__seats?.push(seat);
+
+        seat.on(PokerSeatEvents.OCCUPIED,(event)=>{})
       }
 
-      this.emit("table:initialized");
+
+   
     }
   }
 
