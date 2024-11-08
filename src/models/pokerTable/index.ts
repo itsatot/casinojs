@@ -1,7 +1,7 @@
 //@collapse
 
 // Import Enums
-import { PokerSeatEvents } from "../../enums";
+import { PokerSeatEvents , LogLevel } from "../../enums";
 
 // Import Interfaces
 import {
@@ -19,7 +19,7 @@ import { PokerPlayer } from "../pokerPlayer";
 import { PokerSeat } from "../pokerSeat";
 
 // Import Utils
-import { generateUniqueId } from "../../utils";
+import { generateUniqueId , logger} from "../../utils";
 
 /**
  * @class `PokerTable`
@@ -461,6 +461,16 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
     return this.__seats;
   }
 
+  
+  /**
+   * `getSeats`
+   * Starts a new PokerGame if there are at least two active players at the PokerTable.
+   * This method initiates the game flow, including assigning blinds and starting the rounds.
+   * @returns {number}
+   */
+  public isGameInProgress(): boolean {
+    return this.__gameInProgress;
+  }
   /**************************************************************************************************************
    * UPDATE METHODS (MODIFYING EXISTING OBJECTS)
    **************************************************************************************************************/
@@ -656,6 +666,18 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
     return true;
   }
 
+  
+  /**
+   * `getSeats`
+   * Starts a new PokerGame if there are at least two active players at the PokerTable.
+   * This method initiates the game flow, including assigning blinds and starting the rounds.
+   * @returns {number}
+   */
+  private __setGameInProgress(bool:boolean): boolean {
+    this.__gameInProgress = bool ;
+    return this.__gameInProgress;
+  }
+
   private __occupySeat(
     position: number,
     player: PokerPlayerInterface
@@ -672,6 +694,32 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
       }
     }
     return false;
+  }
+
+   /**
+   * #### Description
+   * Checks seat availability to determine if it can be occupied by a player.
+   *
+   * @param {BaseEventInterface} event - The event object containing event data.
+   * @param {() => void} next - The next middleware function to call if seat is available.
+   */
+   private __checkIsGameInProgress(
+    event: BaseEventInterface,
+    next: () => void
+  ): void|false {
+    if (this.isGameInProgress()) {
+      logger.log(
+        LogLevel.WARN,
+        "Failed to occupy seat: seat is already occupied.",
+        {
+          seatId: this.getId(),
+        }
+      );
+      return false;
+    }
+
+    event.lastModifiedAt = new Date();
+    next();
   }
 }
 
