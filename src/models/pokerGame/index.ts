@@ -1,7 +1,7 @@
-//@collapse
+//collapse
 
 // Import Enums
-import { PokerPhaseName } from "../../enums";
+import { PokerPhases } from "../../enums";
 
 // Import Interfaces
 import {
@@ -127,7 +127,7 @@ class PokerGame extends BaseEventEmitter implements PokerGameInterface {
       this.__bigBlindPos = this.__bigBlindPos;
       this.__phases = this.__phases;
       this.__currentPhase = new PokerPhase({
-        name: PokerPhaseName.PRE_FLOP,
+        name: PokerPhases.PRE_FLOP,
         deck: this.__deck,
         players: [],
         pot: 0,
