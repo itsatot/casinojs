@@ -11,6 +11,8 @@ import {
   PokerTableInterface,
   PokerPlayerConfig,
   BaseEventInterface,
+  PokerGameInterface,
+  PokerGameConfig,
 } from "../../interfaces";
 
 // Import Models
@@ -20,6 +22,7 @@ import { PokerSeat } from "../pokerSeat";
 
 // Import Utils
 import { generateUniqueId , logger} from "../../utils";
+import { PokerGame } from "../pokerGame";
 
 /**
  * @class `PokerTable`
@@ -193,6 +196,8 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
    */
   private __gameInProgress: boolean = false;
 
+  private __game:PokerGameInterface|undefined = undefined;
+
   /**************************************************************************************************************
    * CONSTRUCTOR & INITIALIZERS
    **************************************************************************************************************/
@@ -290,20 +295,18 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
         // seat.on(PokerSeatEvents.OCCUPIED,(event)=>{})
         seat.listenToEvent(PokerSeatEvents.OCCUPIED,{
           handler:(event:BaseEventInterface) => {
-
+            this.__startGame()
           },
           middlewares: [
             (event, next) => {
-              // this.__checkSeatVacancy(event, next);
+              this.__checkIsGameInProgress(event, next);
             },
             (event, next) => {
-              // this.__occupy(event, next);
+              this.__checkOccupancyCount(event, next);
             },
           ],
         })
       }
-
-
    
     }
   }
@@ -461,6 +464,15 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
     return this.__seats;
   }
 
+   /**
+   * `getSeats`
+   * Starts a new PokerGame if there are at least two active players at the PokerTable.
+   * This method initiates the game flow, including assigning blinds and starting the rounds.
+   * @returns {number}
+   */
+   public getGame(): PokerGameInterface|undefined {
+    return this.__game;
+  }
   
   /**
    * `getSeats`
@@ -678,6 +690,21 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
     return this.__gameInProgress;
   }
 
+   /**
+   * `setSeats`
+   * @public
+   * Returns the poker table's `id`.
+   * @returns {number} The poker table's `id`.
+   *
+   * @example
+   * const rank = card.getRank();
+   * console.log(rank); // "A"
+   */
+   private __setGame(game: PokerGameInterface|undefined): PokerGameInterface|undefined {
+      this.__game = game;
+      return this.__game;
+  }
+
   private __occupySeat(
     position: number,
     player: PokerPlayerInterface
@@ -717,10 +744,43 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
       );
       return false;
     }
-
+   
     event.lastModifiedAt = new Date();
     next();
   }
-}
 
+  private __checkOccupancyCount(
+    event: BaseEventInterface,
+    next: () => void
+  ): void | false {
+    let occupiedSeats = 0;
+  
+    for (let i = 0; i < this.getSeats().length; i++) {
+      let seat = this.getSeats()[i];
+      if (seat.getPlayer()) {
+        occupiedSeats += 1;
+      }
+    }
+  
+    // Check if all seats are occupied
+    if (occupiedSeats === this.getSeats().length) {
+      logger.log(
+        LogLevel.WARN,
+        "All seats are occupied",
+        event
+      )
+      return false;
+    }
+  
+    // Update the event timestamp and call the next middleware function
+    event.lastModifiedAt = new Date();
+    next();
+  }
+
+  private __startGame() {
+    let config:PokerGameConfig= {smallBlind:this.getSmallBlind(),bigBlind:this.getBigBlind(),players:[]}
+    let newGame = new PokerGame(config)
+    this.__setGame(newGame);
+  }
+}
 export { PokerTable };

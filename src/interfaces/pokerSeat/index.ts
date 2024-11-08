@@ -1,4 +1,4 @@
-//@collapse
+//collapse
 
 import { BaseEventEmitterInterface } from "../_base";
 import { PokerPlayerInterface } from "../pokerPlayer";
