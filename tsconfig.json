@@ -1,15 +1,17 @@
+//@collapse
+
 {
   "compilerOptions": {
-    "module": "ESNext",
-    "moduleResolution": "node",
-    "target": "ES2020",
-    "declaration": true,
-    "outDir": "./dist",
-    "strict": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true,
-    "sourceMap": true
+    "module": "ESNext", // Tells TypeScript to use native ESModule syntax (import/export)
+    "moduleResolution": "node", // Node.js style module resolution
+    "target": "ES2020", // Specifies the output version of JavaScript
+    "declaration": true, // Generate .d.ts files for type definitions
+    "outDir": "./dist", // Output directory for the compiled files
+    "strict": true, // Enables all strict type-checking options
+    "esModuleInterop": true, // Enables compatibility between ESModule and CommonJS
+    "forceConsistentCasingInFileNames": true, // Enforce consistent casing in imports
+    "skipLibCheck": true, // Skip type checking of library declaration files
+    "sourceMap": true // Generate source maps for easier debugging
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]

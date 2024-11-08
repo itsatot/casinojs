@@ -1,18 +1,17 @@
-import { ICard, IDeck, Rank, Suit } from "./interfaces";
-import { Card, Deck } from "./models";
+//@collapse
 
 /**
- * @module `pokerjs`
+ * @module `casinojs`
  * Centralized export for the entire `pokerjs` library, providing access to interfaces, models, and types.
  *
  * This module exports all necessary components for working with poker games, including:
- * - Interfaces (`ICard`, `IDeck`)
+ * - Interfaces (`CardInterface`, `DeckInterface`)
  * - Models (`Card`, `Deck`)
  * - Enums (`Rank`, `Suit`)
  *
  * @example
  * // Importing from the centralized library module
- * import { ICard, Card, Deck, Rank, Suit } from 'pokerjs';
+ * import { CardInterface, Card, Deck, Rank, Suit } from 'pokerjs';
  *
  * const deck = new Deck();
  * deck.shuffle();
@@ -20,4 +19,11 @@ import { Card, Deck } from "./models";
  * console.log(card?.toString());
  */
 
-export { ICard, IDeck, Rank, Suit, Card, Deck };
+export * as Enums from "./enums";
+export * from "./enums";
+export * as Interfaces from "./interfaces";
+export * from "./interfaces";
+export * as Models from "./models";
+export * from "./models";
+export * as Utils from "./utils";
+export * from "./utils";

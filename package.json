@@ -1,23 +1,25 @@
 {
-  "name": "pokerjs",
+  "name": "casinojs",
   "version": "0.1.0-alpha",
-  "description": "A Poker Js Library.",
-  "main": "dist/index.js",
-  "module": "dist/index.mjs",
+  "description": "A Casino Js Library.",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "type": "module",
   "directories": {
     "doc": "docs"
   },
   "scripts": {
-    "build": "tsc",
-    "test": "jest",
-    "docify": "typedoc --entryPointStrategy expand src --out docs/site",
-    "start": "node dist/index.js"
+    "build": "tsc -p tsconfig.cjs.json && tsc -p tsconfig.esm.json",
+    "test": "jest --coverage",
+    "docify": "typedoc --entryPointStrategy expand src --out docs/site"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/astitvsingh/pokerjs.git"
+    "url": "git+https://github.com/astitvsingh/CasinoJs.git"
   },
   "keywords": [
+    "casinojs",
+    "casino",
     "pokerjs",
     "poker",
     "lib"
@@ -25,13 +27,22 @@
   "author": "Astitv Singh <https://github.com/astitvsingh>",
   "license": "SEE LICENSE IN LICENSE",
   "bugs": {
-    "url": "https://github.com/astitvsingh/pokerjs/issues"
+    "url": "https://github.com/astitvsingh/CasinoJs/issues"
   },
-  "homepage": "https://github.com/astitvsingh/pokerjs#readme",
+  "homepage": "https://github.com/astitvsingh/CasinoJs#readme",
   "devDependencies": {
     "@types/events": "^3.0.3",
+    "@types/jest": "^29.5.14",
     "@types/node": "^22.7.6",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.5",
+    "ts-node": "^10.9.2",
     "typedoc": "^0.26.10",
     "typescript": "^5.6.3"
-  }
+  },
+  "files": [
+    "dist",
+    "docs",
+    "README.md"
+  ]
 }

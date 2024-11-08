@@ -1,10 +1,10 @@
-# nodejs-project-template
+# CasinoJs
 
-nodejs-project-template
+CasinoJs
 
 ## Table of Contents
 
-- [nodejs-project-template](#nodejs-project-template)
+- [CasinoJs](#casinojs)
   - [Table of Contents](#table-of-contents)
   - [Feedback and Suggestions](#feedback-and-suggestions)
 
