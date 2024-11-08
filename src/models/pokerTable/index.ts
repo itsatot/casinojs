@@ -10,6 +10,7 @@ import {
   PokerTableConfig,
   PokerTableInterface,
   PokerPlayerConfig,
+  BaseEventInterface,
 } from "../../interfaces";
 
 // Import Models
@@ -286,7 +287,20 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
         });
         this.__seats?.push(seat);
 
-        seat.on(PokerSeatEvents.OCCUPIED,(event)=>{})
+        // seat.on(PokerSeatEvents.OCCUPIED,(event)=>{})
+        seat.listenToEvent(PokerSeatEvents.OCCUPIED,{
+          handler:(event:BaseEventInterface) => {
+
+          },
+          middlewares: [
+            (event, next) => {
+              // this.__checkSeatVacancy(event, next);
+            },
+            (event, next) => {
+              // this.__occupy(event, next);
+            },
+          ],
+        })
       }
 
 
