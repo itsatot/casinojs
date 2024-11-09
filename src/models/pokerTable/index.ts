@@ -1,7 +1,7 @@
 //@collapse
 
 // Import Enums
-import { PokerSeatEvents , LogLevel } from "../../enums";
+import { PokerSeatEvents , LogLevel, Source } from "../../enums";
 
 // Import Interfaces
 import {
@@ -294,6 +294,7 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
         });
         this.__seats?.push(seat);
 
+        seat.on(PokerSeatEvents.OCCUPIED,(event)=>{})
         // seat.on(PokerSeatEvents.OCCUPIED,(event)=>{})
         seat.listenToEvent(PokerSeatEvents.OCCUPIED,{
           handler:(event:BaseEventInterface) => {
@@ -840,6 +841,10 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
     let config:PokerGameConfig= {smallBlind:this.getSmallBlind(),bigBlind:this.getBigBlind(),players:event.players}
     let newGame = new PokerGame(config)
     this.__setGame(newGame);
+  }
+
+  private __seatOccupancyUpdateEventHandler(event:BaseEventInterface) : void|false {
+    this.emitEvent("startGame",{event:{source:Source.POKER_TABLE,data:{}}})
   }
 }
 export { PokerTable };
