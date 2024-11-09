@@ -157,7 +157,7 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
    * console.log(table.getBigBlind()); // Console Output: 10
    * ```
    */
-  private __bigBlindAmount: number = this.__smallBlind * 2;
+  private __bigBlindAmount: number = this.getSmallBlind() * 2;
 
   /**
    * @property {PokerSeatInterface[]} __seats
