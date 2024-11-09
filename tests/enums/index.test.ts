@@ -7,14 +7,14 @@
  * are as expected.
  *
  * Enums being tested:
- * - `PokerPhaseName`: Represents different phases of a poker game (e.g., pre-flop, flop, turn, river).
+ * - `PokerPhases`: Represents different phases of a poker game (e.g., pre-flop, flop, turn, river).
  * - `Rank`: Represents the ranks of playing cards (e.g., Ace, King, Queen).
  * - `Suit`: Represents the suits of playing cards (e.g., Hearts, Spades).
- * - `CasinoEventName`: Represents event names triggered by state changes in the casino.
+ * - `CasinoEvents`: Represents event names triggered by state changes in the casino.
  *
  * @example
  * // This test file ensures that you can import all enums like this:
- * import { Rank, Suit, PokerPhaseName, CasinoEventName } from './src/enums';
+ * import { Rank, Suit, PokerPhases, CasinoEvents } from './src/enums';
  *
  * @see `./src/enums/index.ts`
  */
@@ -28,20 +28,20 @@ import * as Enums from "../../src/enums";
 
 describe("Enum Centralized Exports", () => {
   /**
-   * @test `PokerPhaseName` export verification
-   * This test ensures that the `PokerPhaseName` enum is correctly exported from the centralized enums module.
+   * @test `PokerPhases` export verification
+   * This test ensures that the `PokerPhases` enum is correctly exported from the centralized enums module.
    *
    * @example
    * // The enum should have phases like "PreFlop", "Flop", "Turn", "River", "Showdown"
    */
-  it("should export PokerPhaseName enum with correct values", () => {
-    const { PokerPhaseName } = Enums;
+  it("should export PokerPhases enum with correct values", () => {
+    const { PokerPhases } = Enums;
 
-    expect(PokerPhaseName.PRE_FLOP).toBe("Pre-Flop");
-    expect(PokerPhaseName.FLOP).toBe("Flop");
-    expect(PokerPhaseName.TURN).toBe("Turn");
-    expect(PokerPhaseName.RIVER).toBe("River");
-    expect(PokerPhaseName.SHOWDOWN).toBe("ShowDown");
+    expect(PokerPhases.PRE_FLOP).toBe("Pre-Flop");
+    expect(PokerPhases.FLOP).toBe("Flop");
+    expect(PokerPhases.TURN).toBe("Turn");
+    expect(PokerPhases.RIVER).toBe("River");
+    expect(PokerPhases.SHOWDOWN).toBe("ShowDown");
   });
 
   /**
@@ -77,19 +77,19 @@ describe("Enum Centralized Exports", () => {
   });
 
   /**
-   * @test `CasinoEventName` export verification
-   * This test ensures that the `CasinoEventName` enum is correctly exported from the centralized enums module.
+   * @test `CasinoEvents` export verification
+   * This test ensures that the `CasinoEvents` enum is correctly exported from the centralized enums module.
    *
    * @example
    * // The enum should have events like "Casino:PokerRoomCreated", "Casino:PokerRoomAdded", etc.
    */
-  it("should export CasinoEventName enum with correct values", () => {
-    const { CasinoEventName } = Enums;
+  it("should export CasinoEvents enum with correct values", () => {
+    const { CasinoEvents } = Enums;
 
-    expect(CasinoEventName.ROOM_CREATED).toBe("Casino:PokerRoomCreated");
-    expect(CasinoEventName.ROOM_ADDED).toBe("Casino:PokerRoomAdded");
-    expect(CasinoEventName.ROOM_UPDATED).toBe("Casino:PokerRoomUpdated");
-    expect(CasinoEventName.ROOM_DELETED).toBe("Casino:PokerRoomDeleted");
-    expect(CasinoEventName.ROOMS_SET).toBe("Casino:PokerRoomsSet");
+    expect(CasinoEvents.ROOM_CREATED).toBe("Casino:PokerRoomCreated");
+    expect(CasinoEvents.ROOM_ADDED).toBe("Casino:PokerRoomAdded");
+    expect(CasinoEvents.ROOM_UPDATED).toBe("Casino:PokerRoomUpdated");
+    expect(CasinoEvents.ROOM_DELETED).toBe("Casino:PokerRoomDeleted");
+    expect(CasinoEvents.ROOMS_SET).toBe("Casino:PokerRoomsSet");
   });
 });

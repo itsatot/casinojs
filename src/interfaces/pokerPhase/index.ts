@@ -3,7 +3,7 @@
 import { BaseEventEmitterInterface } from "../_base";
 import { DeckInterface } from "../deck";
 import { PokerPlayerInterface } from "../pokerPlayer";
-import { PokerPhaseName } from "../../enums";
+import { PokerPhases } from "../../enums";
 import { CardInterface } from "../card";
 
 /**
@@ -12,10 +12,10 @@ import { CardInterface } from "../card";
  */
 interface PokerPhaseConfig {
   /**
-   * @property {PokerPhaseName} name
+   * @property {PokerPhases} name
    * The deck of cards used in the current PokerPhase.
    */
-  name: PokerPhaseName;
+  name: PokerPhases;
 
   /**
    * @property {DeckInterface} deck

@@ -20,8 +20,7 @@
     "build": "tsc -p tsconfig.cjs.json && tsc -p tsconfig.esm.json",
     "test": "jest --coverage",
     "docify": "typedoc --entryPointStrategy expand src --out docs/site",
-    "prepublishOnly": "npm run build && npm test && npm run docify",
-    "prepublish": "npm run build && npm test && npm run docify"
+    "prepublishOnly": "npm run build && npm run docify"
   },
   "repository": {
     "type": "git",

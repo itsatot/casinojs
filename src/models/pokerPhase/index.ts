@@ -1,7 +1,7 @@
 //@collapse
 
 // Import Enums
-import { PokerPhaseName } from "../../enums";
+import { PokerPhases } from "../../enums";
 
 // Import Interfaces
 import {
@@ -63,7 +63,7 @@ class PokerPhase extends BaseEventEmitter implements PokerPhaseInterface {
    **************************************************************************************************************/
 
   /**
-   * @property {PokerPhaseName} __name
+   * @property {PokerPhases} __name
    *
    * Tracks the current phase name within the poker game (e.g., "Pre-Flop," "Flop," etc.).
    *
@@ -72,15 +72,15 @@ class PokerPhase extends BaseEventEmitter implements PokerPhaseInterface {
    * ensuring the correct flow and rules are applied throughout the game.
    *
    * #### Requirements
-   * - **Required**: Must be a valid `PokerPhaseName` that indicates the correct stage of gameplay.
+   * - **Required**: Must be a valid `PokerPhases` that indicates the correct stage of gameplay.
    *
    * @example
    * ```typescript
    * const pokerPhase = new PokerPhase();
-   * console.log(pokerPhase.__name); // Expected output: PokerPhaseName.PRE_FLOP
+   * console.log(pokerPhase.__name); // Expected output: PokerPhases.PRE_FLOP
    * ```
    */
-  private __name: PokerPhaseName = PokerPhaseName.PRE_FLOP;
+  private __name: PokerPhases = PokerPhases.PRE_FLOP;
 
   /**
    * @property {DeckInterface} __deck
@@ -266,7 +266,7 @@ class PokerPhase extends BaseEventEmitter implements PokerPhaseInterface {
    * @example
    * ```typescript
    * const pokerPhase = new PokerPhase({
-   *   name: PokerPhaseName.PRE_FLOP,
+   *   name: PokerPhases.PRE_FLOP,
    *   deck: new Deck(),
    *   communityCards: [],
    *   players: [...],
@@ -300,7 +300,7 @@ class PokerPhase extends BaseEventEmitter implements PokerPhaseInterface {
    *   phase name, deck, players, and pot.
    *
    * #### Requirements
-   * - The `config` should contain a valid `PokerPhaseName` (e.g., `PRE_FLOP`, `FLOP`) and other properties for setting up
+   * - The `config` should contain a valid `PokerPhases` (e.g., `PRE_FLOP`, `FLOP`) and other properties for setting up
    *   the phase accurately.
    * - If no `config` is provided, defaults are used to initialize each phase property.
    *
@@ -317,7 +317,7 @@ class PokerPhase extends BaseEventEmitter implements PokerPhaseInterface {
    * @example
    * ```typescript
    * const config = {
-   *   name: PokerPhaseName.PRE_FLOP,
+   *   name: PokerPhases.PRE_FLOP,
    *   players: [...],
    *   communityCards: [],
    *   pot: 0
@@ -327,7 +327,7 @@ class PokerPhase extends BaseEventEmitter implements PokerPhaseInterface {
    */
   private __init(config?: PokerPhaseConfig): void {
     if (config) {
-      this.__name = config.name ?? PokerPhaseName.PRE_FLOP;
+      this.__name = config.name ?? PokerPhases.PRE_FLOP;
       this.__deck = config.deck ?? new Deck();
       this.__communityCards = config.communityCards ?? this.__communityCards;
       this.__players = config.players ?? this.__players;
@@ -338,7 +338,7 @@ class PokerPhase extends BaseEventEmitter implements PokerPhaseInterface {
       this.__bigBlindPos = config.bigBlindPos ?? this.__bigBlindPos;
     }
 
-    if (this.getName() === PokerPhaseName.PRE_FLOP) {
+    if (this.getName() === PokerPhases.PRE_FLOP) {
       this.deal(); // Deal cards to players if this is the "Pre-Flop" phase
     }
   }
@@ -378,12 +378,12 @@ class PokerPhase extends BaseEventEmitter implements PokerPhaseInterface {
    * N/A
    *
    * #### Returns
-   * - {PokerPhaseName}: The name of the current game phase.
+   * - {PokerPhases}: The name of the current game phase.
    *
    * #### Usage
    * Useful for determining the phase of gameplay, allowing specific actions based on the current phase.
    *
-   * @returns {PokerPhaseName} - The name of the current phase in the poker round.
+   * @returns {PokerPhases} - The name of the current phase in the poker round.
    *
    * @example
    * ```typescript
@@ -391,7 +391,7 @@ class PokerPhase extends BaseEventEmitter implements PokerPhaseInterface {
    * console.log(phaseName); // Outputs: "Pre-Flop"
    * ```
    */
-  public getName(): PokerPhaseName {
+  public getName(): PokerPhases {
     return this.__name;
   }
 
@@ -760,7 +760,7 @@ class PokerPhase extends BaseEventEmitter implements PokerPhaseInterface {
    * const rank = card.getRank();
    * console.log(rank); // "A"
    */
-  private __setName(name: PokerPhaseName): PokerPhaseName {
+  private __setName(name: PokerPhases): PokerPhases {
     this.__name = name;
     return this.__name;
   }
