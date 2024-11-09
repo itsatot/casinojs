@@ -1,7 +1,7 @@
 //@collapse
 
 // Import Enums
-import { PokerSeatEvents , LogLevel, Source } from "../../enums";
+import { PokerSeatEvents, LogLevel, Source } from "../../enums";
 
 // Import Interfaces
 import {
@@ -21,7 +21,7 @@ import { PokerPlayer } from "../pokerPlayer";
 import { PokerSeat } from "../pokerSeat";
 
 // Import Utils
-import { generateUniqueId , logger} from "../../utils";
+import { generateUniqueId, logger } from "../../utils";
 import { PokerGame } from "../pokerGame";
 
 /**
@@ -175,7 +175,6 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
    */
   private __seats: PokerSeatInterface[] = [];
 
-
   /**
    * @property {boolean} __gameInProgress
    *
@@ -197,8 +196,7 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
    */
   private __gameInProgress: boolean = false;
 
-  private __game:PokerGameInterface|undefined = undefined;
-
+  private __game: PokerGameInterface | undefined = undefined;
 
   /**************************************************************************************************************
    * CONSTRUCTOR & INITIALIZERS
@@ -294,11 +292,11 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
         });
         this.__seats?.push(seat);
 
-        seat.on(PokerSeatEvents.OCCUPIED,(event)=>{})
+        seat.on(PokerSeatEvents.OCCUPIED, (event) => {});
         // seat.on(PokerSeatEvents.OCCUPIED,(event)=>{})
-        seat.listenToEvent(PokerSeatEvents.OCCUPIED,{
-          handler:(event:BaseEventInterface) => {
-            this.__startGame(event)
+        seat.listenToEvent(PokerSeatEvents.OCCUPIED, {
+          handler: (event: BaseEventInterface) => {
+            this.__startGame(event);
           },
           middlewares: [
             (event, next) => {
@@ -311,9 +309,8 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
               this.__createGamePlayersList(event, next);
             },
           ],
-        })
+        });
       }
-   
     }
   }
 
@@ -470,17 +467,16 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
     return this.__seats;
   }
 
-   /**
+  /**
    * `getSeats`
    * Starts a new PokerGame if there are at least two active players at the PokerTable.
    * This method initiates the game flow, including assigning blinds and starting the rounds.
    * @returns {number}
    */
-   public getGame(): PokerGameInterface|undefined {
+  public getGame(): PokerGameInterface | undefined {
     return this.__game;
   }
 
- 
   /**
    * `getSeats`
    * Starts a new PokerGame if there are at least two active players at the PokerTable.
@@ -685,20 +681,18 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
     return true;
   }
 
-  
-  
   /**
    * `getSeats`
    * Starts a new PokerGame if there are at least two active players at the PokerTable.
    * This method initiates the game flow, including assigning blinds and starting the rounds.
    * @returns {number}
    */
-  private __setGameInProgress(bool:boolean): boolean {
-    this.__gameInProgress = bool ;
+  private __setGameInProgress(bool: boolean): boolean {
+    this.__gameInProgress = bool;
     return this.__gameInProgress;
   }
 
-   /**
+  /**
    * `setSeats`
    * @public
    * Returns the poker table's `id`.
@@ -708,9 +702,11 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
    * const rank = card.getRank();
    * console.log(rank); // "A"
    */
-   private __setGame(game: PokerGameInterface|undefined): PokerGameInterface|undefined {
-      this.__game = game;
-      return this.__game;
+  private __setGame(
+    game: PokerGameInterface | undefined
+  ): PokerGameInterface | undefined {
+    this.__game = game;
+    return this.__game;
   }
 
   private __occupySeat(
@@ -731,17 +727,17 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
     return false;
   }
 
-   /**
+  /**
    * #### Description
    * Checks seat availability to determine if it can be occupied by a player.
    *
    * @param {BaseEventInterface} event - The event object containing event data.
    * @param {() => void} next - The next middleware function to call if seat is available.
    */
-   private __checkIsGameInProgress(
+  private __checkIsGameInProgress(
     event: BaseEventInterface,
     next: () => void
-  ): void|false {
+  ): void | false {
     if (this.isGameInProgress()) {
       logger.log(
         LogLevel.WARN,
@@ -752,7 +748,7 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
       );
       return false;
     }
-   
+
     event.lastModifiedAt = new Date();
     next();
   }
@@ -762,41 +758,35 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
     next: () => void
   ): void | false {
     let occupiedSeats = 0;
-  
+
     for (let i = 0; i < this.getSeats().length; i++) {
       let seat = this.getSeats()[i];
       if (seat.getPlayer()) {
         occupiedSeats += 1;
       }
     }
-  
+
     // Check if all seats are occupied
     if (occupiedSeats === this.getSeats().length) {
-      logger.log(
-        LogLevel.WARN,
-        "All seats are occupied",
-        event
-      )
+      logger.log(LogLevel.WARN, "All seats are occupied", event);
       return false;
     }
-  
+
     // Update the event timestamp and call the next middleware function
     event.lastModifiedAt = new Date();
     event.occupancyCount = occupiedSeats;
     next();
   }
 
-
   private __createGamePlayersList(
     event: BaseEventInterface,
     next: () => void
   ): void | false {
-    
     if (event.occupancyCount >= 2) {
-      let players:PokerPlayerInterface[] = [];
+      let players: PokerPlayerInterface[] = [];
       let isDealerPosition = 0;
 
-      this.getSeats().forEach((seat,index) => {
+      this.getSeats().forEach((seat, index) => {
         let player = seat.getPlayer();
 
         if (player) {
@@ -808,28 +798,25 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
       });
 
       for (let i = 0; i < 2; i++) {
-        if (i=0) {
+        if ((i = 0)) {
           for (let j = 0; j < this.getSeats().length; j++) {
             let seat = this.getSeats()[j];
             let player = seat.getPlayer();
             if (player && seat.getPosition() > isDealerPosition) {
-                players.push(player);                      
-            }     
-          }         
-        }
-
-        else if(i=1){
+              players.push(player);
+            }
+          }
+        } else if ((i = 1)) {
           for (let k = 0; k < this.getSeats().length; k++) {
             let seat = this.getSeats()[k];
             let player = seat.getPlayer();
             if (player && seat.getPosition() < isDealerPosition) {
-                players.push(player);                      
-            }     
-          }  
+              players.push(player);
+            }
+          }
         }
-       
       }
-     
+
       event.players = players;
       event.dealerPosition = isDealerPosition;
       event.lastModifiedAt = new Date();
@@ -837,14 +824,22 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
     next();
   }
 
-  private __startGame(event:BaseEventInterface) : void {
-    let config:PokerGameConfig= {smallBlind:this.getSmallBlind(),bigBlind:this.getBigBlind(),players:event.players}
-    let newGame = new PokerGame(config)
+  private __startGame(event: BaseEventInterface): void {
+    let config: PokerGameConfig = {
+      smallBlind: this.getSmallBlind(),
+      bigBlind: this.getBigBlind(),
+      players: event.players,
+    };
+    let newGame = new PokerGame(config);
     this.__setGame(newGame);
   }
 
-  private __seatOccupancyUpdateEventHandler(event:BaseEventInterface) : void|false {
-    this.emitEvent("startGame",{event:{source:Source.POKER_TABLE,data:{}}})
+  private __seatOccupancyUpdateEventHandler(
+    event: BaseEventInterface
+  ): void | false {
+    this.emitEvent("startGame", {
+      event: { source: Source.POKER_TABLE, data: {} },
+    });
   }
 }
 export { PokerTable };
