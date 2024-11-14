@@ -689,7 +689,11 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
     return false;
   }
 
-  private __assignRoles(event: BaseEventInterface,next: () => void): void | false {
+  public assignRoles(event: BaseEventInterface): void | false {
+    this.__assignRoles(event);
+  }
+
+  private __assignRoles(event: BaseEventInterface): void | false {
 
     if (event.occupancyCount === 2) {
       let foundDealer = false;
@@ -741,8 +745,14 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
         }
       }
     }
-    next();
   }  
+
+  private __assignRolesMiddleware(event: BaseEventInterface,next: () => void): void | false {
+
+   return this.__assignRoles(event);
+   next();
+  }  
+
 
   /**
    * #### Description
@@ -891,7 +901,7 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
           this.__checkOccupancyCount(event, next);
         },
         (event, next) => {
-          this.__assignRoles(event, next);
+          this.__assignRolesMiddleware(event, next);
         },
         (event, next) => {
           this.__validatePlayerBalances(event, next);
@@ -917,7 +927,7 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
           this.__checkOccupancyCount(event, next);
         },
         (event, next) => {
-          this.__assignRoles(event, next);
+          this.__assignRolesMiddleware(event, next);
         },
         (event, next) => {
           this.__validatePlayerBalances(event, next);
