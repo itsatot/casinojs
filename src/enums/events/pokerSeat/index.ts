@@ -1,3 +1,4 @@
+
 //@collapse
 
 /**
@@ -66,4 +67,42 @@ enum PokerSeatEvents {
   VACATED = "PokerSeat:Vacated",
 }
 
-export { PokerSeatEvents };
+enum PokerSeatRoles {
+  /**
+   * Indicates that the seat has been initialized and is ready for occupancy.
+   *
+   * @example
+   * ```typescript
+   * const seatEvent: PokerSeatEvents = PokerSeatEvents.INITIALIZED;
+   * console.log(seatEvent);
+   * // Console Output: "PokerSeat:Initialized"
+   * ```
+   */
+  DEALER = "PokerSeat:Dealer",
+
+  /**
+   * Indicates a seat has been occupied by a player.
+   *
+   * @example
+   * ```typescript
+   * const seatEvent: PokerSeatEvents = PokerSeatEvents.OCCUPIED;
+   * console.log(seatEvent);
+   * // Console Output: "PokerSeat:Occupied"
+   * ```
+   */
+  SMALLBLIND = "PokerSeat:SmallBlind",
+
+  /**
+   * Indicates a seat has been vacated by a player.
+   *
+   * @example
+   * ```typescript
+   * const seatEvent: PokerSeatEvents = PokerSeatEvents.VACATED;
+   * console.log(seatEvent);
+   * // Console Output: "PokerSeat:Vacated"
+   * ```
+   */
+  BIGBLIND = "PokerSeat:BigBlind",
+}
+
+export { PokerSeatEvents , PokerSeatRoles};
