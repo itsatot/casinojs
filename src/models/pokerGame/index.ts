@@ -46,18 +46,6 @@ class PokerGame extends BaseEventEmitter implements PokerGameInterface {
   private __deck: DeckInterface = new Deck();
 
   /**
-   * @property {number} __smallBlind
-   * The maximum number of players that can be seated at the PokerTable[2-14].
-   */
-  private __smallBlind: number = 5;
-
-  /**
-   * @property {number} __bigBlind
-   * The maximum number of players that can be seated at the PokerTable[2-14].
-   */
-  private __bigBlind: number = this.__smallBlind * 2;
-
-  /**
    * @property {number} __bigBlind
    * The maximum number of players that can be seated at the PokerTable[2-14].
    */
@@ -76,12 +64,6 @@ class PokerGame extends BaseEventEmitter implements PokerGameInterface {
   private __communityCards: CardInterface[] = [];
 
   private __players: PokerPlayerInterface[] = [];
-
-  private __dealerPos: number = 0;
-
-  private __smallBlindPos: number = 1;
-
-  private __bigBlindPos: number = 2;
 
   private __pot: number = 0;
 
@@ -113,27 +95,16 @@ class PokerGame extends BaseEventEmitter implements PokerGameInterface {
    */
   private __init(config?: PokerGameConfig): void {
     if (config) {
-      this.__id = config.id ? config.id : generateUniqueId();
-      this.__deck = new Deck();
-      this.__smallBlind = config.smallBlind
-        ? config.smallBlind
-        : this.__smallBlind;
-      this.__bigBlind = config.bigBlind ? config.bigBlind : this.__bigBlind;
-      this.__communityCards = this.__communityCards;
-      this.__players = config.players ? config.players : this.__players;
-      this.__pot = this.__pot;
-      this.__dealerPos = this.__dealerPos;
-      this.__smallBlindPos = this.__smallBlindPos;
-      this.__bigBlindPos = this.__bigBlindPos;
-      this.__phases = this.__phases;
+      config.id ? this.__setId(config.id): this.__setId(generateUniqueId());
+      this.__setDeck(new Deck());
+      config.players ? this.__setPlayers(config.players) : this.__setPlayers(this.getPlayers());
+      this.__setPhases(this.__phases);
       this.__currentPhase = new PokerPhase({
         name: PokerPhases.PRE_FLOP,
-        deck: this.__deck,
-        players: [],
-        pot: 0,
-        dealerPos: 0,
-        smallBlindPos: 0,
-        bigBlindPos: 0,
+        deck: this.getDeck(),
+        players: this.getPlayers(),
+        smallBlind:config.smallBlind?config.smallBlind:1,
+        bigBlind:config.bigBlind?config.bigBlind:2,
       });
       this.__validatePlayerList();
     } else {
@@ -160,32 +131,9 @@ class PokerGame extends BaseEventEmitter implements PokerGameInterface {
     return this.__pot;
   }
 
-  public getDealerPos(): number {
-    return this.__dealerPos;
-  }
-
-  public getSmallBlindPos(): number {
-    return this.__smallBlindPos;
-  }
-
-  public getBigBlindPos(): number {
-    return this.__bigBlindPos;
-  }
-
   /**************************************************************************************************************
    * UPDATE METHODS (MODIFYING EXISTING OBJECTS)
    **************************************************************************************************************/
-  private __tagPos(): void {
-    if ((this.getPlayers().length = 2)) {
-      this.__setDealerPos(0);
-      this.__setSmallBlindPos(1);
-      this.__setBigBlindPos(0);
-    } else if (this.getPlayers().length >= 3) {
-      this.__setDealerPos(0);
-      this.__setSmallBlindPos(1);
-      this.__setBigBlindPos(2);
-    }
-  }
 
   /**************************************************************************************************************
    * DELETE METHODS (REMOVING OBJECTS)
@@ -227,31 +175,37 @@ class PokerGame extends BaseEventEmitter implements PokerGameInterface {
   /**************************************************************************************************************
    * INTERNAL METHODS (PRIVATE)
    **************************************************************************************************************/
+  
+  private __setId(id: string): string {
+    this.__id = id;
+    return this.__id;
+  }
 
   private __setPot(pot: number): number {
-    return (this.__pot = pot);
+    this.__pot = pot
+    return this.__pot;
   }
 
   private __setPlayers(
     players: PokerPlayerInterface[]
   ): PokerPlayerInterface[] {
-    return (this.__players = players);
+    this.__players = players;
+    return this.__players;
   }
 
-  private __setDealerPos(pos: number): boolean {
-    this.__dealerPos = pos;
-    return true;
+  private __setDeck(deck: DeckInterface): DeckInterface {
+    this.__deck = deck
+    return this.__deck;
   }
 
-  private __setSmallBlindPos(pos: number): boolean {
-    this.__smallBlindPos = pos;
-    return true;
+  private __setPhases(phases: PokerPhaseInterface[]): PokerPhaseInterface[] {
+    this.__phases = phases
+    return this.__phases;
   }
 
-  private __setBigBlindPos(pos: number): boolean {
-    this.__bigBlindPos = pos;
-    return true;
-  }
+
+
+
 }
 
 export { PokerGame };

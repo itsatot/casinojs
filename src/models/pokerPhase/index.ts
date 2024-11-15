@@ -182,62 +182,6 @@ class PokerPhase extends BaseEventEmitter implements PokerPhaseInterface {
    */
   private __currentPlayerPos: number = 1;
 
-  /**
-   * @property {number} __dealerPos
-   *
-   * Indicates the dealer's position in the game, impacting player actions and responsibilities.
-   *
-   * #### Purpose
-   * This property is critical for correctly rotating the dealer position after each hand and managing the flow of the game.
-   *
-   * #### Requirements
-   * - **Default**: Begins at 0, positioning the dealer at the start.
-   *
-   * @example
-   * ```typescript
-   * const pokerPhase = new PokerPhase();
-   * console.log(pokerPhase.__dealerPos); // Expected output: 0
-   * ```
-   */
-  private __dealerPos: number = 0;
-
-  /**
-   * @property {number} __smallBlindPos
-   *
-   * Specifies the position of the player who posts the small blind at the start of the phase.
-   *
-   * #### Purpose
-   * The `smallBlindPos` ensures that the correct player posts the small blind in each hand, following standard poker rules.
-   *
-   * #### Requirements
-   * - **Default**: Initialized to position 1 (first position after the dealer).
-   *
-   * @example
-   * ```typescript
-   * const pokerPhase = new PokerPhase();
-   * console.log(pokerPhase.__smallBlindPos); // Expected output: 1
-   * ```
-   */
-  private __smallBlindPos: number = 1;
-
-  /**
-   * @property {number} __bigBlindPos
-   *
-   * Specifies the position of the player who posts the big blind at the start of the phase.
-   *
-   * #### Purpose
-   * The `bigBlindPos` ensures that the correct player posts the big blind in each hand, in accordance with poker rules.
-   *
-   * #### Requirements
-   * - **Default**: Set to position 2 (second position after the dealer).
-   *
-   * @example
-   * ```typescript
-   * const pokerPhase = new PokerPhase();
-   * console.log(pokerPhase.__bigBlindPos); // Expected output: 2
-   * ```
-   */
-  private __bigBlindPos: number = 2;
 
   /**************************************************************************************************************
    * CONSTRUCTOR & INITIALIZERS
@@ -331,11 +275,6 @@ class PokerPhase extends BaseEventEmitter implements PokerPhaseInterface {
       this.__deck = config.deck ?? new Deck();
       this.__communityCards = config.communityCards ?? this.__communityCards;
       this.__players = config.players ?? this.__players;
-      this.__pot = config.pot ?? this.__pot;
-      this.__currentPlayerPos = this.__currentPlayerPos;
-      this.__dealerPos = config.dealerPos ?? this.__dealerPos;
-      this.__smallBlindPos = config.smallBlindPos ?? this.__smallBlindPos;
-      this.__bigBlindPos = config.bigBlindPos ?? this.__bigBlindPos;
     }
 
     if (this.getName() === PokerPhases.PRE_FLOP) {
@@ -544,116 +483,25 @@ class PokerPhase extends BaseEventEmitter implements PokerPhaseInterface {
     return this.__pot;
   }
 
-  /**
-   * #### Description
-   * Retrieves the dealer's position for the current phase of poker.
-   *
-   * #### Implements
-   * N/A
-   *
-   * #### Overrides
-   * N/A
-   *
-   * #### Purpose
-   * Indicates which player holds the dealer role, which is essential for turn-based actions.
-   *
-   * #### Events
-   * N/A
-   *
-   * #### Parameters
-   * N/A
-   *
-   * #### Returns
-   * - {number}: The position of the dealer in the game.
-   *
-   * #### Usage
-   * Useful for determining turn order and dealer-related actions.
-   *
-   * @returns {number} - Dealer’s position in the phase.
-   *
-   * @example
-   * ```typescript
-   * const dealerPosition = pokerPhase.getDealerPos();
-   * console.log(dealerPosition); // Outputs: 0
-   * ```
-   */
+  
   public getDealerPos(): number {
-    return this.__dealerPos;
+    return 0;
   }
 
-  /**
-   * #### Description
-   * Retrieves the position of the player assigned the small blind.
-   *
-   * #### Implements
-   * N/A
-   *
-   * #### Overrides
-   * N/A
-   *
-   * #### Purpose
-   * Helps identify the player with the small blind, aiding in betting actions.
-   *
-   * #### Events
-   * N/A
-   *
-   * #### Parameters
-   * N/A
-   *
-   * #### Returns
-   * - {number}: Position of the small blind player.
-   *
-   * #### Usage
-   * Used to determine the small blind in betting rounds.
-   *
-   * @returns {number} - Position of the small blind player.
-   *
-   * @example
-   * ```typescript
-   * const smallBlindPosition = pokerPhase.getSmallBlindPos();
-   * console.log(smallBlindPosition); // Outputs: 1
-   * ```
-   */
   public getSmallBlindPos(): number {
-    return this.__smallBlindPos;
+    if (this.getPlayers().length===2) {
+      return 0;
+    }
+    return 1;
   }
 
-  /**
-   * #### Description
-   * Retrieves the position of the player assigned the big blind.
-   *
-   * #### Implements
-   * N/A
-   *
-   * #### Overrides
-   * N/A
-   *
-   * #### Purpose
-   * Helps identify the player with the big blind, aiding in betting actions.
-   *
-   * #### Events
-   * N/A
-   *
-   * #### Parameters
-   * N/A
-   *
-   * #### Returns
-   * - {number}: Position of the big blind player.
-   *
-   * #### Usage
-   * Used to determine the big blind in betting rounds.
-   *
-   * @returns {number} - Position of the big blind player.
-   *
-   * @example
-   * ```typescript
-   * const bigBlindPosition = pokerPhase.getBigBlindPos();
-   * console.log(bigBlindPosition); // Outputs: 2
-   * ```
-   */
   public getBigBlindPos(): number {
-    return this.__bigBlindPos;
+    if (this.getPlayers().length===2) {
+      return 1;
+    }
+    return 2;
   }
+
 
   /**************************************************************************************************************
    * UPDATE METHODS (MODIFYING EXISTING OBJECTS)
@@ -771,20 +619,6 @@ class PokerPhase extends BaseEventEmitter implements PokerPhaseInterface {
     return (this.__players = players);
   }
 
-  private __setDealerPos(pos: number): boolean {
-    this.__dealerPos = pos;
-    return true;
-  }
-
-  private __setSmallBlindPos(pos: number): boolean {
-    this.__smallBlindPos = pos;
-    return true;
-  }
-
-  private __setBigBlindPos(pos: number): boolean {
-    this.__bigBlindPos = pos;
-    return true;
-  }
 }
 
 export { PokerPhase };

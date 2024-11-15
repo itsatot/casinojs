@@ -763,7 +763,6 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
     next();
   }  
 
-
   /**
    * #### Description
    * Checks seat availability to determine if it can be occupied by a player.
@@ -789,8 +788,6 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
     event.lastModifiedAt = new Date();
     next();
   }
-
-
  
   private __checkOccupancyCount(
     event: BaseEventInterface,
