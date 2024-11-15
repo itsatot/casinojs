@@ -1,3 +1,4 @@
+
 //@collapse
 
 import { BaseEventEmitterInterface } from "../_base";
@@ -65,6 +66,8 @@ interface PokerPlayerInterface extends BaseEventEmitterInterface {
    * console.log(rank); // "A"
    */
   getId(): string;
+
+  getChips():number;
 
   bet(amount: number): boolean;
 

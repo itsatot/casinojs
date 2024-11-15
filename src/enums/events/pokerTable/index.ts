@@ -40,6 +40,18 @@ enum PokerTableEvents {
    * ```
    */
   INITIALIZED = "PokerTable:Initialized",
+
+  /**
+   * Indicates that the seat has been initialized and is ready for occupancy.
+   *
+   * @example
+   * ```typescript
+   * const seatEvent: PokerTableEvents = PokerTableEvents.INITIALIZED;
+   * console.log(seatEvent);
+   * // Console Output: "PokerTable:Initialized"
+   * ```
+   */
+  NEW_GAME = "PokerTable:NewGame",
 }
 
 export { PokerTableEvents };

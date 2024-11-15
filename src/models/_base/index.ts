@@ -6,7 +6,10 @@ import { EventEmitter } from "events";
 import { LogLevel } from "../../enums";
 
 // Import Interfaces
-import { BaseEventEmitterInterface, BaseEventInterface } from "../../interfaces";
+import {
+  BaseEventEmitterInterface,
+  BaseEventInterface,
+} from "../../interfaces";
 
 // Import Utils
 import { generateUniqueId, logger } from "../../utils";
@@ -147,71 +150,14 @@ class BaseEventEmitter
         data: { [key: string]: any };
         [key: string]: any;
       };
-      middlewares?: Array<(event: BaseEventInterface, next: () => void) => void | false>;
+      middlewares?: Array<
+        (event: BaseEventInterface, next: () => void) => void | false
+      >;
     }
   ): void {
     this.__emitEvent(eventName, options);
   }
 
-  /**
-   * #### Description
-   * The `emitEvent` method is a public method for emitting events, with an optional configuration that allows
-   * middleware processing. Middleware functions can intercept and transform the event before it reaches the listeners,
-   * allowing custom validation or data modifications.
-   *
-   * #### Purpose
-   * This method enables flexible event emission with support for middleware, providing a robust event processing
-   * mechanism in the `BaseEventEmitter`. It’s useful for customizing event behavior based on application-specific needs.
-   *
-   * #### Implements
-   * N/A
-   *
-   * #### Overrides
-   * N/A
-   *
-   * #### Events
-   * This method can emit any event specified by `eventName`, which can then be processed by middleware functions if defined.
-   *
-   * #### Parameters
-   * - `eventName: string` - The name of the event to emit.
-   * - `options: { event: { data: { [key: string]: any }; [key: string]: any; }, middlewares?: Array<(event: BaseEventInterface, next: () => void) => void | false> }`
-   *   - **event** - The primary event data to emit, containing specific details.
-   *   - **middlewares** - An optional array of middleware functions that process the event before emission.
-   *
-   * #### Requirements
-   * - `eventName` must be a valid string.
-   * - `options.event` should include relevant data for the event. If `middlewares` are provided, they should be functions with an event and next parameter.
-   *
-   * #### Returns
-   * - `void` - This method does not return a value.
-   *
-   * #### Usage
-   * Use this method to emit events with middleware-based customization, which allows for specific processing
-   * logic or transformations before the event reaches listeners.
-   *
-   * @param {string} eventName - The name of the event to emit.
-   * @param {object} options - Configuration for the event and optional middleware functions.
-   *
-   * @example
-   * ```typescript
-   * emitter.emitEvent("game:started", {
-   *   event: { data: { gameId: "001", status: "active" } },
-   *   middlewares: [
-   *     (event, next) => { console.log("Processing event:", event); next(); },
-   *     (event, next) => { event.data.processed = true; next(); }
-   *   ]
-   * });
-   * ```
-   */
-  public listenToEvent(
-    eventName: string,
-    options: {
-      handler: (event: BaseEventInterface) => void;
-      middlewares?: Array<(event: BaseEventInterface, next: () => void) => void | false>;
-    }
-  ): void {
-    this.__listenToEvent(eventName, options);
-  }
   /**************************************************************************************************************
    * WRAPPER METHODS (UTILITY & CONVENIENCE)
    **************************************************************************************************************/
@@ -274,10 +220,15 @@ class BaseEventEmitter
         data: { [key: string]: any };
         [key: string]: any;
       };
-      middlewares?: Array<(event: BaseEventInterface, next: () => void) => void | false>;
+      middlewares?: Array<
+        (event: BaseEventInterface, next: () => void) => void | false
+      >;
     }
   ): void {
-    const event: BaseEventInterface = this.__initializeEventObj(eventName, options);
+    const event: BaseEventInterface = this.__initializeEventObj(
+      eventName,
+      options
+    );
     const middlewares = options.middlewares ?? [];
 
     if (middlewares.length > 0) {
@@ -349,82 +300,6 @@ class BaseEventEmitter
     logger.log(LogLevel.INFO, `Event initialized: "${eventName}"`, baseEvent);
     return baseEvent;
   }
-
-
-  /**
- * #### Description
- * The `__listenToEvent` method is a private listener method within the `BaseEventListener` class that listens to
- * a specified event and allows middleware processing before handling the event data.
- *
- * #### Purpose
- * This method enables event listening within `BaseEventListener`, supporting middleware-based pre-processing
- * of events before they reach the main handler.
- *
- * #### Events
- * Subscribes to the specified event and applies middleware before handling.
- *
- * #### Parameters
- * - `eventName: string` - The event name to listen for.
- * - `options: { handler: (event: BaseEventInterface) => void, middlewares?: Array<(event: BaseEventInterface, next: () => void) => void | false> }`
- *   - **handler** - Function that handles the processed event.
- *   - **middlewares** - Optional array of middleware functions for processing the event before it reaches the handler.
- *
- * #### Requirements
- * - `eventName` must be a valid string.
- * - `handler` must be a function that processes the event data.
- * - If `middlewares` are provided, they should be functions that accept an event and a `next` function.
- *
- * #### Returns
- * - `void` - This method does not return a value.
- *
- * #### Usage
- * Use this method to listen to events within the `BaseEventListener` and apply middleware before passing them
- * to the handler.
- *
- * @param {string} eventName - The event name to listen for.
- * @param {object} options - Configuration object containing the handler and optional middleware functions.
- *
- * @example
- * ```typescript
- * listener.__listenToEvent("room:updated", {
- *   handler: (event) => { console.log("Event received:", event); },
- *   middlewares: [
- *     (event, next) => { event.data.timestamp = Date.now(); next(); },
- *     (event, next) => { if (event.data.isValid) next(); else console.log("Invalid event data"); }
- *   ]
- * });
- * ```
- */
-private __listenToEvent(
-  eventName: string,
-  options: {
-    handler: (event: BaseEventInterface) => void;
-    middlewares?: Array<(event: BaseEventInterface, next: () => void) => void | false>;
-  }
-): void {
-  const middlewares = options.middlewares ?? [];
-  const handler = options.handler;
-
-  // Register the event listener
-  this.on(eventName, (event: BaseEventInterface) => {
-    if (middlewares.length > 0) {
-      // Middleware processing
-      const processMiddlewares = (index: number) => {
-        if (index < middlewares.length) {
-          middlewares[index](event, () => processMiddlewares(index + 1));
-        } else {
-          handler(event);
-          logger.log(LogLevel.INFO, `Event handled: "${eventName}"`, event);
-        }
-      };
-      processMiddlewares(0);
-    } else {
-      // Directly invoke handler if no middleware
-      handler(event);
-      logger.log(LogLevel.INFO, `Event handled: "${eventName}"`, event);
-    }
-  });
-}
 }
 
 export { BaseEventEmitter };

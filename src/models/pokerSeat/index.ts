@@ -166,6 +166,8 @@ class PokerSeat extends BaseEventEmitter implements PokerSeatInterface {
    */
   private __player: PokerPlayerInterface | undefined = undefined;
 
+  private __roles! : string[]  ;
+
   /**************************************************************************************************************
    * CONSTRUCTOR & INITIALIZERS
    **************************************************************************************************************/
@@ -283,6 +285,11 @@ class PokerSeat extends BaseEventEmitter implements PokerSeatInterface {
       config.player
         ? this.__setPlayer(config.player)
         : this.__setPlayer(this.__player);
+
+      // Assign a player to the seat if provided; otherwise, seat remains unoccupied.
+      config.role
+        ? this.__setRoles(config.role)
+        : this.__setRoles(this.__roles);
     }
 
     // Emit `INITIALIZED` event after initialization
@@ -531,6 +538,94 @@ class PokerSeat extends BaseEventEmitter implements PokerSeatInterface {
    */
   public getPlayer(): PokerPlayerInterface | undefined {
     return this.__player;
+  }
+
+   /**
+   * #### Description
+   * The `getPlayer` method is a public getter that retrieves the player occupying this seat, if any.
+   *
+   * #### Implements
+   * N/A
+   *
+   * #### Overrides
+   * N/A
+   *
+   * #### Purpose
+   * This method provides access to the player currently occupying the seat, allowing the application to retrieve
+   * player-specific data, manage player actions, or determine seat vacancy.
+   *
+   * #### Events
+   * N/A
+   *
+   * #### Parameters
+   * N/A
+   *
+   * #### Requirements
+   * - This method requires no parameters.
+   *
+   * #### Returns
+   * - `PokerPlayerInterface | undefined` - Returns the player instance occupying this seat, or `undefined` if the seat is vacant.
+   *
+   * #### Usage
+   * Use this method to retrieve the player occupying this seat, which is helpful in managing player actions or
+   * determining if the seat is available for another player.
+   *
+   * @returns {PokerPlayerInterface | undefined} - The player instance if occupied, or `undefined` if vacant.
+   *
+   * @example
+   * ```typescript
+   * const pokerSeat = new PokerSeat();
+   * pokerSeat.occupySeat(player); // player implements PokerPlayerInterface
+   * console.log(pokerSeat.getPlayer());
+   * // Console Output: <PlayerInstance>
+   * ```
+   */
+   public getRoles(): string[] {
+    return this.__roles;
+  }
+
+  /**
+   * #### Description
+   * The `getPlayer` method is a public getter that retrieves the player occupying this seat, if any.
+   *
+   * #### Implements
+   * N/A
+   *
+   * #### Overrides
+   * N/A
+   *
+   * #### Purpose
+   * This method provides access to the player currently occupying the seat, allowing the application to retrieve
+   * player-specific data, manage player actions, or determine seat vacancy.
+   *
+   * #### Events
+   * N/A
+   *
+   * #### Parameters
+   * N/A
+   *
+   * #### Requirements
+   * - This method requires no parameters.
+   *
+   * #### Returns
+   * - `PokerPlayerInterface | undefined` - Returns the player instance occupying this seat, or `undefined` if the seat is vacant.
+   *
+   * #### Usage
+   * Use this method to retrieve the player occupying this seat, which is helpful in managing player actions or
+   * determining if the seat is available for another player.
+   *
+   * @returns {PokerPlayerInterface | undefined} - The player instance if occupied, or `undefined` if vacant.
+   *
+   * @example
+   * ```typescript
+   * const pokerSeat = new PokerSeat();
+   * pokerSeat.occupySeat(player); // player implements PokerPlayerInterface
+   * console.log(pokerSeat.getPlayer());
+   * // Console Output: <PlayerInstance>
+   * ```
+   */
+  public addRole(role:string): string[] {
+    return this.__addRole(role);
   }
 
   /**************************************************************************************************************
@@ -800,6 +895,56 @@ class PokerSeat extends BaseEventEmitter implements PokerSeatInterface {
   ): PokerPlayerInterface | undefined {
     this.__player = player;
     return this.__player;
+  }
+
+  /**
+   * #### Description
+   * The `__setPlayer` method assigns a player to this `PokerSeat`.
+   *
+   * #### Purpose
+   * This method designates a player to occupy the seat or clears the seat if set to `undefined`, allowing for
+   * seat availability management.
+   *
+   * #### Implements
+   * N/A
+   *
+   * #### Overrides
+   * N/A
+   *
+   * #### Parameters
+   * - `player: PokerPlayerInterface | undefined` - The player instance to be assigned to the seat, or `undefined` to mark the seat vacant.
+   *
+   * #### Requirements
+   * - `player` must be an instance of `PokerPlayerInterface`, or `undefined` to vacate the seat.
+   *
+   * #### Returns
+   * - `PokerPlayerInterface | undefined` - The player occupying the seat or `undefined` if vacant.
+   *
+   * #### Usage
+   * This method is used internally to assign a player to the seat or clear the seat.
+   *
+   * @param {PokerPlayerInterface | undefined} player - The player to occupy the seat, or `undefined` if no player is assigned.
+   *
+   * @returns {PokerPlayerInterface | undefined} - The player instance or `undefined` after assignment.
+   *
+   * @example
+   * ```typescript
+   * const pokerSeat = new PokerSeat();
+   * pokerSeat.__setPlayer(playerInstance);
+   * console.log(pokerSeat.getPlayer());
+   * // Console Output: <PlayerInstance>
+   * ```
+   */
+  private __setRoles(
+    role: string[]
+  ): string[]{
+    this.__roles = role;
+    return this.__roles;
+  }
+
+  private __addRole(role: string): string[] {
+    this.__roles.push(role);
+    return this.getRoles();
   }
 
   /**

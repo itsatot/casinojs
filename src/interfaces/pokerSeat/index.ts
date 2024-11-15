@@ -1,3 +1,6 @@
+
+
+
 //@collapse
 
 import { BaseEventEmitterInterface } from "../_base";
@@ -18,7 +21,7 @@ interface PokerSeatConfig {
    * @property {number} position
    * The maximum number of players that can be seated at the PokerTable[2-14].
    */
-  position: number;
+  position?: number;
 
   /**
    * @property {boolean} isDealer
@@ -31,6 +34,8 @@ interface PokerSeatConfig {
    * The maximum number of players that can be seated at the PokerTable[2-14].
    */
   player?: PokerPlayerInterface;
+
+  role?:string[];
 }
 
 /**
@@ -109,6 +114,10 @@ interface PokerSeatInterface extends BaseEventEmitterInterface {
    * console.log(rank); // "A"
    */
   getPlayer(): PokerPlayerInterface | undefined;
+
+  getRoles(): string[];
+
+  addRole(role:string): string[];
 
   /**************************************************************************************************************
    * UPDATE METHODS (MODIFYING EXISTING OBJECTS)
