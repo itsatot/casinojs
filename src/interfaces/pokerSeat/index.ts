@@ -115,7 +115,7 @@ interface PokerSeatInterface extends BaseEventEmitterInterface {
    */
   getPlayer(): PokerPlayerInterface | undefined;
 
-  getRole(): string[];
+  getRoles(): string[];
 
   addRole(role:string): string[];
 

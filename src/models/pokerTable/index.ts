@@ -313,7 +313,7 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
         });
 
         seat.on(PokerSeatEvents.VACATED, (event) => {
-          this.__seatVacatedUpdateEventHandler();
+          this.__seatOccupancyUpdateEventHandler();
         });
       }
     }
@@ -468,7 +468,18 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
   /**************************************************************************************************************
    * WRAPPER METHODS (UTILITY & CONVENIENCE)
    **************************************************************************************************************/
+  public occupancyCount():number{
+    let occupiedSeats = 0;
 
+    for (let i = 0; i < this.getSeats().length; i++) {
+      let seat = this.getSeats()[i];
+      if (seat.getPlayer()) {
+        occupiedSeats += 1;
+      }
+    }
+
+    return occupiedSeats;
+  }
   /**
    * `size`
    * Starts a new PokerGame if there are at least two active players at the PokerTable.
@@ -689,13 +700,13 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
     return false;
   }
 
-  public assignRoles(event: BaseEventInterface): void | false {
-    this.__assignRoles(event);
+  public assignRoles(): void | false {
+    this.__assignRoles();
   }
 
-  private __assignRoles(event: BaseEventInterface): void | false {
+  private __assignRoles(): void | false {
 
-    if (event.occupancyCount === 2) {
+    if (this.occupancyCount()===2) {
       let foundDealer = false;
         // Iterate over each seat to find the minimum occupied seat position
       for (let i = 0; i < this.getSeats().length; i++) {
@@ -717,7 +728,7 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
       }
     } 
 
-    else if (event.occupancyCount > 2) {
+    else if (this.occupancyCount()>2) {
       const seats = this.getSeats();
       let dealerAssigned = false;
       let smallBlindAssigned = false;
@@ -748,9 +759,8 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
   }  
 
   private __assignRolesMiddleware(event: BaseEventInterface,next: () => void): void | false {
-
-   return this.__assignRoles(event);
-   next();
+    this.__assignRoles();  
+    next();
   }  
 
 
@@ -779,19 +789,14 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
     event.lastModifiedAt = new Date();
     next();
   }
+
+
  
   private __checkOccupancyCount(
     event: BaseEventInterface,
     next: () => void
   ): void | false {
-    let occupiedSeats = 0;
-
-    for (let i = 0; i < this.getSeats().length; i++) {
-      let seat = this.getSeats()[i];
-      if (seat.getPlayer()) {
-        occupiedSeats += 1;
-      }
-    }
+   let occupiedSeats = this.occupancyCount();
 
     // Check if all seats are occupied
     if (occupiedSeats === this.getSeats().length) {
@@ -916,31 +921,5 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
     });
   }
 
-  private __seatVacatedUpdateEventHandler(event?: BaseEventInterface): void {
-    this.emitEvent(PokerTableEvents.NEW_GAME, {
-      event: { source: Source.POKER_TABLE, data: { tableId: this.getId() } },
-      middlewares: [
-        (event, next) => {
-          this.__checkIfGameInProgress(event, next);
-        },
-        (event, next) => {
-          this.__checkOccupancyCount(event, next);
-        },
-        (event, next) => {
-          this.__assignRolesMiddleware(event, next);
-        },
-        (event, next) => {
-          this.__validatePlayerBalances(event, next);
-        },
-        (event, next) => {
-          this.__createGamePlayersList(event, next);
-        },
-        (event) => {
-          this.__startGame(event);
-        },
-      ],
-    });
-  }
-  
 }
 export { PokerTable };

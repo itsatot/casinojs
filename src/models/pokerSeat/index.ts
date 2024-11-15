@@ -166,7 +166,7 @@ class PokerSeat extends BaseEventEmitter implements PokerSeatInterface {
    */
   private __player: PokerPlayerInterface | undefined = undefined;
 
-  private __role! : string[]  ;
+  private __roles! : string[]  ;
 
   /**************************************************************************************************************
    * CONSTRUCTOR & INITIALIZERS
@@ -288,8 +288,8 @@ class PokerSeat extends BaseEventEmitter implements PokerSeatInterface {
 
       // Assign a player to the seat if provided; otherwise, seat remains unoccupied.
       config.role
-        ? this.__setRole(config.role)
-        : this.__setRole(this.__role);
+        ? this.__setRoles(config.role)
+        : this.__setRoles(this.__roles);
     }
 
     // Emit `INITIALIZED` event after initialization
@@ -580,8 +580,8 @@ class PokerSeat extends BaseEventEmitter implements PokerSeatInterface {
    * // Console Output: <PlayerInstance>
    * ```
    */
-   public getRole(): string[] {
-    return this.__role;
+   public getRoles(): string[] {
+    return this.__roles;
   }
 
   /**
@@ -935,16 +935,16 @@ class PokerSeat extends BaseEventEmitter implements PokerSeatInterface {
    * // Console Output: <PlayerInstance>
    * ```
    */
-  private __setRole(
+  private __setRoles(
     role: string[]
   ): string[]{
-    this.__role = role;
-    return this.__role;
+    this.__roles = role;
+    return this.__roles;
   }
 
   private __addRole(role: string): string[] {
-    this.__role.push(role);
-    return this.getRole();
+    this.__roles.push(role);
+    return this.getRoles();
   }
 
   /**
