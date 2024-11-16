@@ -1,7 +1,7 @@
 //collapse
 
 // Import Enums
-import { PokerPhases } from "../../enums";
+import { PokerGameEvents, PokerPhases , Source } from "../../enums";
 
 // Import Interfaces
 import {
@@ -106,7 +106,16 @@ class PokerGame extends BaseEventEmitter implements PokerGameInterface {
         smallBlind:config.smallBlind?config.smallBlind:1,
         bigBlind:config.bigBlind?config.bigBlind:2,
       });
-      this.__validatePlayerList();
+      // this.__validatePlayerList();
+
+      // Emit `INITIALIZED` event after initialization
+    this.emitEvent(PokerGameEvents.INITIALIZED, {
+      event: {
+        source: Source.POKER_GAME,
+        data: { gameId: this.getId() },
+      },
+      middlewares: [],
+    });
     } else {
     }
   }
@@ -118,6 +127,10 @@ class PokerGame extends BaseEventEmitter implements PokerGameInterface {
   /**************************************************************************************************************
    * READ METHODS (GETTERS & DATA RETRIEVAL)
    **************************************************************************************************************/
+
+  public getId(): string {
+    return this.__id;
+  }
 
   public getPlayers(): PokerPlayerInterface[] {
     return this.__players;
@@ -148,7 +161,15 @@ class PokerGame extends BaseEventEmitter implements PokerGameInterface {
    * Advances the game to the next phase (pre-flop to flop, flop to turn, etc.).
    * @returns {void}
    */
-  private __advancePhase(): void {}
+
+  
+  private __newPhase(): void {
+    const nextPhaseIndex = this.__phases.findIndex(phase => phase === this.__currentPhase) + 1;
+    if (nextPhaseIndex >= this.__phases.length) {
+        return;
+    }
+    this.__currentPhase = this.__phases[nextPhaseIndex];
+}
 
   /**
    * `resolveBets`
@@ -157,13 +178,13 @@ class PokerGame extends BaseEventEmitter implements PokerGameInterface {
    */
   private __resolveBets(): void {}
 
-  private __validatePlayerList(): boolean {
-    if (this.getPlayers().length < 2) {
-      throw new Error("Players are lesser than two.");
-    } else {
-      return true;
-    }
-  }
+  // private __validatePlayerList(): boolean {
+  //   if (this.getPlayers().length < 2) {
+  //     throw new Error("Players are lesser than two.");
+  //   } else {
+  //     return true;
+  //   }
+  // }
   /**************************************************************************************************************
    * WRAPPER METHODS (UTILITY & CONVENIENCE)
    **************************************************************************************************************/

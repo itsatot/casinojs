@@ -41,6 +41,8 @@ interface PokerPlayerConfig {
    * Indicates whether the player is still active in the current round or has folded.
    */
   isFolded?: boolean;
+
+  currentBet:number;
 }
 
 /**
@@ -72,6 +74,10 @@ interface PokerPlayerInterface extends BaseEventEmitterInterface {
   bet(amount: number): boolean;
 
   setIsFolded(bool: boolean): boolean;
+
+  addToHand(hand: CardInterface): boolean;
+
+
 }
 
 export { PokerPlayerConfig, PokerPlayerInterface };

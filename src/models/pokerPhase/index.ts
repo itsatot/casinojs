@@ -1,7 +1,7 @@
 //@collapse
 
 // Import Enums
-import { PokerPhases } from "../../enums";
+import { PokerPhaseEvents, PokerPhases , Source } from "../../enums";
 
 // Import Interfaces
 import {
@@ -182,7 +182,6 @@ class PokerPhase extends BaseEventEmitter implements PokerPhaseInterface {
    */
   private __currentPlayerPos: number = 1;
 
-
   /**************************************************************************************************************
    * CONSTRUCTOR & INITIALIZERS
    **************************************************************************************************************/
@@ -221,65 +220,37 @@ class PokerPhase extends BaseEventEmitter implements PokerPhaseInterface {
    * });
    * ```
    */
-  constructor(config?: PokerPhaseConfig) {
+  constructor(config?: PokerPhaseConfig ) {
     super();
     this.__init(config);
-  }
+  } 
 
-  /**
-   * __init
-   * @private
-   * Handles detailed initialization for `PokerPhase`, setting up phase properties like phase name, deck, community cards,
-   * players, and positional markers. This method is automatically called within the constructor.
-   *
-   * #### Purpose
-   * The `__init` method ensures that each phase has the correct configuration, including setting up player hands if it is
-   * the "Pre-Flop" phase, initializing community cards, and other positional configurations based on the provided `config`.
-   *
-   * #### Events
-   * - `deck:initialized`: Emits an event when the deck has been initialized, allowing listeners to confirm phase readiness.
-   *
-   * #### Parameters
-   * - `config` (optional): An object of type `PokerPhaseConfig`, used to define the phase's specific properties such as
-   *   phase name, deck, players, and pot.
-   *
-   * #### Requirements
-   * - The `config` should contain a valid `PokerPhases` (e.g., `PRE_FLOP`, `FLOP`) and other properties for setting up
-   *   the phase accurately.
-   * - If no `config` is provided, defaults are used to initialize each phase property.
-   *
-   * #### Returns
-   * - This method has no return value (`void`), but it initializes several instance properties based on the provided configuration.
-   *
-   * #### Usage
-   * This method is internally called by the constructor and should not be called directly. It ensures all properties are correctly
-   * initialized based on the phase configuration.
-   *
-   * @param {PokerPhaseConfig} config - Configuration object containing properties for phase initialization.
-   * @returns {void}
-   *
-   * @example
-   * ```typescript
-   * const config = {
-   *   name: PokerPhases.PRE_FLOP,
-   *   players: [...],
-   *   communityCards: [],
-   *   pot: 0
-   * };
-   * const pokerPhase = new PokerPhase(config); // Automatically calls __init(config) for phase setup
-   * ```
-   */
   private __init(config?: PokerPhaseConfig): void {
+    // If config is undefined, use an empty object to avoid undefined property access
+
     if (config) {
+       // Initialize properties with fallback values
       this.__name = config.name ?? PokerPhases.PRE_FLOP;
       this.__deck = config.deck ?? new Deck();
       this.__communityCards = config.communityCards ?? this.__communityCards;
       this.__players = config.players ?? this.__players;
+
+       // Initialize the pot with small blind and big blind
+    this.__initializeBlinds(config.smallBlind,config.bigBlind);
     }
 
     if (this.getName() === PokerPhases.PRE_FLOP) {
-      this.deal(); // Deal cards to players if this is the "Pre-Flop" phase
+      this.__deal(); // Deal cards to players if this is the "Pre-Flop" phase
     }
+
+    // Emit `INITIALIZED` event after initialization
+    this.emitEvent(PokerPhaseEvents.INITIALIZED, {
+      event: {
+        source: Source.POKER_PHASE,
+        data: { name: this.getName() },
+      },
+      middlewares: [],
+    });
   }
 
   /**************************************************************************************************************
@@ -520,8 +491,18 @@ class PokerPhase extends BaseEventEmitter implements PokerPhaseInterface {
    * Deals two hole cards to each player.
    * @returns {void}
    */
-  deal(): boolean {
-    for (let i = 0; i < 2; i++) {}
+  private __deal(): boolean {
+    // Deal two cards to each player
+    for (let i = 0; i < 2; i++) { // Two rounds of dealing
+      this.getPlayers().forEach((player) => {
+        const card = this.getDeck().draw(); // Draw a card from the deck
+        if (card) {
+          player.addToHand(card); // Add the card to the player's hand
+        } else {
+          throw new Error("Deck is empty before dealing all cards.");
+        }
+      });
+    }
     return true;
   }
 
@@ -531,7 +512,7 @@ class PokerPhase extends BaseEventEmitter implements PokerPhaseInterface {
    * @param {number} count - The number of community cards to deal (3 for the flop, 1 for the turn/river).
    * @returns {boolean}
    */
-  dealCommunityCards(count: number): boolean {
+  private __dealCommunityCards(count: number): boolean {
     for (let index = 0; index < count; index++) {
       let card = this.getDeck().draw();
       card ? this.__communityCards.push(card) : {};
@@ -619,6 +600,42 @@ class PokerPhase extends BaseEventEmitter implements PokerPhaseInterface {
     return (this.__players = players);
   }
 
+  private __initializeBlinds(smallBlind:number,bigBlind:number): void {
+    const smallBlindPos = this.getSmallBlindPos();
+    const bigBlindPos = this.getBigBlindPos();
+    const smallBlindAmount = smallBlind; // Example small blind amount
+    const bigBlindAmount = bigBlind; // Example big blind amount
+  
+    // Deduct small blind from the small blind player
+    const smallBlindPlayer = this.getPlayers()[smallBlindPos];
+    if (smallBlindPlayer) {
+      smallBlindPlayer.bet(smallBlindAmount); // Deduct from player's chips
+      this.__setPot(this.getPot() + smallBlindAmount); // Add to the pot
+    }
+  
+    // Deduct big blind from the big blind player
+    const bigBlindPlayer = this.getPlayers()[bigBlindPos];
+    if (bigBlindPlayer) {
+      bigBlindPlayer.bet(bigBlindAmount); // Deduct from player's chips
+      this.__setPot(this.getPot() + bigBlindAmount); // Add to the pot
+    }
+  }
+
+//   private __isPhaseCompleted(): boolean {
+//     const players = this.getPlayers();
+    
+//     // Determine the highest bet in the current round
+//     const highestBet = Math.max(
+//       ...players.map((player) => player.getCurrentBet())
+//     );
+
+//     // Check if all active players have either folded or matched the highest bet
+//     const allActionsResolved = players.every((player) => {
+//       return player.isFolded() || player.getCurrentBet() === highestBet ;
+//     });
+
+//     return allActionsResolved;
+// }
 }
 
 export { PokerPhase };
