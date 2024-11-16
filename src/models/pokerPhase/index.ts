@@ -1,7 +1,7 @@
 //@collapse
 
 // Import Enums
-import { PokerPhases } from "../../enums";
+import { PokerPhaseEvents, PokerPhases , Source } from "../../enums";
 
 // Import Interfaces
 import {
@@ -182,63 +182,6 @@ class PokerPhase extends BaseEventEmitter implements PokerPhaseInterface {
    */
   private __currentPlayerPos: number = 1;
 
-  /**
-   * @property {number} __dealerPos
-   *
-   * Indicates the dealer's position in the game, impacting player actions and responsibilities.
-   *
-   * #### Purpose
-   * This property is critical for correctly rotating the dealer position after each hand and managing the flow of the game.
-   *
-   * #### Requirements
-   * - **Default**: Begins at 0, positioning the dealer at the start.
-   *
-   * @example
-   * ```typescript
-   * const pokerPhase = new PokerPhase();
-   * console.log(pokerPhase.__dealerPos); // Expected output: 0
-   * ```
-   */
-  private __dealerPos: number = 0;
-
-  /**
-   * @property {number} __smallBlindPos
-   *
-   * Specifies the position of the player who posts the small blind at the start of the phase.
-   *
-   * #### Purpose
-   * The `smallBlindPos` ensures that the correct player posts the small blind in each hand, following standard poker rules.
-   *
-   * #### Requirements
-   * - **Default**: Initialized to position 1 (first position after the dealer).
-   *
-   * @example
-   * ```typescript
-   * const pokerPhase = new PokerPhase();
-   * console.log(pokerPhase.__smallBlindPos); // Expected output: 1
-   * ```
-   */
-  private __smallBlindPos: number = 1;
-
-  /**
-   * @property {number} __bigBlindPos
-   *
-   * Specifies the position of the player who posts the big blind at the start of the phase.
-   *
-   * #### Purpose
-   * The `bigBlindPos` ensures that the correct player posts the big blind in each hand, in accordance with poker rules.
-   *
-   * #### Requirements
-   * - **Default**: Set to position 2 (second position after the dealer).
-   *
-   * @example
-   * ```typescript
-   * const pokerPhase = new PokerPhase();
-   * console.log(pokerPhase.__bigBlindPos); // Expected output: 2
-   * ```
-   */
-  private __bigBlindPos: number = 2;
-
   /**************************************************************************************************************
    * CONSTRUCTOR & INITIALIZERS
    **************************************************************************************************************/
@@ -277,70 +220,37 @@ class PokerPhase extends BaseEventEmitter implements PokerPhaseInterface {
    * });
    * ```
    */
-  constructor(config?: PokerPhaseConfig) {
+  constructor(config?: PokerPhaseConfig ) {
     super();
     this.__init(config);
-  }
+  } 
 
-  /**
-   * __init
-   * @private
-   * Handles detailed initialization for `PokerPhase`, setting up phase properties like phase name, deck, community cards,
-   * players, and positional markers. This method is automatically called within the constructor.
-   *
-   * #### Purpose
-   * The `__init` method ensures that each phase has the correct configuration, including setting up player hands if it is
-   * the "Pre-Flop" phase, initializing community cards, and other positional configurations based on the provided `config`.
-   *
-   * #### Events
-   * - `deck:initialized`: Emits an event when the deck has been initialized, allowing listeners to confirm phase readiness.
-   *
-   * #### Parameters
-   * - `config` (optional): An object of type `PokerPhaseConfig`, used to define the phase's specific properties such as
-   *   phase name, deck, players, and pot.
-   *
-   * #### Requirements
-   * - The `config` should contain a valid `PokerPhases` (e.g., `PRE_FLOP`, `FLOP`) and other properties for setting up
-   *   the phase accurately.
-   * - If no `config` is provided, defaults are used to initialize each phase property.
-   *
-   * #### Returns
-   * - This method has no return value (`void`), but it initializes several instance properties based on the provided configuration.
-   *
-   * #### Usage
-   * This method is internally called by the constructor and should not be called directly. It ensures all properties are correctly
-   * initialized based on the phase configuration.
-   *
-   * @param {PokerPhaseConfig} config - Configuration object containing properties for phase initialization.
-   * @returns {void}
-   *
-   * @example
-   * ```typescript
-   * const config = {
-   *   name: PokerPhases.PRE_FLOP,
-   *   players: [...],
-   *   communityCards: [],
-   *   pot: 0
-   * };
-   * const pokerPhase = new PokerPhase(config); // Automatically calls __init(config) for phase setup
-   * ```
-   */
   private __init(config?: PokerPhaseConfig): void {
+    // If config is undefined, use an empty object to avoid undefined property access
+
     if (config) {
+       // Initialize properties with fallback values
       this.__name = config.name ?? PokerPhases.PRE_FLOP;
       this.__deck = config.deck ?? new Deck();
       this.__communityCards = config.communityCards ?? this.__communityCards;
       this.__players = config.players ?? this.__players;
-      this.__pot = config.pot ?? this.__pot;
-      this.__currentPlayerPos = this.__currentPlayerPos;
-      this.__dealerPos = config.dealerPos ?? this.__dealerPos;
-      this.__smallBlindPos = config.smallBlindPos ?? this.__smallBlindPos;
-      this.__bigBlindPos = config.bigBlindPos ?? this.__bigBlindPos;
+
+       // Initialize the pot with small blind and big blind
+    this.__initializeBlinds(config.smallBlind,config.bigBlind);
     }
 
     if (this.getName() === PokerPhases.PRE_FLOP) {
-      this.deal(); // Deal cards to players if this is the "Pre-Flop" phase
+      this.__deal(); // Deal cards to players if this is the "Pre-Flop" phase
     }
+
+    // Emit `INITIALIZED` event after initialization
+    this.emitEvent(PokerPhaseEvents.INITIALIZED, {
+      event: {
+        source: Source.POKER_PHASE,
+        data: { name: this.getName() },
+      },
+      middlewares: [],
+    });
   }
 
   /**************************************************************************************************************
@@ -544,116 +454,25 @@ class PokerPhase extends BaseEventEmitter implements PokerPhaseInterface {
     return this.__pot;
   }
 
-  /**
-   * #### Description
-   * Retrieves the dealer's position for the current phase of poker.
-   *
-   * #### Implements
-   * N/A
-   *
-   * #### Overrides
-   * N/A
-   *
-   * #### Purpose
-   * Indicates which player holds the dealer role, which is essential for turn-based actions.
-   *
-   * #### Events
-   * N/A
-   *
-   * #### Parameters
-   * N/A
-   *
-   * #### Returns
-   * - {number}: The position of the dealer in the game.
-   *
-   * #### Usage
-   * Useful for determining turn order and dealer-related actions.
-   *
-   * @returns {number} - Dealer’s position in the phase.
-   *
-   * @example
-   * ```typescript
-   * const dealerPosition = pokerPhase.getDealerPos();
-   * console.log(dealerPosition); // Outputs: 0
-   * ```
-   */
+  
   public getDealerPos(): number {
-    return this.__dealerPos;
+    return 0;
   }
 
-  /**
-   * #### Description
-   * Retrieves the position of the player assigned the small blind.
-   *
-   * #### Implements
-   * N/A
-   *
-   * #### Overrides
-   * N/A
-   *
-   * #### Purpose
-   * Helps identify the player with the small blind, aiding in betting actions.
-   *
-   * #### Events
-   * N/A
-   *
-   * #### Parameters
-   * N/A
-   *
-   * #### Returns
-   * - {number}: Position of the small blind player.
-   *
-   * #### Usage
-   * Used to determine the small blind in betting rounds.
-   *
-   * @returns {number} - Position of the small blind player.
-   *
-   * @example
-   * ```typescript
-   * const smallBlindPosition = pokerPhase.getSmallBlindPos();
-   * console.log(smallBlindPosition); // Outputs: 1
-   * ```
-   */
   public getSmallBlindPos(): number {
-    return this.__smallBlindPos;
+    if (this.getPlayers().length===2) {
+      return 0;
+    }
+    return 1;
   }
 
-  /**
-   * #### Description
-   * Retrieves the position of the player assigned the big blind.
-   *
-   * #### Implements
-   * N/A
-   *
-   * #### Overrides
-   * N/A
-   *
-   * #### Purpose
-   * Helps identify the player with the big blind, aiding in betting actions.
-   *
-   * #### Events
-   * N/A
-   *
-   * #### Parameters
-   * N/A
-   *
-   * #### Returns
-   * - {number}: Position of the big blind player.
-   *
-   * #### Usage
-   * Used to determine the big blind in betting rounds.
-   *
-   * @returns {number} - Position of the big blind player.
-   *
-   * @example
-   * ```typescript
-   * const bigBlindPosition = pokerPhase.getBigBlindPos();
-   * console.log(bigBlindPosition); // Outputs: 2
-   * ```
-   */
   public getBigBlindPos(): number {
-    return this.__bigBlindPos;
+    if (this.getPlayers().length===2) {
+      return 1;
+    }
+    return 2;
   }
+
 
   /**************************************************************************************************************
    * UPDATE METHODS (MODIFYING EXISTING OBJECTS)
@@ -672,8 +491,18 @@ class PokerPhase extends BaseEventEmitter implements PokerPhaseInterface {
    * Deals two hole cards to each player.
    * @returns {void}
    */
-  deal(): boolean {
-    for (let i = 0; i < 2; i++) {}
+  private __deal(): boolean {
+    // Deal two cards to each player
+    for (let i = 0; i < 2; i++) { // Two rounds of dealing
+      this.getPlayers().forEach((player) => {
+        const card = this.getDeck().draw(); // Draw a card from the deck
+        if (card) {
+          player.addToHand(card); // Add the card to the player's hand
+        } else {
+          throw new Error("Deck is empty before dealing all cards.");
+        }
+      });
+    }
     return true;
   }
 
@@ -683,7 +512,7 @@ class PokerPhase extends BaseEventEmitter implements PokerPhaseInterface {
    * @param {number} count - The number of community cards to deal (3 for the flop, 1 for the turn/river).
    * @returns {boolean}
    */
-  dealCommunityCards(count: number): boolean {
+  private __dealCommunityCards(count: number): boolean {
     for (let index = 0; index < count; index++) {
       let card = this.getDeck().draw();
       card ? this.__communityCards.push(card) : {};
@@ -771,20 +600,42 @@ class PokerPhase extends BaseEventEmitter implements PokerPhaseInterface {
     return (this.__players = players);
   }
 
-  private __setDealerPos(pos: number): boolean {
-    this.__dealerPos = pos;
-    return true;
+  private __initializeBlinds(smallBlind:number,bigBlind:number): void {
+    const smallBlindPos = this.getSmallBlindPos();
+    const bigBlindPos = this.getBigBlindPos();
+    const smallBlindAmount = smallBlind; // Example small blind amount
+    const bigBlindAmount = bigBlind; // Example big blind amount
+  
+    // Deduct small blind from the small blind player
+    const smallBlindPlayer = this.getPlayers()[smallBlindPos];
+    if (smallBlindPlayer) {
+      smallBlindPlayer.bet(smallBlindAmount); // Deduct from player's chips
+      this.__setPot(this.getPot() + smallBlindAmount); // Add to the pot
+    }
+  
+    // Deduct big blind from the big blind player
+    const bigBlindPlayer = this.getPlayers()[bigBlindPos];
+    if (bigBlindPlayer) {
+      bigBlindPlayer.bet(bigBlindAmount); // Deduct from player's chips
+      this.__setPot(this.getPot() + bigBlindAmount); // Add to the pot
+    }
   }
 
-  private __setSmallBlindPos(pos: number): boolean {
-    this.__smallBlindPos = pos;
-    return true;
-  }
+//   private __isPhaseCompleted(): boolean {
+//     const players = this.getPlayers();
+    
+//     // Determine the highest bet in the current round
+//     const highestBet = Math.max(
+//       ...players.map((player) => player.getCurrentBet())
+//     );
 
-  private __setBigBlindPos(pos: number): boolean {
-    this.__bigBlindPos = pos;
-    return true;
-  }
+//     // Check if all active players have either folded or matched the highest bet
+//     const allActionsResolved = players.every((player) => {
+//       return player.isFolded() || player.getCurrentBet() === highestBet ;
+//     });
+
+//     return allActionsResolved;
+// }
 }
 
 export { PokerPhase };

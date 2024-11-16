@@ -29,29 +29,10 @@ interface PokerPhaseConfig {
    */
   players: PokerPlayerInterface[];
 
-  /**
-   * @property {number} pot
-   * The maximum number of players that can be seated at the PokerTable[2-14].
-   */
-  pot?: number;
+  smallBlind: number;
 
-  /**
-   * @property {number} pot
-   * The maximum number of players that can be seated at the PokerTable[2-14].
-   */
-  dealerPos: number;
+  bigBlind: number;
 
-  /**
-   * @property {number} pot
-   * The maximum number of players that can be seated at the PokerTable[2-14].
-   */
-  smallBlindPos: number;
-
-  /**
-   * @property {number} pot
-   * The maximum number of players that can be seated at the PokerTable[2-14].
-   */
-  bigBlindPos: number;
 
   /**
    * @property {number} communityCards

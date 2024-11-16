@@ -40,6 +40,7 @@ enum PokerGameEvents {
    * ```
    */
   INITIALIZED = "PokerGame:Initialized",
+
 }
 
 export { PokerGameEvents };
