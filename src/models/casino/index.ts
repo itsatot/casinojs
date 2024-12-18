@@ -164,6 +164,11 @@ class Casino extends BaseEventEmitter implements CasinoInterface {
    * ```
    */
   public setRooms(rooms: PokerRoomInterface[]): PokerRoomInterface[] {
+    if (!Array.isArray(rooms) || rooms.some((room) => !room)) {
+      throw new Error(
+        "Invalid input: rooms must be a non-empty array of PokerRoomInterface."
+      );
+    }
     return this._setRooms(rooms);
   }
 
@@ -302,6 +307,10 @@ class Casino extends BaseEventEmitter implements CasinoInterface {
    */
   public getRooms(): PokerRoomInterface[] {
     return this.__rooms;
+  }
+
+  public getRoomByName(name: string): PokerRoomInterface | undefined {
+    return this.__rooms.find((room) => room.getName() === name);
   }
 
   /**************************************************************************************************************
@@ -461,49 +470,6 @@ class Casino extends BaseEventEmitter implements CasinoInterface {
   /**************************************************************************************************************
    * WRAPPER METHODS (UTILITY & CONVENIENCE)
    **************************************************************************************************************/
-
-  /**
-   * #### Description
-   * Retrieves the total count of rooms managed by the Casino, enabling easy access to the room quantity.
-   *
-   * #### Implements
-   * `N/A` - This method is unique to the Casino class and does not implement any other methods.
-   *
-   * #### Overrides
-   * `N/A` - This method does not override any superclass or parent methods.
-   *
-   * #### Purpose
-   * The `size` method provides a shortcut to access the number of poker rooms currently managed by the Casino.
-   * This method is useful for quickly obtaining the count of active rooms, which can help in managing or displaying
-   * the Casino's state.
-   *
-   * #### Events
-   * `N/A`
-   *
-   * #### Parameters
-   * `N/A` - This method does not require any input parameters.
-   *
-   * #### Requirements
-   * `N/A`
-   *
-   * #### Returns
-   * - Returns a number representing the current count of poker rooms managed by the Casino.
-   *
-   * #### Usage
-   * Call this method when a quick count of managed rooms is needed, especially for UI updates or managing limits.
-   *
-   * @returns {number} - Returns the current count of poker rooms.
-   *
-   * @example
-   * ```typescript
-   * const casino = new Casino();
-   * const count = casino.size();
-   * console.log(count); // Console Output: 0 if no rooms have been added
-   * ```
-   */
-  public size(): number {
-    return this.roomCount();
-  }
 
   /**
    * #### Description
@@ -703,12 +669,24 @@ class Casino extends BaseEventEmitter implements CasinoInterface {
    * console.log(newRoom.getName()); // Outputs: "Champions Lounge"
    * ```
    */
-  protected _createRoom(
-    config: PokerRoomConfig | undefined
-  ): PokerRoomInterface {
+  protected _createRoom(config: PokerRoomConfig): PokerRoomInterface {
+    // Validate the input config
+    if (!config || typeof config.name !== "string") {
+      throw new Error(
+        "Invalid room configuration: 'name' is required and must be a string."
+      );
+    }
+
+    // Check for duplicate room names
+    if (this.__rooms.some((room) => room.getName() === config.name)) {
+      throw new Error(`A room with the name '${config.name}' already exists.`);
+    }
+
+    // Create and add the new room
     const room = new PokerRoom(config);
     this.__rooms.push(room);
     this.emit(CasinoEvents.ROOM_CREATED, room);
+
     return room;
   }
 
@@ -842,9 +820,13 @@ class Casino extends BaseEventEmitter implements CasinoInterface {
    * ```
    */
   protected _deleteRoom(index: number): PokerRoomInterface[] {
-    if (this.isValidIndex(index)) {
+    try {
+      this.isValidIndex(index);
       this.__rooms.splice(index, 1);
       this.emit(CasinoEvents.ROOM_DELETED, this.getRooms());
+    } catch (error) {
+      const err = error as Error; // Explicitly cast
+      console.error(`Failed to delete room: ${err.message}`);
     }
     return this.getRooms();
   }
