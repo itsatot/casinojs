@@ -1,0 +1,78 @@
+# Method: `getRoomByName`
+
+Retrieves a specific poker room by its name from the list of rooms managed by the Casino.
+
+**🗂️ Table Of Contents**
+- [Method: `getRoomByName`](#method-getroombyname)
+  - [Description](#description)
+      - [Implements](#implements)
+      - [Overrides](#overrides)
+      - [Purpose](#purpose)
+      - [Events](#events)
+      - [Requirements](#requirements)
+  - [Casino - The class this method belongs to.](#casino---the-class-this-method-belongs-to)
+  - [Parameters](#parameters)
+  - [Returns](#returns)
+  - [Throws](#throws)
+  - [Usage](#usage)
+  - [Examples](#examples)
+    - [Basic Example:](#basic-example)
+
+## Description
+
+#### Implements
+Implements the `getRoomByName` method of `CasinoInterface`.
+
+#### Overrides
+`N/A`
+
+#### Purpose
+Provides a way to retrieve a specific `PokerRoom` by its unique name. This is useful for scenarios where rooms are accessed by their identifiers instead of their index.
+
+#### Events
+- `N/A`
+
+#### Requirements
+- The `name` parameter must match the name of an existing room.
+
+---
+
+## Casino - The class this method belongs to.
+
+---
+
+## Parameters
+| Parameter Name | Type     | Default Value | Description                                |
+|----------------|----------|---------------|--------------------------------------------|
+| `name`         | `string` | `N/A`         | The unique name of the room to retrieve.   |
+
+---
+
+## Returns
+| Type                  | Description                                |
+|-----------------------|--------------------------------------------|
+| `PokerRoomInterface`  | The `PokerRoom` with the specified name.   |
+| `undefined`           | Returns `undefined` if no room with the specified name exists. |
+
+---
+
+## Throws
+| Error Type    | Description                                |
+|---------------|--------------------------------------------|
+| `None`        | This method does not throw exceptions.    |
+
+---
+
+## Usage
+This method retrieves a room by its name. If no room matches the specified name, it returns `undefined`.
+
+---
+
+## Examples
+### Basic Example:
+```typescript
+const casino = new Casino();
+casino.createRoom({ name: "Room1", tableSize: 6, smallBlind: 10, bigBlind: 20 });
+const room = casino.getRoomByName("Room1");
+console.log(room); // Outputs the details of "Room1"
+```

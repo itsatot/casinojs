@@ -216,6 +216,8 @@ interface CasinoInterface extends BaseEventEmitterInterface {
    */
   getRooms(): PokerRoomInterface[];
 
+  getRoomByName(name: string): PokerRoomInterface | undefined;
+
   /**************************************************************************************************************
    * UPDATE METHODS (MODIFYING EXISTING OBJECTS)
    **************************************************************************************************************/

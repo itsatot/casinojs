@@ -1,0 +1,75 @@
+# Method: `roomCount`
+
+Returns the total number of poker rooms currently managed by the Casino.
+
+**🗂️ Table Of Contents**
+- [Method: `roomCount`](#method-roomcount)
+  - [Description](#description)
+      - [Implements](#implements)
+      - [Overrides](#overrides)
+      - [Purpose](#purpose)
+      - [Events](#events)
+      - [Requirements](#requirements)
+  - [Casino - The class this method belongs to.](#casino---the-class-this-method-belongs-to)
+  - [Parameters](#parameters)
+  - [Returns](#returns)
+  - [Throws](#throws)
+  - [Usage](#usage)
+  - [Examples](#examples)
+    - [Basic Example:](#basic-example)
+
+## Description
+
+#### Implements
+Implements the `roomCount` method of `CasinoInterface`.
+
+#### Overrides
+`N/A`
+
+#### Purpose
+Provides a quick and reliable way to retrieve the number of active poker rooms managed by the Casino. This is useful for reporting, UI updates, and validation operations.
+
+#### Events
+- `N/A`
+
+#### Requirements
+- No specific requirements; the method calculates and returns the total count of rooms.
+
+---
+
+## Casino - The class this method belongs to.
+
+---
+
+## Parameters
+`None`
+
+---
+
+## Returns
+| Type     | Description                                |
+|----------|--------------------------------------------|
+| `number` | The total count of poker rooms managed by the Casino.|
+
+---
+
+## Throws
+| Error Type | Description                                |
+|------------|--------------------------------------------|
+| `None`     | This method does not throw exceptions.    |
+
+---
+
+## Usage
+Retrieves the total number of rooms currently managed by the Casino.
+
+---
+
+## Examples
+### Basic Example:
+```typescript
+const casino = new Casino();
+casino.createRoom({ name: "Room1", tableSize: 6, smallBlind: 10, bigBlind: 20 });
+casino.createRoom({ name: "Room2", tableSize: 8, smallBlind: 15, bigBlind: 30 });
+console.log(casino.roomCount()); // Output: 2
+```

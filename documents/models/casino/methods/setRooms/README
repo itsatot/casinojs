@@ -1,0 +1,81 @@
+# Method: `setRooms`
+
+Sets the list of rooms managed by the Casino. This method is typically used to replace or update the entire list of poker rooms in the casino.
+
+**🗂️ Table Of Contents**
+- [Method: `setRooms`](#method-setrooms)
+      - [Implements](#implements)
+      - [Overrides](#overrides)
+      - [Purpose](#purpose)
+      - [Events](#events)
+      - [Requirements](#requirements)
+  - [Casino - The class this method belongs to.](#casino---the-class-this-method-belongs-to)
+  - [Parameters](#parameters)
+  - [Returns](#returns)
+  - [Throws](#throws)
+  - [Usage](#usage)
+  - [Examples](#examples)
+    - [Basic Example:](#basic-example)
+    - 
+## Description
+
+#### Implements
+Implements the `setRooms` method of `CasinoInterface`.
+
+#### Overrides
+`N/A`
+
+#### Purpose
+Provides a way to update the current list of rooms managed by the Casino, ensuring a consistent and up-to-date
+list of poker rooms as defined by the casino’s configuration.
+
+#### Events
+- `N/A`: No `event` is emitted by this method.
+
+
+#### Requirements
+- The `rooms` array must contain at least one room (i.e., `rooms.length >= 1`).
+
+
+## Casino - The class this method belongs to.
+
+---
+
+## Parameters
+| Parameter Name | Type                  | Default Value | Description                                |
+|----------------|-----------------------|---------------|--------------------------------------------|
+| `rooms`        | `PokerRoomInterface[]`| `[]`          | A non-empty array of poker rooms to manage. An array of `PokerRoomInterface` instances, representing individual poker rooms in the Casino.|
+
+---
+
+## Returns
+| Type                  | Description                                |
+|-----------------------|--------------------------------------------|
+| `PokerRoomInterface[]`| Returns the updated list of poker rooms when the rooms have been successfully set.            |
+
+---
+
+## Throws
+| Error Type    | Description                                |
+|---------------|--------------------------------------------|
+| `Error`       | If the `rooms` array is empty or contains invalid values.|
+
+---
+
+## Usage
+This method accepts an array of `PokerRoomInterface` objects, representing poker rooms to manage in the casino.
+- Replaces any existing rooms with the new provided list.
+- Calls the internal `_setRooms` method to update the private `__rooms` property securely.
+
+---
+
+## Examples
+### Basic Example:
+```typescript
+const casino = new Casino();
+const rooms = [
+  new PokerRoom({ name: "Room1", tableSize: 6, smallBlind: 10, bigBlind: 20 }),
+];
+const updatedRooms = casino.setRooms(rooms);
+console.log(updatedRooms);
+```

@@ -50,23 +50,23 @@ Represents a Casino environment that manages multiple poker rooms (`PokerRooms`)
 ## Methods
 | Method Name                              | Description                            |
 |------------------------------------------|----------------------------------------|
-| [`setRooms`](./methods/setRooms.md)       | Sets the list of poker rooms managed by the Casino. |
-| [`createRoom`](./methods/createRoom.md)   | Creates a new `PokerRoom` and adds it to the Casino. |
-| [`getRoom`](./methods/getRoom.md)         | Retrieves a specific `PokerRoom` by its index. |
-| [`getRooms`](./methods/getRooms.md)       | Retrieves the list of all rooms managed by the Casino. |
-| [`getRoomByName`](./methods/getRoomByName.md) | Retrieves a room by its name. |
-| [`addRoom`](./methods/addRoom.md)         | Adds a single `PokerRoom` to the Casino. |
-| [`addRooms`](./methods/addRooms.md)       | Adds multiple poker rooms to the Casino. |
-| [`deleteRoom`](./methods/deleteRoom.md)   | Removes a `PokerRoom` from the Casino's list by its index. |
-| [`roomCount`](./methods/roomCount.md)     | Returns the total number of rooms managed by the Casino. |
-| [`isValidIndex`](./methods/isValidIndex.md)| Checks if a given index is valid for room operations. |
+| [`setRooms`](./methods/setRooms/README)       | Sets the list of poker rooms managed by the Casino. |
+| [`createRoom`](./methods/createRoom/README)   | Creates a new `PokerRoom` and adds it to the Casino. |
+| [`getRoom`](./methods/getRoom/README)         | Retrieves a specific `PokerRoom` by its index. |
+| [`getRooms`](./methods/getRooms/README)       | Retrieves the list of all rooms managed by the Casino. |
+| [`getRoomByName`](./methods/getRoomByName/README) | Retrieves a room by its name. |
+| [`addRoom`](./methods/addRoom/README)         | Adds a single `PokerRoom` to the Casino. |
+| [`addRooms`](./methods/addRooms/README)       | Adds multiple poker rooms to the Casino. |
+| [`deleteRoom`](./methods/deleteRoom/README)   | Removes a `PokerRoom` from the Casino's list by its index. |
+| [`roomCount`](./methods/roomCount/README)     | Returns the total number of rooms managed by the Casino. |
+| [`isValidIndex`](./methods/isValidIndex/README)| Checks if a given index is valid for room operations. |
 
 ---
 
 ## Properties
 | Property Name                              | Type        | Description             |
 |--------------------------------------------|-------------|-------------------------|
-| [`__rooms`](./properties/__rooms.md)       | `PokerRoomInterface[]` | A private array holding all `PokerRoom` instances. |
+| [`__rooms`](./properties/__rooms/README)       | `PokerRoomInterface[]` | A private array holding all `PokerRoom` instances. |
 
 ---
 

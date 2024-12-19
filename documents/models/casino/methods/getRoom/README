@@ -1,0 +1,78 @@
+# Method: `getRoom`
+
+Retrieves a specific poker room by its position (index) within the Casino’s list of rooms.
+
+**🗂️ Table Of Contents**
+- [Method: `getRoom`](#method-getroom)
+  - [Description](#description)
+      - [Implements](#implements)
+      - [Overrides](#overrides)
+      - [Purpose](#purpose)
+      - [Events](#events)
+      - [Requirements](#requirements)
+  - [Casino - The class this method belongs to.](#casino---the-class-this-method-belongs-to)
+  - [Parameters](#parameters)
+  - [Returns](#returns)
+  - [Throws](#throws)
+  - [Usage](#usage)
+  - [Examples](#examples)
+    - [Basic Example:](#basic-example)
+
+## Description
+
+#### Implements
+Implements the `getRoom` method of `CasinoInterface`.
+
+#### Overrides
+`N/A`
+
+#### Purpose
+Allows direct access to a specific `PokerRoom` by its zero-based index. Useful for targeted operations or when sequentially processing rooms.
+
+#### Events
+- `N/A`
+
+#### Requirements
+- The index must be within the bounds of the `__rooms` array (i.e., `0 <= index < __rooms.length`).
+
+---
+
+## Casino - The class this method belongs to.
+
+---
+
+## Parameters
+| Parameter Name | Type     | Default Value | Description                                |
+|----------------|----------|---------------|--------------------------------------------|
+| `index`        | `number` | `N/A`         | The zero-based index representing the position of the desired room.|
+
+---
+
+## Returns
+| Type                  | Description                                |
+|-----------------------|--------------------------------------------|
+| `PokerRoomInterface`  | Returns the `PokerRoom` at the specified index. |
+| `undefined`           | Returns `undefined` if the index is out of bounds.|
+
+---
+
+## Throws
+| Error Type    | Description                                |
+|---------------|--------------------------------------------|
+| `None`        | This method does not throw exceptions.    |
+
+---
+
+## Usage
+Use this method to retrieve a specific poker room by its index in the Casino’s list of managed rooms. This can be helpful for room-specific operations or validations.
+
+---
+
+## Examples
+### Basic Example:
+```typescript
+const casino = new Casino();
+casino.createRoom({ name: "Room1", tableSize: 6, smallBlind: 10, bigBlind: 20 });
+const room = casino.getRoom(0);
+console.log(room); // Outputs the details of "Room1"
+```

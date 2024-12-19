@@ -119,49 +119,13 @@ class Casino extends BaseEventEmitter implements CasinoInterface {
    **************************************************************************************************************/
 
   /**
-   * #### Description
-   * Sets the list of rooms managed by the Casino. This method is typically used to replace or update
-   * the entire list of poker rooms in the casino.
+   * Creates a new `PokerRoom` within the Casino and adds it to the list of rooms.
    *
-   * #### Implements
-   * Implements the `setRooms` method of `CasinoInterface`.
+   * Full method documentation:
+   * [createRoom Documentation](./docs/methods/createRoom.md)
    *
-   * #### Overrides
-   * `N/A`
-   *
-   * #### Purpose
-   * Provides a way to update the current list of rooms managed by the Casino, ensuring a consistent and up-to-date
-   * list of poker rooms as defined by the casino’s configuration.
-   *
-   * #### Events
-   * - `N/A`: No `event` is emitted by this method.
-   *
-   * #### Parameters
-   * - `rooms`: An array of `PokerRoomInterface` instances, representing individual poker rooms in the Casino.
-   *
-   * #### Requirements
-   * - The `rooms` array must contain at least one room (i.e., `rooms.length >= 1`).
-   *
-   * #### Returns
-   * - Returns `true` when the rooms have been successfully set.
-   *
-   * #### Usage
-   * This method accepts an array of `PokerRoomInterface` objects, representing poker rooms to manage in the casino.
-   * - Replaces any existing rooms with the new provided list.
-   * - Calls the internal `_setRooms` method to update the private `__rooms` property securely.
-   *
-   * @param {PokerRoomInterface[]} rooms - The new list of poker rooms to be managed by the Casino.
-   * @returns {boolean} - Returns `true` when the rooms have been successfully set.
-   *
-   * @example
-   * ```typescript
-   * const casino = new Casino();
-   * const rooms: PokerRoomInterface[] = [
-   *   new PokerRoom({ name: "Room1", tableSize: 6, smallBlind: 10, bigBlind: 20 })
-   * ];
-   * casino.setRooms(rooms);
-   * console.log(casino.getRooms()); // Logs an array with the newly set rooms
-   * ```
+   * @param {PokerRoomConfig} config - A configuration object with properties like the room name, table size, small blind, and big blind values.
+   * @returns {PokerRoomInterface} - Returns the newly created `PokerRoom` instance.
    */
   public setRooms(rooms: PokerRoomInterface[]): PokerRoomInterface[] {
     if (!Array.isArray(rooms) || rooms.some((room) => !room)) {
@@ -173,45 +137,13 @@ class Casino extends BaseEventEmitter implements CasinoInterface {
   }
 
   /**
-   * #### Description
    * Creates a new `PokerRoom` within the Casino and adds it to the list of rooms.
-   *
-   * #### Implements
-   * Implements the `createRoom` method of `CasinoInterface`.
-   *
-   * #### Overrides
-   * `N/A`
-   *
-   * #### Purpose
-   * Enables the dynamic creation and addition of a `PokerRoom` to the Casino, expanding the Casino’s managed rooms as required.
-   * This facilitates flexible game setup and room management in response to user needs.
-   *
-   * #### Events
-   * - `casino:roomCreated`: This custom event is emitted once the room is successfully added.
-   *   Listeners to this event can respond with actions, such as logging or notifying users.
-   *
-   * #### Parameters
-   * - `config`: A configuration object containing details like the room’s name, table size, small blind, and big blind values.
-   *
-   * #### Requirements
-   * - The configuration object must include valid values for `name`, `tableSize`, `smallBlind`, and `bigBlind`.
-   *
-   * #### Returns
-   * - Returns the newly created `PokerRoom` instance, confirming its addition to the Casino.
-   *
-   * #### Usage
-   * This method creates a new room based on the provided configuration, then pushes it into the Casino’s room list.
-   * After adding the room, it emits a `casino:roomCreated` event for any listeners tracking room creation.
+   *[createRoom Documentation](./documents/models/casino/methods/createRoom/README.md)
+   * Full method documentation:
+   * [createRoom Documentation]{@link ./documents/models/casino/methods/createRoom/README.md}
    *
    * @param {PokerRoomConfig} config - A configuration object with properties like the room name, table size, small blind, and big blind values.
    * @returns {PokerRoomInterface} - Returns the newly created `PokerRoom` instance.
-   *
-   * @example
-   * ```typescript
-   * const casino = new Casino();
-   * const room = casino.createRoom({ name: "HighRollers", tableSize: 6, smallBlind: 10, bigBlind: 20 });
-   * console.log(casino.getRooms()); // Logs the new room within the array of rooms
-   * ```
    */
   public createRoom(config: PokerRoomConfig): PokerRoomInterface {
     return this._createRoom(config);
