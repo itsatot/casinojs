@@ -1,4 +1,4 @@
-//@collapse
+//collapse
 
 // Import Vendor Modules
 import { promises as fsPromises, existsSync, mkdirSync } from "fs";
@@ -11,11 +11,11 @@ import { LogLevel } from "../../enums";
 import { LoggerConfig, LoggerInterface } from "../../interfaces";
 
 // Resolve the app's package.json dynamically from the current working directory
-const appPackageJson = require(path.resolve(process.cwd(), "package.json"));
+// const appPackageJson = require(path.resolve(process.cwd(), "package.json"));
 
 // Resolve the library's package.json dynamically from `node_modules`
-const libraryPackageJsonPath = require.resolve("casinojs/package.json");
-const libraryPackageJson = require(libraryPackageJsonPath);
+// const libraryPackageJsonPath = require.resolve("casinojs/package.json");
+// const libraryPackageJson = require(libraryPackageJsonPath);
 
 /**
  * @class `Logger`
@@ -98,7 +98,7 @@ class Logger implements LoggerInterface {
    * console.log(enableConsoleLogging); // Output: true
    * ```
    */
-  private __appName: string = appPackageJson.name;
+  // private __appName: string = appPackageJson.name;
 
   /**
    * @property {boolean} __consoleLogging
@@ -161,7 +161,7 @@ class Logger implements LoggerInterface {
    * console.log(enableConsoleLogging); // Output: true
    * ```
    */
-  private __libraryName: string = libraryPackageJson.name || `casinojs`;
+  // private __libraryName: string = libraryPackageJson.name || `casinojs`;
 
   /**
    * @property {string} __logsDirPath
@@ -586,9 +586,9 @@ class Logger implements LoggerInterface {
     data?: Record<string, any>
   ): Promise<void> {
     const timestamp = new Date().toISOString();
-    const formattedMessage = `[${this.__appName}-${
+    const formattedMessage = /*[${this.__appName}-${
       this.__libraryName
-    }] [${level.toUpperCase()}] [${timestamp}] ${message}`;
+    }]*/ `[${level.toUpperCase()}] [${timestamp}] ${message}`;
     const fullLogMessage = data
       ? `${formattedMessage} - ${JSON.stringify(data)}`
       : formattedMessage;

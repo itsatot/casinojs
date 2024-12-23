@@ -4,40 +4,14 @@
 import { LoggerConfig } from "../../interfaces";
 
 // Import Models
-import { Logger } from "../../models";
+import { Logger } from "../../models/logger";
 
-/**
- * @function `singletonLogger`
- *
- * Provides a singleton instance of the `Logger` class with the specified configuration. If an instance already exists,
- * it returns the existing one; otherwise, it creates a new instance.
- *
- * #### Purpose
- * The `singletonLogger` function ensures that there is only one `Logger` instance across the application, enforcing centralized
- * logging configuration and access.
- *
- * #### Parameters
- * - `config?: LoggerConfig` - An optional configuration object for the logger. If provided, it sets properties such as the log
- *   directory path and console logging behavior.
- *
- * #### Returns
- * - `Logger` - Returns the singleton instance of the `Logger` class.
- *
- * #### Usage
- * This function can be used to initialize or access the single instance of the `Logger` class in any part of the application,
- * enabling consistent logging.
- *
- * @param {LoggerConfig} [config] - Optional configuration for initializing the logger instance.
- * @returns {Logger} - The singleton instance of `Logger`.
- *
- * @example
- * ```typescript
- * import { singletonLogger } from "./path/to/utils/logger";
- *
- * const logger = singletonLogger({ logsDirPath: "./logs", consoleLoggingEnabled: true });
- * ```
- */
+console.log("Logger:", Logger);
+
 function singletonLogger(config?: LoggerConfig): Logger {
+  if (!Logger) {
+    throw new Error("Logger is undefined");
+  }
   return Logger.getInstance(config);
 }
 

@@ -1,6 +1,6 @@
 //@collapse
 
-import { Suit } from "../../../src/enums/suit";
+import { Suit } from "../../../src/enums";
 
 /**
  * @file `index.test.ts`
@@ -55,7 +55,9 @@ describe("Suit Enum", () => {
    */
   it("should not allow invalid or undefined suits", () => {
     // Ensure that the `Suit` enum does not include invalid values.
+    // @ts-ignore
     expect(Suit["InvalidSuit"]).toBeUndefined();
+    // @ts-ignore
     expect(Suit["Unknown"]).toBeUndefined();
   });
 });

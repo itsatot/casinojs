@@ -1,7 +1,7 @@
 //collapse
 
 // Import Enums
-import { PokerGameEvents, PokerPhases , Source } from "../../enums";
+import { PokerGameEvents, PokerPhases, Source } from "../../enums";
 
 // Import Interfaces
 import {
@@ -95,27 +95,29 @@ class PokerGame extends BaseEventEmitter implements PokerGameInterface {
    */
   private __init(config?: PokerGameConfig): void {
     if (config) {
-      config.id ? this.__setId(config.id): this.__setId(generateUniqueId());
+      config.id ? this.__setId(config.id) : this.__setId(generateUniqueId());
       this.__setDeck(new Deck());
-      config.players ? this.__setPlayers(config.players) : this.__setPlayers(this.getPlayers());
+      config.players
+        ? this.__setPlayers(config.players)
+        : this.__setPlayers(this.getPlayers());
       this.__setPhases(this.__phases);
       this.__currentPhase = new PokerPhase({
         name: PokerPhases.PRE_FLOP,
         deck: this.getDeck(),
         players: this.getPlayers(),
-        smallBlind:config.smallBlind?config.smallBlind:1,
-        bigBlind:config.bigBlind?config.bigBlind:2,
+        smallBlind: config.smallBlind ? config.smallBlind : 1,
+        bigBlind: config.bigBlind ? config.bigBlind : 2,
       });
       // this.__validatePlayerList();
 
       // Emit `INITIALIZED` event after initialization
-    this.emitEvent(PokerGameEvents.INITIALIZED, {
-      event: {
-        source: Source.POKER_GAME,
-        data: { gameId: this.getId() },
-      },
-      middlewares: [],
-    });
+      this.emitEvent(PokerGameEvents.INITIALIZED, {
+        event: {
+          source: Source.POKER_GAME,
+          data: { gameId: this.getId() },
+        },
+        middlewares: [],
+      });
     } else {
     }
   }
@@ -162,14 +164,14 @@ class PokerGame extends BaseEventEmitter implements PokerGameInterface {
    * @returns {void}
    */
 
-  
   private __newPhase(): void {
-    const nextPhaseIndex = this.__phases.findIndex(phase => phase === this.__currentPhase) + 1;
+    const nextPhaseIndex =
+      this.__phases.findIndex((phase) => phase === this.__currentPhase) + 1;
     if (nextPhaseIndex >= this.__phases.length) {
-        return;
+      return;
     }
     this.__currentPhase = this.__phases[nextPhaseIndex];
-}
+  }
 
   /**
    * `resolveBets`
@@ -196,14 +198,14 @@ class PokerGame extends BaseEventEmitter implements PokerGameInterface {
   /**************************************************************************************************************
    * INTERNAL METHODS (PRIVATE)
    **************************************************************************************************************/
-  
+
   private __setId(id: string): string {
     this.__id = id;
     return this.__id;
   }
 
   private __setPot(pot: number): number {
-    this.__pot = pot
+    this.__pot = pot;
     return this.__pot;
   }
 
@@ -215,18 +217,14 @@ class PokerGame extends BaseEventEmitter implements PokerGameInterface {
   }
 
   private __setDeck(deck: DeckInterface): DeckInterface {
-    this.__deck = deck
+    this.__deck = deck;
     return this.__deck;
   }
 
   private __setPhases(phases: PokerPhaseInterface[]): PokerPhaseInterface[] {
-    this.__phases = phases
+    this.__phases = phases;
     return this.__phases;
   }
-
-
-
-
 }
 
 export { PokerGame };

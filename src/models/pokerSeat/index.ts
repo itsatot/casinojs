@@ -166,7 +166,7 @@ class PokerSeat extends BaseEventEmitter implements PokerSeatInterface {
    */
   private __player: PokerPlayerInterface | undefined = undefined;
 
-  private __roles! : string[]  ;
+  private __roles!: string[];
 
   /**************************************************************************************************************
    * CONSTRUCTOR & INITIALIZERS
@@ -540,7 +540,7 @@ class PokerSeat extends BaseEventEmitter implements PokerSeatInterface {
     return this.__player;
   }
 
-   /**
+  /**
    * #### Description
    * The `getPlayer` method is a public getter that retrieves the player occupying this seat, if any.
    *
@@ -580,7 +580,7 @@ class PokerSeat extends BaseEventEmitter implements PokerSeatInterface {
    * // Console Output: <PlayerInstance>
    * ```
    */
-   public getRoles(): string[] {
+  public getRoles(): string[] {
     return this.__roles;
   }
 
@@ -624,7 +624,7 @@ class PokerSeat extends BaseEventEmitter implements PokerSeatInterface {
    * // Console Output: <PlayerInstance>
    * ```
    */
-  public addRole(role:string): string[] {
+  public addRole(role: string): string[] {
     return this.__addRole(role);
   }
 
@@ -935,9 +935,7 @@ class PokerSeat extends BaseEventEmitter implements PokerSeatInterface {
    * // Console Output: <PlayerInstance>
    * ```
    */
-  private __setRoles(
-    role: string[]
-  ): string[]{
+  private __setRoles(role: string[]): string[] {
     this.__roles = role;
     return this.__roles;
   }

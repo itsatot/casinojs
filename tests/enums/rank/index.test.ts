@@ -1,6 +1,6 @@
 //@collapse
 
-import { Rank } from "../../../src/enums/rank";
+import { Rank } from "../../../src/enums";
 
 /**
  * @file `index.test.ts`

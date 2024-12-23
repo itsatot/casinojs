@@ -1,7 +1,14 @@
-//@collapse
+//collapse
 
 import { Card } from "../../../src/models";
 import { Rank, Suit } from "../../../src/enums";
+import { Logger } from "../../../src/models";
+
+
+const logger = Logger.getInstance();
+// logger.log("Test message");
+console.log(logger);
+
 
 /**
  * @file `card.test.ts`
