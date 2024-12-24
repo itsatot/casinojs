@@ -1,4 +1,4 @@
-//@collapse
+//collapse
 
 // Import Enums
 import { CasinoEvents, Source } from "../../enums";
@@ -19,31 +19,7 @@ import { PokerRoom } from "../pokerRoom";
  * Represents a Casino environment that manages multiple poker rooms (`PokerRooms`).
  * This class handles operations related to room creation, listing, removal, and searching.
  *
- * #### Purpose
- * A Casino serves as a central hub for organizing poker games by managing rooms.
- * Each room can accommodate players and maintain its own game state.
- *
- * #### Extends
- * Additionally, it extends the Node.js `BaseEventEmitter` to emit events when specific actions
- * occur, such as creating or removing a room.
- *
- * #### Implements
- * This class implements the `CasinoInterface` and inherits from the `BaseEventEmitter` class,
- * allowing it to emit events and conform to the defined interface structure for consistency
- * and predictability.
- *
- * #### Events
- * The `Casino` class emits custom events to signal room-related actions. For instance,
- * when a room is created, an event `casino:roomCreated` is emitted, making it easy
- * to handle notifications or updates related to the Casino’s operations.
- *
- * @example
- * ```typescript
- * const casino = new Casino();
- * casino.on('casino:roomCreated', (room) => console.log(`Room created: ${room.name}`));
- * const room = casino.createRoom({ name: "Room1", tableSize: 6, smallBlind: 10, bigBlind: 20 });
- * console.log(room); // Logs details of "Room1"
- * ```
+ * Full method documentation: [Casino Documentation](../../documents/models/casino//README)
  */
 class Casino extends BaseEventEmitter implements CasinoInterface {
   /**************************************************************************************************************
@@ -119,13 +95,11 @@ class Casino extends BaseEventEmitter implements CasinoInterface {
    **************************************************************************************************************/
 
   /**
-   * Creates a new `PokerRoom` within the Casino and adds it to the list of rooms.
+   * Sets the complete list of `PokerRoom` instances managed by the Casino.
+   * Full method documentation: [setRooms Documentation](../../documents/models/casino/methods/setRooms/README)
    *
-   * Full method documentation:
-   * [createRoom Documentation](./docs/methods/createRoom.md)
-   *
-   * @param {PokerRoomConfig} config - A configuration object with properties like the room name, table size, small blind, and big blind values.
-   * @returns {PokerRoomInterface} - Returns the newly created `PokerRoom` instance.
+   * @param {PokerRoomInterface[]} rooms - An array of `PokerRoom` instances to set as the Casino's room list.
+   * @returns {PokerRoomInterface[]} - Returns the updated list of rooms.
    */
   public setRooms(rooms: PokerRoomInterface[]): PokerRoomInterface[] {
     if (!Array.isArray(rooms) || rooms.some((room) => !room)) {
@@ -138,9 +112,8 @@ class Casino extends BaseEventEmitter implements CasinoInterface {
 
   /**
    * Creates a new `PokerRoom` within the Casino and adds it to the list of rooms.
-   *[createRoom Documentation](./documents/models/casino/methods/createRoom/README.md)
-   * Full method documentation:
-   * [createRoom Documentation]{@link ./documents/models/casino/methods/createRoom/README.md}
+   * Full method documentation: [createRoom Documentation](../../documents/models/casino/methods/createRoom/README)
+   *
    *
    * @param {PokerRoomConfig} config - A configuration object with properties like the room name, table size, small blind, and big blind values.
    * @returns {PokerRoomInterface} - Returns the newly created `PokerRoom` instance.
@@ -154,93 +127,33 @@ class Casino extends BaseEventEmitter implements CasinoInterface {
    **************************************************************************************************************/
 
   /**
-   * #### Description
-   * Retrieves a specific `PokerRoom` based on its position within the Casino’s list of rooms.
+   * Retrieves a specific `PokerRoom` by its index.
+   * Full method documentation: [getRoom Documentation](../../documents/models/casino/methods/getRoom/README)
    *
-   * #### Implements
-   * `N/A`
-   *
-   * #### Overrides
-   * `N/A`
-   *
-   * #### Purpose
-   * This method provides direct access to a single `PokerRoom` by index, allowing for targeted retrieval of rooms,
-   * which can be useful for room-specific operations or when sequentially processing rooms.
-   *
-   * #### Events
-   * `N/A`
-   *
-   * #### Parameters
-   * - `index`: A zero-based index representing the position of the desired `PokerRoom` in the Casino’s room list.
-   *
-   * #### Requirements
-   * - The index provided must be within the bounds of the `__rooms` array (i.e., `0 <= index < __rooms.length`).
-   * - Passing an out-of-bounds index will result in an `undefined` return.
-   *
-   * #### Returns
-   * - Returns the `PokerRoomInterface` instance located at the specified index.
-   * - Returns `undefined` if the provided index is out of bounds.
-   *
-   * #### Usage
-   * Use this method when you need to access a particular room directly by its index in the Casino’s list of rooms.
-   * This can be useful in looped operations or when accessing rooms based on their position in the list.
-   *
-   * @param {number} index - The zero-based index of the desired room in the Casino’s room list.
-   * @returns {PokerRoomInterface | undefined} - The `PokerRoom` at the specified index or `undefined` if the index is out of bounds.
-   *
-   * @example
-   * ```typescript
-   * const casino = new Casino();
-   * const room = casino.getRoom(0); // Returns the first room or undefined if no rooms exist
-   * ```
+   * @param {number} index - The index of the room to retrieve.
+   * @returns {PokerRoomInterface} - The `PokerRoom` instance at the specified index.
    */
   public getRoom(index: number): PokerRoomInterface {
     return this.__rooms[index];
   }
 
   /**
-   * #### Description
-   * Retrieves the full list of rooms currently managed by the Casino.
+   * Retrieves all the `PokerRoom` instances managed by the Casino.
+   * Full method documentation: [getRooms Documentation](../../documents/models/casino/methods/getRooms/README)
    *
-   * #### Implements
-   * Implements the `getRooms` method of `CasinoInterface`.
-   *
-   * #### Overrides
-   * `N/A`
-   *
-   * #### Purpose
-   * Provides access to the Casino's list of rooms, allowing external components or systems to retrieve and display
-   * information on all currently managed poker rooms.
-   *
-   * #### Events
-   * `N/A`
-   *
-   * #### Parameters
-   * `N/A`
-   *
-   * #### Requirements
-   * `N/A`
-   *
-   * #### Returns
-   * - Returns an array containing all `PokerRoomInterface` instances currently managed by the Casino.
-   * - Returns an empty array if no rooms have been added to the Casino.
-   *
-   * #### Usage
-   * This method is useful when a complete list of active rooms is needed, such as when displaying the Casino's
-   * available games or managing room states.
-   *
-   * @returns {PokerRoomInterface[]} - An array of all `PokerRoom` objects in the Casino.
-   *
-   * @example
-   * ```typescript
-   * const casino = new Casino();
-   * console.log(casino.getRooms()); // Output: []
-   * ```
+   * @returns {PokerRoomInterface[]} - An array of all `PokerRoom` instances.
    */
   public getRooms(): PokerRoomInterface[] {
     return this.__rooms;
   }
 
+  /**
+   * Retrieves a `PokerRoom` by its name.
+   * Full method documentation: [getRoomByName Documentation](../../documents/models/casino/methods/getRoomByName/README)
+   *
+   * @param {string} name - The name of the room to find.
+   * @returns {PokerRoomInterface | undefined} - The `PokerRoom` instance or `undefined` if not found.
+   */
   public getRoomByName(name: string): PokerRoomInterface | undefined {
     return this.__rooms.find((room) => room.getName() === name);
   }
@@ -250,95 +163,22 @@ class Casino extends BaseEventEmitter implements CasinoInterface {
    **************************************************************************************************************/
 
   /**
-   * #### Description
-   * Adds a new `PokerRoom` instance to the Casino's list of managed rooms, enabling dynamic expansion
-   * of rooms within the Casino environment.
-   *
-   * #### Implements
-   * `N/A`
-   *
-   * #### Overrides
-   * `N/A`
-   *
-   * #### Purpose
-   * This method provides a flexible mechanism for expanding the Casino's room offerings by allowing new
-   * rooms to be added as required, thereby supporting various gaming scenarios and player demand.
-   *
-   * #### Events
-   * `N/A`
-   *
-   * #### Parameters
-   * - `room` - A `PokerRoomInterface` instance representing the room to be added to the Casino’s list.
-   *
-   * #### Requirements
-   * - The `room` parameter must be a valid instance implementing `PokerRoomInterface`.
-   *
-   * #### Returns
-   * - Returns `true` to confirm that the room has been successfully added to the Casino.
-   *
-   * #### Usage
-   * Typically used in scenarios where the Casino environment needs to expand by adding more gaming rooms.
+   * Adds a single `PokerRoom` to the Casino's list of rooms.
+   * Full method documentation: [addRoom Documentation](../../documents/models/casino/methods/addRoom/README)
    *
    * @param {PokerRoomInterface} room - The `PokerRoom` instance to add.
-   * @returns {boolean} - Returns `true` when the room has been added successfully.
-   *
-   * @example
-   * ```typescript
-   * const casino = new Casino();
-   * const room = new PokerRoom({ name: "HighRollers", tableSize: 6, smallBlind: 10, bigBlind: 20 });
-   * const success = casino.addRoom(room);
-   * console.log(success); // true
-   * ```
+   * @returns {PokerRoomInterface[]} - The updated list of rooms.
    */
   public addRoom(room: PokerRoomInterface): PokerRoomInterface[] {
     return this._addRoom(room);
   }
 
   /**
-   * #### Description
-   * Adds multiple `PokerRoom` instances to the Casino's list of managed rooms in a single operation, enabling
-   * efficient and scalable room management.
+   * Adds multiple `PokerRoom` instances to the Casino's list of rooms.
+   * Full method documentation: [addRooms Documentation](../../documents/models/casino/methods/addRooms/README)
    *
-   * #### Implements
-   * `N/A`
-   *
-   * #### Overrides
-   * `N/A`
-   *
-   * #### Purpose
-   * This method provides a convenient way to add several rooms at once, allowing the Casino's environment to
-   * scale in response to gaming demand or operational changes.
-   *
-   * #### Events
-   * `N/A`
-   *
-   * #### Parameters
-   * - `rooms`: An array of `PokerRoomInterface` instances representing the rooms to be added to the Casino.
-   *
-   * #### Requirements
-   * - Each element in the `rooms` array must be a valid `PokerRoomInterface` instance.
-   * - The array should contain at least one room.
-   *
-   * #### Returns
-   * - Returns `true` when all rooms have been added successfully.
-   *
-   * #### Usage
-   * Typically used in scenarios where multiple rooms need to be added to the Casino simultaneously, such as
-   * during batch operations or initial setup.
-   *
-   * @param {PokerRoomInterface[]} rooms - Array of `PokerRoomInterface` instances to add.
-   * @returns {boolean} - Returns `true` when all rooms have been successfully added.
-   *
-   * @example
-   * ```typescript
-   * const casino = new Casino();
-   * const rooms = [
-   *   new PokerRoom({ name: "Room1", tableSize: 5, smallBlind: 5, bigBlind: 10 }),
-   *   new PokerRoom({ name: "Room2", tableSize: 6, smallBlind: 10, bigBlind: 20 })
-   * ];
-   * const success = casino.addRooms(rooms);
-   * console.log(success); // true if both rooms were added successfully
-   * ```
+   * @param {PokerRoomInterface[]} rooms - An array of `PokerRoom` instances to add.
+   * @returns {PokerRoomInterface[]} - The updated list of rooms.
    */
   public addRooms(rooms: PokerRoomInterface[]): PokerRoomInterface[] {
     return this._addRooms(rooms);
@@ -349,47 +189,11 @@ class Casino extends BaseEventEmitter implements CasinoInterface {
    **************************************************************************************************************/
 
   /**
-   * #### Description
-   * Removes a `PokerRoom` from the Casino's list of managed rooms based on the room's name, enabling dynamic
-   * contraction of the Casino environment as required.
+   * Deletes a `PokerRoom` by its index.
+   * Full method documentation: [deleteRoom Documentation](../../documents/models/casino/methods/deleteRoom/README)
    *
-   * #### Implements
-   * `N/A`
-   *
-   * #### Overrides
-   * `N/A`
-   *
-   * #### Purpose
-   * Allows the Casino environment to remain current by dynamically removing rooms that are no longer active
-   * or needed. This supports a clean and manageable set of active rooms within the Casino.
-   *
-   * #### Events
-   * - Emits a `casino:roomRemoved` event when a room is successfully removed. This event can be used
-   *   to trigger updates, logging, or notifications.
-   *
-   * #### Parameters
-   * - `roomName`: A string representing the name of the `PokerRoom` to be removed from the Casino.
-   *
-   * #### Requirements
-   * - The `roomName` parameter should match the `name` property of an existing room for successful deletion.
-   *
-   * #### Returns
-   * - Returns `true` if the room was successfully removed, or `false` if no room with the specified name was found.
-   *
-   * #### Usage
-   * Use this method when removing a room that is no longer active or required, ensuring that only
-   * currently used rooms remain managed by the Casino.
-   *
-   * @param {number} index - The name of the `PokerRoom` to be removed.
-   * @returns {PokerRoomInterface[]} - Returns `true` if the room was removed; `false` if not found.
-   *
-   * @example
-   * ```typescript
-   * const casino = new Casino();
-   * casino.createRoom({ name: "HighRollers", tableSize: 6, smallBlind: 10, bigBlind: 20 });
-   * const success = casino.deleteRoom("HighRollers");
-   * console.log(success); // true if room was found and removed, false otherwise
-   * ```
+   * @param {number} index - The index of the room to delete.
+   * @returns {PokerRoomInterface[]} - The updated list of rooms.
    */
   public deleteRoom(index: number): PokerRoomInterface[] {
     return this._deleteRoom(index);
@@ -404,93 +208,22 @@ class Casino extends BaseEventEmitter implements CasinoInterface {
    **************************************************************************************************************/
 
   /**
-   * #### Description
-   * Returns the total number of `PokerRoom` instances currently managed by the Casino.
+   * Returns the total count of `PokerRoom` instances managed by the Casino.
+   * Full method documentation: [roomCount Documentation](../../documents/models/casino/methods/roomCount/README)
    *
-   * #### Implements
-   * Part of `CasinoInterface`, ensuring standardization across implementations of the Casino class.
-   *
-   * #### Overrides
-   * `N/A`
-   *
-   * #### Purpose
-   * Provides a reliable way to retrieve the number of active poker rooms managed by the Casino. Useful for
-   * general management, reporting, and in situations where the Casino’s room capacity or state must be assessed.
-   *
-   * #### Events
-   * `N/A`
-   *
-   * #### Parameters
-   * `N/A` - This method does not accept any parameters.
-   *
-   * #### Requirements
-   * `N/A`
-   *
-   * #### Returns
-   * - Returns the current count of managed rooms.
-   *
-   * #### Usage
-   * Use this method whenever a precise count of rooms is required, such as when iterating through rooms
-   * or validating bounds.
-   *
-   * @returns {number} - Returns the count of rooms in the Casino.
-   *
-   * @example
-   * ```typescript
-   * const casino = new Casino();
-   * const count = casino.roomCount();
-   * console.log(count); // Console Output: 0 if no rooms exist, or the total count of rooms otherwise
-   * ```
+   * @returns {number} - The count of rooms in the Casino.
    */
   public roomCount(): number {
     return this.getRooms().length;
   }
 
   /**
-   * #### Description
-   * Checks if a provided index is within the valid range of the Casino’s room list, helping avoid out-of-bounds errors.
+   * Validates whether the provided index is within the bounds of the room list.
+   * Full method documentation: [isValidIndex Documentation](../../documents/models/casino/methods/isValidIndex/README)
    *
-   * #### Implements
-   * `isValidIndex` method from `CasinoInterface`.
-   *
-   * #### Overrides
-   * `N/A`
-   *
-   * #### Purpose
-   * This method validates an index before it's used to access or modify a room in the Casino’s list, protecting
-   * against out-of-bound errors. It is useful in any operations that involve room access by index.
-   *
-   * #### Events
-   * `N/A`
-   *
-   * #### Parameters
-   * - `index`: A zero-based integer representing the position of a room in the Casino's managed list.
-   *
-   * #### Requirements
-   * - The `index` should be a non-negative integer within the range `[0, roomCount - 1]`.
-   *
-   * #### Returns
-   * - Returns `true` if the index is valid.
-   * - Throws an `Error` if the index is out of range, providing a descriptive message.
-   *
-   * #### Usage
-   * Use this method before performing operations that involve accessing a room by index. This helps prevent
-   * out-of-bound errors in index-based room access.
-   *
-   * @param {number} index - The zero-based index to validate.
-   * @returns {boolean} - Returns `true` if the index is within bounds.
-   *
-   * @throws {Error} - Throws an error with a descriptive message if the index is out of bounds.
-   *
-   * @example
-   * ```typescript
-   * const casino = new Casino();
-   * try {
-   *   casino.isValidIndex(2); // Returns true if there are at least 3 rooms
-   * } catch (error) {
-   *   console.error(error.message); // If index 2 is out of bounds, logs error message
-   * }
-   * ```
+   * @param {number} index - The index to validate.
+   * @returns {boolean} - Returns `true` if the index is valid.
+   * @throws {Error} - Throws an error if the index is out of bounds.
    */
   public isValidIndex(index: number): boolean {
     if (index < 0 || index >= this.roomCount()) {
@@ -508,49 +241,11 @@ class Casino extends BaseEventEmitter implements CasinoInterface {
    **************************************************************************************************************/
 
   /**
-   * #### Description
-   * Sets the complete list of rooms managed by the Casino with a new array of `PokerRoomInterface` objects.
+   * Sets the complete list of `PokerRoom` instances managed by the Casino.
+   * Full method documentation: [setRooms Documentation](../../documents/models/casino/methods/setRooms/README)
    *
-   * #### Implements
-   * `N/A`
-   *
-   * #### Overrides
-   * `N/A`
-   *
-   * #### Purpose
-   * This protected method allows subclasses of `Casino` to modify the entire `__rooms` property, which can be used
-   * when needing to replace or reset the Casino's room list.
-   *
-   * #### Events
-   * - Emits a `CasinoEvents.ROOMS_SET` event, allowing external listeners to respond to room updates.
-   *
-   * #### Parameters
-   * - `rooms`: An array of `PokerRoomInterface` instances representing the new rooms for the Casino.
-   *
-   * #### Requirements
-   * - The `rooms` array should contain at least one room (`rooms.length >= 1`).
-   *
-   * #### Returns
-   * - Returns the updated list of rooms currently managed by the Casino.
-   *
-   * #### Usage
-   * This method is useful when an update or replacement of all rooms is needed, such as during initialization
-   * or batch updates.
-   *
-   * @param {PokerRoomInterface[]} rooms - Array of new rooms to set in the Casino.
-   * @returns {PokerRoomInterface[]} - The updated list of rooms managed by the Casino.
-   *
-   * @example
-   * ```typescript
-   * class ExtendedCasino extends Casino {
-   *   public resetRooms(newRooms: PokerRoomInterface[]): PokerRoomInterface[] {
-   *     return this._setRooms(newRooms);
-   *   }
-   * }
-   * const extendedCasino = new ExtendedCasino();
-   * const rooms = [new PokerRoom({ name: "VIP", tableSize: 8, smallBlind: 50, bigBlind: 100 })];
-   * extendedCasino.resetRooms(rooms); // Resets the Casino's rooms list
-   * ```
+   * @param {PokerRoomInterface[]} rooms - An array of `PokerRoom` instances to set as the Casino's room list.
+   * @returns {PokerRoomInterface[]} - Returns the updated list of rooms.
    */
   protected _setRooms(rooms: PokerRoomInterface[]): PokerRoomInterface[] {
     this.__rooms = rooms;
@@ -559,47 +254,12 @@ class Casino extends BaseEventEmitter implements CasinoInterface {
   }
 
   /**
-   * #### Description
-   * Creates a new `PokerRoom` instance based on the provided configuration and adds it to the Casino's rooms list.
+   * Creates a new `PokerRoom` within the Casino and adds it to the list of rooms.
+   * Full method documentation: [createRoom Documentation](../../documents/models/casino/methods/createRoom/README)
    *
-   * #### Implements
-   * `N/A`
    *
-   * #### Overrides
-   * `N/A`
-   *
-   * #### Purpose
-   * Allows the Casino to dynamically create new rooms as needed by providing specific room configurations.
-   *
-   * #### Events
-   * - Emits a `CasinoEvents.ROOM_CREATED` event, enabling listeners to respond to the creation of a new room.
-   *
-   * #### Parameters
-   * - `config`: A `PokerRoomConfig` object containing details like `name`, `tableSize`, `smallBlind`, and `bigBlind`.
-   *
-   * #### Requirements
-   * `N/A`
-   *
-   * #### Returns
-   * - Returns the newly created `PokerRoomInterface` instance.
-   *
-   * #### Usage
-   * Primarily used within subclasses or protected methods to dynamically create and add rooms to the Casino.
-   *
-   * @param {PokerRoomConfig} config - Configuration settings for creating a new `PokerRoom`.
-   * @returns {PokerRoomInterface} - The newly created room instance.
-   *
-   * @example
-   * ```typescript
-   * class SpecialCasino extends Casino {
-   *   public createSpecialRoom(config: PokerRoomConfig): PokerRoomInterface {
-   *     return this._createRoom(config);
-   *   }
-   * }
-   * const specialCasino = new SpecialCasino();
-   * const newRoom = specialCasino.createSpecialRoom({ name: "Champions Lounge", tableSize: 10, smallBlind: 100, bigBlind: 200 });
-   * console.log(newRoom.getName()); // Outputs: "Champions Lounge"
-   * ```
+   * @param {PokerRoomConfig} config - A configuration object with properties like the room name, table size, small blind, and big blind values.
+   * @returns {PokerRoomInterface} - Returns the newly created `PokerRoom` instance.
    */
   protected _createRoom(config: PokerRoomConfig): PokerRoomInterface {
     // Validate the input config
@@ -623,43 +283,11 @@ class Casino extends BaseEventEmitter implements CasinoInterface {
   }
 
   /**
-   * #### Description
-   * Adds a single `PokerRoom` instance to the Casino's list of managed rooms.
-   *
-   * #### Implements
-   * `N/A`
-   *
-   * #### Overrides
-   * `N/A`
-   *
-   * #### Purpose
-   * Allows dynamic expansion of rooms within the Casino environment, enabling additional gaming options for players.
-   *
-   * #### Events
-   * - Emits a `CasinoEvents.ROOM_ADDED` event after adding a room.
-   *
-   * #### Parameters
-   * - `room`: The `PokerRoomInterface` instance representing the room to be added.
-   *
-   * #### Requirements
-   * - The `room` parameter must be a valid instance implementing `PokerRoomInterface`.
-   *
-   * #### Returns
-   * - The updated list of rooms currently managed by the Casino.
-   *
-   * #### Usage
-   * Useful when adding a new room to the Casino in response to game demand or configuration changes.
+   * Adds a single `PokerRoom` to the Casino's list of rooms.
+   * Full method documentation: [addRoom Documentation](../../documents/models/casino/methods/addRoom/README)
    *
    * @param {PokerRoomInterface} room - The `PokerRoom` instance to add.
-   * @returns {PokerRoomInterface[]} - The updated list of rooms managed by the Casino.
-   *
-   * @example
-   * ```typescript
-   * const casino = new Casino();
-   * const room = new PokerRoom({ name: "HighRollers", tableSize: 6, smallBlind: 10, bigBlind: 20 });
-   * const rooms = casino.addRoom(room);
-   * console.log(rooms); // Updated rooms list with the new room
-   * ```
+   * @returns {PokerRoomInterface[]} - The updated list of rooms.
    */
   protected _addRoom(room: PokerRoomInterface): PokerRoomInterface[] {
     this.__rooms.push(room);
@@ -668,42 +296,11 @@ class Casino extends BaseEventEmitter implements CasinoInterface {
   }
 
   /**
-   * #### Description
-   * Adds multiple `PokerRoom` instances to the Casino's list of managed rooms.
+   * Adds multiple `PokerRoom` instances to the Casino's list of rooms.
+   * Full method documentation: [addRooms Documentation](../../documents/models/casino/methods/addRooms/README)
    *
-   * #### Implements
-   * `N/A`
-   *
-   * #### Overrides
-   * `N/A`
-   *
-   * #### Purpose
-   * Enables efficient management of batch room additions within the Casino, ensuring all rooms are processed together.
-   *
-   * #### Events
-   * - Emits a `CasinoEvents.ROOMS_SET` event once all rooms are added.
-   *
-   * #### Parameters
-   * - `rooms`: An array of `PokerRoomInterface` instances to add.
-   *
-   * #### Requirements
-   * - Each element in the `rooms` array must be a valid `PokerRoomInterface` instance.
-   *
-   * #### Returns
-   * - The updated list of rooms currently managed by the Casino.
-   *
-   * #### Usage
-   * Useful in scenarios where multiple rooms need to be added to the Casino at once, such as during setup or a bulk update.
-   *
-   * @param {PokerRoomInterface[]} rooms - Array of `PokerRoomInterface` instances to add.
-   * @returns {PokerRoomInterface[]} - The updated list of rooms managed by the Casino.
-   *
-   * @example
-   * ```typescript
-   * const extendedCasino = new Casino();
-   * const rooms = [new PokerRoom({ name: "VIP Room", tableSize: 8, smallBlind: 50, bigBlind: 100 })];
-   * extendedCasino.addRooms(rooms); // Adds VIP rooms to the Casino
-   * ```
+   * @param {PokerRoomInterface[]} rooms - An array of `PokerRoom` instances to add.
+   * @returns {PokerRoomInterface[]} - The updated list of rooms.
    */
   protected _addRooms(rooms: PokerRoomInterface[]): PokerRoomInterface[] {
     rooms.forEach((room) => {
@@ -713,43 +310,11 @@ class Casino extends BaseEventEmitter implements CasinoInterface {
   }
 
   /**
-   * #### Description
-   * Removes a `PokerRoom` from the Casino's list based on the room's index, providing controlled removal of rooms.
+   * Deletes a `PokerRoom` by its index.
+   * Full method documentation: [deleteRoom Documentation](../../documents/models/casino/methods/deleteRoom/README)
    *
-   * #### Implements
-   * `N/A`
-   *
-   * #### Overrides
-   * `N/A`
-   *
-   * #### Purpose
-   * Allows for the safe removal of a specific room from the Casino’s list.
-   *
-   * #### Events
-   * - Emits a `CasinoEvents.ROOM_DELETED` event once the room is successfully removed.
-   *
-   * #### Parameters
-   * - `index`: The zero-based index of the room to remove.
-   *
-   * #### Requirements
-   * - `index` must be valid within the bounds of the `__rooms` array.
-   *
-   * #### Returns
-   * - The updated list of rooms managed by the Casino.
-   *
-   * #### Usage
-   * Primarily used for controlled removal of a specific room from the Casino's room list.
-   *
-   * @param {number} index - The index of the room to be removed.
-   * @returns {PokerRoomInterface[]} - The updated list of rooms managed by the Casino.
-   *
-   * @example
-   * ```typescript
-   * const casino = new Casino();
-   * const room = casino.createRoom({ name: "HighRollers", tableSize: 6, smallBlind: 10, bigBlind: 20 });
-   * const rooms = casino.deleteRoom(room);
-   * console.log(rooms); // Updated rooms list without the deleted room
-   * ```
+   * @param {number} index - The index of the room to delete.
+   * @returns {PokerRoomInterface[]} - The updated list of rooms.
    */
   protected _deleteRoom(index: number): PokerRoomInterface[] {
     try {

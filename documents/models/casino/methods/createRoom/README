@@ -79,3 +79,4 @@ const room = casino.createRoom({
 console.log(room);
 console.log(casino.getRooms()); // Logs the newly created room within the array of rooms
 ```
+
