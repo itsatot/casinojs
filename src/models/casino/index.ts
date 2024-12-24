@@ -19,7 +19,7 @@ import { PokerRoom } from "../pokerRoom";
  * Represents a Casino environment that manages multiple poker rooms (`PokerRooms`).
  * This class handles operations related to room creation, listing, removal, and searching.
  *
- * Full method documentation: [Casino Documentation](../../documents/models/casino//README)
+ * Full method documentation: [Casino Documentation](../../documents/models/casino/README)
  */
 class Casino extends BaseEventEmitter implements CasinoInterface {
   /**************************************************************************************************************
