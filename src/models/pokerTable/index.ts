@@ -292,6 +292,10 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
       config.id && config.id !== ``
         ? this.__setId(config.id)
         : this.__setId(generateUniqueId());
+      
+      config.name && config.name !== ``
+        ? this.setName(config.name)
+        : this.setName(this.__name);
 
       // Set the unique seat ID; generate a new ID if not provided.
       config.smallBlind && config.smallBlind > 0
