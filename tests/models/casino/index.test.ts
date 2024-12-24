@@ -5,10 +5,6 @@ import { PokerRoom } from "../../../src/models/pokerRoom";
 import { PokerRoomConfig } from "../../../src/interfaces/pokerRoom";
 import { PokerTableConfig } from "../../../src/interfaces/pokerTable";
 
-// jest.mock("../../../node_modules@types/nodeevents.d.ts", () => {
-//   return { eventEmitter: jest.fn() }; // Mock the Deck class
-// });
-
 describe("Casino Class Tests", () => {
   let casino: Casino;
 
