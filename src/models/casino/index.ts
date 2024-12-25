@@ -112,7 +112,7 @@ class Casino extends BaseEventEmitter implements CasinoInterface {
 
   /**
    * Creates a new `PokerRoom` within the Casino and adds it to the list of rooms.
-   * Full method documentation: [createRoom Documentation](../../documents/models/casino/methods/createRoom/README)
+   * Full method documentation: [createRoom Documentation](../../documents/models/casino/methods/createRoom/README.md)
    *
    *
    * @param {PokerRoomConfig} config - A configuration object with properties like the room name, table size, small blind, and big blind values.
