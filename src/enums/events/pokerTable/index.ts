@@ -39,7 +39,31 @@ enum PokerTableEvents {
    * // Console Output: "PokerTable:Initialized"
    * ```
    */
-  INITIALIZED = "PokerTable:Initialized",
+  TABLE_CREATED = "Casino:PokerTableCreated",
+
+  /**
+   * `ROOM_ADDED` - Emitted when a single room is added to the casino's list of managed rooms.
+   *
+   * #### Purpose
+   * Allows listeners to respond when a new room is introduced into the Casino’s list of available rooms.
+   */
+  TABLE_ADDED = "Casino:PokerTableAdded",
+
+  /**
+   * `ROOM_UPDATED` - Emitted when an existing room in the casino is modified.
+   *
+   * #### Purpose
+   * Notifies listeners when a room’s configuration or attributes (e.g., blinds, player limits) have been updated.
+   */
+  TABLE_UPDATED = "Casino:PokerTableUpdated",
+
+  /**
+   * `ROOM_DELETED` - Emitted when an existing room is removed from the casino's list of managed rooms.
+   *
+   * #### Purpose
+   * Enables clean-up or resource reallocation processes by notifying listeners when a room is removed from the Casino.
+   */
+  TABLE_DELETED = "Casino:PokerTableDeleted",
 
   /**
    * Indicates that the seat has been initialized and is ready for occupancy.
