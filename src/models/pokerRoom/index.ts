@@ -1,7 +1,7 @@
 //@collapse
 
 // Import Enums
-import {} from "../../enums";
+import {PokerTableEvents} from "../../enums";
 
 // Import Interfaces
 import {
@@ -28,72 +28,9 @@ class PokerRoom extends BaseEventEmitter implements PokerRoomInterface {
    * PROPERTIES
    **************************************************************************************************************/
 
-  /**
-   * @property {PokerRoomInterface[]} __rooms
-   * A private array that holds all the `PokerRoom` instances managed by the Casino.
-   *
-   * #### Access Level
-   * This property is private, meaning it can only be accessed directly within the
-   * `Casino` class itself. This encapsulation ensures that external modifications
-   * to the list of rooms are controlled through the class’s public methods.
-   *
-   * #### Default Value
-   * The `__rooms` property is initialized as an empty array `[]`, indicating that
-   * the Casino starts with no rooms. Rooms are added to this array using the `createRoom`
-   * or `addRoom` methods.
-   *
-   * @example
-   * ```typescript
-   * const casino = new Casino();
-   * console.log(casino.getRooms()); // Returns an empty array initially
-   * ```
-   */
-  private __id: string = ``;
-
-  /**
-   * @property {PokerRoomInterface[]} __rooms
-   * A private array that holds all the `PokerRoom` instances managed by the Casino.
-   *
-   * #### Access Level
-   * This property is private, meaning it can only be accessed directly within the
-   * `Casino` class itself. This encapsulation ensures that external modifications
-   * to the list of rooms are controlled through the class’s public methods.
-   *
-   * #### Default Value
-   * The `__rooms` property is initialized as an empty array `[]`, indicating that
-   * the Casino starts with no rooms. Rooms are added to this array using the `createRoom`
-   * or `addRoom` methods.
-   *
-   * @example
-   * ```typescript
-   * const casino = new Casino();
-   * console.log(casino.getRooms()); // Returns an empty array initially
-   * ```
-   */
-  private __name: string = ``;
-
-  /**
-   * @property {PokerRoomInterface[]} __rooms
-   * A private array that holds all the `PokerRoom` instances managed by the Casino.
-   *
-   * #### Access Level
-   * This property is private, meaning it can only be accessed directly within the
-   * `Casino` class itself. This encapsulation ensures that external modifications
-   * to the list of rooms are controlled through the class’s public methods.
-   *
-   * #### Default Value
-   * The `__rooms` property is initialized as an empty array `[]`, indicating that
-   * the Casino starts with no rooms. Rooms are added to this array using the `createRoom`
-   * or `addRoom` methods.
-   *
-   * @example
-   * ```typescript
-   * const casino = new Casino();
-   * console.log(casino.getRooms()); // Returns an empty array initially
-   * ```
-   */
+  private __id: string | null = null;
+  private __name: string | null = null;
   private __tables: PokerTableInterface[] = [];
-
   /**************************************************************************************************************
    * CONSTRUCTOR & INITIALIZERS
    **************************************************************************************************************/
@@ -133,12 +70,11 @@ class PokerRoom extends BaseEventEmitter implements PokerRoomInterface {
    * ```
    */
   private __init(config?: PokerRoomConfig): void {
-    // No current logic, but reserved for future setup or configuration
     if (config) {
-      this.__id = config.id ? config.id : generateUniqueId();
-      this.__name = config.name ? config.name : this.__name;
+      this.__id = config.id || generateUniqueId();
+      this.__name = config.name || "Unnamed Room";
       config.tableConfigs?.forEach((tconfig) => {
-        this._createTable(tconfig);
+        this.createTable(tconfig);
       });
     }
   }
@@ -190,9 +126,9 @@ class PokerRoom extends BaseEventEmitter implements PokerRoomInterface {
    * ```
    */
   public setName(name: string): string {
-    return this._setName(name);
+    this._setName(name);
+    return this.__name!;
   }
-
   /**
    * #### Description
    * Sets the table configuration within the `PokerRoom`. The table configuration determines essential
@@ -236,7 +172,8 @@ class PokerRoom extends BaseEventEmitter implements PokerRoomInterface {
    * ```
    */
   public setTables(tables: PokerTableInterface[]): PokerTableInterface[] {
-    return this._setTables(tables);
+    this._setTables(tables);
+    return this.__tables;
   }
 
   /**
@@ -332,7 +269,7 @@ class PokerRoom extends BaseEventEmitter implements PokerRoomInterface {
    * console.log(newRoom.getName()); // Outputs: "Champions Lounge"
    * ```
    */
-  public getId(): string {
+  public getId(): string | null {
     return this.__id;
   }
 
@@ -374,7 +311,7 @@ class PokerRoom extends BaseEventEmitter implements PokerRoomInterface {
    * console.log(pokerRoom.getName()); // Logs "VIP Room"
    * ```
    */
-  public getName(): string {
+  public getName(): string | null {
     return this.__name;
   }
 
@@ -421,6 +358,10 @@ class PokerRoom extends BaseEventEmitter implements PokerRoomInterface {
     return this.__tables;
   }
 
+  public findTableById(id: string): PokerTableInterface | null {
+    return this.__tables.find((table) => table.getId() === id) || null;
+  }
+
   /**************************************************************************************************************
    * UPDATE METHODS (MODIFYING EXISTING OBJECTS)
    **************************************************************************************************************/
@@ -429,6 +370,12 @@ class PokerRoom extends BaseEventEmitter implements PokerRoomInterface {
    * DELETE METHODS (REMOVING OBJECTS)
    **************************************************************************************************************/
 
+  public deleteTable(index: number): void {
+    if (this.isValidIndex(index)) {
+      const removedTable = this.__tables.splice(index, 1);
+      this.emit(PokerTableEvents.TABLE_DELETED, this.getTables());
+    }
+  }
   /**************************************************************************************************************
    * BUSINESS-LOGIC METHODS (LOGIC & CALCULATIONS)
    **************************************************************************************************************/
@@ -537,29 +484,32 @@ class PokerRoom extends BaseEventEmitter implements PokerRoomInterface {
    * ```
    */
   public isValidIndex(index: number): boolean {
-    if (index >= 0 && index < this.tableCount()) {
+    if (index < 0 || index >= this.tableCount()) {
       throw new Error(
         `Invalid index: ${index}. It must be between 0 and ${
           this.tableCount() - 1
         }.`
       );
-    } else {
-      return true;
     }
+    return true;
   }
 
   /**************************************************************************************************************
    * INTERNAL METHODS (PROTECTED)
    **************************************************************************************************************/
 
-  protected _setName(name: string): string {
+  protected _setName(name: string): void {
+    if (!name || name.trim() === "") {
+      throw new Error("Name cannot be empty.");
+    }
     this.__name = name;
-    return this.__name;
   }
 
-  protected _setTables(table: PokerTableInterface[]): PokerTableInterface[] {
-    this.__tables = table;
-    return this.__tables;
+  protected _setTables(tables: PokerTableInterface[]): void {
+    if (!Array.isArray(tables)) {
+      throw new Error("Tables must be an array.");
+    }
+    this.__tables = tables;
   }
 
   /**
@@ -605,30 +555,19 @@ class PokerRoom extends BaseEventEmitter implements PokerRoomInterface {
    * console.log(newRoom.getName()); // Outputs: "Champions Lounge"
    * ```
    */
-  protected _createTable(config?: PokerTableConfig): PokerTableInterface {
+  protected _createTable(config: PokerTableConfig): PokerTableInterface {
+    if (!config) {
+      throw new Error("Invalid table configuration.");
+    }
     const table = new PokerTable(config);
     this.__tables.push(table);
+    this.emit(PokerTableEvents.TABLE_CREATED, table);
     return table;
   }
 
   /**************************************************************************************************************
    * INTERNAL METHODS (PRIVATE)
    **************************************************************************************************************/
-
-  /**
-   * `setId`
-   * @private
-   * Returns the poker table's `id`.
-   * @returns {string} The poker table's `id`.
-   *
-   * @example
-   * const rank = card.setRank();
-   * console.log(rank); // "A"
-   */
-  private __setId(id: string): string {
-    this.__id = id;
-    return this.__id;
-  }
 }
 
 export { PokerRoom };
