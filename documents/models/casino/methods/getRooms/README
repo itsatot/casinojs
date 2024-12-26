@@ -1,0 +1,76 @@
+# Method: `getRooms`
+
+Retrieves the list of all poker rooms currently managed by the Casino.
+
+**🗂️ Table Of Contents**
+- [Method: `getRooms`](#method-getrooms)
+  - [Description](#description)
+      - [Implements](#implements)
+      - [Overrides](#overrides)
+      - [Purpose](#purpose)
+      - [Events](#events)
+      - [Requirements](#requirements)
+  - [Casino - The class this method belongs to.](#casino---the-class-this-method-belongs-to)
+  - [Parameters](#parameters)
+  - [Returns](#returns)
+  - [Throws](#throws)
+  - [Usage](#usage)
+  - [Examples](#examples)
+    - [Basic Example:](#basic-example)
+
+## Description
+
+#### Implements
+Implements the `getRooms` method of `CasinoInterface`.
+
+#### Overrides
+`N/A`
+
+#### Purpose
+Provides access to the Casino’s list of managed poker rooms, allowing external components or systems to retrieve and display information about the current rooms.
+
+#### Events
+- `N/A`
+
+#### Requirements
+- No specific requirements; the method retrieves all managed rooms.
+
+---
+
+## Casino - The class this method belongs to.
+
+---
+
+## Parameters
+`None`
+
+---
+
+## Returns
+| Type                  | Description                                |
+|-----------------------|--------------------------------------------|
+| `PokerRoomInterface[]`| An array containing all `PokerRoom` instances managed by the Casino. |
+
+---
+
+## Throws
+| Error Type    | Description                                |
+|---------------|--------------------------------------------|
+| `None`        | This method does not throw exceptions.    |
+
+---
+
+## Usage
+This method is used to retrieve the entire list of poker rooms currently managed by the Casino. It can be useful for displaying all active rooms or performing batch operations.
+
+---
+
+## Examples
+### Basic Example:
+```typescript
+const casino = new Casino();
+casino.createRoom({ name: "Room1", tableSize: 6, smallBlind: 10, bigBlind: 20 });
+casino.createRoom({ name: "Room2", tableSize: 8, smallBlind: 15, bigBlind: 30 });
+const rooms = casino.getRooms();
+console.log(rooms); // Outputs an array containing "Room1" and "Room2"
+```

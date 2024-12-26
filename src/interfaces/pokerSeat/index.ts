@@ -1,6 +1,3 @@
-
-
-
 //@collapse
 
 import { BaseEventEmitterInterface } from "../_base";
@@ -35,7 +32,7 @@ interface PokerSeatConfig {
    */
   player?: PokerPlayerInterface;
 
-  role?:string[];
+  role?: string[];
 }
 
 /**
@@ -117,7 +114,7 @@ interface PokerSeatInterface extends BaseEventEmitterInterface {
 
   getRoles(): string[];
 
-  addRole(role:string): string[];
+  addRole(role: string): string[];
 
   /**************************************************************************************************************
    * UPDATE METHODS (MODIFYING EXISTING OBJECTS)

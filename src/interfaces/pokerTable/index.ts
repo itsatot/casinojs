@@ -233,6 +233,8 @@ interface PokerTableInterface extends BaseEventEmitterInterface {
    */
   getId(): string;
 
+  getName(): string;
+
   /**
    * `getSeats`
    * Starts a new PokerGame if there are at least two active players at the PokerTable.

@@ -1,4 +1,3 @@
-
 //@collapse
 
 import { BaseEventEmitterInterface } from "../_base";
@@ -42,7 +41,7 @@ interface PokerPlayerConfig {
    */
   isFolded?: boolean;
 
-  currentBet:number;
+  currentBet: number;
 }
 
 /**
@@ -69,15 +68,13 @@ interface PokerPlayerInterface extends BaseEventEmitterInterface {
    */
   getId(): string;
 
-  getChips():number;
+  getChips(): number;
 
   bet(amount: number): boolean;
 
   setIsFolded(bool: boolean): boolean;
 
   addToHand(hand: CardInterface): boolean;
-
-
 }
 
 export { PokerPlayerConfig, PokerPlayerInterface };

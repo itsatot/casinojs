@@ -1,0 +1,47 @@
+# Method: `methodName`
+
+**🗂️ Table Of Contents**
+- [Method: `methodName`](#method-methodname)
+  - [Description](#description)
+  - [ClassName - The class this method belongs to.](#classname---the-class-this-method-belongs-to)
+  - [Parameters](#parameters)
+  - [Returns](#returns)
+  - [Throws](#throws)
+  - [Examples](#examples)
+    - [Basic Example:](#basic-example)
+
+## Description
+A brief explanation of what this method does, its purpose, and when it should be used.
+
+## ClassName - The class this method belongs to.
+
+---
+
+## Parameters
+| Parameter Name | Type        | Default Value | Description                                |
+|----------------|-------------|---------------|--------------------------------------------|
+| `param1`       | `string`    | `"default"`   | A brief description of the first parameter.|
+| `param2`       | `number`    | `0`           | A brief description of the second parameter.|
+| `param3`       | `boolean`   | `false`       | A brief description of the third parameter.|
+
+---
+
+## Returns
+| Type          | Description                                |
+|---------------|--------------------------------------------|
+| `boolean`     | A brief explanation of what the return value represents.|
+
+---
+
+## Throws
+| Error Type    | Description                                |
+|---------------|--------------------------------------------|
+| `Error`       | Conditions under which the method throws an error.|
+
+---
+
+## Examples
+### Basic Example:
+```typescript
+const result = instance.methodName("example", 42, true);
+console.log(result); // Output: true

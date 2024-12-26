@@ -13,6 +13,9 @@ import { Card } from "../card";
 // Import Utils
 import { logger } from "../../utils";
 
+console.log("BaseEventEmitter:", BaseEventEmitter);
+// console.log("BaseEventEmitter:", require.resolve("../BaseEventEmitter"));
+
 /**
  * @class `Deck`
  * Represents a deck of 52 playing cards used in poker games.

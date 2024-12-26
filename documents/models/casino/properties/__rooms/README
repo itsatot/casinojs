@@ -1,0 +1,49 @@
+# Property: `__rooms`
+
+**🗂️ Table Of Contents**
+- [Property: `__rooms`](#property-__rooms)
+  - [Description](#description)
+  - [Casino - The class this property belongs to.](#casino---the-class-this-property-belongs-to)
+  - [Type](#type)
+  - [Default Value](#default-value)
+  - [Access Modifier](#access-modifier)
+  - [Usage](#usage)
+  - [Examples](#examples)
+    - [Accessing the List of Rooms:](#accessing-the-list-of-rooms)
+
+## Description
+`__rooms` is a private property that holds the list of all `PokerRoom` instances managed by the Casino. This property is updated through controlled methods such as `setRooms`, `addRoom`, or `createRoom`.
+
+---
+
+## Casino - The class this property belongs to.
+
+---
+
+## Type
+`PokerRoomInterface[]`
+
+---
+
+## Default Value
+`[]` (An empty array indicating no rooms are managed initially.)
+
+---
+
+## Access Modifier
+`private`
+
+---
+
+## Usage
+The `__rooms` property is used internally to store the list of poker rooms. It can only be accessed and modified through the public or protected methods of the `Casino` class.
+
+---
+
+## Examples
+### Accessing the List of Rooms:
+```typescript
+const casino = new Casino();
+casino.createRoom({ name: "VIP Room", tableSize: 6, smallBlind: 10, bigBlind: 20 });
+console.log(casino.getRooms()); // Outputs: [PokerRoom]
+```
