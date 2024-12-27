@@ -15,7 +15,11 @@ import {
 import { BaseEventEmitter } from "../_base";
 
 // Import Utils
-import { generateUniqueId, logger } from "../../utils";
+import { generateUniqueId } from "../../utils/generateUniqueId";
+
+import { logger } from "../../utils/logger";
+
+console.log(BaseEventEmitter);
 
 /**
  * @class `PokerSeat`

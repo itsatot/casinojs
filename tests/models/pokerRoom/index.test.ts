@@ -1,125 +1,171 @@
-import { PokerRoom } from "../path/to/PokerRoom";
-import { PokerTable } from "../path/to/PokerTable";
-import { generateUniqueId } from "../path/to/utils";
+// Import dependencies and mock functions
+import { PokerRoom } from "../../../src/models/pokerRoom";
+import { PokerTable } from "../../../src/models/pokerTable";
+import { PokerTableConfig, PokerTableInterface } from "../../../src/interfaces/pokerTable";
+import { PokerRoomEvents } from "../../../src/enums/events/pokerRoom";
+import { generateUniqueId } from "../../../src/utils/generateUniqueId";
 
-jest.mock("../path/to/PokerTable"); // Mocking PokerTable for isolated tests
-jest.mock("../path/to/utils", () => ({
-  generateUniqueId: jest.fn(),
+jest.mock("../../../src/models/pokerTable", () => {
+  return {
+    PokerTable: jest.fn().mockImplementation((config) => ({
+      getId: jest.fn(() => config.id),
+      getName: jest.fn(() => config.name),
+    })),
+  };
+});
+
+jest.mock("../../../src/utils/generateUniqueId", () => ({
+  generateUniqueId: jest.fn(() => "mocked-id"),
 }));
 
-describe("PokerRoom Class", () => {
+jest.mock("../../../src/utils/logger", () => ({
+  logger: {
+    log: jest.fn(),
+  },
+}));
+
+console.log(generateUniqueId);
+
+describe("PokerRoom", () => {
+  let pokerRoom: PokerRoom;
+
   beforeEach(() => {
-    jest.clearAllMocks();
+    pokerRoom = new PokerRoom();
   });
 
-  test("should initialize with default values", () => {
-    const room = new PokerRoom();
-    expect(room.getId()).toBeNull();
-    expect(room.getName()).toBe("Unnamed Room");
-    expect(room.getTables()).toEqual([]);
+  describe("constructor", () => {
+    it("initializes with default values", () => {
+      expect(pokerRoom.getId()).toBe("mocked-id");
+      expect(pokerRoom.getName()).toBe("Unnamed Room");
+      expect(pokerRoom.getTables()).toEqual([]);
+    });
+
+    it("initializes with provided config", () => {
+      const config = {
+        id: "room-1",
+        name: "High Stakes Room",
+        tableConfigs: [{ id: "table-1", name: "Table 1" }],
+      };
+      pokerRoom = new PokerRoom(config);
+
+      expect(pokerRoom.getId()).toBe("room-1");
+      expect(pokerRoom.getName()).toBe("High Stakes Room");
+      expect(pokerRoom.getTables()).toHaveLength(1);
+    });
   });
 
-  test("should initialize with provided configuration", () => {
-    const config = {
-      id: "room123",
-      name: "Test Room",
-      tableConfigs: [{ id: "table1" }, { id: "table2" }],
-    };
-    const room = new PokerRoom(config);
+  describe("setName", () => {
+    it("sets a valid name", () => {
+      const newName = "VIP Room";
+      expect(pokerRoom.setName(newName)).toBe(newName);
+      expect(pokerRoom.getName()).toBe(newName);
+    });
 
-    expect(room.getId()).toBe("room123");
-    expect(room.getName()).toBe("Test Room");
-    expect(room.getTables().length).toBe(2);
+    it("throws an error when name is empty", () => {
+      expect(() => pokerRoom.setName("")).toThrow("Name cannot be empty.");
+    });
   });
 
-  test("should set room name", () => {
-    const room = new PokerRoom();
-    room.setName("New Room");
-    expect(room.getName()).toBe("New Room");
+  describe("setTables", () => {
+    it("sets valid tables", () => {
+      const tables = [new PokerTable({ id: "table-1" })];
+      expect(pokerRoom.setTables(tables)).toEqual(tables);
+    });
+
+    it("throws an error when tables is not an array", () => {
+      expect(() =>
+        pokerRoom.setTables(null as unknown as PokerTableInterface[])
+      ).toThrow("Tables must be an array.");
+    });
   });
 
-  test("should throw error for empty room name", () => {
-    const room = new PokerRoom();
-    expect(() => room.setName("")).toThrow("Name cannot be empty.");
+  describe("createTable", () => {
+    it("creates and adds a new table", () => {
+      const tableConfig = { id: "table-1", name: "Table 1" };
+      const table = pokerRoom.createTable(tableConfig);
+
+      expect(PokerTable).toHaveBeenCalledWith(tableConfig);
+      expect(pokerRoom.getTables()).toContain(table);
+    });
+
+    it("throws an error when config is invalid", () => {
+      expect(() =>
+        pokerRoom.createTable(null as unknown as PokerTableConfig)
+      ).toThrow("Invalid table configuration.");
+    });
   });
 
-  test("should add tables using setTables", () => {
-    const mockTables = [{}, {}];
-    const room = new PokerRoom();
-    room.setTables(mockTables);
-    expect(room.getTables()).toEqual(mockTables);
+  describe("deleteTable", () => {
+    it("deletes a table by index", () => {
+      const tables = [new PokerTable({ id: "table-1" })];
+      pokerRoom.setTables(tables);
+
+      pokerRoom.deleteTable(0);
+
+      expect(pokerRoom.getTables()).toHaveLength(0);
+    });
+
+    it("throws an error for invalid index", () => {
+      expect(() => pokerRoom.deleteTable(1)).toThrow("Invalid index: 1. It must be between 0 and -1.");
+    });
   });
 
-  test("should throw error for invalid tables in setTables", () => {
-    const room = new PokerRoom();
-    expect(() => room.setTables(null)).toThrow("Tables must be an array.");
+  describe("clearTables", () => {
+    it("removes all tables", () => {
+      pokerRoom.setTables([new PokerTable({ id: "table-1" })]);
+
+      pokerRoom.clearTables();
+
+      expect(pokerRoom.getTables()).toHaveLength(0);
+    });
   });
 
-  test("should create a new table", () => {
-    const mockConfig = { id: "table1" };
-    const room = new PokerRoom();
-    const table = room.createTable(mockConfig);
+  describe("findTableById", () => {
+    it("finds a table by id", () => {
+      const table = new PokerTable({ id: "table-1" });
+      console.log(table);
+      pokerRoom.setTables([table]);
+      console.log(pokerRoom);
+      expect(pokerRoom.findTableById("table-1")).toBe(table);
+    });
 
-    expect(room.getTables().length).toBe(1);
-    expect(table).toBeInstanceOf(PokerTable);
+    it("returns null if table not found", () => {
+      expect(pokerRoom.findTableById("nonexistent")).toBe(null);
+    });
   });
 
-  test("should throw error for invalid table configuration", () => {
-    const room = new PokerRoom();
-    expect(() => room.createTable(null)).toThrow(
-      "Invalid table configuration."
-    );
+  describe("findTableByName", () => {
+    it("finds a table by name", () => {
+      const table = new PokerTable({ id: "table-1", name: "Table 1" });
+      pokerRoom.setTables([table]);
+
+      expect(pokerRoom.findTableByName("Table 1")).toBe(table);
+    });
+
+    it("returns null if table not found", () => {
+      expect(pokerRoom.findTableByName("nonexistent")).toBe(null);
+    });
   });
 
-  test("should find table by ID", () => {
-    const mockTable = { getId: jest.fn().mockReturnValue("table1") };
-    const room = new PokerRoom();
-    room.setTables([mockTable]);
+  describe("tableCount", () => {
+    it("returns the number of tables", () => {
+      pokerRoom.setTables([new PokerTable({ id: "table-1" })]);
+      expect(pokerRoom.tableCount()).toBe(1);
+    });
 
-    const foundTable = room
-      .getTables()
-      .find((table) => table.getId() === "table1");
-    expect(foundTable).toBe(mockTable);
+    it("returns zero when no tables", () => {
+      expect(pokerRoom.tableCount()).toBe(0);
+    });
   });
 
-  test("should return null if table ID not found", () => {
-    const room = new PokerRoom();
-    const table = room.findTableById("unknown");
-    expect(table).toBeNull();
-  });
+  describe("isValidIndex", () => {
+    it("validates a correct index", () => {
+      pokerRoom.setTables([new PokerTable({ id: "table-1" })]);
+      expect(pokerRoom.isValidIndex(0)).toBe(true);
+    });
 
-  test("should delete a table by index", () => {
-    const mockTable = { getId: jest.fn().mockReturnValue("table1") };
-    const room = new PokerRoom();
-    room.setTables([mockTable]);
-
-    room.deleteTable(0);
-
-    expect(room.getTables().length).toBe(0);
-  });
-
-  test("should throw error for invalid table index on delete", () => {
-    const room = new PokerRoom();
-    expect(() => room.deleteTable(0)).toThrow(
-      "Invalid index: 0. It must be between 0 and -1."
-    );
-  });
-
-  test("should return the number of tables", () => {
-    const room = new PokerRoom();
-    expect(room.tableCount()).toBe(0);
-
-    room.setTables([{}, {}]);
-    expect(room.tableCount()).toBe(2);
-  });
-
-  test("should validate index correctly", () => {
-    const room = new PokerRoom();
-    room.setTables([{}, {}]);
-
-    expect(room.isValidIndex(0)).toBe(true);
-    expect(() => room.isValidIndex(2)).toThrow(
-      "Invalid index: 2. It must be between 0 and 1."
-    );
+    it("throws an error for an invalid index", () => {
+      expect(() => pokerRoom.isValidIndex(1)).toThrow("Invalid index: 1. It must be between 0 and -1.");
+    });
   });
 });

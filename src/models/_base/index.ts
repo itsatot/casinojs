@@ -1,4 +1,4 @@
-// collapse
+//@collapse
 
 import { EventEmitter } from "events";
 
@@ -48,7 +48,7 @@ import { generateUniqueId, logger } from "../../utils";
  * console.log(room); // Logs details of "Room1"
  * ```
  */
-export class BaseEventEmitter
+ class BaseEventEmitter
   extends EventEmitter
   implements BaseEventEmitterInterface
 {
@@ -302,4 +302,4 @@ export class BaseEventEmitter
   }
 }
 
-// export { BaseEventEmitter };
+export { BaseEventEmitter };

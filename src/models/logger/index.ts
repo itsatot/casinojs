@@ -8,7 +8,7 @@ import path from "path";
 import { LogLevel } from "../../enums";
 
 // Import Interfaces
-import { LoggerConfig, LoggerInterface } from "../../interfaces";
+import { LoggerConfig, LoggerInterface } from "../../interfaces/logger";
 
 // Resolve the app's package.json dynamically from the current working directory
 // const appPackageJson = require(path.resolve(process.cwd(), "package.json"));
