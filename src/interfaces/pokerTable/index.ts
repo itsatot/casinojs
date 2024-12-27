@@ -347,6 +347,9 @@ interface PokerTableInterface extends BaseEventEmitterInterface {
    * ```
    */
   isValidIndex(index: number): boolean;
+
+
+  // updateTable(index: number, config: Partial<PokerTableConfig>): void;
 }
 
 export { PokerTableConfig, PokerTableInterface };

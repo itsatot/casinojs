@@ -1,7 +1,7 @@
-//@collapse
+//collapse
 
 // Import Enums
-import {PokerTableEvents} from "../../enums";
+import {PokerRoomEvents, PokerTableEvents , Source} from "../../enums";
 
 // Import Interfaces
 import {
@@ -17,6 +17,8 @@ import { PokerTable } from "../pokerTable";
 
 // Import Utils
 import { generateUniqueId, logger } from "../../utils";
+
+
 
 /**
  * @class `PokerRoom`
@@ -76,6 +78,9 @@ class PokerRoom extends BaseEventEmitter implements PokerRoomInterface {
       config.tableConfigs?.forEach((tconfig) => {
         this.createTable(tconfig);
       });
+    } else {
+      this.__id = generateUniqueId();
+      this.__name = "Unnamed Room";
     }
   }
 
@@ -358,14 +363,20 @@ class PokerRoom extends BaseEventEmitter implements PokerRoomInterface {
     return this.__tables;
   }
 
+
   public findTableById(id: string): PokerTableInterface | null {
     return this.__tables.find((table) => table.getId() === id) || null;
+  }
+
+  public findTableByName(name: string): PokerTableInterface | null {
+    return this.__tables.find((table) => table.getName() === name) || null;
   }
 
   /**************************************************************************************************************
    * UPDATE METHODS (MODIFYING EXISTING OBJECTS)
    **************************************************************************************************************/
 
+ 
   /**************************************************************************************************************
    * DELETE METHODS (REMOVING OBJECTS)
    **************************************************************************************************************/
@@ -373,9 +384,27 @@ class PokerRoom extends BaseEventEmitter implements PokerRoomInterface {
   public deleteTable(index: number): void {
     if (this.isValidIndex(index)) {
       const removedTable = this.__tables.splice(index, 1);
-      this.emit(PokerTableEvents.TABLE_DELETED, this.getTables());
+      this.emitEvent(PokerRoomEvents.TABLE_DELETED, {
+        event: {
+          source: Source.POKER_ROOM,
+          data: { roomId: this.getId() },
+        },
+        middlewares: [],
+      });
     }
   }
+
+  public clearTables(): void {
+    this.__tables = [];
+    this.emitEvent(PokerRoomEvents.ROOM_RESET, {
+      event: {
+        source: Source.POKER_ROOM,
+        data: { roomId: this.getId() },
+      },
+      middlewares: [],
+    });
+  }
+
   /**************************************************************************************************************
    * BUSINESS-LOGIC METHODS (LOGIC & CALCULATIONS)
    **************************************************************************************************************/
@@ -383,16 +412,6 @@ class PokerRoom extends BaseEventEmitter implements PokerRoomInterface {
   /**************************************************************************************************************
    * WRAPPER METHODS (UTILITY & CONVENIENCE)
    **************************************************************************************************************/
-
-  /**
-   * `size`
-   * Starts a new PokerGame if there are at least two active players at the PokerTable.
-   * This method initiates the game flow, including assigning blinds and starting the rounds.
-   * @returns {number}
-   */
-  public size(): number {
-    return this.tableCount();
-  }
 
   /**
    * #### Description
@@ -561,7 +580,13 @@ class PokerRoom extends BaseEventEmitter implements PokerRoomInterface {
     }
     const table = new PokerTable(config);
     this.__tables.push(table);
-    this.emit(PokerTableEvents.TABLE_CREATED, table);
+    this.emitEvent(PokerRoomEvents.TABLE_CREATED, {
+      event: {
+        source: Source.POKER_ROOM,
+        data: { roomId: this.getId() },
+      },
+      middlewares: [],
+    });
     return table;
   }
 
