@@ -101,7 +101,7 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
    * console.log(table.getId()); // Console Output: A unique table ID
    * ```
    */
-  private __id: string = ``;
+  private __id: string | null = null;
 
   /**
    * @property {string} __name
@@ -121,7 +121,7 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
    * console.log(table.getName()); // Console Output: "High Stakes Table"
    * ```
    */
-  private __name: string = ``;
+  private __name: string | null = null;
 
   /**
    * @property {number} __smallBlind
@@ -141,7 +141,13 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
    * console.log(table.getSmallBlind()); // Console Output: 5
    * ```
    */
-  private __smallBlind: number = 1;
+  private __smallBlind: number | null = null;
+
+  private __bigBlindAmount: number | null = null;
+
+  private __size: number | null = null;
+
+  // private __bigBlindAmount: number | null = null;
 
   /**
    * @property {number} __bigBlindAmount
@@ -160,7 +166,6 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
    * console.log(table.getBigBlind()); // Console Output: 10
    * ```
    */
-  private __bigBlindAmount: number = this.__smallBlind * 2;
 
   /**
    * @property {PokerSeatInterface[]} __seats
@@ -205,6 +210,8 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
   private __gameInProgress: boolean = false;
 
   private __game: PokerGameInterface | undefined = undefined;
+
+  private readonly BIG_BLIND_MULTIPLIER = 2;
 
   /**************************************************************************************************************
    * CONSTRUCTOR & INITIALIZERS
@@ -288,39 +295,42 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
    */
   private __init(config?: PokerTableConfig): void {
     if (config) {
+         const size = config.size ?? 2; // Default to 2 players if size is not defined
+
+         // Validate table size
+         if (!Number.isInteger(size) || size <= 0 || size > 10) {
+           throw new Error(
+             "Table size must be a positive integer between 2 and 10."
+           );
+         }
+         // Validate small blind
+         if (config.smallBlind && config.smallBlind <= 0) {
+           throw new Error("Small blind must be a positive number.");
+         }
       // Set the unique seat ID; generate a new ID if not provided.
-      config.id && config.id !== ``
-        ? this.__setId(config.id)
-        : this.__setId(generateUniqueId());
-      
-      config.name && config.name !== ``
-        ? this.setName(config.name)
-        : this.setName(this.__name);
-
-      // Set the unique seat ID; generate a new ID if not provided.
-      config.smallBlind && config.smallBlind > 0
-        ? this.__setSmallBlind(config.smallBlind)
-        : this.__setSmallBlind(this.__smallBlind || 1);
-
-      this.__bigBlindAmount = this.__smallBlind * 2;
-      this.__seats = [];
-      this.__gameInProgress = false;
-
-      for (let i = 0; this.getSeats().length !== config.size; i++) {
-        const seat = new PokerSeat({
-          position: i,
-        });
-        this.__seats?.push(seat);
-
-        seat.on(PokerSeatEvents.OCCUPIED, (event) => {
-          this.__seatOccupancyUpdateEventHandler();
-        });
-
-        seat.on(PokerSeatEvents.VACATED, (event) => {
-          this.__seatOccupancyUpdateEventHandler();
-        });
-      }
+      this.__id = config.id || generateUniqueId();
+      this.__name = config.name || "Unnamed Room";
+      this.__smallBlind = config.smallBlind || 1;
+      this.__bigBlindAmount = this.__smallBlind * this.BIG_BLIND_MULTIPLIER;
+      this.__size = config.size || 2;
+      this.__seats = this.__initializeSeats(this.__size);
     }
+  }
+
+  private __initializeSeats(size: number): PokerSeatInterface[] {
+    const seats: PokerSeatInterface[] = [];
+    for (let i = 0; i < size; i++) {
+      const seat = new PokerSeat({ position: i });
+      seats.push(seat);
+
+      seat.on(PokerSeatEvents.OCCUPIED, () =>
+        this.__seatOccupancyUpdateEventHandler()
+      );
+      seat.on(PokerSeatEvents.VACATED, () =>
+        this.__seatOccupancyUpdateEventHandler()
+      );
+    }
+    return seats;
   }
 
   /**************************************************************************************************************
@@ -370,6 +380,9 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
    * ```
    */
   public setName(name: string): string {
+    if (typeof name !== "string" || name.trim() === "") {
+      throw new Error("Table name must be a non-empty string.");
+    }
     return this.__setName(name);
   }
 
@@ -387,7 +400,7 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
    * const rank = card.getRank();
    * console.log(rank); // "A"
    */
-  public getId(): string {
+  public getId(): string | null {
     return this.__id;
   }
 
@@ -401,7 +414,7 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
    * const rank = card.getRank();
    * console.log(rank); // "A"
    */
-  public getName(): string {
+  public getName(): string | null {
     return this.__name;
   }
 
@@ -415,7 +428,7 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
    * const rank = card.getRank();
    * console.log(rank); // "A"
    */
-  public getSmallBlind(): number {
+  public getSmallBlind(): number | null {
     return this.__smallBlind;
   }
 
@@ -429,7 +442,7 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
    * const rank = card.getRank();
    * console.log(rank); // "A"
    */
-  public getBigBlind(): number {
+  public getBigBlind(): number | null {
     return this.__bigBlindAmount;
   }
 
@@ -469,10 +482,12 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
   /**
    * update
    */
-  public updateBlinds(smallBlind: number) {
-    this.__setSmallBlind(smallBlind);
-    this.__setBigBlind(this.getSmallBlind() * 2);
-    return true;
+  public updateBlinds(smallBlind: number): void {
+    if (!Number.isFinite(smallBlind) || smallBlind <= 0) {
+      throw new Error("Small blind must be a positive finite number.");
+    }
+    this.__smallBlind = smallBlind;
+    this.__bigBlindAmount = smallBlind * this.BIG_BLIND_MULTIPLIER;
   }
 
   /**************************************************************************************************************
@@ -487,25 +502,7 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
    * WRAPPER METHODS (UTILITY & CONVENIENCE)
    **************************************************************************************************************/
   public occupancyCount(): number {
-    let occupiedSeats = 0;
-
-    for (let i = 0; i < this.getSeats().length; i++) {
-      let seat = this.getSeats()[i];
-      if (seat.getPlayer()) {
-        occupiedSeats += 1;
-      }
-    }
-
-    return occupiedSeats;
-  }
-  /**
-   * `size`
-   * Starts a new PokerGame if there are at least two active players at the PokerTable.
-   * This method initiates the game flow, including assigning blinds and starting the rounds.
-   * @returns {number}
-   */
-  public size(): number {
-    return this.seatCount();
+    return this.__seats.filter((seat) => seat.isOccupied()).length;
   }
 
   /**
@@ -722,54 +719,36 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
     this.__assignRoles();
   }
 
-  private __assignRoles(): void | false {
-    if (this.occupancyCount() === 2) {
-      let foundDealer = false;
-      // Iterate over each seat to find the minimum occupied seat position
-      for (let i = 0; i < this.getSeats().length; i++) {
-        let seat = this.getSeats()[i];
+  private __assignRoles(): void {
+    const occupiedSeats = this.__seats.filter((seat) => seat.isOccupied());
 
-        // Check if the seat is occupied
-        if (seat.isOccupied()) {
-          if (!foundDealer) {
-            // First occupied seat gets DEALER and SMALLBLIND roles
-            seat.addRole(PokerSeatRoles.DEALER);
-            seat.addRole(PokerSeatRoles.SMALLBLIND);
-            foundDealer = true;
-          } else {
-            // Next occupied seat gets BIGBLIND role
-            seat.addRole(PokerSeatRoles.BIGBLIND);
-            break; // Exit loop after assigning BIGBLIND
-          }
-        }
-      }
-    } else if (this.occupancyCount() > 2) {
-      const seats = this.getSeats();
-      let dealerAssigned = false;
-      let smallBlindAssigned = false;
-      let bigBlindAssigned = false;
+    if (occupiedSeats.length < 2) {
+      return;
+    }
 
-      for (let i = 0; i < seats.length; i++) {
-        let seat = seats[i];
+    // Clear previous roles
+    // this.__seats.forEach(seat => seat.clearRoles());
 
-        // Check if the seat is occupied
-        if (seat.isOccupied()) {
-          if (!dealerAssigned) {
-            // First occupied seat gets DEALER role
-            seat.addRole(PokerSeatRoles.DEALER);
-            dealerAssigned = true;
-          } else if (!smallBlindAssigned) {
-            // Next occupied seat after DEALER gets SMALLBLIND role
-            seat.addRole(PokerSeatRoles.SMALLBLIND);
-            smallBlindAssigned = true;
-          } else if (!bigBlindAssigned) {
-            // Next occupied seat after SMALLBLIND gets BIGBLIND role
-            seat.addRole(PokerSeatRoles.BIGBLIND);
-            bigBlindAssigned = true;
-            break; // Exit loop after assigning BIGBLIND
-          }
-        }
-      }
+    // Sort occupied seats to determine the dealer position
+    const dealerSeat = occupiedSeats.sort(
+      (a, b) => a.getPosition() - b.getPosition()
+    )[0];
+    dealerSeat.addRole(PokerSeatRoles.DEALER);
+
+    const circularOrder = [
+      ...this.__seats.slice(dealerSeat.getPosition()), // Seats from dealer position to the end
+      ...this.__seats.slice(0, dealerSeat.getPosition()), // Wrap-around seats
+    ].filter((seat) => seat.isOccupied());
+
+    // Assign roles based on circular order
+    if (circularOrder.length >= 3) {
+      circularOrder[0].addRole(PokerSeatRoles.DEALER);
+      circularOrder[1].addRole(PokerSeatRoles.SMALLBLIND);
+      circularOrder[2].addRole(PokerSeatRoles.BIGBLIND);
+    } else if (circularOrder.length === 2) {
+      circularOrder[0].addRole(PokerSeatRoles.DEALER);
+      circularOrder[1].addRole(PokerSeatRoles.SMALLBLIND);
+      circularOrder[0].addRole(PokerSeatRoles.BIGBLIND); // Dealer takes Big Blind in heads-up
     }
   }
 
@@ -828,35 +807,11 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
   private __validatePlayerBalances(
     event: BaseEventInterface,
     next: () => void
-  ): void | false {
-    const bigBlind = this.getBigBlind();
-
-    // Loop through each seat to check player balances
-    for (let seat of this.getSeats()) {
+  ): boolean {
+    return this.__seats.every((seat) => {
       const player = seat.getPlayer();
-
-      // If the seat is occupied, check the player's balance
-      if (player) {
-        const playerBalance = player.getChips();
-
-        if (playerBalance < bigBlind) {
-          // Log a warning if a player has insufficient funds and halt the game initialization
-          logger.log(
-            LogLevel.WARN,
-            `${
-              Source.POKER_TABLE
-            }: Player ${player.getId()} has insufficient balance (${playerBalance}). Minimum required is ${bigBlind}.`,
-            {
-              tableId: this.getId(),
-              playerId: player.getId(),
-              requiredBalance: bigBlind,
-            }
-          );
-
-          return false;
-        }
-      }
-    }
+      return player ? player.getChips() >= this.__bigBlindAmount! : true;
+    });
 
     // If all players have sufficient balance, proceed to the next middleware
     event.lastModifiedAt = new Date();
@@ -866,57 +821,38 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
   private __createGamePlayersList(
     event: BaseEventInterface,
     next: () => void
-  ): void | false {
-    if (event.occupancyCount >= 2) {
-      let players: PokerPlayerInterface[] = [];
-      let isDealerPosition = 0;
+  ): PokerPlayerInterface[] {
+    const dealerIndex = this.__seats.findIndex((seat) =>
+      seat.getRoles().includes(PokerSeatRoles.DEALER)
+    );
+    const orderedSeats = [
+      ...this.__seats.slice(dealerIndex),
+      ...this.__seats.slice(0, dealerIndex),
+    ];
 
-      this.getSeats().forEach((seat, index) => {
-        let player = seat.getPlayer();
-
-        if (player) {
-          if (seat.getRoles().includes(PokerSeatRoles.DEALER)) {
-            players.push(player);
-            isDealerPosition = index;
-          }
-        }
-      });
-
-      for (let i = 0; i < 2; i++) {
-        if ((i = 0)) {
-          for (let j = 0; j < this.getSeats().length; j++) {
-            let seat = this.getSeats()[j];
-            let player = seat.getPlayer();
-            if (player && seat.getPosition() > isDealerPosition) {
-              players.push(player);
-            }
-          }
-        } else if ((i = 1)) {
-          for (let k = 0; k < this.getSeats().length; k++) {
-            let seat = this.getSeats()[k];
-            let player = seat.getPlayer();
-            if (player && seat.getPosition() < isDealerPosition) {
-              players.push(player);
-            }
-          }
-        }
-      }
-
-      event.players = players;
-      event.dealerPosition = isDealerPosition;
-      event.lastModifiedAt = new Date();
-    }
-    next();
+    return orderedSeats
+      .filter((seat) => seat.isOccupied()) // Ensure the seat is occupied
+      .map((seat) => seat.getPlayer()) // Get the player from the seat
+      .filter((player): player is PokerPlayerInterface => player !== undefined); // Type guard for non-undefined players
   }
 
   private __startGame(event: BaseEventInterface): void {
-    let config: PokerGameConfig = {
-      smallBlind: this.getSmallBlind(),
-      bigBlind: this.getBigBlind(),
+    const smallBlind = this.getSmallBlind();
+    const bigBlind = this.getBigBlind();
+
+    // Ensure smallBlind and bigBlind are not null
+    if (smallBlind === null || bigBlind === null) {
+      throw new Error(
+        "Small blind and big blind must be set before starting the game."
+      );
+    }
+
+    const config: PokerGameConfig = {
+      smallBlind: smallBlind,
+      bigBlind: bigBlind,
       players: event.players,
     };
-    let newGame = new PokerGame(config);
-    this.__setGame(newGame);
+ 
   }
 
   private __seatOccupancyUpdateEventHandler(event?: BaseEventInterface): void {

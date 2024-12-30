@@ -41,7 +41,7 @@ interface PokerPlayerConfig {
    */
   isFolded?: boolean;
 
-  currentBet: number;
+  currentBet?: number;
 }
 
 /**

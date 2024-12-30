@@ -158,6 +158,8 @@ interface PokerTableConfig {
    * ```
    */
   smallBlind?: number;
+
+  // bigBlindAmount?: number;
 }
 
 /**
@@ -231,9 +233,9 @@ interface PokerTableInterface extends BaseEventEmitterInterface {
    * const rank = card.getRank();
    * console.log(rank); // "A"
    */
-  getId(): string;
+  getId(): string|null;
 
-  getName(): string;
+  getName(): string|null;
 
   /**
    * `getSeats`
