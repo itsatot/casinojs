@@ -1,4 +1,4 @@
-//@collapse
+//collapse
 
 // Import Enums
 import { LogLevel, PokerSeatEvents, Source } from "../../enums";
@@ -19,7 +19,7 @@ import { generateUniqueId } from "../../utils/generateUniqueId";
 
 import { logger } from "../../utils/logger";
 
-console.log(BaseEventEmitter);
+
 
 /**
  * @class `PokerSeat`
@@ -93,7 +93,7 @@ class PokerSeat extends BaseEventEmitter implements PokerSeatInterface {
    * console.log(pokerSeat.getId()); // Outputs a unique identifier, e.g., "123e4567-e89b-12d3-a456-426614174000"
    * ```
    */
-  private __id: string = ``;
+  private __id: string | null = null;
 
   /**
    * @property {number} __position
@@ -118,7 +118,7 @@ class PokerSeat extends BaseEventEmitter implements PokerSeatInterface {
    * console.log(pokerSeat.getPosition()); // Console Output: 3
    * ```
    */
-  private __position: number = 0;
+  private __position: number = 0 ;
 
   /**
    * @property {boolean} __isDealer
@@ -168,9 +168,9 @@ class PokerSeat extends BaseEventEmitter implements PokerSeatInterface {
    * console.log(pokerSeat.getPlayer()); // Console Output: <PlayerInstance>
    * ```
    */
-  private __player: PokerPlayerInterface | undefined = undefined;
+  private __player?: PokerPlayerInterface;
 
-  private __roles!: string[];
+  private __roles: Set<string> = new Set();
 
   /**************************************************************************************************************
    * CONSTRUCTOR & INITIALIZERS
@@ -270,28 +270,15 @@ class PokerSeat extends BaseEventEmitter implements PokerSeatInterface {
    */
   private __init(config?: PokerSeatConfig): void {
     if (config) {
-      // Set the unique seat ID; generate a new ID if not provided.
-      config.id && config.id !== ``
-        ? this.__setId(config.id)
-        : this.__setId(generateUniqueId());
-
-      // Set the seat position; if undefined, an error is thrown.
-      config.position
-        ? this.__setPosition(config.position)
-        : new Error(`PokerSeat: Position must be defined for each seat.`);
-
-      // Set the dealer status; default to `false` if not provided.
-      config.isDealer
-        ? this.setDealer(config.isDealer)
-        : this.setDealer(this.__isDealer);
+      this.__validateConfig(config);
+      this.__id =
+        config.id && config.id.trim() !== "" ? config.id : generateUniqueId();
+      this.__setPosition(config.position);
+      this.__setDealer(config.isDealer || false);
+      if (config.player) this.__setPlayer(config.player);
 
       // Assign a player to the seat if provided; otherwise, seat remains unoccupied.
-      config.player
-        ? this.__setPlayer(config.player)
-        : this.__setPlayer(this.__player);
-
-      // Assign a player to the seat if provided; otherwise, seat remains unoccupied.
-      this.__roles = [];
+      // this.__roles = [];
     }
 
     // Emit `INITIALIZED` event after initialization
@@ -303,6 +290,15 @@ class PokerSeat extends BaseEventEmitter implements PokerSeatInterface {
       middlewares: [],
     });
   }
+
+  private __validateConfig(config: PokerSeatConfig): void {
+    console.log("Validating position:", config.position);
+    if (config.position < 0) {
+      throw new Error("PokerSeat: Position must be a positive integer.");
+    }
+  }
+
+  
 
   /**************************************************************************************************************
    * CREATE METHODS (SETTERS & OBJECT CREATION)
@@ -407,7 +403,7 @@ class PokerSeat extends BaseEventEmitter implements PokerSeatInterface {
    * // Console Output: a unique string identifier, e.g., "123e4567-e89b-12d3-a456-426614174000"
    * ```
    */
-  public getId(): string {
+  public getId(): string | null {
     return this.__id;
   }
 
@@ -583,7 +579,7 @@ class PokerSeat extends BaseEventEmitter implements PokerSeatInterface {
    * ```
    */
   public getRoles(): string[] {
-    return this.__roles;
+    return Array.from(this.__roles);
   }
 
   /**
@@ -626,8 +622,12 @@ class PokerSeat extends BaseEventEmitter implements PokerSeatInterface {
    * // Console Output: <PlayerInstance>
    * ```
    */
-  public addRole(role: string): string[] {
+  public addRole(role: string): void {
     return this.__addRole(role);
+  }
+
+  public removeRole(role: string): void {
+    this.__roles.delete(role);
   }
 
   /**************************************************************************************************************
@@ -727,49 +727,6 @@ class PokerSeat extends BaseEventEmitter implements PokerSeatInterface {
 
   /**
    * #### Description
-   * The `__setId` method assigns a unique identifier (`id`) to this `PokerSeat` instance.
-   *
-   * #### Purpose
-   * This method ensures each `PokerSeat` instance has a unique `id`, enabling it to be individually identified
-   * within a poker table, which is essential for managing seats in complex games.
-   *
-   * #### Implements
-   * N/A
-   *
-   * #### Overrides
-   * N/A
-   *
-   * #### Parameters
-   * - `id: string` - The unique identifier to be assigned to the `PokerSeat`.
-   *
-   * #### Requirements
-   * - `id` must be a valid, unique string, typically generated when the seat is initialized.
-   *
-   * #### Returns
-   * - `string` - The assigned unique identifier of the seat.
-   *
-   * #### Usage
-   * This method is called internally during seat initialization to set or update the seat's unique `id`.
-   *
-   * @param {string} id - A unique identifier for the seat.
-   *
-   * @returns {string} - The assigned unique identifier of the seat.
-   *
-   * @example
-   * ```typescript
-   * const pokerSeat = new PokerSeat();
-   * pokerSeat.__setId("unique-seat-id-123");
-   * console.log(pokerSeat.getId());
-   * // Console Output: "unique-seat-id-123"
-   * ```
-   */
-  private __setId(id: string): string {
-    this.__id = id;
-    return this.__id;
-  }
-
-  /**
-   * #### Description
    * The `__setPosition` method assigns a specific position index to this `PokerSeat` instance within the poker table.
    *
    * #### Purpose
@@ -806,9 +763,8 @@ class PokerSeat extends BaseEventEmitter implements PokerSeatInterface {
    * // Console Output: 2
    * ```
    */
-  private __setPosition(position: number): number {
+  private __setPosition(position: number): void {
     this.__position = position;
-    return this.__position;
   }
 
   /**
@@ -892,59 +848,19 @@ class PokerSeat extends BaseEventEmitter implements PokerSeatInterface {
    * // Console Output: <PlayerInstance>
    * ```
    */
-  private __setPlayer(
-    player: PokerPlayerInterface | undefined
-  ): PokerPlayerInterface | undefined {
+  private __setPlayer(player?: PokerPlayerInterface): void {
     this.__player = player;
-    return this.__player;
   }
 
-  /**
-   * #### Description
-   * The `__setPlayer` method assigns a player to this `PokerSeat`.
-   *
-   * #### Purpose
-   * This method designates a player to occupy the seat or clears the seat if set to `undefined`, allowing for
-   * seat availability management.
-   *
-   * #### Implements
-   * N/A
-   *
-   * #### Overrides
-   * N/A
-   *
-   * #### Parameters
-   * - `player: PokerPlayerInterface | undefined` - The player instance to be assigned to the seat, or `undefined` to mark the seat vacant.
-   *
-   * #### Requirements
-   * - `player` must be an instance of `PokerPlayerInterface`, or `undefined` to vacate the seat.
-   *
-   * #### Returns
-   * - `PokerPlayerInterface | undefined` - The player occupying the seat or `undefined` if vacant.
-   *
-   * #### Usage
-   * This method is used internally to assign a player to the seat or clear the seat.
-   *
-   * @param {PokerPlayerInterface | undefined} player - The player to occupy the seat, or `undefined` if no player is assigned.
-   *
-   * @returns {PokerPlayerInterface | undefined} - The player instance or `undefined` after assignment.
-   *
-   * @example
-   * ```typescript
-   * const pokerSeat = new PokerSeat();
-   * pokerSeat.__setPlayer(playerInstance);
-   * console.log(pokerSeat.getPlayer());
-   * // Console Output: <PlayerInstance>
-   * ```
-   */
-  public __setRoles(role: string[]): string[] {
-    this.__roles = role;
-    return this.__roles;
-  }
-
-  private __addRole(role: string): string[] {
-    this.__roles.push(role);
-    return this.getRoles();
+  private __addRole(role: string): void {
+    if (!role || role.trim() === "") {
+      logger.log(
+        LogLevel.WARN,
+        "Role cannot be an empty string or whitespace."
+      );
+      return; // Gracefully handle invalid input without throwing an error.
+    }
+    this.__roles.add(role);
   }
 
   /**

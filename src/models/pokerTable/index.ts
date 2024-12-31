@@ -731,7 +731,7 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
 
     // Sort occupied seats to determine the dealer position
     const dealerSeat = occupiedSeats.sort(
-      (a, b) => a.getPosition() - b.getPosition()
+      (a, b) => (a.getPosition()) - (b.getPosition()) 
     )[0];
     dealerSeat.addRole(PokerSeatRoles.DEALER);
 
