@@ -12,13 +12,13 @@ interface PokerSeatConfig {
    * @property {string | undefined} id
    * The maximum number of players that can be seated at the PokerTable[2-14].
    */
-  id?: string;
+  id?: string|null;
 
   /**
    * @property {number} position
    * The maximum number of players that can be seated at the PokerTable[2-14].
    */
-  position?: number;
+  position: number ;
 
   /**
    * @property {boolean} isDealer
@@ -74,7 +74,7 @@ interface PokerSeatInterface extends BaseEventEmitterInterface {
    * const rank = card.getRank();
    * console.log(rank); // "A"
    */
-  getId(): string;
+  getId(): string | null;
 
   /**
    * `getPosition`
@@ -86,7 +86,7 @@ interface PokerSeatInterface extends BaseEventEmitterInterface {
    * const rank = card.getRank();
    * console.log(rank); // "A"
    */
-  getPosition(): number;
+  getPosition(): number ;
 
   /**
    * `isDealer`
@@ -114,7 +114,7 @@ interface PokerSeatInterface extends BaseEventEmitterInterface {
 
   getRoles(): string[];
 
-  addRole(role: string): string[];
+  addRole(role: string): void;
 
   /**************************************************************************************************************
    * UPDATE METHODS (MODIFYING EXISTING OBJECTS)
