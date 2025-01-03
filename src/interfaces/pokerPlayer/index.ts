@@ -68,6 +68,8 @@ interface PokerPlayerInterface extends BaseEventEmitterInterface {
    */
   getId(): string;
 
+  getName(): string;
+
   getChips(): number;
 
   bet(amount: number): boolean;

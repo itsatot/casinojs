@@ -31,7 +31,7 @@ class PokerPlayer extends BaseEventEmitter implements PokerPlayerInterface {
    * @private
    * A unique identifier for the PokerPlayer.
    */
-  private __id: string = ``;
+  private __id: string  = ``;
 
   /**
    * @property {string} _name
@@ -87,14 +87,16 @@ class PokerPlayer extends BaseEventEmitter implements PokerPlayerInterface {
   }
 
   private __init(config?: PokerPlayerConfig) {
-    if (config) {
-      this.__id = config.id ? config.id : generateUniqueId();
-      this.__name = config.name ? config.name : this.__name;
-      this.__chips = config.chips ? config.chips : this.__chips;
-      this.__hand = config.hand ? config.hand : this.__hand;
-      this.__isFolded = config.isFolded ? config.isFolded : this.__isFolded;
-      this.__isBetMatched = this.__isBetMatched;
-    }
+    config?.id ? this.__setId(config.id) : this.__setId(generateUniqueId());
+    config?.name ? this.setName(config.name) : this.setName("Player 1");
+    config?.chips !== undefined
+      ? this.setChips(config.chips)
+      : this.setChips(this.__chips);
+    config?.hand ? this.setHand(config.hand) : this.setHand(this.__hand);
+    config?.isFolded
+      ? this.setIsFolded(config.isFolded)
+      : this.setIsFolded(this.__isFolded);
+    this.setisBetMatched(false);
   }
   /**************************************************************************************************************
    * CREATE METHODS (SETTERS & OBJECT CREATION)
@@ -143,7 +145,7 @@ class PokerPlayer extends BaseEventEmitter implements PokerPlayerInterface {
    * ```
    */
   public setName(name: string): string {
-    return this._setName(name);
+    return this.__setName(name);
   }
 
   /**
@@ -157,7 +159,7 @@ class PokerPlayer extends BaseEventEmitter implements PokerPlayerInterface {
    * console.log(rank); // "A"
    */
   public setChips(chips: number): number {
-    return this._setChips(chips);
+    return this.__setChips(chips);
   }
 
   /**
@@ -171,7 +173,7 @@ class PokerPlayer extends BaseEventEmitter implements PokerPlayerInterface {
    * console.log(rank); // "A"
    */
   public setHand(hand: CardInterface[]): CardInterface[] {
-    return this._setHand(hand);
+    return this.__setHand(hand);
   }
 
   /**
@@ -198,8 +200,17 @@ class PokerPlayer extends BaseEventEmitter implements PokerPlayerInterface {
    * const rank = card.getRank();
    * console.log(rank); // "A"
    */
+
   public setIsFolded(bool: boolean): boolean {
     return this.__setIsFolded(bool);
+  }
+
+  public bet(amount: number): boolean {
+    return this.__bet(amount);
+  }
+
+  public addToHand(card: CardInterface): boolean {
+    return this.__addToHand(card);
   }
 
   /**************************************************************************************************************
@@ -294,8 +305,11 @@ class PokerPlayer extends BaseEventEmitter implements PokerPlayerInterface {
    * UPDATE METHODS (MODIFYING EXISTING OBJECTS)
    **************************************************************************************************************/
 
-  public bet(amount: number): boolean {
-    this.__chips = this.getChips() - amount;
+  private __bet(amount: number): boolean {
+    if (amount > this.__chips) {
+      throw new Error("Insufficient chips.");
+    }
+    this.__chips -= amount;
     return true;
   }
 
@@ -310,8 +324,8 @@ class PokerPlayer extends BaseEventEmitter implements PokerPlayerInterface {
    * console.log(rank); // "A"
    */
 
-  public addToHand(hand: CardInterface): boolean {
-    this.getHand().push(hand);
+  private __addToHand(card: CardInterface): boolean {
+    this.__hand.push(card);
     return true;
   }
   /**************************************************************************************************************
@@ -330,7 +344,7 @@ class PokerPlayer extends BaseEventEmitter implements PokerPlayerInterface {
    * INTERNAL METHODS (PROTECTED)
    **************************************************************************************************************/
 
-  protected _setName(name: string): string {
+  private __setName(name: string): string {
     this.__name = name;
     return this.__name;
   }
@@ -345,7 +359,10 @@ class PokerPlayer extends BaseEventEmitter implements PokerPlayerInterface {
    * const rank = card.getRank();
    * console.log(rank); // "A"
    */
-  protected _setChips(chips: number): number {
+  private __setChips(chips: number): number {
+    if (chips < 0) {
+      throw new Error("Chips cannot be negative.");
+    }
     this.__chips = chips;
     return this.__chips;
   }
@@ -360,7 +377,7 @@ class PokerPlayer extends BaseEventEmitter implements PokerPlayerInterface {
    * const rank = card.getRank();
    * console.log(rank); // "A"
    */
-  protected _setHand(hand: CardInterface[]): CardInterface[] {
+  private __setHand(hand: CardInterface[]): CardInterface[] {
     this.__hand = hand;
     return this.__hand;
   }
