@@ -308,7 +308,7 @@ interface PokerRoomInterface extends BaseEventEmitterInterface {
    * console.log(pokerRoom.getId()); // Logs "Room123"
    * ```
    */
-  getId(): string | null;
+  getId(): string;
 
   /**
    * #### Description
@@ -348,7 +348,7 @@ interface PokerRoomInterface extends BaseEventEmitterInterface {
    * console.log(pokerRoom.getName()); // Logs "VIP Room"
    * ```
    */
-  getName(): string | null;
+  getName(): string;
 
   /**
    * #### Description

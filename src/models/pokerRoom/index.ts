@@ -30,8 +30,8 @@ class PokerRoom extends BaseEventEmitter implements PokerRoomInterface {
    * PROPERTIES
    **************************************************************************************************************/
 
-  private __id: string | null = null;
-  private __name: string | null = null;
+  private __id: string = ``;
+  private __name: string = ``;
   private __tables: PokerTableInterface[] = [];
   /**************************************************************************************************************
    * CONSTRUCTOR & INITIALIZERS
@@ -72,16 +72,11 @@ class PokerRoom extends BaseEventEmitter implements PokerRoomInterface {
    * ```
    */
   private __init(config?: PokerRoomConfig): void {
-    if (config) {
-      this.__id = config.id || generateUniqueId();
-      this.__name = config.name || "Unnamed Room";
-      config.tableConfigs?.forEach((tconfig) => {
-        this.createTable(tconfig);
-      });
-    } else {
-      this.__id = generateUniqueId();
-      this.__name = "Unnamed Room";
-    }
+    config?.id ? this._setId(config.id) : this._setId(generateUniqueId());
+    config?.name ? this.setName(config.name) : this.setName("Unnamed Room");
+    config?.tableConfigs?.forEach((tconfig) => {
+      this.createTable(tconfig);
+    });
   }
 
   /**************************************************************************************************************
@@ -132,7 +127,7 @@ class PokerRoom extends BaseEventEmitter implements PokerRoomInterface {
    */
   public setName(name: string): string {
     this._setName(name);
-    return this.__name!;
+    return this.__name;
   }
   /**
    * #### Description
@@ -274,7 +269,7 @@ class PokerRoom extends BaseEventEmitter implements PokerRoomInterface {
    * console.log(newRoom.getName()); // Outputs: "Champions Lounge"
    * ```
    */
-  public getId(): string | null {
+  public getId(): string {
     return this.__id;
   }
 
@@ -316,7 +311,7 @@ class PokerRoom extends BaseEventEmitter implements PokerRoomInterface {
    * console.log(pokerRoom.getName()); // Logs "VIP Room"
    * ```
    */
-  public getName(): string | null {
+  public getName(): string{
     return this.__name;
   }
 
@@ -382,27 +377,11 @@ class PokerRoom extends BaseEventEmitter implements PokerRoomInterface {
    **************************************************************************************************************/
 
   public deleteTable(index: number): void {
-    if (this.isValidIndex(index)) {
-      const removedTable = this.__tables.splice(index, 1);
-      this.emitEvent(PokerRoomEvents.TABLE_DELETED, {
-        event: {
-          source: Source.POKER_ROOM,
-          data: { roomId: this.getId() },
-        },
-        middlewares: [],
-      });
-    }
+    return this.__deleteTable(index);
   }
 
   public clearTables(): void {
-    this.__tables = [];
-    this.emitEvent(PokerRoomEvents.ROOM_RESET, {
-      event: {
-        source: Source.POKER_ROOM,
-        data: { roomId: this.getId() },
-      },
-      middlewares: [],
-    });
+    return this.__clearTables();
   }
 
   /**************************************************************************************************************
@@ -517,6 +496,11 @@ class PokerRoom extends BaseEventEmitter implements PokerRoomInterface {
    * INTERNAL METHODS (PROTECTED)
    **************************************************************************************************************/
 
+  protected _setId(id: string): string {
+    this.__id = id;
+    return this.__id;
+  }
+
   protected _setName(name: string): void {
     if (!name || name.trim() === "") {
       throw new Error("Name cannot be empty.");
@@ -592,7 +576,32 @@ class PokerRoom extends BaseEventEmitter implements PokerRoomInterface {
 
   /**************************************************************************************************************
    * INTERNAL METHODS (PRIVATE)
-   **************************************************************************************************************/
+  **************************************************************************************************************/
+  private __deleteTable(index: number): void {
+    if (this.isValidIndex(index)) {
+      const removedTable = this.__tables.splice(index, 1);
+      this.emitEvent(PokerRoomEvents.TABLE_DELETED, {
+        event: {
+          source: Source.POKER_ROOM,
+          data: { roomId: this.getId() },
+        },
+        middlewares: [],
+      });
+    }
+  }
+
+
+  private __clearTables(): void {
+    this.__tables = [];
+    this.emitEvent(PokerRoomEvents.ROOM_RESET, {
+      event: {
+        source: Source.POKER_ROOM,
+        data: { roomId: this.getId() },
+      },
+      middlewares: [],
+    });
+  }
+
 }
 
 export { PokerRoom };

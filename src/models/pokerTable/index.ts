@@ -101,7 +101,7 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
    * console.log(table.getId()); // Console Output: A unique table ID
    * ```
    */
-  private __id: string | null = null;
+  private __id: string = ``;
 
   /**
    * @property {string} __name
@@ -121,7 +121,7 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
    * console.log(table.getName()); // Console Output: "High Stakes Table"
    * ```
    */
-  private __name: string | null = null;
+  private __name: string = ``;
 
   /**
    * @property {number} __smallBlind
@@ -141,13 +141,11 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
    * console.log(table.getSmallBlind()); // Console Output: 5
    * ```
    */
-  private __smallBlind: number | null = null;
+  private __smallBlind: number = 1;
 
-  private __bigBlindAmount: number | null = null;
+  private __bigBlindAmount: number = 0;
 
-  private __size: number | null = null;
-
-  // private __bigBlindAmount: number | null = null;
+  private __size: number = 2;
 
   /**
    * @property {number} __bigBlindAmount
@@ -294,27 +292,25 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
    * ```
    */
   private __init(config?: PokerTableConfig): void {
-    if (config) {
-         const size = config.size ?? 2; // Default to 2 players if size is not defined
+    const size = config?.size ?? this.__size; // Default to 2 players if size is not defined
 
-         // Validate table size
-         if (!Number.isInteger(size) || size <= 0 || size > 10) {
-           throw new Error(
-             "Table size must be a positive integer between 2 and 10."
-           );
-         }
-         // Validate small blind
-         if (config.smallBlind && config.smallBlind <= 0) {
-           throw new Error("Small blind must be a positive number.");
-         }
-      // Set the unique seat ID; generate a new ID if not provided.
-      this.__id = config.id || generateUniqueId();
-      this.__name = config.name || "Unnamed Room";
-      this.__smallBlind = config.smallBlind || 1;
-      this.__bigBlindAmount = this.__smallBlind * this.BIG_BLIND_MULTIPLIER;
-      this.__size = config.size || 2;
-      this.__seats = this.__initializeSeats(this.__size);
+    // Validate table size
+    if (!Number.isInteger(size) || size <= 0 || size > 10) {
+      throw new Error(
+        "Table size must be a positive integer between 2 and 10."
+      );
     }
+    // Validate small blind
+    if (config?.smallBlind && config?.smallBlind <= 0) {
+      throw new Error("Small blind must be a positive number.");
+    }
+    // Set the unique seat ID; generate a new ID if not provided.
+    config?.id ? this.__setId(config.id) : this.__setId(generateUniqueId());
+    config?.name ? this.setName(config.name) : this.setName("Unnamed Table");
+    config?.smallBlind ? this.__setSmallBlind(config.smallBlind) :  this.__setSmallBlind(this.__smallBlind);
+    this.__bigBlindAmount = this.getSmallBlind() * this.BIG_BLIND_MULTIPLIER;
+    config?.size ? = this.__size;
+    this.__seats = this.__initializeSeats(this.__size);
   }
 
   private __initializeSeats(size: number): PokerSeatInterface[] {
@@ -400,7 +396,7 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
    * const rank = card.getRank();
    * console.log(rank); // "A"
    */
-  public getId(): string | null {
+  public getId(): string {
     return this.__id;
   }
 
@@ -414,7 +410,7 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
    * const rank = card.getRank();
    * console.log(rank); // "A"
    */
-  public getName(): string | null {
+  public getName(): string {
     return this.__name;
   }
 
@@ -428,7 +424,7 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
    * const rank = card.getRank();
    * console.log(rank); // "A"
    */
-  public getSmallBlind(): number | null {
+  public getSmallBlind(): number {
     return this.__smallBlind;
   }
 
@@ -442,7 +438,7 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
    * const rank = card.getRank();
    * console.log(rank); // "A"
    */
-  public getBigBlind(): number | null {
+  public getBigBlind(): number {
     return this.__bigBlindAmount;
   }
 
@@ -636,6 +632,11 @@ class PokerTable extends BaseEventEmitter implements PokerTableInterface {
   private __setName(name: string): string {
     this.__name = name;
     return this.__name;
+  }
+
+  private __setSize(size: number): number {
+    this.__size = size;
+    return this.__size;
   }
 
   private __setSmallBlind(smallBlind: number): number {
