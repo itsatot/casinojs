@@ -47,6 +47,24 @@ interface PokerPhaseConfig {
  *
  * @extends NodeJS.EventEmitter
  */
-interface PokerPhaseInterface extends BaseEventEmitterInterface {}
+interface PokerPhaseInterface extends BaseEventEmitterInterface {
+  getName(): PokerPhases;
+  
+  getPlayers(): PokerPlayerInterface[];
+
+  getCurrentPlayerPos(): number;
+
+  getDeck(): DeckInterface;
+
+  getPot(): number;
+
+  getDealerPos(): number;
+
+  getSmallBlindPos(): number;
+
+  getBigBlindPos(): number;
+
+  getCommunityCards(): CardInterface[];
+}
 
 export { PokerPhaseConfig, PokerPhaseInterface };

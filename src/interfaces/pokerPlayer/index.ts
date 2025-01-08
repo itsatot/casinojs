@@ -72,11 +72,17 @@ interface PokerPlayerInterface extends BaseEventEmitterInterface {
 
   getChips(): number;
 
+  getCurrentBet(): number;
+
   bet(amount: number): boolean;
+
+  isFolded(): boolean;
 
   setIsFolded(bool: boolean): boolean;
 
   addToHand(hand: CardInterface): boolean;
+
+  setChips(chips: number): number;
 }
 
 export { PokerPlayerConfig, PokerPlayerInterface };
