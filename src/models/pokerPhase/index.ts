@@ -652,8 +652,8 @@ class PokerPhase extends BaseEventEmitter implements PokerPhaseInterface {
     } else {
       // For >2 players, determine based on phase
       if (this.__name === PokerPhases.PRE_FLOP) {
-        this.__currentPlayerPos =
-          (this.getBigBlindPos() + 1) % this.__players.length; // Player after the big blind acts first
+        this.__currentPlayerPos = (this.getBigBlindPos() + 1) % this.__players.length; // Player after the big blind acts first
+        console.log(this.__currentPlayerPos);
       } else {
         this.__currentPlayerPos = this.getSmallBlindPos(); // Small blind acts first post-flop
       }
