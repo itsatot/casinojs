@@ -180,7 +180,7 @@ class PokerPhase extends BaseEventEmitter implements PokerPhaseInterface {
    * console.log(pokerPhase.__currentPlayerPos); // Expected output: 1
    * ```
    */
-  private __currentPlayerPos: number = 1;
+  private __currentPlayerPos: number = 0;
 
   /**************************************************************************************************************
    * CONSTRUCTOR & INITIALIZERS
@@ -220,22 +220,24 @@ class PokerPhase extends BaseEventEmitter implements PokerPhaseInterface {
    * });
    * ```
    */
-  constructor(config?: PokerPhaseConfig) {
+  constructor(config: PokerPhaseConfig) {
     super();
     this.__init(config);
   }
 
-  private __init(config?: PokerPhaseConfig): void {
+  private __init(config: PokerPhaseConfig): void {
     // If config is undefined, use an empty object to avoid undefined property access
 
     // Initialize properties with fallback values
-    this.__name = config?.name ?? PokerPhases.PRE_FLOP;
-    this.__deck = config?.deck ?? new Deck();
-    this.__communityCards = config?.communityCards ?? this.__communityCards;
-    this.__players = config?.players ?? this.__players;
+    this.__setName(config.name || PokerPhases.PRE_FLOP);
+    this.__setDeck(config.deck || new Deck());
+    this.__setCommunityCards(config.communityCards || this.__communityCards);
+    this.__setPlayers(config.players);
 
     // Initialize the pot with small blind and big blind
-    this.__initializeBlinds(config?.smallBlind!, config?.bigBlind!);
+    this.__initializeBlinds(config.smallBlind, config.bigBlind);
+
+    this.__initializeCurrentPlayer();
 
     if (this.getName() === PokerPhases.PRE_FLOP) {
       this.__dealPlayerCards(); // Deal cards to players if this is the "Pre-Flop" phase
@@ -516,7 +518,6 @@ class PokerPhase extends BaseEventEmitter implements PokerPhaseInterface {
 
   private __dealCommunityCards(count: number): boolean {
     for (let i = 0; i < count; i++) {
-      console.log(this.__deck);
       const card = this.__deck.draw();
       if (card) this.__communityCards.push(card);
     }
@@ -532,6 +533,15 @@ class PokerPhase extends BaseEventEmitter implements PokerPhaseInterface {
   }
 
   private __advanceToNextPlayer(): void {
+
+    const activePlayers = this.__players.filter((player) => !player.isFolded());
+
+    if (activePlayers.length === 1) {
+      // End the phase if only one player remains
+      console.log(`Player ${activePlayers[0].getId()} wins the hand.`);
+      return; // No need to advance the turn
+    }
+    
     do {
       this.__currentPlayerPos =
         (this.__currentPlayerPos + 1) % this.__players.length;
@@ -560,10 +570,8 @@ class PokerPhase extends BaseEventEmitter implements PokerPhaseInterface {
     }
 
     currentPlayer.bet(amount);
-    console.log(this.getPot());
 
     this.__setPot(this.getPot() + amount);
-    console.log(this.getPot());
     this.__advanceToNextPlayer();
 
     return true;
@@ -604,9 +612,19 @@ class PokerPhase extends BaseEventEmitter implements PokerPhaseInterface {
     return true;
   }
 
-  private __setName(name: PokerPhases): PokerPhases {
+  private __setName(name: PokerPhases): boolean {
     this.__name = name;
-    return this.__name;
+    return true;
+  }
+
+  private __setDeck(deck: DeckInterface): boolean {
+    this.__deck = deck;
+    return true;
+  }
+
+  private __setCommunityCards(cards: CardInterface[]): boolean {
+    this.__communityCards = cards;
+    return true;
   }
 
   private __setPlayers(
@@ -624,13 +642,21 @@ class PokerPhase extends BaseEventEmitter implements PokerPhaseInterface {
   }
 
   private __initializeCurrentPlayer(): void {
-    if (this.getPlayers().length === 2) {
-      // For 2 players, start with the small blind
-      this.__currentPlayerPos = this.getSmallBlindPos();
+    if (this.__players.length === 2) {
+      // For 2 players, determine based on phase
+      if (this.__name === PokerPhases.PRE_FLOP) {
+        this.__currentPlayerPos = this.getSmallBlindPos(); // Small blind acts first pre-flop
+      } else {
+        this.__currentPlayerPos = this.getBigBlindPos(); // Big blind acts first post-flop
+      }
     } else {
-      // For >2 players, start with the player after the big blind
-      this.__currentPlayerPos =
-        (this.getBigBlindPos() + 1) % this.getPlayers().length;
+      // For >2 players, determine based on phase
+      if (this.__name === PokerPhases.PRE_FLOP) {
+        this.__currentPlayerPos =
+          (this.getBigBlindPos() + 1) % this.__players.length; // Player after the big blind acts first
+      } else {
+        this.__currentPlayerPos = this.getSmallBlindPos(); // Small blind acts first post-flop
+      }
     }
   }
 }

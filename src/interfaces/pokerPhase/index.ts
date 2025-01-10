@@ -49,7 +49,7 @@ interface PokerPhaseConfig {
  */
 interface PokerPhaseInterface extends BaseEventEmitterInterface {
   getName(): PokerPhases;
-  
+
   getPlayers(): PokerPlayerInterface[];
 
   getCurrentPlayerPos(): number;
@@ -65,6 +65,8 @@ interface PokerPhaseInterface extends BaseEventEmitterInterface {
   getBigBlindPos(): number;
 
   getCommunityCards(): CardInterface[];
+
+  currentPlayerfold(): boolean;
 }
 
 export { PokerPhaseConfig, PokerPhaseInterface };
