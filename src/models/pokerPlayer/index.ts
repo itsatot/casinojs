@@ -207,6 +207,10 @@ class PokerPlayer extends BaseEventEmitter implements PokerPlayerInterface {
     return this.__setIsFolded(bool);
   }
 
+  public setCurrentBet(currentBet: number): number {
+    return this.__setCurrentBet(currentBet);
+  }
+
   public bet(amount: number): boolean {
     return this.__bet(amount);
   }
@@ -317,7 +321,7 @@ class PokerPlayer extends BaseEventEmitter implements PokerPlayerInterface {
 
   private __bet(amount: number): boolean {
     if (amount > this.__chips) {
-      throw new Error("Insufficient chips.");
+      throw new Error("Player does not have enough chips to bet.");
     }
     this.__chips -= amount;
     this.__currentBet += amount;
@@ -440,6 +444,11 @@ class PokerPlayer extends BaseEventEmitter implements PokerPlayerInterface {
   private __setisBetMatched(betMatched: boolean): boolean {
     this.__isBetMatched = betMatched;
     return this.__isBetMatched;
+  }
+
+  private __setCurrentBet(currentBet: number): number {
+    this.__currentBet = currentBet;
+    return this.__currentBet;
   }
 }
 

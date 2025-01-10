@@ -255,12 +255,12 @@ class PokerPhase extends BaseEventEmitter implements PokerPhaseInterface {
    * CREATE METHODS (SETTERS & OBJECT CREATION)
    **************************************************************************************************************/
 
-  public bet(amount: number): boolean {
-    return this._bet(amount);
+  public currentPlayerBet(amount: number): boolean {
+    return this._currentPlayerBet(amount);
   }
 
-  public fold(): boolean {
-    return this._fold();
+  public currentPlayerfold(): boolean {
+    return this._currentPlayerFold();
   }
   /**************************************************************************************************************
    * READ METHODS (GETTERS & DATA RETRIEVAL)
@@ -516,6 +516,7 @@ class PokerPhase extends BaseEventEmitter implements PokerPhaseInterface {
 
   private __dealCommunityCards(count: number): boolean {
     for (let i = 0; i < count; i++) {
+      console.log(this.__deck);
       const card = this.__deck.draw();
       if (card) this.__communityCards.push(card);
     }
@@ -545,7 +546,7 @@ class PokerPhase extends BaseEventEmitter implements PokerPhaseInterface {
    * INTERNAL METHODS (PROTECTED)
    **************************************************************************************************************/
 
-  protected _bet(amount: number): boolean {
+  protected _currentPlayerBet(amount: number): boolean {
     const currentPlayer = this.getPlayers()[this.getCurrentPlayerPos()];
 
     if (!currentPlayer || currentPlayer.isFolded()) {
@@ -559,14 +560,16 @@ class PokerPhase extends BaseEventEmitter implements PokerPhaseInterface {
     }
 
     currentPlayer.bet(amount);
+    console.log(this.getPot());
 
     this.__setPot(this.getPot() + amount);
+    console.log(this.getPot());
     this.__advanceToNextPlayer();
 
     return true;
   }
 
-  protected _fold(): boolean {
+  protected _currentPlayerFold(): boolean {
     const currentPlayer = this.getPlayers()[this.getCurrentPlayerPos()];
 
     if (!currentPlayer) {
@@ -581,7 +584,7 @@ class PokerPhase extends BaseEventEmitter implements PokerPhaseInterface {
    * INTERNAL METHODS (PRIVATE)
    **************************************************************************************************************/
 
-  public isPhaseCompleted(): boolean {
+  public isCompleted(): boolean {
     const activePlayers = this.__players.filter((player) => !player.isFolded());
     const highestBet = Math.max(
       ...activePlayers.map((p) => p.getCurrentBet() || 0)
@@ -618,6 +621,17 @@ class PokerPhase extends BaseEventEmitter implements PokerPhaseInterface {
 
     this.__placeBlind(smallBlindPos, smallBlind);
     this.__placeBlind(bigBlindPos, bigBlind);
+  }
+
+  private __initializeCurrentPlayer(): void {
+    if (this.getPlayers().length === 2) {
+      // For 2 players, start with the small blind
+      this.__currentPlayerPos = this.getSmallBlindPos();
+    } else {
+      // For >2 players, start with the player after the big blind
+      this.__currentPlayerPos =
+        (this.getBigBlindPos() + 1) % this.getPlayers().length;
+    }
   }
 }
 

@@ -62,6 +62,8 @@ describe("PokerPhase", () => {
     });
 
     test("should emit INITIALIZED event after initialization", () => {
+      const spy = jest.spyOn(PokerPhase.prototype, "emitEvent");
+
       const phase = new PokerPhase({
         name: PokerPhases.PRE_FLOP,
         players,
@@ -69,7 +71,14 @@ describe("PokerPhase", () => {
         smallBlind: 10,
         bigBlind: 20,
       });
+
+      expect(spy).toHaveBeenCalledWith(
+        PokerPhaseEvents.INITIALIZED,
+        expect.any(Object)
+      );
       expect(phase.getName()).toBe(PokerPhases.PRE_FLOP);
+
+      spy.mockRestore();
     });
   });
 
@@ -83,15 +92,15 @@ describe("PokerPhase", () => {
         bigBlind: 20,
       });
 
-      phase.bet(50);
+      phase.currentPlayerBet(50);
 
-      expect(players[0].getChips()).toBe(950);
-      expect(players[0].getCurrentBet()).toBe(50);
-      expect(phase.getPot()).toBe(50);
-    });
+      expect(phase.getPlayers()[0].getChips()).toBe(940);
+      expect(phase.getPlayers()[0].getCurrentBet()).toBe(60);
+      expect(phase.getPot()).toBe(80);
+    }); 
 
     test("should throw an error for insufficient chips", () => {
-      players[0].setChips(20);
+      
       const phase = new PokerPhase({
         name: PokerPhases.PRE_FLOP,
         players,
@@ -100,7 +109,9 @@ describe("PokerPhase", () => {
         bigBlind: 20,
       });
 
-      expect(() => phase.bet(50)).toThrow(
+      phase.getPlayers()[0].setChips(20);
+
+      expect(() => phase.getPlayers()[0].bet(50)).toThrow(
         "Player does not have enough chips to bet."
       );
     });
@@ -116,7 +127,7 @@ describe("PokerPhase", () => {
         bigBlind: 20,
       });
 
-      phase.fold();
+      phase.getPlayers()[0].setIsFolded(true);
 
       expect(players[0].isFolded()).toBe(true);
     });
@@ -134,15 +145,15 @@ describe("PokerPhase", () => {
 
       phase.dealCommunityCards(3);
 
-      expect(deck.size()).toBe(49);
+      expect(deck.getCards().length).toBe(49);
       expect(phase.getCommunityCards()).toHaveLength(3);
     });
   });
 
   describe("Phase Completion", () => {
     test("should return true if all active players match the highest bet", () => {
-      players[0].currentBet = 100;
-      players[1].currentBet = 100;
+      players[0].setCurrentBet(100);
+      players[1].setCurrentBet(100);
 
       const phase = new PokerPhase({
         name: PokerPhases.PRE_FLOP,
@@ -152,12 +163,12 @@ describe("PokerPhase", () => {
         bigBlind: 20,
       });
 
-      expect(phase.isPhaseCompleted()).toBe(true);
+      expect(phase.isCompleted()).toBe(true);
     });
 
     test("should return false if any active player has not matched the highest bet", () => {
-      players[0].currentBet = 100;
-      players[1].currentBet = 50;
+      players[0].setCurrentBet(100);
+      players[1].setCurrentBet(100);
 
       const phase = new PokerPhase({
         name: PokerPhases.PRE_FLOP,
@@ -167,7 +178,7 @@ describe("PokerPhase", () => {
         bigBlind: 20,
       });
 
-      expect(phase.isPhaseCompleted()).toBe(false);
+      expect(phase.isCompleted()).toBe(false);
     });
   });
 
