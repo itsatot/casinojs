@@ -103,11 +103,6 @@ class Casino extends BaseEventEmitter implements CasinoInterface {
    * @returns {PokerRoomInterface[]} - Returns the updated list of rooms.
    */
   public setRooms(rooms: PokerRoomInterface[]): PokerRoomInterface[] {
-    if (!Array.isArray(rooms) || rooms.some((room) => !room)) {
-      throw new Error(
-        "Invalid input: rooms must be a non-empty array of PokerRoomInterface."
-      );
-    }
     return this._setRooms(rooms);
   }
 
@@ -227,14 +222,7 @@ class Casino extends BaseEventEmitter implements CasinoInterface {
    * @throws {Error} - Throws an error if the index is out of bounds.
    */
   public isValidIndex(index: number): boolean {
-    if (index < 0 || index >= this.roomCount()) {
-      throw new Error(
-        `Invalid index: ${index}. It must be between 0 and ${
-          this.roomCount() - 1
-        }.`
-      );
-    }
-    return true;
+    return this.__isValidIndex(index);
   }
 
   /**************************************************************************************************************
@@ -249,6 +237,11 @@ class Casino extends BaseEventEmitter implements CasinoInterface {
    * @returns {PokerRoomInterface[]} - Returns the updated list of rooms.
    */
   protected _setRooms(rooms: PokerRoomInterface[]): PokerRoomInterface[] {
+    if (!Array.isArray(rooms) || rooms.some((room) => !room)) {
+      throw new Error(
+        "Invalid input: rooms must be a non-empty array of PokerRoomInterface."
+      );
+    }
     this.__rooms = rooms;
     this.emit(CasinoEvents.ROOMS_SET, this.getRooms());
     return this.getRooms();
@@ -331,7 +324,19 @@ class Casino extends BaseEventEmitter implements CasinoInterface {
 
   /**************************************************************************************************************
    * INTERNAL METHODS (PRIVATE)
-   **************************************************************************************************************/
+  **************************************************************************************************************/
+
+  private __isValidIndex(index: number): boolean {
+    if (index < 0 || index >= this.roomCount()) {
+      throw new Error(
+        `Invalid index: ${index}. It must be between 0 and ${
+          this.roomCount() - 1
+        }.`
+      );
+    }
+    return true;
+  }
+
 }
 
 export { Casino };

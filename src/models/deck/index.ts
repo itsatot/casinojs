@@ -127,7 +127,7 @@ class Deck extends BaseEventEmitter implements DeckInterface {
    * console.log(drawnCard?.toString()); // "A of Spades"
    */
   public draw(): CardInterface | undefined {
-    const drawnCard = this.__cards.pop();
+    const drawnCard = this.__cards.pop(); 
     this.emit("deck:drawn", drawnCard);
     return drawnCard;
   }

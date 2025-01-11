@@ -1,4 +1,4 @@
-//collapse
+//@collapse
 
 // Import Enums
 import { LogLevel, PokerSeatEvents, Source } from "../../enums";
@@ -93,7 +93,7 @@ class PokerSeat extends BaseEventEmitter implements PokerSeatInterface {
    * console.log(pokerSeat.getId()); // Outputs a unique identifier, e.g., "123e4567-e89b-12d3-a456-426614174000"
    * ```
    */
-  private __id: string | null = null;
+  private __id: string = ``;
 
   /**
    * @property {number} __position

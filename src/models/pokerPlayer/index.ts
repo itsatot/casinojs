@@ -31,7 +31,7 @@ class PokerPlayer extends BaseEventEmitter implements PokerPlayerInterface {
    * @private
    * A unique identifier for the PokerPlayer.
    */
-  private __id: string  = ``;
+  private __id: string = ``;
 
   /**
    * @property {string} _name
@@ -67,6 +67,8 @@ class PokerPlayer extends BaseEventEmitter implements PokerPlayerInterface {
    * Indicates whether the player is still active in the current round or has folded.
    */
   private __isBetMatched: boolean = false;
+
+  private __currentBet: number = 0;
 
   /**************************************************************************************************************
    * CONSTRUCTOR & INITIALIZERS
@@ -205,6 +207,10 @@ class PokerPlayer extends BaseEventEmitter implements PokerPlayerInterface {
     return this.__setIsFolded(bool);
   }
 
+  public setCurrentBet(currentBet: number): number {
+    return this.__setCurrentBet(currentBet);
+  }
+
   public bet(amount: number): boolean {
     return this.__bet(amount);
   }
@@ -301,15 +307,24 @@ class PokerPlayer extends BaseEventEmitter implements PokerPlayerInterface {
     return this.__isBetMatched;
   }
 
+  public resetCurrentBet(): void {
+    this.__currentBet = 0;
+  }
+
+  public getCurrentBet(): number {
+    return this.__currentBet;
+  }
+
   /**************************************************************************************************************
    * UPDATE METHODS (MODIFYING EXISTING OBJECTS)
    **************************************************************************************************************/
 
   private __bet(amount: number): boolean {
     if (amount > this.__chips) {
-      throw new Error("Insufficient chips.");
+      throw new Error("Player does not have enough chips to bet.");
     }
     this.__chips -= amount;
+    this.__currentBet += amount;
     return true;
   }
 
@@ -429,6 +444,11 @@ class PokerPlayer extends BaseEventEmitter implements PokerPlayerInterface {
   private __setisBetMatched(betMatched: boolean): boolean {
     this.__isBetMatched = betMatched;
     return this.__isBetMatched;
+  }
+
+  private __setCurrentBet(currentBet: number): number {
+    this.__currentBet = currentBet;
+    return this.__currentBet;
   }
 }
 
