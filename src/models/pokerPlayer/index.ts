@@ -48,11 +48,11 @@ class PokerPlayer extends BaseEventEmitter implements PokerPlayerInterface {
   private __chips: number = 100;
 
   /**
-   * @property {CardInterface[]} _hand
+   * @property {CardInterface[]} _holeCardsCards
    * @private
-   * The player's hole cards (the two cards dealt to the player at the start of the game).
+   * The player's holeCardsCards cards (the two cards dealt to the player at the start of the game).
    */
-  private __hand: CardInterface[] = [];
+  private __holeCards: CardInterface[] = [];
 
   /**
    * @property {boolean} _isFolded
@@ -94,7 +94,7 @@ class PokerPlayer extends BaseEventEmitter implements PokerPlayerInterface {
     config?.chips !== undefined
       ? this.setChips(config.chips)
       : this.setChips(this.__chips);
-    config?.hand ? this.setHand(config.hand) : this.setHand(this.__hand);
+    config?.holeCards ? this.setHoleCards(config.holeCards) : this.setHoleCards(this.__holeCards);
     config?.isFolded
       ? this.setIsFolded(config.isFolded)
       : this.setIsFolded(this.__isFolded);
@@ -165,7 +165,7 @@ class PokerPlayer extends BaseEventEmitter implements PokerPlayerInterface {
   }
 
   /**
-   * `setHand`
+   * `setHoleCards`
    * @private
    * Returns the poker table's `id`.
    * @returns {number} The poker table's `id`.
@@ -174,12 +174,12 @@ class PokerPlayer extends BaseEventEmitter implements PokerPlayerInterface {
    * const rank = card.getRank();
    * console.log(rank); // "A"
    */
-  public setHand(hand: CardInterface[]): CardInterface[] {
-    return this.__setHand(hand);
+  public setHoleCards(holeCards: CardInterface[]): CardInterface[] {
+    return this.__setHoleCards(holeCards);
   }
 
   /**
-   * `getHand`
+   * `getHoleCards`
    * @public
    * Returns the poker table's `id`.
    * @returns {CardInterface[]} The poker table's `id`.
@@ -215,8 +215,12 @@ class PokerPlayer extends BaseEventEmitter implements PokerPlayerInterface {
     return this.__bet(amount);
   }
 
-  public addToHand(card: CardInterface): boolean {
-    return this.__addToHand(card);
+  public addToHoleCards(card: CardInterface): boolean {
+    return this.__addToHoleCards(card);
+  }
+
+  public addChips(amount: number): void {
+    return this.__addChips(amount);
   }
 
   /**************************************************************************************************************
@@ -266,7 +270,7 @@ class PokerPlayer extends BaseEventEmitter implements PokerPlayerInterface {
   }
 
   /**
-   * `getHand`
+   * `getHoleCards`
    * @public
    * Returns the poker table's `id`.
    * @returns {CardInterface[]} The poker table's `id`.
@@ -275,8 +279,8 @@ class PokerPlayer extends BaseEventEmitter implements PokerPlayerInterface {
    * const rank = card.getRank();
    * console.log(rank); // "A"
    */
-  public getHand(): CardInterface[] {
-    return this.__hand;
+  public getHoleCards(): CardInterface[] {
+    return this.__holeCards;
   }
 
   /**
@@ -294,7 +298,7 @@ class PokerPlayer extends BaseEventEmitter implements PokerPlayerInterface {
   }
 
   /**
-   * `getHand`
+   * `getHoleCards`
    * @public
    * Returns the poker table's `id`.
    * @returns {CardInterface[]} The poker table's `id`.
@@ -329,7 +333,7 @@ class PokerPlayer extends BaseEventEmitter implements PokerPlayerInterface {
   }
 
   /**
-   * `setHand`
+   * `setHoleCards`
    * @private
    * Returns the poker table's `id`.
    * @returns {number} The poker table's `id`.
@@ -339,8 +343,8 @@ class PokerPlayer extends BaseEventEmitter implements PokerPlayerInterface {
    * console.log(rank); // "A"
    */
 
-  private __addToHand(card: CardInterface): boolean {
-    this.__hand.push(card);
+  private __addToHoleCards(card: CardInterface): boolean {
+    this.__holeCards.push(card);
     return true;
   }
   /**************************************************************************************************************
@@ -383,7 +387,7 @@ class PokerPlayer extends BaseEventEmitter implements PokerPlayerInterface {
   }
 
   /**
-   * `setHand`
+   * `setHoleCards`
    * @private
    * Returns the poker table's `id`.
    * @returns {number} The poker table's `id`.
@@ -392,9 +396,9 @@ class PokerPlayer extends BaseEventEmitter implements PokerPlayerInterface {
    * const rank = card.getRank();
    * console.log(rank); // "A"
    */
-  private __setHand(hand: CardInterface[]): CardInterface[] {
-    this.__hand = hand;
-    return this.__hand;
+  private __setHoleCards(holeCards: CardInterface[]): CardInterface[] {
+    this.__holeCards = holeCards;
+    return this.__holeCards;
   }
 
   /**************************************************************************************************************
@@ -432,7 +436,7 @@ class PokerPlayer extends BaseEventEmitter implements PokerPlayerInterface {
   }
 
   /**
-   * `getHand`
+   * `getHoleCards`
    * @public
    * Returns the poker table's `id`.
    * @returns {CardInterface[]} The poker table's `id`.
@@ -449,6 +453,13 @@ class PokerPlayer extends BaseEventEmitter implements PokerPlayerInterface {
   private __setCurrentBet(currentBet: number): number {
     this.__currentBet = currentBet;
     return this.__currentBet;
+  }
+
+  private __addChips(amount: number): void {
+    if (amount < 0) {
+      throw new Error("Cannot add a negative amount to chips.");
+    }
+    this.__chips += amount;
   }
 }
 

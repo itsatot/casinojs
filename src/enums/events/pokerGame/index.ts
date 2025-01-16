@@ -41,6 +41,11 @@ enum PokerGameEvents {
    */
   INITIALIZED = "PokerGame:Initialized",
 
+  PHASE_CHANGED = "PokerGame:phaseChanged",
+
+  GAME_ENDED = "PokerGame:gameEnded",
+
+  BETS_RESOLVED = "PokerGame:bet",
 }
 
 export { PokerGameEvents };

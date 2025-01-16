@@ -25,3 +25,5 @@ export * as SourcesEnumModule from "./sources";
 export * from "./sources";
 export * as SuitsEnumModule from "./suits";
 export * from "./suits";
+export * as handRank from "./handRank";
+export * from "./handRank";

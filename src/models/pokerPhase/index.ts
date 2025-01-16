@@ -507,7 +507,7 @@ class PokerPhase extends BaseEventEmitter implements PokerPhaseInterface {
       this.getPlayers().forEach((player) => {
         const card = this.getDeck().draw(); // Draw a card from the deck
         if (card) {
-          player.addToHand(card); // Add the card to the player's hand
+          player.addToHoleCards(card); // Add the card to the player's hand
         } else {
           throw new Error("Deck is empty before dealing all cards.");
         }

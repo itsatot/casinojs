@@ -32,7 +32,7 @@ interface PokerPlayerConfig {
    * @private
    * The player's hole cards (the two cards dealt to the player at the start of the game).
    */
-  hand?: CardInterface[];
+  holeCards?: CardInterface[];
 
   /**
    * @property {boolean} isFolded
@@ -80,11 +80,15 @@ interface PokerPlayerInterface extends BaseEventEmitterInterface {
 
   setIsFolded(bool: boolean): boolean;
 
-  addToHand(hand: CardInterface): boolean;
+  addToHoleCards(hand: CardInterface): boolean;
 
   setChips(chips: number): number;
 
   setCurrentBet(currentBet: number): number;
+
+  addChips(amount: number): void;
+
+  getHoleCards(): CardInterface[];
 }
 
 export { PokerPlayerConfig, PokerPlayerInterface };

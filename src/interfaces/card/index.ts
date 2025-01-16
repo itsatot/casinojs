@@ -16,7 +16,7 @@ interface CardConfig {
    * @property {string | undefined} rank
    * The maximum number of players that can be seated at the PokerTable[2-14].
    */
-  rank: Rank;
+  rank: Rank|number;
 
   /**
    * @property {string | undefined} suit
