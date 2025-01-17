@@ -25,14 +25,14 @@ org.opencontainers.image.authors=["Astitv Singh <https://github.com/astitvsingh>
 org.opencontainers.image.vendor="The CasinoJs Project" \
 org.opencontainers.image.version="0.1.0-alpha" \
 org.opencontainers.image.licenses="MIT" \
-org.opencontainers.image.source="https://github.com/astitvsingh/the_platform" \
-org.opencontainers.image.documentation="https://github.com/astitvsingh/the_platform/wiki" \
+org.opencontainers.image.source="https://github.com/astitvsingh/casinojs" \
+org.opencontainers.image.documentation="https://github.com/astitvsingh/casinojs/wiki" \
 org.opencontainers.image.revision="abc12345" \
 org.opencontainers.image.created="$(date -u +"%Y-%m-%dT%H:%M:%SZ")" \
 org.opencontainers.image.base.name="ubuntu:24.10" \
 org.label-schema.schema-version="1.0" \
 org.label-schema.build-date="$(date -u +"%Y-%m-%dT%H:%M:%SZ")" \
-org.label-schema.vcs-url="https://github.com/astitvsingh/the_platform" \
+org.label-schema.vcs-url="https://github.com/astitvsingh/casinojs" \
 org.label-schema.vcs-ref="abc12345"
 
 # ------------------------------------------------------------------------------ 
@@ -109,7 +109,8 @@ make \
 libssl-dev \
 libcurl4-gnutls-dev \
 libexpat1-dev \
-gettext
+gettext \
+jq
 
 # Install Git from Source
 # - Downloads and builds Git version 2.47.1 from source for a controlled installation.

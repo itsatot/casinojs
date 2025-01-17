@@ -51,4 +51,4 @@ services:
     # Container Name
     # Assign a specific name to the container for easier identification.
     # ---------------------------------------------------------------------
-    container_name: the-platform-devcontainer # Name the container for better clarity in `docker ps` output.
+    container_name: casinojs-devcontainer # Name the container for better clarity in `docker ps` output.
