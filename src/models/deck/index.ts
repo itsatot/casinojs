@@ -1,7 +1,8 @@
 //@collapse
 
 // Import Enums
-import { Suit, Rank } from "../../enums";
+import { Rank } from "../../enums/ranks";
+import { Suit } from "../../enums/suits";
 
 // Import Interfaces
 import { CardInterface, DeckInterface } from "../../interfaces";
@@ -72,8 +73,9 @@ class Deck extends BaseEventEmitter implements DeckInterface {
    */
   private __init(): void {
     for (const suit of Object.values(Suit)) {
-      for (const rank of Object.values(Rank)) {
-        this.__cards.push(new Card({ rank: rank, suit: suit }));
+      for (const rankKey of Object.keys(Rank)) {
+        const rank = Rank[rankKey as keyof typeof Rank]; // Access value by key
+        this.__cards.push(new Card({ rank: rank as Rank, suit: suit }));
       }
     }
     this.emit("deck:initialized", this.__cards);
@@ -127,7 +129,7 @@ class Deck extends BaseEventEmitter implements DeckInterface {
    * console.log(drawnCard?.toString()); // "A of Spades"
    */
   public draw(): CardInterface | undefined {
-    const drawnCard = this.__cards.pop(); 
+    const drawnCard = this.__cards.pop();
     this.emit("deck:drawn", drawnCard);
     return drawnCard;
   }
