@@ -346,23 +346,23 @@ class PokerGame extends BaseEventEmitter implements PokerGameInterface {
       cardValues[cardValues.length - 5] === 10
     ) {
       return {
-        rank: 1, // Royal Flush
+        rank: HandRank.ROYAL_FLUSH,
         highCard: 14, // Ace is the high card in a Royal Flush
       };
-        highCard: Math.max(...cardValues),
-      };
-    }
     }
 
     if (isFlush && isStraight) {
       return {
-        rank: 2, // Straight Flush
+        rank: HandRank.STRAIGHT_FLUSH,
+        highCard: Math.max(...cardValues),
+      };
+    }
 
     const groups = this.__groupByValue(cardValues);
 
     if (Object.values(groups).includes(4)) {
       return {
-        rank: 3, // Four of a Kind
+        rank: HandRank.FOUR_OF_A_KIND,
         highCard: this.__getHighestGroupCard(groups, 4),
       };
     }
@@ -372,48 +372,48 @@ class PokerGame extends BaseEventEmitter implements PokerGameInterface {
       Object.values(groups).includes(2)
     ) {
       return {
-        rank: 4, // Full House
+        rank: HandRank.FULL_HOUSE,
         highCard: this.__getHighestGroupCard(groups, 3),
       };
     }
 
     if (isFlush) {
       return {
-        rank: 5, // Flush
+        rank: HandRank.FLUSH,
         highCard: Math.max(...cardValues),
       };
     }
 
     if (isStraight) {
       return {
-        rank: 6, // Straight
+        rank: HandRank.STRAIGHT,
         highCard: Math.max(...cardValues),
       };
     }
 
     if (Object.values(groups).includes(3)) {
       return {
-        rank: 7, // Three of a Kind
+        rank: HandRank.THREE_OF_A_KIND,
         highCard: this.__getHighestGroupCard(groups, 3),
       };
     }
 
     if (this.__countPairs(groups) === 2) {
       return {
-        rank: 8, // Two Pair
+        rank: HandRank.TWO_PAIR,
         highCard: this.__getHighestGroupCard(groups, 2),
       };
     }
 
     if (this.__countPairs(groups) === 1) {
       return {
-        rank: 9, // One Pair
+        rank: HandRank.PAIR,
         highCard: this.__getHighestGroupCard(groups, 2),
       };
     }
 
     return {
-      rank: 10, // High Card
+      rank: HandRank.HIGH_CARD,
       highCard: Math.max(...cardValues),
     };
   }

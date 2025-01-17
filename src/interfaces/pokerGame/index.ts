@@ -40,7 +40,9 @@ interface PokerGameConfig {
  *
  * @extends NodeJS.EventEmitter
  */
-interface PokerGameInterface extends BaseEventEmitterInterface { }
+interface PokerGameInterface extends BaseEventEmitterInterface {
+
+}
 
 
 
